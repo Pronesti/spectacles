@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Http\Resources\AttendanceResource;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\SetlistEntryResource;
 use App\Models\Attendance;
 use App\Models\Event;
 use App\Models\EventArtist;
 use App\Models\SetlistEntry;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -30,6 +30,7 @@ class JsonApiResourcesTest extends TestCase
         $resource = $model->toResource();
         $request = Request::create('/resources');
 
+        DB::flushQueryLog();
         DB::enableQueryLog();
         $response = $resource->toResponse($request);
         $queries = DB::getQueryLog();
@@ -67,9 +68,8 @@ class JsonApiResourcesTest extends TestCase
         $model = $modelClass::factory()->create();
         $resource = $model->toResource();
         $relations = array_keys($resource->relationships);
+        $model->load($relations);
         $request = Request::create('/resources', 'GET', ['include' => implode(',', $relations)]);
-        $viewer = Attendance::first()?->owner ?? User::factory()->create();
-        $request->setUserResolver(fn () => $viewer);
         $document = $resource->toResponse($request)->getData(true);
 
         foreach ($relations as $relation) {
@@ -92,7 +92,6 @@ class JsonApiResourcesTest extends TestCase
     {
         $entry = SetlistEntry::factory()->tape()->create(['position' => 3]);
         $request = Request::create('/resources', 'GET', ['include' => 'attendance.owner,song']);
-        $request->setUserResolver(fn () => $entry->attendance->owner);
         $document = (new SetlistEntryResource($entry))->toResponse($request)->getData(true);
 
         $this->assertTrue($document['data']['attributes']['is_tape']);
@@ -130,6 +129,43 @@ class JsonApiResourcesTest extends TestCase
         $document = (new EventResource($event))->toResponse($request)->getData(true);
         $this->assertNull($document['data']['relationships']['venue']['data']);
         $this->assertSame([], $document['data']['relationships']['artistLinks']['data']);
+    }
+
+    public function test_preloaded_relationship_constraints_are_preserved_without_queries(): void
+    {
+        $attendance = Attendance::factory()->create();
+        $first = SetlistEntry::factory()->create(['attendance_id' => $attendance->id, 'position' => 1]);
+        $second = SetlistEntry::factory()->create(['attendance_id' => $attendance->id, 'position' => 2]);
+        SetlistEntry::factory()->create(['attendance_id' => $attendance->id, 'position' => 3]);
+        $attendance->load(['entries' => fn ($query) => $query
+            ->whereKey([$first->id, $second->id])->reorder()->orderByDesc('position')]);
+        $request = Request::create('/resources', 'GET', ['include' => 'entries']);
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+        try {
+            $document = $attendance->toResource()->toResponse($request)->getData(true);
+            $this->assertSame([], DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+        }
+
+        $this->assertSame([$second->external_id, $first->external_id],
+            array_column($document['data']['relationships']['entries']['data'], 'id'));
+        $this->assertPublicResourceObjects($document);
+    }
+
+    public function test_paginated_collections_use_native_json_api_structure(): void
+    {
+        Attendance::factory()->count(3)->create();
+        $resourceClass = AttendanceResource::class;
+        $document = $resourceClass::collection(Attendance::query()->orderBy('id')->paginate(2))
+            ->toResponse(Request::create('/resources'))->getData(true);
+
+        $this->assertCount(2, $document['data']);
+        $this->assertSame(3, $document['meta']['total']);
+        $this->assertArrayHasKey('next', $document['links']);
+        $this->assertPublicResourceObjects($document);
     }
 
     private function assertPublicResourceObjects(array $document): void
