@@ -1,0 +1,15 @@
+main { max-width: 760px; margin: 0 auto; padding: clamp(40px, 10vh, 110px) 24px; }
+.eyebrow { font-size: .75rem; font-weight: 750; letter-spacing: .2em; margin-bottom: 44px; }
+h1 { font-size: clamp(2.6rem, 7vw, 4.3rem); line-height: 1.08; letter-spacing: -.05em; margin: 0; font-weight: 650; }
+.intro { color: #53685f; font-size: 1.1rem; line-height: 1.6; margin: 24px 0 40px; }
+.connection { padding: 28px; border: 1px solid #d8e0d7; border-radius: 16px; background: white; }
+.connection-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+h2 { margin: 0; font-size: 1rem; }
+.status { font-size: .75rem; padding: 5px 10px; border-radius: 20px; background: #edf1ec; text-transform: capitalize; }
+.connected .status { background: #ddf4e6; color: #17633b; }
+.error .status { background: #ffebe3; color: #8c3518; }
+.connection p { line-height: 1.6; }
+code { display: block; overflow-wrap: anywhere; color: #53685f; font-size: .85rem; }
+.hint { color: #8c3518; font-size: .9rem; }
+button { display: block; margin-top: 26px; border: 0; border-radius: 8px; padding: 11px 18px; background: #18382e; color: white; cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
