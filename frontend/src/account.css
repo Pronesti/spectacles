@@ -275,3 +275,18 @@
   .profile-story-stats b { font-size: 10px; }
   .profile-story-stats small { font-size: 9px; }
 }
+
+.account-fields { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 22px; }
+.registration .account-fields { gap: 16px; }
+.account-fields:disabled { cursor: progress; }
+.account-field > select { width: 100%; min-height: 46px; padding: 12px 14px; border: 1px solid #d3d9c9; border-radius: 6px; background: var(--paper); color: var(--ink); font: inherit; font-size: 14px; }
+.account-field > select[aria-invalid="true"] { border-color: #b87962; }
+.account-field > select:focus-visible { outline: 2px solid #8ba84e; outline-offset: 2px; }
+.account-field > small:not(.field-error) { color: var(--muted); line-height: 1.6; }
+.password-visibility { width: 44px; height: 44px; }
+.account-error { color: #a25d45; font-size: 13px; line-height: 1.6; margin: 12px 0; overflow-wrap: anywhere; }
+.demo-notice { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 0 0 20px; }
+.account-gate { min-height: 100dvh; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; padding: 32px 20px; text-align: center; }
+.account-gate h1 { font-size: clamp(32px, 7vw, 52px); }
+.account-gate > p { max-width: 40ch; line-height: 1.7; }
+.account-gate > div { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }

@@ -5,7 +5,7 @@ Two independent applications in one Git repository:
 - `backend/`: Laravel 13 API, created with the Laravel installer. PHP 8.5 is the tested runtime.
 - `frontend/`: React 19 + TypeScript + Vite SPA. Node 24 and npm are required. Express serves compiled files in production.
 
-The browser calls Laravel directly over HTTP. The backend supports Sanctum SPA sessions; the existing React account screens remain local previews. There is no Inertia or shared frontend runtime.
+The browser calls Laravel directly over HTTP. The React account screens use Laravel Sanctum SPA sessions. There is no Inertia or shared frontend runtime.
 
 ## Local setup
 
@@ -36,7 +36,7 @@ The health API does not use a database. Account endpoints require the User ident
 
 ## Account API
 
-The backend supports Sanctum cookie/session authentication at `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/logout`, and GET/PATCH `/api/v1/me`. The existing React account screens remain browser-local previews; this backend task does not connect them.
+The backend supports Sanctum cookie/session authentication at `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/logout`, and GET/PATCH `/api/v1/me`. The React account screens use these endpoints for session restoration, registration, login, supported profile changes, and logout.
 
 First GET `/sanctum/csrf-cookie` with credentials included. Send its URL-decoded `XSRF-TOKEN` cookie in `X-XSRF-TOKEN` on POST/PATCH requests, include credentials on subsequent requests, and send `Accept: application/json`. Registration accepts name, email, password, and password_confirmation, returns 201, and signs in immediately. Login returns 200; wrong credentials return generic 422 errors. Logout returns 204. Registration requires 12 characters and at most 72 bytes without NUL characters. Passwords are hashed; no bearer tokens are issued.
 
@@ -109,3 +109,9 @@ Official guidance: [monorepos](https://laravel.com/cloud/docs/monorepos), [Node.
 ## Git workflow
 
 Use `main` as the default branch. Start feature branches from `main`; open release PRs to `dev` and `main` from the same feature branch. Do not merge or rebase `dev` into a feature branch.
+
+### Frontend account integration
+
+The React account screens use the five Sanctum routes documented above. Session restoration, registration, login, name/email/language changes, and logout use cookie authentication. The frontend does not store account credentials or identity in browser storage. Frontend and API must share a parent domain, with credentialed CORS and Sanctum/session settings matching the frontend origin.
+
+The concert workspace remains a browser-local demo, shared across sign-ins; account authentication does not add server concert persistence. See [frontend account behavior](frontend/README.md#account-authentication) and the [frontend integration plan](docs/superpowers/plans/2026-10-23-sanctum-frontend-integration.md).

@@ -11,8 +11,9 @@ import { VenueMap } from './components/VenueMap'
 import { SetlistsView } from './components/SetlistsView'
 import { Dialog } from './components/Dialog'
 import stagePhoto from './assets/concert-stage.png'
-import { DEFAULT_PROFILE, ENTRY_KEY, PROFILE_KEY, decodeProfile, profilePayload } from './account'
-import type { AuthView as AuthMode, Profile } from './account'
+import { accountErrorMessage, createAccountClient } from './accountApi'
+import type { AuthMode, Credentials, ProfilePatch } from './accountApi'
+import { useAccount } from './useAccount'
 import { AuthView } from './components/AuthView'
 import { AccountMenu } from './components/AccountMenu'
 import { ProfileView } from './components/ProfileView'
@@ -20,6 +21,7 @@ import './App.css'
 import './account.css'
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '')
+const accountClient = createAccountClient(apiBaseUrl)
 type Connection = { status: 'loading' | 'connected' | 'error'; message: string }
 type Page = 'dashboard' | 'concerts' | 'calendar' | 'map' | 'setlists' | 'profile'
 const navigation: { id: Page; label: string; icon: IconName }[] = [
@@ -44,32 +46,16 @@ function initialWorkspace(): { data: Workspace; issue: string } {
   } catch { return { data: createDemoWorkspace(), issue: 'Browser storage is unavailable. Changes will last for this session only.' } }
 }
 
-function initialProfile(): { data: Profile; issue: string } {
-  try {
-    const raw = localStorage.getItem(PROFILE_KEY)
-    if (raw === null) return { data: DEFAULT_PROFILE, issue: '' }
-    const saved = decodeProfile(raw)
-    return saved ? { data: saved, issue: '' } : { data: DEFAULT_PROFILE, issue: 'Your saved profile could not be read. These temporary changes will not overwrite it.' }
-  } catch { return { data: DEFAULT_PROFILE, issue: 'Profile storage is unavailable. Changes will last for this session only.' } }
-}
-
-function initialEntry(): AuthMode | null {
-  try {
-    const saved = sessionStorage.getItem(ENTRY_KEY)
-    return saved === 'login' || saved === 'register' ? saved : null
-  } catch { return null }
-}
-
 function App() {
   const [initial] = useState(initialWorkspace)
   const [workspace, setWorkspace] = useState(initial.data)
   const [storageIssue, setStorageIssue] = useState(initial.issue)
   const [today, setToday] = useState(todayKey)
   const [page, setPage] = useState<Page>('dashboard')
-  const [initialAccount] = useState(initialProfile)
-  const [profile, setProfile] = useState(initialAccount.data)
-  const [profileIssue, setProfileIssue] = useState(initialAccount.issue)
-  const [authView, setAuthView] = useState<AuthMode | null>(initialEntry)
+  const account = useAccount(accountClient)
+  const [authView, setAuthView] = useState<AuthMode | null>('login')
+  const [exploringDemo, setExploringDemo] = useState(false)
+  const [accountNotice, setAccountNotice] = useState('')
   const [query, setQuery] = useState(''), [filter, setFilter] = useState('all')
   const [venueFilter, setVenueFilter] = useState<string | undefined>()
   const [form, setForm] = useState<{ concert?: Concert; date?: string } | null>(null)
@@ -117,38 +103,36 @@ function App() {
     return () => { active = false; clearTimeout(timeout); controller.abort() }
   }, [attempt])
 
+  const activeAuthView = account.user ? null : authView ?? (!exploringDemo && account.error ? 'login' : null)
   useEffect(() => {
-    document.title = `Spectacles — ${authView === 'login' ? 'Welcome back' : authView === 'register' ? 'Make it your own' : page === 'profile' ? 'Your profile' : 'Your life, live.'}`
-  }, [authView, page])
+    const title = account.status === 'checking' ? 'Checking your session' : activeAuthView === 'login' ? 'Welcome back' : activeAuthView === 'register' ? 'Make it your own' : page === 'profile' ? 'Your profile' : 'Your life, live.'
+    document.title = `Spectacles — ${title}`
+  }, [activeAuthView, account.status, page])
 
+  const focusMain = () => requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true }))
+  const clearOverlays = () => { setForm(null); setDetailId(null); setHealthOpen(false); setUndo(null); setToast('') }
   const changeEntry = (view: AuthMode | null) => {
-    setAuthView(view)
-    try {
-      if (view) sessionStorage.setItem(ENTRY_KEY, view)
-      else sessionStorage.removeItem(ENTRY_KEY)
-    } catch { /* This is only a preview screen preference, never an authentication token. */ }
+    setAuthView(view); setAccountNotice('')
+    if (view) { setExploringDemo(false); if (account.status === 'unavailable') account.refresh() }
     window.scrollTo({ top: 0, behavior: 'instant' })
   }
-  const saveProfile = (value: Profile) => {
-    const next = profilePayload(value)
-    setProfile(next)
-    if (initialAccount.issue) { setToast('Profile updated for this preview session.'); return }
-    try {
-      localStorage.setItem(PROFILE_KEY, JSON.stringify(next))
-      setProfileIssue('')
-      setToast('Profile saved in this browser.')
-    } catch {
-      setProfileIssue('Your profile could not be saved. Changes will last for this session only.')
-      setToast('Profile updated for this preview session.')
-    }
+  const enterPreview = () => {
+    clearOverlays(); setExploringDemo(true); account.clearError(); changeEntry(null); setPage('dashboard'); focusMain()
   }
-  const enterPreview = (message = '') => {
-    changeEntry(null); setPage('dashboard'); setToast(message)
-    requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true }))
+  const submitAccount = async (mode: AuthMode, input: Credentials): Promise<void> => {
+    if (mode === 'register') await account.register(input)
+    else await account.login(input)
+    clearOverlays(); setExploringDemo(false); changeEntry('login'); setPage('dashboard'); focusMain()
+  }
+  const saveProfile = async (patch: ProfilePatch): Promise<void> => {
+    await account.save(patch)
+    setToast('Account profile saved.')
   }
   const signOut = () => {
-    setForm(null); setDetailId(null); setHealthOpen(false); setUndo(null); setToast('')
-    changeEntry('login')
+    setAccountNotice('')
+    void account.logout().then(() => {
+      clearOverlays(); setExploringDemo(false); setPage('dashboard'); changeEntry('login')
+    }).catch(error => setAccountNotice(accountErrorMessage(error)))
   }
 
   const commit = (data: Workspace, message: string, undoable = false) => { setUndo(undoable ? workspace : null); setWorkspace(data); setToast(message) }
@@ -170,16 +154,19 @@ function App() {
   const pageInfo = pageCopy[page]
   const visibleConcerts = filteredConcerts(workspace.concerts, workspace.venues, query, filter, today, venueFilter)
 
-  if (authView) return <AuthView key={authView} mode={authView} onSwitch={changeEntry} onEnter={() => enterPreview()} onRegister={(name, email) => { saveProfile({ ...DEFAULT_PROFILE, name, email }); enterPreview('Your preview profile is ready.') }} />
+  if (account.status === 'checking' || account.status === 'unavailable' && !exploringDemo) return <main className="account-gate"><Soundmark /><h1>Spectacles<span className="lime-dot">.</span></h1><p role={account.status === 'checking' ? 'status' : 'alert'}>{account.status === 'checking' ? 'Checking your session…' : account.error}</p>{account.status === 'unavailable' && <div><button className="button primary" onClick={account.refresh}>Try again</button><button className="button secondary" onClick={enterPreview}>Explore the demo</button></div>}</main>
+  if (activeAuthView) return <AuthView key={activeAuthView} mode={activeAuthView} busy={account.busy} notice={account.error || accountNotice} onSwitch={changeEntry} onExplore={enterPreview} onSubmit={submitAccount} />
 
   return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a>
     <aside className="sidebar"><button className="brand" onClick={() => navigate('dashboard')} aria-label="Spectacles dashboard"><Soundmark /><span>Spectacles<span className="brand-period">.</span></span></button>
       <div className="nav-eyebrow">YOUR BACKSTAGE</div><nav aria-label="Main navigation">{navigation.map(item => <button className={`nav-link ${page === item.id ? 'active' : ''}`} key={item.id} onClick={() => navigate(item.id)} aria-current={page === item.id ? 'page' : undefined}><Icon name={item.icon} /><span>{item.label}</span>{item.id === 'concerts' && <small>{workspace.concerts.length}</small>}</button>)}</nav>
       <div className="sidebar-bottom"><div className="workspace-label"><Icon name="layers" size={19} /><span>Demo workspace<small>{storageIssue ? 'Temporary session' : 'Saved in this browser'}</small></span></div><button className={`connection-indicator ${connection.status}`} onClick={() => setHealthOpen(true)}><i />{connection.status === 'connected' ? 'API connected' : connection.status === 'loading' ? 'Checking API…' : 'API unavailable'}<Icon name="right" size={13} /></button><p>For the love of live music.</p></div>
     </aside>
-    <div className="main-shell"><header className="topbar"><span className="breadcrumb"><span>Spectacles</span><Icon name="right" size={13} /><strong>{page === 'profile' ? 'Profile' : navigation.find(n => n.id === page)!.label}</strong></span><div className="topbar-right"><span className="preview-label"><i />Design preview · sample data</span><button className="icon-button topbar-search" aria-label="Search concerts" onClick={() => { setQuery(''); setFilter('all'); setVenueFilter(undefined); navigate('concerts'); requestAnimationFrame(() => document.getElementById('concert-search')?.focus()) }}><Icon name="search" /></button><button className={`mobile-api ${connection.status}`} onClick={() => setHealthOpen(true)} aria-label={connection.status === 'connected' ? 'API connected' : connection.status === 'loading' ? 'Checking API' : 'API unavailable'}><i /></button><AccountMenu profile={profile} onProfile={() => navigate('profile')} onSignOut={signOut} /></div></header>
+    <div className="main-shell"><header className="topbar"><span className="breadcrumb"><span>Spectacles</span><Icon name="right" size={13} /><strong>{page === 'profile' ? 'Profile' : navigation.find(n => n.id === page)!.label}</strong></span><div className="topbar-right"><span className="preview-label"><i />Demo concert collection</span><button className="icon-button topbar-search" aria-label="Search concerts" onClick={() => { setQuery(''); setFilter('all'); setVenueFilter(undefined); navigate('concerts'); requestAnimationFrame(() => document.getElementById('concert-search')?.focus()) }}><Icon name="search" /></button><button className={`mobile-api ${connection.status}`} onClick={() => setHealthOpen(true)} aria-label={connection.status === 'connected' ? 'API connected' : connection.status === 'loading' ? 'Checking API' : 'API unavailable'}><i /></button><AccountMenu user={account.user} busy={account.busy} onProfile={() => navigate('profile')} onAuth={changeEntry} onSignOut={signOut} /></div></header>
       <main id="main-content" tabIndex={-1}>
         {storageIssue && <p className="storage-warning" role="alert">{storageIssue}</p>}
+        {accountNotice && <p className="account-error" role="alert">{accountNotice}</p>}
+        <p className="demo-notice">Demo collection · saved in this browser, shared across sign-ins.</p>
         <div className="page-heading"><div><p className="eyebrow">{pageInfo[0]}</p><h1>{pageInfo[1]}</h1><p className="page-subtitle">{pageInfo[2]}</p></div>{page !== 'map' && page !== 'setlists' && page !== 'profile' && <button className="button primary add-concert" onClick={() => setForm({})}><Icon name="plus" size={21} />Add concert</button>}</div>
         {page === 'dashboard' && <div className="dashboard-content"><section className="stats-strip" aria-label="Collection statistics">{[[workspace.concerts.length, 'Concerts', 'music'], [artistCount, 'Artists', 'heart'], [venues.length, 'Venues', 'pin'], [songCount, 'Songs saved', 'list']].map(([value, label, icon]) => <div className="stat" key={label}><span className="stat-label">{label}<Icon name={icon as IconName} size={17} /></span><strong>{value}</strong><small>{label === 'Concerts' ? `${upcoming.length} still to come` : label === 'Artists' ? 'A soundtrack of your own' : label === 'Venues' ? 'Places that feel like home' : 'Ready for another listen'}</small></div>)}</section>
           {next ? <section className="next-concert" aria-label="Next concert countdown"><img className="stage-photo" src={stagePhoto} alt="A live band silhouetted against lime stage lights" fetchPriority="high" /><div className="next-concert-shade" /><div className="next-concert-copy"><span className="next-label"><i />UP NEXT</span><h2>{next.title}</h2><p><Icon name="pin" size={16} />{workspace.venues.find(v => v.id === next.venueId)?.name ?? 'Venue to confirm'}<span>·</span>{formatDate(next.date)}</p><button className="button photo-button" onClick={() => setDetailId(next.id)}>View concert<Icon name="arrow" size={18} /></button></div><div className="countdown"><span>{daysUntil(next.date, today) === 0 ? 'Tonight' : daysUntil(next.date, today)}</span><small>{daysUntil(next.date, today) === 0 ? 'THE WAIT IS OVER' : 'DAYS TO GO'}</small></div><span className="photo-caption">THE NEXT GREAT MEMORY</span></section> : <section className="next-concert no-upcoming"><Icon name="music" size={40} /><h2>Something to look forward to.</h2><p>Add your next concert and let the countdown begin.</p><button className="button lime" onClick={() => setForm({})}><Icon name="plus" />Add a concert</button></section>}
@@ -191,7 +178,7 @@ function App() {
         {page === 'calendar' && <CalendarView concerts={workspace.concerts} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} onAdd={date => setForm({ date })} />}
         {page === 'map' && <VenueMap workspace={workspace} onViewConcerts={venue => { setVenueFilter(venue.id); setFilter('all'); setQuery(''); navigate('concerts') }} />}
         {page === 'setlists' && <SetlistsView key={setlistId} concerts={workspace.concerts} venues={workspace.venues} selectedId={setlistId} onSelect={setSetlistId} onUpdate={updateConcert} />}
-        {page === 'profile' && <ProfileView profile={profile} counts={{ concerts: workspace.concerts.length, artists: artistCount, venues: venues.length }} issue={profileIssue} onSave={saveProfile} onCancel={() => navigate('dashboard')} />}
+        {page === 'profile' && account.user && <ProfileView key={JSON.stringify(account.user)} user={account.user} counts={{ concerts: workspace.concerts.length, artists: artistCount, venues: venues.length }} busy={account.busy} onSave={saveProfile} onCancel={() => navigate('dashboard')} />}
         <footer className="page-footer"><span>Spectacles<span className="brand-period">.</span> <span>A personal archive of being there.</span></span><span>Sample dates & lineups · Browser-local preview</span></footer>
       </main>
     </div>

@@ -1,58 +1,45 @@
 import assert from 'node:assert/strict'
-import { test } from 'node:test'
-import { AVATAR_COLORS, DEFAULT_PROFILE, ENTRY_KEY, MAX_AVATAR_BYTES, PROFILE_KEY, avatarFileError, avatarLetter, credentialErrors, decodeProfile, profileErrors, profilePayload } from '../src/account.ts'
-import { WORKSPACE_KEY } from '../src/domain.ts'
+import { after, before, test } from 'node:test'
+import { fileURLToPath } from 'node:url'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import react from '@vitejs/plugin-react'
+import { createServer } from 'vite'
 
-test('account preferences have separate versioned keys from the concert workspace', () => {
-  assert.equal(new Set([PROFILE_KEY, ENTRY_KEY, WORKSPACE_KEY]).size, 3)
-  assert.deepEqual(decodeProfile(JSON.stringify(DEFAULT_PROFILE)), DEFAULT_PROFILE)
+let server, AuthView, ProfileView, Avatar, App
+const user = { id: '00000000-0000-4000-8000-000000000001', name: 'Élodie', email: 'elodie@example.com', locale: null }
+const noop = () => {}
+const render = (component, props) => renderToStaticMarkup(createElement(component, props))
+before(async () => {
+  server = await createServer({ root: fileURLToPath(new URL('..', import.meta.url)), configFile: false, cacheDir: fileURLToPath(new URL('../node_modules/.cache/account-ui-tests', import.meta.url)), plugins: [react()], server: { middlewareMode: true, hmr: false }, appType: 'custom' })
+  ;({ AuthView } = await server.ssrLoadModule('/src/components/AuthView.tsx'))
+  ;({ ProfileView } = await server.ssrLoadModule('/src/components/ProfileView.tsx'))
+  ;({ Avatar } = await server.ssrLoadModule('/src/components/Avatar.tsx'))
+  ;({ default: App } = await server.ssrLoadModule('/src/App.tsx'))
 })
-
-test('profile serialization trims known fields and excludes credentials and foreign data', () => {
-  const profile = { ...DEFAULT_PROFILE, name: '  Lucía García  ', email: '  lucia@example.com  ', password: 'sample-secret', confirmation: 'sample-secret', concerts: ['do-not-copy'] }
-  const payload = profilePayload(profile)
-  assert.equal(payload.name, 'Lucía García')
-  assert.equal(payload.email, 'lucia@example.com')
-  assert.equal('password' in payload, false)
-  assert.equal('confirmation' in payload, false)
-  assert.equal('concerts' in payload, false)
-  assert.equal(JSON.stringify(payload).includes('sample-secret'), false)
-  assert.deepEqual(decodeProfile(JSON.stringify(profile)), payload)
+after(async () => { await server?.close() })
+test('real credential forms retain labels and distinguish login from registration policy', () => {
+  const props = { busy: false, onSwitch: noop, onExplore: noop, onSubmit: async () => {} }
+  const login = render(AuthView, { ...props, mode: 'login' })
+  const register = render(AuthView, { ...props, mode: 'register' })
+  assert.match(login, /autoComplete="current-password"/i)
+  assert.match(register, /autoComplete="new-password"/i)
+  assert.match(register, /id="auth-confirmation"/)
+  assert.match(register, /12 characters/)
+  assert.match(register, /Create account/)
+  assert.doesNotMatch(login + register, /sample password|Create preview profile|never sent|does not create a real account/)
+  assert.match(render(AuthView, { ...props, mode: 'register', busy: true }), /<fieldset[^>]*disabled/)
 })
-
-test('profile validation handles blank names, email format, and exact bio boundaries', () => {
-  assert.deepEqual(profileErrors(DEFAULT_PROFILE), {})
-  assert.ok(profileErrors({ ...DEFAULT_PROFILE, name: '   ' }).name)
-  assert.ok(profileErrors({ ...DEFAULT_PROFILE, email: 'not-an-email' }).email)
-  assert.deepEqual(profileErrors({ ...DEFAULT_PROFILE, bio: 'x'.repeat(80) }), {})
-  assert.ok(profileErrors({ ...DEFAULT_PROFILE, bio: 'x'.repeat(81) }).bio)
-  assert.ok(profileErrors({ ...DEFAULT_PROFILE, city: 'x'.repeat(101) }).city)
+test('profile exposes supported fields and labels browser demo statistics', () => {
+  const html = render(ProfileView, { user, counts: { concerts: 24, artists: 12, venues: 8 }, busy: false, onSave: async () => {}, onCancel: noop })
+  for (const id of ['profile-name', 'profile-email', 'profile-locale']) assert.ok(html.includes(`id="${id}"`))
+  assert.match(html, /elodie@example.com/)
+  assert.match(html, /Demo concerts/)
+  assert.doesNotMatch(html, /profile-city|profile-bio|type="file"|Change photo|Avatar color/)
+  assert.match(render(Avatar, { name: user.name }), /É/)
 })
-
-test('credential validation checks preview format and confirmation without returning secret values', () => {
-  const input = { mode: 'register', name: 'Jamie', email: 'jamie@example.com', password: 'DemoPassword9', confirmation: 'different' }
-  const errors = credentialErrors(input)
-  assert.equal(errors.confirmation, 'The passwords do not match.')
-  assert.equal(JSON.stringify(errors).includes(input.password), false)
-  assert.deepEqual(credentialErrors({ ...input, confirmation: input.password }), {})
-  assert.ok(credentialErrors({ ...input, password: 'short' }).password)
-  assert.deepEqual(credentialErrors({ ...input, mode: 'login', name: '', confirmation: '' }), {})
-})
-
-test('avatar selections preserve Unicode names and admit only bounded local image formats', () => {
-  assert.equal(avatarLetter('  Élodie Martin  '), 'É')
-  assert.equal(avatarLetter('Jamie Morgan'), 'J')
-  assert.equal(avatarLetter(''), 'J')
-  for (const color of AVATAR_COLORS) assert.ok(decodeProfile(JSON.stringify({ ...DEFAULT_PROFILE, color })))
-  assert.equal(avatarFileError('image/png', MAX_AVATAR_BYTES), null)
-  assert.ok(avatarFileError('image/png', MAX_AVATAR_BYTES + 1))
-  assert.ok(avatarFileError('image/svg+xml', 100))
-  assert.ok(avatarFileError('image/jpeg', 0))
-  assert.ok(decodeProfile(JSON.stringify({ ...DEFAULT_PROFILE, photo: 'data:image/png;base64,iVBORw0KGgo=' })))
-})
-
-test('malformed saved profiles, external avatar URLs, and unsupported versions are rejected', () => {
-  for (const value of ['broken json', 'null', '[]', JSON.stringify({ ...DEFAULT_PROFILE, version: 2 }), JSON.stringify({ ...DEFAULT_PROFILE, color: 'unknown' }), JSON.stringify({ ...DEFAULT_PROFILE, name: '' }), JSON.stringify({ ...DEFAULT_PROFILE, photo: 'https://example.com/tracker.png' }), JSON.stringify({ ...DEFAULT_PROFILE, photo: 'data:image/svg+xml;base64,AAAA' })]) {
-    assert.equal(decodeProfile(value), null)
-  }
+test('initial application render checks the session without showing a fabricated identity', () => {
+  const html = render(App)
+  assert.match(html, /Checking your session/)
+  assert.doesNotMatch(html, /Jamie Morgan|jamie@example.com|Local preview profile/)
 })
