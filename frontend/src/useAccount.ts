@@ -26,7 +26,7 @@ export function useAccount(client: AccountClient) {
     return () => { ++generation.current; controller.abort() }
   }, [client, retry])
 
-  async function run(operation: () => Promise<AccountUser | null>): Promise<void> {
+  async function run<T extends AccountUser | null>(operation: () => Promise<T>): Promise<T> {
     if (busyRef.current) throw new AccountApiError(0, 'An account request is already in progress.')
     busyRef.current = true; setBusy(true)
     const current = ++generation.current
@@ -34,6 +34,7 @@ export function useAccount(client: AccountClient) {
     try {
       const user = await operation()
       if (current === generation.current) setSnapshot({ status: user ? 'authenticated' : 'guest', user, error: '' })
+      return user
     } catch (error) {
       if (current === generation.current && error instanceof AccountApiError && error.status === 401) {
         setSnapshot({ status: 'guest', user: null, error: 'Your session expired. Sign in again.' })

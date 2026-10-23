@@ -6,7 +6,7 @@ import { Avatar } from './Avatar'
 import { Icon } from './Icon'
 
 export function ProfileView({ user, counts, busy, onSave, onCancel }: {
-  user: AccountUser; counts: { concerts: number; artists: number; venues: number }; busy: boolean; onSave: (patch: ProfilePatch) => Promise<void>; onCancel: () => void
+  user: AccountUser; counts: { concerts: number; artists: number; venues: number }; busy: boolean; onSave: (patch: ProfilePatch) => Promise<AccountUser>; onCancel: () => void
 }) {
   const [draft, setDraft] = useState<ProfileDraft>({ name: user.name, email: user.email, locale: user.locale })
   const [errors, setErrors] = useState<AccountErrors>({}), [message, setMessage] = useState('')
@@ -27,7 +27,12 @@ export function ProfileView({ user, counts, busy, onSave, onCancel }: {
     setErrors(next); setMessage('')
     if (Object.keys(next).length) { focus(next); return }
     locked.current = true
-    try { await onSave(profileChanges(draft, user)) }
+    try {
+      const saved = await onSave(profileChanges(draft, user))
+      if (!form.isConnected) return
+      setDraft({ name: saved.name, email: saved.email, locale: saved.locale })
+      requestAnimationFrame(() => { if (form.isConnected) form.querySelector<HTMLInputElement>('#profile-name')?.focus() })
+    }
     catch (error) {
       const fields = error instanceof AccountApiError ? error.fields : {}
       setErrors(fields); setMessage(accountErrorMessage(error)); focus(fields)

@@ -12,7 +12,7 @@ import { SetlistsView } from './components/SetlistsView'
 import { Dialog } from './components/Dialog'
 import stagePhoto from './assets/concert-stage.png'
 import { accountErrorMessage, createAccountClient } from './accountApi'
-import type { AuthMode, Credentials, ProfilePatch } from './accountApi'
+import type { AccountUser, AuthMode, Credentials, ProfilePatch } from './accountApi'
 import { useAccount } from './useAccount'
 import { AuthView } from './components/AuthView'
 import { AccountMenu } from './components/AccountMenu'
@@ -124,9 +124,10 @@ function App() {
     else await account.login(input)
     clearOverlays(); setExploringDemo(false); changeEntry('login'); setPage('dashboard'); focusMain()
   }
-  const saveProfile = async (patch: ProfilePatch): Promise<void> => {
-    await account.save(patch)
+  const saveProfile = async (patch: ProfilePatch): Promise<AccountUser> => {
+    const user = await account.save(patch)
     setToast('Account profile saved.')
+    return user
   }
   const signOut = () => {
     setAccountNotice('')
@@ -178,7 +179,7 @@ function App() {
         {page === 'calendar' && <CalendarView concerts={workspace.concerts} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} onAdd={date => setForm({ date })} />}
         {page === 'map' && <VenueMap workspace={workspace} onViewConcerts={venue => { setVenueFilter(venue.id); setFilter('all'); setQuery(''); navigate('concerts') }} />}
         {page === 'setlists' && <SetlistsView key={setlistId} concerts={workspace.concerts} venues={workspace.venues} selectedId={setlistId} onSelect={setSetlistId} onUpdate={updateConcert} />}
-        {page === 'profile' && account.user && <ProfileView key={JSON.stringify(account.user)} user={account.user} counts={{ concerts: workspace.concerts.length, artists: artistCount, venues: venues.length }} busy={account.busy} onSave={saveProfile} onCancel={() => navigate('dashboard')} />}
+        {page === 'profile' && account.user && <ProfileView key={account.user.id} user={account.user} counts={{ concerts: workspace.concerts.length, artists: artistCount, venues: venues.length }} busy={account.busy} onSave={saveProfile} onCancel={() => navigate('dashboard')} />}
         <footer className="page-footer"><span>Spectacles<span className="brand-period">.</span> <span>A personal archive of being there.</span></span><span>Sample dates & lineups · Browser-local preview</span></footer>
       </main>
     </div>
