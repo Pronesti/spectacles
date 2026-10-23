@@ -5,7 +5,7 @@ Two independent applications in one Git repository:
 - `backend/`: Laravel 13 API, created with the Laravel installer. PHP 8.5 is the tested runtime.
 - `frontend/`: React 19 + TypeScript + Vite SPA. Node 24 and npm are required. Express serves compiled files in production.
 
-The browser calls Laravel directly over HTTP. Authentication is deferred. There is no Inertia or shared frontend runtime.
+The browser calls Laravel directly over HTTP. The backend supports Sanctum SPA sessions; the existing React account screens remain local previews. There is no Inertia or shared frontend runtime.
 
 ## Local setup
 
@@ -30,9 +30,21 @@ npm run dev
 
 Open `http://localhost:5173`. The connection card must show **The Laravel API is connected.** The public endpoint is `GET http://localhost:8000/api/health`; Laravel’s framework health endpoint is `/up`. The API has no root HTML page.
 
-The frontend’s `VITE_API_BASE_URL` is the backend URL **without `/api`**. The backend’s `FRONTEND_URLS` is a comma-separated list of exact frontend origins (scheme, host, port; no path or trailing slash). Defaults allow `http://localhost:5173` and `http://localhost:3000`. If you use `127.0.0.1` or another port, update both sides as needed. CORS is credential-free and currently permits only GET/OPTIONS and Accept/Content-Type headers; extend it when adding write endpoints.
+The frontend’s `VITE_API_BASE_URL` is the backend URL **without `/api`**. The backend’s `FRONTEND_URLS` is a comma-separated list of exact frontend origins (scheme, host, port; no path or trailing slash). Defaults allow `http://localhost:5173` and `http://localhost:3000`. If you use `127.0.0.1` or another port, update both sides as needed. CORS permits credentialed GET/POST/PATCH/OPTIONS requests from those exact origins, including CSRF headers. The health endpoint remains public and session-free.
 
-The scaffold keeps the installer’s default model and migrations but the health API does not use a database. Sessions/cache use non-persistent `array` drivers and the queue uses `sync`; configure durable services when future features require them.
+The health API does not use a database. Account endpoints require the User identity migration and durable session/cache storage; `.env.example` selects `database` for both. The queue remains `sync`. Existing `.env` files are not overwritten by Composer; update their session/cache settings when enabling accounts.
+
+## Account API
+
+The backend supports Sanctum cookie/session authentication at `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/logout`, and GET/PATCH `/api/v1/me`. The existing React account screens remain browser-local previews; this backend task does not connect them.
+
+First GET `/sanctum/csrf-cookie` with credentials included. Send its URL-decoded `XSRF-TOKEN` cookie in `X-XSRF-TOKEN` on POST/PATCH requests, include credentials on subsequent requests, and send `Accept: application/json`. Registration accepts name, email, password, and password_confirmation, returns 201, and signs in immediately. Login returns 200; wrong credentials return generic 422 errors. Logout returns 204. Registration requires 12 characters and at most 72 bytes without NUL characters. Passwords are hashed; no bearer tokens are issued.
+
+GET/PATCH `/api/v1/me` return a private JSON:API `users` resource whose id is the User UUID and whose attributes are name, email, and locale. PATCH accepts only those attributes as ordinary JSON fields. Unsupported preview fields are ignored. Email is normalized to lowercase, must be unique, and changes immediately; changing it clears verification without sending mail. Locale is null or a configured APP_LOCALE/APP_FALLBACK_LOCALE value; both default to en.
+
+Use SESSION_DRIVER=database and CACHE_STORE=database, and run pending migrations on a new backend database. SANCTUM_STATEFUL_DOMAINS lists frontend hosts with ports, without schemes. FRONTEND_URLS remains exact allowed origins. For localhost use the defaults and SESSION_DOMAIN=null. For Yerd use SANCTUM_STATEFUL_DOMAINS=spectacles.test,localhost:5173,localhost:3000, SESSION_DOMAIN=.spectacles.test, and SESSION_SECURE_COOKIE=true with the HTTPS frontend/API URLs.
+
+Production SPA sessions require frontend and API under the same parent domain, shared parent SESSION_DOMAIN, HTTPS secure cookies, and durable shared database/session/cache storage. Separate unrelated Cloud application domains do not satisfy the cookie-domain requirement. Configure custom domains before using this flow; no provisioning or deployment is performed here.
 
 ## Verify
 
@@ -80,8 +92,8 @@ Set the commands explicitly. The backend has no npm build. The frontend build ne
    APP_URL=https://your-backend-domain
    FRONTEND_URLS=https://your-frontend-domain
    LOG_CHANNEL=stderr
-   SESSION_DRIVER=array
-   CACHE_STORE=array
+   SESSION_DRIVER=database
+   CACHE_STORE=database
    QUEUE_CONNECTION=sync
    ```
 
@@ -90,7 +102,7 @@ Set the commands explicitly. The backend has no npm build. The frontend build ne
 4. Deploy and open the frontend. Confirm the connection card succeeds; refresh a nested URL such as `/projects/example` to check SPA fallback. Missing asset URLs must return 404. Confirm `/api/health` returns JSON from the backend and permits only the configured frontend origins in browsers.
 5. When adding custom domains, update `APP_URL`, `FRONTEND_URLS`, and `VITE_API_BASE_URL` as appropriate, then redeploy both apps so cached configuration and frontend build values update.
 
-No database resource or migrations are needed for the health-only Cloud deployment. **Do not use local SQLite for production data:** the application filesystem is ephemeral. Before adding persistent features, select and attach managed Postgres or MySQL, accept its injected connection variables, and add `php artisan migrate --force` to the backend deploy commands. Choose persistent session/cache/queue services when those features are introduced. Cloud application provisioning and deployments incur their configured infrastructure costs and are separate from this local setup.
+A health-only deployment can explicitly use array session/cache stores without a database. Account endpoints require managed PostgreSQL, its injected connection variables, and `php artisan migrate --force` in backend deploy commands. Keep database session/cache storage durable and shared across backend instances. **Do not use local SQLite for production data:** the application filesystem is ephemeral. Configure the matching SPA/API custom domains, `SANCTUM_STATEFUL_DOMAINS`, shared `SESSION_DOMAIN`, and `SESSION_SECURE_COOKIE=true` before enabling browser authentication. This application does not issue bearer tokens as an alternative to that domain configuration. Cloud application provisioning and deployments incur their configured infrastructure costs and are separate from this local setup.
 
 Official guidance: [monorepos](https://laravel.com/cloud/docs/monorepos), [Node.js deployment](https://laravel.com/cloud/docs/deploy-guides/nodejs), [runtimes](https://laravel.com/cloud/docs/runtimes), [Laravel deployment](https://laravel.com/cloud/deploy-a-laravel-app).
 
