@@ -46,6 +46,21 @@ Use SESSION_DRIVER=database and CACHE_STORE=database, and run pending migrations
 
 Production SPA sessions require frontend and API under the same parent domain, shared parent SESSION_DOMAIN, HTTPS secure cookies, and durable shared database/session/cache storage. Separate unrelated Cloud application domains do not satisfy the cookie-domain requirement. Configure custom domains before using this flow; no provisioning or deployment is performed here.
 
+### Shared catalog reads
+
+All catalog reads require a signed-in Sanctum session and `Accept: application/json`. They use the existing `/api/v1` prefix. These GET requests do not mutate data or require CSRF initialization. Success is JSON:API; guests receive 401 and invalid queries receive Laravel JSON validation errors with status 422.
+
+- `GET /api/v1/events`: `filter[q]` matches title or lineup Artist name. Optional `filter[venue_uuid]`, `filter[year]`, `filter[month]`, `filter[day]`, or the complete `filter[provider]`, `filter[resource_type]`, `filter[provider_resource_id]` tuple narrow results. Venue and ordered lineup are included by default; `include=tourLinks.tour` adds Tours, and `include=tourLinks.tour.artistLinks.artist` adds their participating Artists.
+- `GET /api/v1/events/{event}`: a Spectacles Event UUID returns the same shared facts. Numeric IDs, malformed UUIDs, and missing Events return 404.
+- `GET /api/v1/artists`: `filter[q]` searches name/disambiguation; optional exact `filter[type]` and a complete provider tuple identify existing Artists.
+- `GET /api/v1/venues`: `filter[q]` searches name; optional `filter[city]` and two-letter `filter[country_code]` narrow location. Address parts, decimal-string coordinates, and timezone remain nullable.
+- `GET /api/v1/songs`: `filter[q]` searches title and `filter[disambiguation]` searches composition context. The schema has no composer/Artist association, and this route does not infer credits from private setlists.
+- `GET /api/v1/tours`: `filter[q]` searches name and optional `filter[artist_uuid]` matches participating Artists, which are included by default.
+
+Collection queries accept `page` (1–100000) and `per_page` (1–100, default 20), sort by display name/title then UUID, and return native paginator links/meta. Supplied filters combine with AND. Empty text means a paginated browse; text is literal substring search with database LOWER case behavior, not fuzzy matching or accent removal. Month requires year and day requires year/month; date filters match stored components without guessing missing precision.
+
+Attendances, owners, members, companion relationships, and private setlists are excluded, including through nested includes. Unsupported query/include/filter keys and nonempty GET bodies are rejected. Provider tuples filter existing local references only; optional provider identity/playable output, provider calls, imports, and synchronization are outside this release. No create/update/delete catalog endpoints or frontend Tour control are included.
+
 ## Verify
 
 ```sh
