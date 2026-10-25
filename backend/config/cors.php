@@ -2,7 +2,7 @@
 
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
-    'allowed_methods' => ['GET', 'POST', 'PATCH', 'OPTIONS'],
+    'allowed_methods' => ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     'allowed_origins' => array_values(array_filter(array_map(
         'trim',
         explode(',', env('FRONTEND_URLS', 'http://localhost:5173,http://localhost:3000')),

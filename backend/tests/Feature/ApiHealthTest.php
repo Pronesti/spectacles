@@ -45,7 +45,7 @@ class ApiHealthTest extends TestCase
         ])->options('/api/health')
             ->assertNoContent()
             ->assertHeader('Access-Control-Allow-Origin', 'https://app.example.com')
-            ->assertHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+            ->assertHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     }
 
     public function test_unknown_api_routes_return_json(): void

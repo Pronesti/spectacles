@@ -30,7 +30,7 @@ class DomainMigrationTest extends TestCase
                 'name' => 'Retained', 'email' => 'retained@example.com',
                 'password' => 'retained', 'external_id' => (string) Str::uuid7(),
             ]);
-            Artisan::call('migrate:rollback', ['--database' => 'domain_cycle', '--step' => 6, '--force' => true, '--no-interaction' => true]);
+            Artisan::call('migrate:rollback', ['--database' => 'domain_cycle', '--step' => 7, '--force' => true, '--no-interaction' => true]);
             $this->assertFalse(Schema::hasTable('attendances'));
             $this->assertFalse(Schema::hasTable('event_provider_references'));
             $this->assertFalse(Schema::hasColumn('users', 'external_id'));
