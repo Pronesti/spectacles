@@ -14,6 +14,8 @@ Registration and sign-in use the Laravel Sanctum cookie session. The app checks 
 
 Your profile saves name, email, and preferred language to Laravel. Email changes apply immediately; use the new address on the next sign-in. The current supported preference is English or the application default. Photo uploads, avatar color, city, bio, verification, and password reset are outside this integration.
 
+For local sign-in prefill, set `DEV_LOGIN_EMAIL` and `DEV_LOGIN_PASSWORD` in the ignored `frontend/.env.local`, then restart Vite. Use an existing local account. The fields remain editable and require clicking Sign in; registration stays blank. These values are supplied only by the development server and excluded from production builds.
+
 Concerts and setlists are account-scoped database records. Signing out or switching accounts does not expose the previous account’s collection. Old preview/profile keys are ignored and left untouched.
 
 Set `VITE_API_BASE_URL` to the backend origin and run the Vite development server for HMR. Frontend and API must share a parent domain for cookie authentication. Local Yerd uses `https://spectacles.test` and `https://api.spectacles.test`; backend stateful domains, allowed frontend origins, session domain, secure cookies, and session storage must match. `GET /api/health` remains a separate public health indicator.

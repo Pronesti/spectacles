@@ -12,12 +12,16 @@ function PasswordField({ label, id, value, onChange, error, register }: { label:
     <button type="button" className="password-visibility" onClick={() => setVisible(current => !current)} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`} aria-pressed={visible}><Icon name={visible ? 'eyeOff' : 'eye'} size={19} /></button>
   </span>{error && <small className="field-error" id={`${id}-error`}>{error}</small>}</div>
 }
-export function AuthView({ mode, busy, notice = '', onSwitch, onExplore, onSubmit }: {
+type AuthViewProps = {
   mode: AuthMode; busy: boolean; notice?: string; onSwitch: (mode: AuthMode) => void; onExplore: () => void; onSubmit: (mode: AuthMode, input: Credentials) => Promise<void>
-}) {
+}
+export function AuthView(props: AuthViewProps) {
+  return <AuthForm key={props.mode} {...props} />
+}
+function AuthForm({ mode, busy, notice = '', onSwitch, onExplore, onSubmit }: AuthViewProps) {
   const register = mode === 'register'
-  const [name, setName] = useState(''), [email, setEmail] = useState('')
-  const [password, setPassword] = useState(''), [confirmation, setConfirmation] = useState('')
+  const [name, setName] = useState(''), [email, setEmail] = useState(() => !register && import.meta.env.DEV ? import.meta.env.DEV_LOGIN_EMAIL || '' : '')
+  const [password, setPassword] = useState(() => !register && import.meta.env.DEV ? import.meta.env.DEV_LOGIN_PASSWORD || '' : ''), [confirmation, setConfirmation] = useState('')
   const [errors, setErrors] = useState<AccountErrors>({}), [message, setMessage] = useState('')
   const locked = useRef(false)
   const resetError = () => { setErrors({}); setMessage('') }

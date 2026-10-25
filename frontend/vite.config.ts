@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode, isPreview }) => {
   const env = loadEnv(mode, process.cwd(), ['VITE_', 'DEV_'])
   if (command === 'build' && !env.VITE_API_BASE_URL) {
     throw new Error('Set VITE_API_BASE_URL to the Laravel backend URL before building.')
@@ -13,6 +13,10 @@ export default defineConfig(({ command, mode }) => {
   const devServerUrl = env.DEV_SERVER_URL ? new URL(env.DEV_SERVER_URL) : undefined
   return {
     plugins: [react()],
+    define: {
+      'import.meta.env.DEV_LOGIN_EMAIL': JSON.stringify(command === 'serve' && !isPreview ? env.DEV_LOGIN_EMAIL || '' : ''),
+      'import.meta.env.DEV_LOGIN_PASSWORD': JSON.stringify(command === 'serve' && !isPreview ? env.DEV_LOGIN_PASSWORD || '' : ''),
+    },
     server: {
       host: '127.0.0.1',
       port: 5173,
