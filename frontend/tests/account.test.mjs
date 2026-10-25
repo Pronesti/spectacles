@@ -30,11 +30,11 @@ test('real credential forms retain labels and distinguish login from registratio
   assert.doesNotMatch(login + register, /sample password|Create preview profile|never sent|does not create a real account/)
   assert.match(render(AuthView, { ...props, mode: 'register', busy: true }), /<fieldset[^>]*disabled/)
 })
-test('profile exposes supported fields and labels browser demo statistics', () => {
+test('profile exposes supported fields and account collection statistics', () => {
   const html = render(ProfileView, { user, counts: { concerts: 24, artists: 12, venues: 8 }, busy: false, onSave: async () => {}, onCancel: noop })
   for (const id of ['profile-name', 'profile-email', 'profile-locale']) assert.ok(html.includes(`id="${id}"`))
   assert.match(html, /elodie@example.com/)
-  assert.match(html, /Demo concerts/)
+  assert.match(html, /Concerts/)
   assert.doesNotMatch(html, /profile-city|profile-bio|type="file"|Change photo|Avatar color/)
   assert.match(render(Avatar, { name: user.name }), /É/)
 })

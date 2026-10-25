@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AccountApiError, accountErrorMessage } from './accountApi'
 import type { AccountClient, AccountUser, Credentials, ProfilePatch } from './accountApi'
 
@@ -45,8 +45,14 @@ export function useAccount(client: AccountClient) {
       if (current === generation.current) setBusy(false)
     }
   }
+  const expireSession = useCallback((): boolean => {
+    if (busyRef.current) return false
+    ++generation.current; startup.current?.abort()
+    setSnapshot({ status: 'guest', user: null, error: 'Your session expired. Sign in again.' })
+    return true
+  }, [])
   return {
-    ...snapshot, busy,
+    ...snapshot, busy, expireSession,
     refresh() {
       if (busyRef.current) return
       ++generation.current; startup.current?.abort()

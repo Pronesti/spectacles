@@ -42,7 +42,7 @@ export function AuthView({ mode, busy, notice = '', onSwitch, onExplore, onSubmi
   }
   return <main className={`auth-layout ${register ? 'registration' : ''}`} id="auth-content">
     <section className="auth-side"><header className="auth-header">
-      <button disabled={busy} className="brand" onClick={onExplore} aria-label="Spectacles demo dashboard"><Soundmark /><span>Spectacles<span className="brand-period">.</span></span></button>
+      <button disabled={busy} className="brand" onClick={onExplore} aria-label="Spectacles"><Soundmark /><span>Spectacles<span className="brand-period">.</span></span></button>
       <div className="auth-switch"><span>{register ? 'Already collecting memories?' : 'New here?'}</span><button disabled={busy} onClick={() => onSwitch(register ? 'login' : 'register')}>{register ? 'Sign in' : 'Create an account'}<Icon name="arrow" size={16} /></button></div>
     </header><div className="auth-form-wrap"><p className="eyebrow">{register ? 'START YOUR COLLECTION' : 'YOUR PERSONAL ENCORE'}</p>
       <h1>{register ? <>Make it your own<span className="lime-dot">.</span></> : 'Welcome back.'}</h1><p className="auth-subtitle">{register ? 'Keep the dates, the places, the songs.' : 'Your next great memory is waiting.'}</p>
@@ -57,8 +57,8 @@ export function AuthView({ mode, busy, notice = '', onSwitch, onExplore, onSubmi
           <button className="button primary auth-submit" type="submit">{busy ? 'Please wait…' : register ? 'Create account' : 'Sign in'}<Icon name="arrow" size={20} /></button>
         </fieldset>
       </form>
-      <div className="auth-divider"><span>or take a look around</span></div><button disabled={busy} className="button secondary auth-explore" onClick={onExplore}>Explore the demo<Icon name="arrow" size={19} /></button>
-      <p className="auth-preview-note">Your account profile is saved online. Concerts remain a browser-local demo shared across sign-ins.</p>
+
+      <p className="auth-preview-note">Your concerts, notes, flags, and setlists are saved to your account.</p>
     </div><footer className="auth-footer">A personal archive of being there.</footer></section>
     <aside className="auth-photo"><img src={stagePhoto} alt="A live band and crowd beneath lime stage lights" /><div className="auth-photo-shade" /><div className="auth-photo-copy"><span className="auth-photo-label"><i />FOR THE LOVE OF LIVE MUSIC</span><h2>{register ? <>Every night<br />has a story<span>.</span></> : <>Be there.<br />Keep it forever.</>}</h2><p>{register ? 'Start keeping yours.' : 'The shows end. The stories stay.'}</p></div></aside>
   </main>

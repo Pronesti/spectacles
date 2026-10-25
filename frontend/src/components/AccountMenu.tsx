@@ -34,16 +34,16 @@ export function AccountMenu({ user, busy, onProfile, onAuth, onSignOut }: {
     items[next]?.focus()
   }
   const choose = (action: () => void) => { setOpen(false); action() }
-  const name = user?.name ?? 'Demo'
+  const name = user?.name ?? 'Guest'
   return <div className="account-menu" ref={root} onKeyDown={handleKeys}>
     <button ref={trigger} disabled={busy} className={`account-trigger ${open ? 'is-open' : ''}`} aria-label={`Account menu for ${name}`} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? 'account-menu-panel' : undefined} onClick={() => { firstItem.current = 'first'; setOpen(value => !value) }}><Avatar name={name} /></button>
-    {open && <div className="account-menu-panel" id="account-menu-panel"><div className="account-menu-identity"><Avatar name={name} /><div><strong>{name}</strong>{user && <span>{user.email}</span>}<small>{user ? 'Signed in' : 'Exploring the demo'}</small></div></div>
+    {open && <div className="account-menu-panel" id="account-menu-panel"><div className="account-menu-identity"><Avatar name={name} /><div><strong>{name}</strong>{user && <span>{user.email}</span>}<small>{user ? 'Signed in' : 'Session expired'}</small></div></div>
       <div className="account-menu-items" role="menu" aria-label="Account">{user ? <>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(onProfile)}><Icon name="user" size={20} /><span>Your profile</span><Icon name="arrow" size={17} /></button>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(onSignOut)}><Icon name="logout" size={20} /><span>Sign out</span></button>
       </> : <>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(() => onAuth('login'))}><Icon name="user" size={20} /><span>Sign in</span></button>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(() => onAuth('register'))}><Icon name="plus" size={20} /><span>Create account</span></button>
-      </>}</div><p>Demo concerts stay in this browser, shared across sign-ins.</p></div>}
+      </>}</div><p>Concerts and setlists are saved to your account.</p></div>}
   </div>
 }

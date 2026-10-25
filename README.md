@@ -82,6 +82,10 @@ launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.spectacles.
 
 To permanently disable automatic startup, boot it out and remove its plist from `~/Library/LaunchAgents/`. While the agent is active, do not start a second Vite process on port 5173.
 
+## Database-backed collection
+
+All collection screens now use the signed-in account's database records via `GET /api/v1/collection`. Concert and setlist changes use authenticated, CSRF-protected `POST /api/v1/attendances`, `PATCH /api/v1/attendances/{uuid}`, and `DELETE /api/v1/attendances/{uuid}`. Deleted Attendances are archived to preserve Undo. Run pending migrations before using the new endpoints. New accounts start empty; existing browser preview records remain untouched and are not imported. See frontend/README.md for details.
+
 ## Account API
 
 The backend supports Sanctum cookie/session authentication at `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/logout`, and GET/PATCH `/api/v1/me`. The React account screens use these endpoints for session restoration, registration, login, supported profile changes, and logout.
@@ -107,7 +111,7 @@ All catalog reads require a signed-in Sanctum session and `Accept: application/j
 
 Collection queries accept `page` (1–100000) and `per_page` (1–100, default 20), sort by display name/title then UUID, and return native paginator links/meta. Supplied filters combine with AND. Empty text means a paginated browse; text is literal substring search with database LOWER case behavior, not fuzzy matching or accent removal. Month requires year and day requires year/month; date filters match stored components without guessing missing precision.
 
-Attendances, owners, members, companion relationships, and private setlists are excluded, including through nested includes. Unsupported query/include/filter keys and nonempty GET bodies are rejected. Provider tuples filter existing local references only; optional provider identity/playable output, provider calls, imports, and synchronization are outside this release. No create/update/delete catalog endpoints or frontend Tour control are included.
+Attendances, owners, members, companion relationships, and private setlists are excluded, including through nested includes. Unsupported query/include/filter keys and nonempty GET bodies are rejected. Provider tuples filter existing local references only; optional provider identity/playable output, provider calls, imports, and synchronization are outside this release. The frontend offers catalog selection into account-backed concerts; collection reads and Attendance writes are documented in frontend/README.md. No external provider calls are connected.
 
 ## Verify
 
@@ -177,4 +181,4 @@ Use `main` as the default branch. Start feature branches from `main`; open relea
 
 The React account screens use the five Sanctum routes documented above. Session restoration, registration, login, name/email/language changes, and logout use cookie authentication. The frontend does not store account credentials or identity in browser storage. Frontend and API must share a parent domain, with credentialed CORS and Sanctum/session settings matching the frontend origin.
 
-The concert workspace remains a browser-local demo, shared across sign-ins; account authentication does not add server concert persistence. See [frontend account behavior](frontend/README.md#account-authentication) and the [frontend integration plan](docs/superpowers/plans/2026-10-23-sanctum-frontend-integration.md).
+The concert workspace is now account-scoped and database-backed; dashboard, concerts, calendar, map and setlists use the collection API. See [frontend account behavior](frontend/README.md#account-authentication) and the [frontend integration plan](docs/superpowers/plans/2026-10-23-sanctum-frontend-integration.md).

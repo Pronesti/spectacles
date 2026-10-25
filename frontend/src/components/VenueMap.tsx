@@ -19,7 +19,7 @@ export function VenueMap({ workspace, onViewConcerts }: { workspace: Workspace; 
   const located = cityVenues.filter(v => v.lat !== null && v.lng !== null)
   const isBuenosAires = currentCity === 'Buenos Aires'
   const count = (id: string) => workspace.concerts.filter(c => c.venueId === id).length
-  // Demo coordinates are approximate. Off-city venues stay listed without fabricated pins.
+  // The background is an illustration. Off-city venues stay listed without fabricated pins.
   const mapped = isBuenosAires ? located.filter(v => v.lat! >= -34.66 && v.lat! <= -34.51 && v.lng! >= -58.49 && v.lng! <= -58.32) : []
   const selectedPoint = selected && mapped.some(v => v.id === selected.id) ? project(selected) : [400, 300]
   const centerX = Math.min(560, Math.max(240, selectedPoint[0])), centerY = Math.min(430, Math.max(250, selectedPoint[1]))
@@ -41,6 +41,6 @@ export function VenueMap({ workspace, onViewConcerts }: { workspace: Workspace; 
       {!isBuenosAires && <div className="map-no-location"><Icon name="globe" size={32} /><h3>Another city, another stage.</h3><p>This concept includes an illustrative Buenos Aires map. Your venues are listed alongside it.</p></div>}
       <div className="map-zoom"><button aria-label="Zoom in" disabled={zoom >= 1.75} onClick={() => setZoom(v => Math.min(1.75, v + .25))}><Icon name="plus" /></button><button aria-label="Zoom out" disabled={zoom <= 1} onClick={() => setZoom(v => Math.max(1, v - .25))}><Icon name="minus" /></button></div>
       {selected && <div className="map-venue-detail"><span className="venue-symbol"><Icon name="music" size={28} /></span><div><h3>{selected.name}</h3><p>{selected.neighborhood ? `${selected.neighborhood}, ` : ''}{selected.city || 'City to confirm'}</p><small>{count(selected.id)} concerts in your collection{!mapped.some(v => v.id === selected.id) && ' · No map pin'}</small></div><button className="button primary small" onClick={() => onViewConcerts(selected)}>View concerts<Icon name="arrow" size={17} /></button></div>}
-      <div className="map-caption">Illustrative city map · Approximate sample locations</div>
+      <div className="map-caption">Illustrative city map · Saved Venue locations</div>
     </section><aside className="venue-directory" aria-label="Unique venues">{cityVenues.length ? cityVenues.map((venue, i) => <button className={`venue-item ${selected?.id === venue.id ? 'selected' : ''}`} key={venue.id} onClick={() => setSelectedId(venue.id)} aria-pressed={selected?.id === venue.id}><span className={`venue-art venue-art-${i % 4}`}><Icon name={i % 2 ? 'ticket' : 'music'} size={25} /></span><span><strong>{venue.name}</strong><small><Icon name="pin" size={13} />{count(venue.id)} concerts{!mapped.some(v => v.id === venue.id) ? ' · Unmapped' : ''}</small></span><Icon name="right" size={18} /></button>) : <div className="empty-state"><p>Add a concert with a venue to put a pin on your map.</p></div>}</aside></div></>
 }

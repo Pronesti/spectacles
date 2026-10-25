@@ -20,9 +20,9 @@ export function ConcertList({ concerts, venues, today, onOpen, onEdit, onTicket,
         <DateBlock concert={concert} today={today} />
         <button className="concert-identity" onClick={() => onOpen(concert)}>
           <span className={`concert-thumb tone-${i % 4}`} aria-hidden="true"><Icon name={i % 3 === 0 ? 'music' : 'ticket'} size={24} /></span>
-          <span><strong>{concert.title}</strong><small>{compact ? venue?.name ?? 'Venue to confirm' : concert.artists.join(' · ')}</small>{compact && <small>{venue?.city ?? 'Location to confirm'}</small>}</span>
+          <span><strong>{concert.title}</strong><small>{compact ? venue?.name ?? 'Venue to confirm' : concert.artists.join(' · ') || 'Lineup to confirm'}</small>{compact && <small>{venue?.city || 'Location to confirm'}</small>}</span>
         </button>
-        {!compact && <span className="concert-venue">{venue?.name ?? 'Venue to confirm'}<small>{venue?.city ?? 'Location to confirm'}</small>{!dateKey(concert.date) && <small>Date to confirm</small>}</span>}
+        {!compact && <span className="concert-venue">{venue?.name ?? 'Venue to confirm'}<small>{venue?.city || 'Location to confirm'}</small>{!dateKey(concert.date) && <small>Date to confirm</small>}</span>}
         {!compact && <label className="ticket-toggle" title="Tickets bought"><input type="checkbox" aria-label={`Tickets bought for ${concert.title} on ${formatDate(concert.date)}`} checked={concert.ticketsBought} onChange={() => onTicket?.(concert)} /><Icon name="ticket" size={18} /></label>}
         <div className="row-actions">{onEdit && <button className="icon-button" aria-label={`Edit ${concert.title} on ${formatDate(concert.date)}`} onClick={() => onEdit(concert)}><Icon name="edit" size={18} /></button>}<button className="icon-button" aria-label={`View ${concert.title} on ${formatDate(concert.date)}`} onClick={() => onOpen(concert)}><Icon name="arrow" size={19} /></button></div>
       </article>

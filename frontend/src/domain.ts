@@ -2,11 +2,13 @@ export const WORKSPACE_KEY = 'spectacles.preview.v1'
 export const TIMEZONE = 'America/Argentina/Buenos_Aires'
 
 export type EventDate = { year: number | null; month: number | null; day: number | null }
-export type Venue = { id: string; name: string; city: string; neighborhood: string; lat: number | null; lng: number | null }
-export type SetlistEntry = { id: string; type: 'song' | 'note'; title: string; artist: string; tape: boolean }
+export type CatalogChoice = { name: string; catalogId: string | null }
+export type Venue = { id: string; name: string; city: string; neighborhood: string; lat: number | null; lng: number | null; catalogId?: string; timezone?: string | null }
+export type SetlistEntry = { id: string; type: 'song' | 'note'; title: string; artist: string; tape: boolean; songCatalogId?: string; artistCatalogId?: string }
 export type Concert = {
   id: string; title: string; artists: string[]; venueId: string | null; date: EventDate;
-  time: string; timezone: string; interested: boolean; ticketsBought: boolean; notes: string; setlist: SetlistEntry[];
+  eventType?: string; catalog?: { eventId?: string; artistIds: (string | null)[]; tours: CatalogChoice[] };
+  time: string; timezone: string | null; interested: boolean; ticketsBought: boolean; notes: string; setlist: SetlistEntry[];
 }
 export type Workspace = { version: 1; concerts: Concert[]; venues: Venue[] }
 export type DateRelation = 'past' | 'upcoming' | 'today' | 'unconfirmed'
@@ -91,9 +93,16 @@ export function moveEntry(entries: SetlistEntry[], id: string, offset: -1 | 1): 
   return next
 }
 
+export const publicUuid = (value: unknown): value is string => typeof value === 'string' && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value)
 const record = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value)
 const text = (value: unknown): value is string => typeof value === 'string'
 const nullableNumber = (value: unknown): value is number | null => value === null || typeof value === 'number' && Number.isFinite(value)
+
+function validCatalogRefs(value: unknown, count: number): boolean {
+  if (value === undefined) return true
+  if (!record(value) || value.eventId !== undefined && !publicUuid(value.eventId) || !Array.isArray(value.artistIds) || value.artistIds.length !== count || !value.artistIds.every(id => id === null || publicUuid(id)) || !Array.isArray(value.tours)) return false
+  return value.tours.every(tour => record(tour) && text(tour.name) && tour.name.trim() && (tour.catalogId === null || publicUuid(tour.catalogId)))
+}
 
 // Saved demo data is an external input too. Never replace an unreadable saved collection silently.
 export function decodeWorkspace(raw: string): Workspace | null {
@@ -104,17 +113,22 @@ export function decodeWorkspace(raw: string): Workspace | null {
     for (const venue of data.venues) {
       if (!record(venue) || !text(venue.id) || !venue.id || venueIds.has(venue.id) || !text(venue.name) || !venue.name.trim() || !text(venue.city) || !text(venue.neighborhood) || !nullableNumber(venue.lat) || !nullableNumber(venue.lng)) return null
       if ((venue.lat === null) !== (venue.lng === null) || venue.lat !== null && (Math.abs(venue.lat) > 90 || Math.abs(venue.lng!) > 180)) return null
+      if (venue.catalogId !== undefined && !publicUuid(venue.catalogId)) return null
+      if (venue.timezone !== undefined && venue.timezone !== null) { if (!text(venue.timezone)) return null; try { new Intl.DateTimeFormat('en', { timeZone: venue.timezone }) } catch { return null } }
       venueIds.add(venue.id)
     }
     for (const concert of data.concerts) {
-      if (!record(concert) || !text(concert.id) || !concert.id || concertIds.has(concert.id) || !text(concert.title) || !concert.title.trim() || !Array.isArray(concert.artists) || !concert.artists.length || !concert.artists.every(a => text(a) && a.trim()) || !record(concert.date)) return null
+      if (!record(concert) || !text(concert.id) || !concert.id || concertIds.has(concert.id) || !text(concert.title) || !concert.title.trim() || !Array.isArray(concert.artists) || !concert.artists.every(a => text(a) && a.trim()) || !record(concert.date)) return null
       if (![concert.date.year, concert.date.month, concert.date.day].every(nullableNumber) || !validDate(concert.date as EventDate)) return null
       if (concert.venueId !== null && (!text(concert.venueId) || !venueIds.has(concert.venueId))) return null
-      if (!text(concert.time) || concert.time !== '' && !/^([01]\d|2[0-3]):[0-5]\d$/.test(concert.time) || !text(concert.timezone) || !text(concert.notes) || typeof concert.interested !== 'boolean' || typeof concert.ticketsBought !== 'boolean' || !Array.isArray(concert.setlist)) return null
-      try { new Intl.DateTimeFormat('en', { timeZone: concert.timezone }) } catch { return null }
+      if (!text(concert.time) || concert.time !== '' && !/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(concert.time) || concert.timezone !== null && !text(concert.timezone) || !text(concert.notes) || typeof concert.interested !== 'boolean' || typeof concert.ticketsBought !== 'boolean' || !Array.isArray(concert.setlist)) return null
+      if (concert.timezone !== null) { try { new Intl.DateTimeFormat('en', { timeZone: concert.timezone }) } catch { return null } }
+      if (!validCatalogRefs(concert.catalog, concert.artists.length) || concert.eventType !== undefined && (!text(concert.eventType) || !concert.eventType.trim())) return null
       const entryIds = new Set<string>()
       for (const entry of concert.setlist) {
         if (!record(entry) || !text(entry.id) || !entry.id || entryIds.has(entry.id) || !['song', 'note'].includes(String(entry.type)) || !text(entry.title) || !entry.title.trim() || !text(entry.artist) || typeof entry.tape !== 'boolean') return null
+        if (entry.songCatalogId !== undefined && (entry.type !== 'song' || !publicUuid(entry.songCatalogId))) return null
+        if (entry.artistCatalogId !== undefined && (entry.type !== 'song' || !publicUuid(entry.artistCatalogId))) return null
         entryIds.add(entry.id)
       }
       concertIds.add(concert.id)

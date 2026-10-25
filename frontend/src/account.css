@@ -290,3 +290,9 @@
 .account-gate h1 { font-size: clamp(32px, 7vw, 52px); }
 .account-gate > p { max-width: 40ch; line-height: 1.7; }
 .account-gate > div { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* Keep reauthentication inside the existing dialog while retaining the editor beneath it. */
+.dialog .auth-layout { display: block; min-height: 0; }
+.dialog .auth-photo, .dialog .auth-header, .dialog .auth-footer { display: none; }
+.dialog .auth-side { min-height: 0; padding: 24px; }
+.dialog .auth-form-wrap { width: 100%; max-width: none; margin: 0; padding: 0; }

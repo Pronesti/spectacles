@@ -1,48 +1,41 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { dateKey, TIMEZONE, validDate } from '../domain'
-import type { Concert, EventDate, Venue } from '../domain'
+import type { Concert, Venue } from '../domain'
+import { adoptCatalogEvent, adoptCatalogVenue, createConcertDraft, finishConcertDraft } from '../concertDraft'
+import type { ConcertDraft, Precision } from '../concertDraft'
 import { Dialog } from './Dialog'
 import { Icon } from './Icon'
-
-type Precision = 'exact' | 'month' | 'year' | 'unknown'
-
-export function ConcertForm({ concert, venues, initialDate, onClose, onSave }: { concert?: Concert; venues: Venue[]; initialDate?: string; onClose: () => void; onSave: (concert: Concert, venue?: Venue) => void }) {
-  const original = concert?.date
-  const [artists, setArtists] = useState(concert?.artists.join(', ') ?? '')
-  const [title, setTitle] = useState(concert?.title ?? '')
-  const [venueId, setVenueId] = useState(concert?.venueId ?? '')
-  const [venueName, setVenueName] = useState('')
-  const [city, setCity] = useState('Buenos Aires')
-  const [lat, setLat] = useState(''), [lng, setLng] = useState('')
-  const [precision, setPrecision] = useState<Precision>(original ? original.day !== null ? 'exact' : original.month !== null ? 'month' : original.year !== null ? 'year' : 'unknown' : 'exact')
-  const [date, setDate] = useState(original ? dateKey(original) ?? `${original.year ?? ''}-${String(original.month ?? 1).padStart(2, '0')}-01` : initialDate ?? '')
-  const [time, setTime] = useState(concert?.time ?? '')
-  const [interested, setInterested] = useState(concert?.interested ?? true)
-  const [tickets, setTickets] = useState(concert?.ticketsBought ?? false)
-  const [notes, setNotes] = useState(concert?.notes ?? '')
+import { CatalogPicker } from './CatalogPicker'
+import type { CatalogAccess } from './CatalogPicker'
+import { CatalogChoices } from './CatalogChoices'
+import { EventCatalogPicker } from './EventCatalogPicker'
+export function ConcertForm({ concert, venues, initialDate, catalog, disabled = false, busy = false, onSignIn, onClose, onSave }: { concert?: Concert; venues: Venue[]; initialDate?: string; catalog: CatalogAccess; disabled?: boolean; busy?: boolean; onSignIn?: () => void; onClose: () => void; onSave: (concert: Concert, venue?: Venue) => void | Promise<void> }) {
+  const [draft, setDraft] = useState(() => createConcertDraft(concert, initialDate))
   const [error, setError] = useState('')
-  const handleSubmit = (event: FormEvent) => {
+  const shared = (patch: Partial<ConcertDraft>) => setDraft(current => ({ ...current, ...patch, eventId: undefined }))
+  const field = <K extends keyof Concert,>(key: K, value: Concert[K], detach = true) => setDraft(current => ({ ...current, concert: { ...current.concert, [key]: value }, eventId: detach ? undefined : current.eventId }))
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const artistNames = artists.split(',').map(a => a.trim()).filter(Boolean)
-    if (!artistNames.length) return setError('Add at least one artist.')
-    const parts = date.split('-').map(Number)
-    const eventDate: EventDate = { year: precision === 'unknown' ? null : parts[0], month: precision === 'exact' || precision === 'month' ? parts[1] : null, day: precision === 'exact' ? parts[2] : null }
-    if (!validDate(eventDate)) return setError('Enter a valid date at the selected precision.')
-    if (venueId === 'new' && !venueName.trim()) return setError('Enter the venue name.')
-    if ((lat === '') !== (lng === '') || lat !== '' && (!Number.isFinite(Number(lat)) || !Number.isFinite(Number(lng)) || Math.abs(Number(lat)) > 90 || Math.abs(Number(lng)) > 180)) return setError('Supply both valid latitude and longitude, or leave both empty.')
-    const venue: Venue | undefined = venueId === 'new' ? { id: crypto.randomUUID(), name: venueName.trim(), city: city.trim(), neighborhood: '', lat: lat === '' ? null : Number(lat), lng: lng === '' ? null : Number(lng) } : undefined
-    onSave({ id: concert?.id ?? crypto.randomUUID(), title: title.trim() || artistNames.join(' & '), artists: artistNames, venueId: venue?.id ?? (venueId || null), date: eventDate, time, timezone: concert?.timezone ?? TIMEZONE, interested, ticketsBought: tickets, notes: notes.trim(), setlist: concert?.setlist ?? [] }, venue)
+    if (disabled || busy) return
+    try { const result = finishConcertDraft(draft); await onSave(result.concert, result.venue) }
+    catch (failure) { setError(failure instanceof Error ? failure.message : 'Check the draft fields.') }
   }
-  return <Dialog title={concert ? 'Edit concert' : 'Add a concert'} onClose={onClose} drawer><form onSubmit={handleSubmit} className="concert-form"><div className="form-body"><p className="muted">A night worth making room for.</p>
-    <label>Artists<input autoFocus data-autofocus required maxLength={300} value={artists} onChange={e => setArtists(e.target.value)} placeholder="e.g. Arctic Monkeys" /><small>Separate multiple artists with commas.</small></label>
-    <label>Concert title <span className="optional">optional</span><input maxLength={200} value={title} onChange={e => setTitle(e.target.value)} placeholder="Uses the artist name by default" /></label>
-    <label>Venue<select value={venueId} onChange={e => { setVenueId(e.target.value); setLat(''); setLng('') }}><option value="">Venue to confirm</option>{venues.map(v => <option key={v.id} value={v.id}>{v.name} · {v.city || 'City to confirm'}</option>)}<option value="new">+ Add a venue…</option></select></label>
-    {venueId === 'new' && <div className="new-venue-fields"><label>Venue name<input required maxLength={150} value={venueName} onChange={e => setVenueName(e.target.value)} /></label><label>City<input maxLength={100} value={city} onChange={e => setCity(e.target.value)} /></label><details><summary>Map location <span className="optional">optional</span></summary><p className="hint">Leave unknown coordinates empty. The venue will remain in your list without a map pin.</p><div className="form-columns"><label>Latitude<input type="number" step="any" min="-90" max="90" value={lat} onChange={e => setLat(e.target.value)} /></label><label>Longitude<input type="number" step="any" min="-180" max="180" value={lng} onChange={e => setLng(e.target.value)} /></label></div></details></div>}
-    <label>Date precision<select value={precision} onChange={e => { setPrecision(e.target.value as Precision); setError('') }}><option value="exact">Exact date</option><option value="month">Month only</option><option value="year">Year only</option><option value="unknown">Date to confirm</option></select></label>
-    <div className="form-columns">{precision !== 'unknown' && <label>{precision === 'exact' ? 'Date' : precision === 'month' ? 'Month' : 'Year'}<input required type={precision === 'exact' ? 'date' : precision === 'month' ? 'month' : 'number'} min={precision === 'year' ? '1' : precision === 'month' ? '0001-01' : '0001-01-01'} max={precision === 'year' ? '9999' : precision === 'month' ? '9999-12' : '9999-12-31'} value={precision === 'exact' ? date : precision === 'month' ? date.slice(0, 7) : date.slice(0, 4)} onChange={e => setDate(e.target.value)} /></label>}<label>Time <span className="optional">optional</span><input type="time" value={time} onChange={e => setTime(e.target.value)} /></label></div>
-    <div className="flag-fields"><label><input type="checkbox" checked={interested} onChange={e => setInterested(e.target.checked)} /><Icon name="heart" size={18} />Interested</label><label><input type="checkbox" checked={tickets} onChange={e => setTickets(e.target.checked)} /><Icon name="ticket" size={18} />Tickets bought</label></div>
-    <label>Notes <span className="optional">optional</span><textarea rows={3} maxLength={2000} value={notes} onChange={e => setNotes(e.target.value)} placeholder="The seats, the company, the things to remember…" /></label>
-    <p className="hint">Preview data · saved in this browser only.</p>{error && <p className="form-error" role="alert">{error}</p>}
-  </div><div className="form-footer"><button type="submit" className="button primary"><Icon name="plus" />Save concert</button><button type="button" className="button secondary" onClick={onClose}>Cancel</button></div></form></Dialog>
+  const pending = draft.pendingVenue
+  const stagedVenues = pending ? venues.some(venue => venue.id === pending.id) ? venues.map(venue => venue.id === pending.id ? pending : venue) : [...venues, pending] : venues
+  return <Dialog title={concert ? 'Edit concert' : 'Add a concert'} onClose={onClose} drawer><form onSubmit={submit} noValidate className="concert-form"><fieldset disabled={busy} style={{ display: 'contents' }}><div className="form-body"><p className="muted">Choose shared details or enter your own.</p>
+    <EventCatalogPicker catalog={catalog} onUse={event => setDraft(current => adoptCatalogEvent(current, event, venues))} />
+    {draft.eventId && <p className="hint">Using selected Event details.</p>}
+    <label>Concert title<input data-autofocus maxLength={255} value={draft.concert.title} onChange={event => field('title', event.target.value)} placeholder="Title, or use the artist names" /></label>
+    <CatalogChoices kind="artists" label="Artists" choices={draft.artists} onChange={artists => shared({ artists })} catalog={catalog} />
+    <CatalogPicker catalog={catalog} kind="venues" label="Search shared Venues" onPick={venue => setDraft(current => adoptCatalogVenue(current, venue, venues))} />
+    <label>Venue<select value={draft.concert.venueId ?? ''} onChange={event => { shared({ pendingVenue: undefined, lat: '', lng: '' }); field('venueId', event.target.value || null) }}><option value="">Venue to confirm</option>{stagedVenues.map(venue => <option key={venue.id} value={venue.id}>{venue.name} · {venue.city || 'City to confirm'}</option>)}<option value="new">+ Add a venue…</option></select></label>
+    {draft.concert.venueId === 'new' && <div className="new-venue-fields"><label>Venue name<input maxLength={150} value={draft.venueName} onChange={event => shared({ venueName: event.target.value })} /></label><label>City<input maxLength={100} value={draft.city} onChange={event => shared({ city: event.target.value })} /></label><details><summary>Map location <span className="optional">optional</span></summary><p className="hint">Leave unknown coordinates empty.</p><div className="form-columns"><label>Latitude<input type="number" step="any" min="-90" max="90" value={draft.lat} onChange={event => shared({ lat: event.target.value })} /></label><label>Longitude<input type="number" step="any" min="-180" max="180" value={draft.lng} onChange={event => shared({ lng: event.target.value })} /></label></div></details></div>}
+    <CatalogChoices kind="tours" label="Tours (optional)" choices={draft.tours} onChange={tours => shared({ tours })} catalog={catalog} />
+    <label>Date precision<select value={draft.precision} onChange={event => { const precision = event.target.value as Precision; setDraft(current => ({ ...current, precision, eventId: undefined, dateText: precision === 'year' ? current.dateText.slice(0, 4) : precision === 'month' && current.precision === 'exact' ? current.dateText.slice(0, 7) : precision === current.precision ? current.dateText : '' })); setError('') }}><option value="exact">Exact date</option><option value="month">Month only</option><option value="year">Year only</option><option value="unknown">Date to confirm</option></select></label>
+    <div className="form-columns">{draft.precision !== 'unknown' && <label>{draft.precision === 'exact' ? 'Date' : draft.precision === 'month' ? 'Month' : 'Year'}<input type={draft.precision === 'exact' ? 'date' : draft.precision === 'month' ? 'month' : 'number'} min={draft.precision === 'year' ? '1' : draft.precision === 'month' ? '0001-01' : '0001-01-01'} max={draft.precision === 'year' ? '9999' : draft.precision === 'month' ? '9999-12' : '9999-12-31'} value={draft.dateText} onChange={event => shared({ dateText: event.target.value })} /></label>}<label>Local time <span className="optional">optional</span><input type="time" step={1} value={draft.concert.time} onChange={event => field('time', event.target.value)} /></label></div>
+    <label>Timezone <span className="optional">optional</span><input value={draft.timezoneText} onChange={event => shared({ timezoneText: event.target.value })} placeholder="Unknown, or an IANA timezone" /><small>Leave unknown values empty. Shared Event timezones are kept as returned.</small></label>
+    <div className="flag-fields"><label><input type="checkbox" checked={draft.concert.interested} onChange={event => field('interested', event.target.checked, false)} /><Icon name="heart" size={18} />Interested</label><label><input type="checkbox" checked={draft.concert.ticketsBought} onChange={event => field('ticketsBought', event.target.checked, false)} /><Icon name="ticket" size={18} />Tickets bought</label></div>
+    <label>Notes <span className="optional">optional</span><textarea rows={3} maxLength={2000} value={draft.concert.notes} onChange={event => field('notes', event.target.value, false)} /></label>
+    <p className="hint">Saved to your account in the database. Catalog selections reuse existing records.</p>{error && <p className="form-error" role="alert">{error}</p>}
+  </div><div className="form-footer">{onSignIn && <button type="button" className="button secondary" onClick={onSignIn}>Sign in again</button>}<button type="submit" disabled={disabled} className="button primary"><Icon name="plus" />Save concert</button><button type="button" className="button secondary" onClick={onClose}>Cancel</button></div></fieldset></form></Dialog>
 }

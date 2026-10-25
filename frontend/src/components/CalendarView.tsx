@@ -14,7 +14,7 @@ export function CalendarView({ concerts, venues, today, onOpen, onAdd }: { conce
   const weeks = Math.ceil((length + offset) / 7)
   const groups = groupByDay(concerts)
   const monthly = sortConcerts(concerts.filter(c => dateKey(c.date)?.startsWith(month)))
-  const uncertain = concerts.filter(c => c.date.year === year && (c.date.month === monthNumber || c.date.month === null) && c.date.day === null)
+  const uncertain = concerts.filter(c => c.date.year === null || c.date.year === year && (c.date.month === monthNumber || c.date.month === null) && c.date.day === null)
   const changeMonth = (delta: number) => { const d = new Date(Date.UTC(year, monthNumber - 1 + delta, 1)); setMonth(d.toISOString().slice(0, 7)) }
   const title = start.toLocaleDateString('en', { month: 'long', year: 'numeric', timeZone: 'UTC' })
   return <div className="calendar-layout"><section className="calendar-main" aria-label="Concert calendar">
