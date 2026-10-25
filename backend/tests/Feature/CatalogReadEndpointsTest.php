@@ -35,6 +35,31 @@ class CatalogReadEndpointsTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
+    public function test_tour_union_scope_preserves_manual_artist_links_and_pending_provider_identity(): void
+    {
+        $a = Artist::factory()->create();
+        $b = Artist::factory()->create();
+        $unrelated = Artist::factory()->create();
+        $tours = [];
+        foreach ([$a, $b, $unrelated] as $artist) {
+            $tour = Tour::factory()->create(['name' => 'Same Tour']);
+            TourArtist::factory()->create(['artist_id' => $artist->id, 'tour_id' => $tour->id]);
+            $tours[] = $tour->external_id;
+        }
+        $mbid = '00000000-0000-4000-8000-000000000001';
+        ArtistProviderId::factory()->create(['artist_id' => $b->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
+        $this->read('tours', ['filter' => ['artist_uuids' => [$a->external_id], 'q' => 'Tour']])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tours[0]);
+        $union = $this->read('tours', ['filter' => ['artist_uuids' => [$a->external_id], 'artist_mbids' => [$mbid]]])->assertOk()->assertJsonCount(2, 'data');
+        $this->assertEqualsCanonicalizing(array_slice($tours, 0, 2), array_column($union->json('data'), 'id'));
+        $this->read('tours', ['filter' => ['artist_uuid' => $a->external_id]])->assertOk()->assertJsonCount(1, 'data');
+        $this->read('tours', ['filter' => ['artist_mbids' => [(string) Str::uuid()]]])->assertOk()->assertJsonCount(0, 'data');
+        $this->read('tours', ['filter' => ['artist_mbids' => ['bad']]])->assertUnprocessable();
+        $this->read('tours', ['filter' => ['artist_uuids' => array_fill(0, 60, $a->external_id), 'artist_mbids' => array_fill(0, 41, $mbid)]])->assertUnprocessable();
+        $this->assertDatabaseCount('tours', 3);
+        $this->assertDatabaseCount('tour_artists', 3);
+        Http::assertNothingSent();
+    }
+
     /** @return array<string, list<string>> */
     public static function catalogs(): array
     {

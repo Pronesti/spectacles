@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\MusicBrainzController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
@@ -18,6 +19,9 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/me', [ProfileController::class, 'show']);
         Route::patch('/me', [ProfileController::class, 'update']);
 
+        Route::get('/musicbrainz/artists', [MusicBrainzController::class, 'artists'])->middleware('throttle:musicbrainz');
+        Route::get('/musicbrainz/works', [MusicBrainzController::class, 'works'])->middleware('throttle:musicbrainz');
+        Route::get('/musicbrainz/tours', [MusicBrainzController::class, 'tours'])->middleware('throttle:musicbrainz');
         Route::get('/collection', [CollectionController::class, 'index']);
         Route::post('/attendances', [CollectionController::class, 'store']);
         Route::patch('/attendances/{attendance}', [CollectionController::class, 'update'])->whereUuid('attendance');

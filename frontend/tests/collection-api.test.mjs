@@ -45,3 +45,19 @@ test('cancelled collection reads cannot turn into account failures', async () =>
   const controller = new AbortController(); controller.abort()
   await assert.rejects(client.load(controller.signal), { name: 'AbortError' })
 })
+
+test('wizard pending metadata travels once beside the concert and is omitted for old callers', async () => {
+  const calls = [], pending = { artists: {}, songs: {}, lineup: {}, entries: {} }
+  const client = createCollectionClient('https://api.spectacles.test', async (url, init) => {
+    calls.push({url, init})
+    if (url.endsWith('/sanctum/csrf-cookie')) return new Response(null, {status:204})
+    return Response.json({data: { version:1, concerts:[], venues:[] }})
+  }, () => 'XSRF-TOKEN=token')
+  const concert = {id:'00000000-0000-4000-8000-000000000001'}
+  await client.save(concert, undefined, false, pending)
+  assert.deepEqual(JSON.parse(calls[1].init.body).pendingCatalog, pending)
+  assert.equal(JSON.parse(calls[1].init.body).concert.pendingCatalog, undefined)
+  await client.save(concert)
+  assert.equal(JSON.parse(calls[3].init.body).pendingCatalog, undefined)
+  assert.equal(calls.length, 4)
+})

@@ -65,7 +65,14 @@ class CatalogController extends Controller
         if ($request->catalog() === 'songs' && is_string($filter['disambiguation'] ?? null) && $filter['disambiguation'] !== '') {
             $this->text($query, ['songs.disambiguation'], $filter['disambiguation']);
         }
-        if ($request->catalog() === 'tours' && isset($filter['artist_uuid'])) {
+        if ($request->catalog() === 'tours' && (array_key_exists('artist_uuids', $filter) || array_key_exists('artist_mbids', $filter))) {
+            $query->whereHas('artistLinks.artist', function (Builder $artist) use ($filter): void {
+                $artist->where(function (Builder $scope) use ($filter): void {
+                    $scope->whereIn('external_id', array_map('strtolower', $filter['artist_uuids'] ?? []))
+                        ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map('strtolower', $filter['artist_mbids'] ?? [])));
+                });
+            });
+        } elseif ($request->catalog() === 'tours' && isset($filter['artist_uuid'])) {
             $query->whereHas('artistLinks.artist', fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
         }
         if (in_array($request->catalog(), ['events', 'artists'], true) && isset($filter['provider'])) {

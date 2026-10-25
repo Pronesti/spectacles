@@ -16,6 +16,7 @@ class SaveConcertRequest extends FormRequest
     public function rules(): array
     {
         return [
+            ...PendingCatalogRules::rules($this->exists('pendingCatalog')),
             'concert' => ['required', 'array:id,title,artists,venueId,date,time,timezone,interested,ticketsBought,notes,setlist,eventType,catalog'],
             'concert.id' => ['required', 'uuid'],
             'concert.title' => ['required', 'string', 'max:255'],
@@ -67,6 +68,7 @@ class SaveConcertRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 return;
             }
+            PendingCatalogRules::check($this->input('concert'), $this->input('pendingCatalog', []), $validator);
             $date = $this->input('concert.date', []);
             $year = $date['year'] ?? null;
             $month = $date['month'] ?? null;

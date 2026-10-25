@@ -68,7 +68,7 @@ class CatalogReadRequest extends FormRequest
             'artists' => ['q' => $text, 'type' => ['sometimes', 'required', 'string', 'max:255']],
             'venues' => ['q' => $text, 'city' => $text, 'country_code' => ['sometimes', 'required', 'string', 'regex:/^[A-Z]{2}$/']],
             'songs' => ['q' => $text, 'disambiguation' => $text],
-            'tours' => ['q' => $text, 'artist_uuid' => ['sometimes', 'required', 'uuid']],
+            'tours' => ['q' => $text, 'artist_uuid' => ['sometimes', 'required', 'uuid'], 'artist_uuids' => ['sometimes', 'array', 'max:100'], 'artist_mbids' => ['sometimes', 'array', 'max:100']],
         };
         if (in_array($this->catalog(), ['events', 'artists'], true)) {
             foreach (['provider', 'resource_type', 'provider_resource_id'] as $key) {
@@ -79,6 +79,10 @@ class CatalogReadRequest extends FormRequest
         $rules['filter'] = ['sometimes', 'array:'.implode(',', array_keys($filters))];
         foreach ($filters as $key => $validation) {
             $rules['filter.'.$key] = $validation;
+        }
+        if ($this->catalog() === 'tours') {
+            $rules['filter.artist_uuids.*'] = ['required', 'uuid'];
+            $rules['filter.artist_mbids.*'] = ['required', 'uuid'];
         }
         $rules['page'] = ['sometimes', 'required', 'integer', 'between:1,100000'];
         $rules['per_page'] = ['sometimes', 'required', 'integer', 'between:1,100'];
@@ -92,6 +96,9 @@ class CatalogReadRequest extends FormRequest
             $allowed = $this->routeIs('catalog.events.show') ? ['include'] : ['filter', 'include', 'page', 'per_page'];
             foreach (array_diff(array_keys($this->all()), $allowed) as $key) {
                 $validator->errors()->add($key, __('validation.prohibited', ['attribute' => $key]));
+            }
+            if ($this->catalog() === 'tours' && count((array) $this->input('filter.artist_uuids', [])) + count((array) $this->input('filter.artist_mbids', [])) > 100) {
+                $validator->errors()->add('filter.artist_uuids', 'Select at most 100 Artists.');
             }
             if ($validator->errors()->isNotEmpty() || $this->catalog() !== 'events') {
                 return;

@@ -1,3 +1,6 @@
+import { ConcertWizard } from './components/ConcertWizard'
+import { createMusicBrainzClient } from './musicbrainzApi'
+import type { PendingCatalog } from './concertWizard'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { daysUntil, filteredConcerts, formatDate, relation, sortConcerts, todayKey, uniqueVenues } from './domain'
 import type { Concert, Venue, Workspace } from './domain'
@@ -28,6 +31,7 @@ const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 const accountClient = createAccountClient(apiBaseUrl)
 const catalogClient = createCatalogClient(apiBaseUrl)
 const collectionClient = createCollectionClient(apiBaseUrl)
+const musicbrainzClient = createMusicBrainzClient(apiBaseUrl)
 type Connection = { status: 'loading' | 'connected' | 'error'; message: string }
 type Page = 'dashboard' | 'concerts' | 'calendar' | 'map' | 'setlists' | 'profile'
 const navigation: { id: Page; label: string; icon: IconName }[] = [
@@ -74,6 +78,7 @@ function App() {
     setPreservingDraft(true); setAuthView(null)
     setAccountNotice('Your session expired. Your draft remains open, but you must sign in before saving to the database.')
   }, [expireSession])
+  const musicbrainz = { client: musicbrainzClient, enabled: account.status === 'authenticated' && Boolean(account.user) && !account.busy, sessionKey: account.user?.id ?? 'guest', onUnauthorized: expireCatalogSession }
   const catalog: CatalogAccess = { client: catalogClient, enabled: account.status === 'authenticated' && Boolean(account.user) && !account.busy, sessionKey: account.user?.id ?? 'guest', onUnauthorized: expireCatalogSession }
 
   useEffect(() => {
@@ -84,7 +89,7 @@ function App() {
     if (!owner) return
     const controller = new AbortController()
     // oxlint-disable-next-line react/set-state-in-effect -- Reset account-scoped state before an external collection read.
-    setCollection(current => ({ owner, data: current.owner === owner ? current.data : emptyCollection(), status: current.owner === owner ? 'ready' : 'loading', error: '' }))
+    setCollection(current => ({ owner, data: current.owner === owner ? current.data : emptyCollection(), status: 'loading', error: '' }))
     void collectionClient.load(controller.signal).then(data => {
       if (!controller.signal.aborted && session.current === owner) setCollection({ owner, data, status: 'ready', error: '' })
     }).catch(error => {
@@ -154,31 +159,32 @@ function App() {
     }).catch(error => setAccountNotice(accountErrorMessage(error)))
   }
 
-  const commit = async (data: Workspace, message: string, undoable = false): Promise<boolean> => {
+  const commit = async (data: Workspace, message: string, undoable = false, pendingCatalog?: PendingCatalog): Promise<boolean> => {
     if (locked.current || !owner || collection.status !== 'ready') return false
     locked.current = true; setSaving(true)
     const before = workspace
     const changed = data.concerts.find(c => JSON.stringify(c) !== JSON.stringify(before.concerts.find(old => old.id === c.id)))
     const removed = before.concerts.find(c => !data.concerts.some(current => current.id === c.id))
     try {
-      const result = removed ? await collectionClient.remove(removed.id) : changed ? await collectionClient.save(changed, data.venues.find(v => v.id === changed.venueId), before.concerts.some(c => c.id === changed.id)) : before
+      const result = removed ? await collectionClient.remove(removed.id) : changed ? await collectionClient.save(changed, data.venues.find(v => v.id === changed.venueId), before.concerts.some(c => c.id === changed.id), pendingCatalog) : before
       if (session.current !== owner) return false
       setCollection({ owner, data: result, status: 'ready', error: '' }); setAccountNotice(''); setUndo(undoable ? before : null); setToast(message)
       return true
     } catch (error) {
       if (session.current === owner) {
         setAccountNotice(error instanceof Error ? error.message : 'Unable to save your collection.')
+        if (error instanceof CollectionError && (error.status === 0 || error.status >= 500 || error.status >= 200 && error.status < 300)) setCollection(current => ({ ...current, status: 'error', error: 'The save response is uncertain. Reload the collection before retrying.' }))
         if (error instanceof CollectionError && error.status === 401) expireCatalogSession()
       }
       return false
     } finally { locked.current = false; setSaving(false) }
   }
   const updateConcert = (concert: Concert, message: string, undoable = false) => commit({ ...workspace, concerts: workspace.concerts.map(c => c.id === concert.id ? concert : c) }, message, undoable)
-  const saveConcert = async (concert: Concert, venue?: Venue): Promise<void> => {
+  const saveConcert = async (concert: Concert, venue?: Venue, pendingCatalog?: PendingCatalog): Promise<void> => {
     const exists = workspace.concerts.some(c => c.id === concert.id)
-    const saved = await commit({ ...workspace, venues: venue ? [...workspace.venues.filter(v => v.id !== venue.id), venue] : workspace.venues, concerts: exists ? workspace.concerts.map(c => c.id === concert.id ? concert : c) : [...workspace.concerts, concert] }, exists ? 'Concert updated in the database.' : 'Concert saved in the database.')
+    const saved = await commit({ ...workspace, venues: venue ? [...workspace.venues.filter(v => v.id !== venue.id), venue] : workspace.venues, concerts: exists ? workspace.concerts.map(c => c.id === concert.id ? concert : c) : [...workspace.concerts, concert] }, exists ? 'Concert updated in the database.' : 'Concert saved in the database.', false, pendingCatalog)
     if (saved) setForm(null)
-    else throw new Error('The database save was not confirmed. Check your connection or session. Your draft is still here.')
+    else throw new Error('The database save was not confirmed. Your draft is still here. Check your fields/session, or reload the collection if the response was uncertain.')
   }
   const navigate = (id: Page) => { setPage(id); setDetailId(null); window.scrollTo({ top: 0, behavior: 'instant' }); requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true })) }
   const openSetlist = (id: string) => { setSetlistId(id); navigate('setlists') }
@@ -222,7 +228,7 @@ function App() {
         </fieldset><footer className="page-footer"><span>Spectacles<span className="brand-period">.</span> <span>A personal archive of being there.</span></span><span>Your concert collection</span></footer>
       </main>
     </div>
-    {form && <ConcertForm busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner} catalog={catalog} concert={form.concert} initialDate={form.date} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} />}
+    {form && (form.concert ? <ConcertForm busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} concert={form.concert} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} /> : <ConcertWizard onReloadCollection={collection.status === 'error' ? () => setCollectionRetry(value => value + 1) : undefined} busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} musicbrainz={musicbrainz} initialDate={form.date} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} />)}
     {detail && <Dialog title={detail.title} drawer onClose={() => setDetailId(null)}><fieldset disabled={saving || !owner} style={{ display: 'contents' }}><div className="concert-detail"><div className="detail-photo"><img src={stagePhoto} alt="Light spilling across a live concert crowd" /></div><p className={`detail-date ${relation(detail.date, today)}`}><Icon name="calendar" />{formatDate(detail.date, true)}{detail.time && ` · ${detail.time}`}</p><h3>{workspace.venues.find(v => v.id === detail.venueId)?.name ?? 'Venue to confirm'}</h3><p className="muted">{workspace.venues.find(v => v.id === detail.venueId)?.city || 'Location to confirm'}</p><p className="detail-lineup"><span className="eyebrow">LINEUP</span>{detail.artists.join(' · ') || 'Lineup to confirm'}</p><div className="detail-flags"><label><input type="checkbox" checked={detail.interested} onChange={() => updateConcert({ ...detail, interested: !detail.interested }, 'Interest preference saved.')} /><Icon name="heart" size={18} />Interested</label><label><input type="checkbox" checked={detail.ticketsBought} onChange={() => updateConcert({ ...detail, ticketsBought: !detail.ticketsBought }, 'Ticket preference saved.')} /><Icon name="ticket" size={18} />Tickets bought</label></div>{detail.notes && <div className="detail-notes"><span className="eyebrow">NOTES</span><p>{detail.notes}</p></div>}<button className="button primary" onClick={() => openSetlist(detail.id)}><Icon name="list" size={18} />{detail.setlist.length ? 'View & edit setlist' : 'Start the setlist'}<Icon name="arrow" size={18} /></button><button className="button secondary" onClick={() => { setDetailId(null); setForm({ concert: detail }) }}><Icon name="edit" size={18} />Edit concert</button><button className="text-button delete-concert" onClick={() => { void commit({ ...workspace, concerts: workspace.concerts.filter(c => c.id !== detail.id) }, `${detail.title} removed.`, true).then(saved => { if (saved) setDetailId(null) }) }}><Icon name="trash" size={17} />Delete concert</button><p className="hint">Saved to your account.</p></div></fieldset></Dialog>}
     {preservingDraft && activeAuthView && <Dialog title="Sign in again" onClose={() => setAuthView(null)}><AuthView mode={activeAuthView} busy={account.busy} notice={account.error || accountNotice} onSwitch={changeEntry} onExplore={() => setAuthView(null)} onSubmit={submitAccount} /></Dialog>}
     {healthOpen && <Dialog title="API connection" onClose={() => setHealthOpen(false)}><div className={`health-content ${connection.status}`}><span className="health-status">{connection.status}</span><p role="status" aria-live="polite">{connection.message}</p><code>{apiBaseUrl}/api/health</code>{connection.status === 'error' && <p className="hint">Check the API URL and the backend’s allowed frontend origin.</p>}<p className="muted">This checks the Laravel health endpoint. Your collection is stored in the database.</p><button className="button primary" disabled={connection.status === 'loading'} onClick={() => setAttempt(v => v + 1)}><Icon name="refresh" size={17} />{connection.status === 'loading' ? 'Checking…' : 'Check again'}</button></div></Dialog>}

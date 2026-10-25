@@ -112,3 +112,22 @@ test('page navigation retains typed filters on the configured origin and ignores
   assert.deepEqual(calls.map(url => url.searchParams.get('page')), ['1', '2', '1'])
   assert.ok(calls.every(url => url.origin === 'https://api.spectacles.test' && url.searchParams.get('filter[q]') === 'Björk, guest' && url.searchParams.get('filter[type]') === 'person'))
 })
+
+test('default browse can request five without changing existing search page size', async () => {
+  const sizes = [], f = catalogFixture()
+  const client = createCatalogClient('https://api.spectacles.test', async url => { sizes.push(new URL(url).searchParams.get('per_page')); return json(f.page([f.a])) })
+  await client.search('artists', {}, 1, undefined, 5)
+  await client.search('artists', { q: 'abc' })
+  assert.deepEqual(sizes, ['5', '20'])
+  await assert.rejects(client.search('artists', {}, 1, undefined, 0), error => error.status === 422)
+  assert.equal(sizes.length, 2)
+})
+
+test('Tour scope arrays are encoded as bounded API filters without selection proofs', async () => {
+  const f = catalogFixture(); let call
+  const client = createCatalogClient('https://api.spectacles.test', async url => {call=new URL(url);return json(f.page([f.tour]))})
+  await client.search('tours',{artist_uuids:[id(1),id(2)],artist_mbids:[id(3)]})
+  assert.equal(call.searchParams.get('filter[artist_uuids][0]'),id(1))
+  assert.equal(call.searchParams.get('filter[artist_uuids][1]'),id(2))
+  assert.equal(call.searchParams.get('filter[artist_mbids][0]'),id(3))
+})

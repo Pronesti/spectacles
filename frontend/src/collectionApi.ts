@@ -1,3 +1,4 @@
+import type { PendingCatalog } from './concertWizard.ts'
 import { decodeWorkspace } from './domain.ts'
 import type { Concert, Venue, Workspace } from './domain.ts'
 export class CollectionError extends Error {
@@ -46,7 +47,7 @@ export function createCollectionClient(baseUrl: string, fetcher: typeof fetch = 
   }
   return {
     load: (signal?: AbortSignal) => send('collection', 'GET', undefined, signal),
-    save: (concert: Concert, venue?: Venue, exists = false) => send(exists ? `attendances/${encodeURIComponent(concert.id)}` : 'attendances', exists ? 'PATCH' : 'POST', { concert, ...(venue ? { venue } : {}) }),
+    save: (concert: Concert, venue?: Venue, exists = false, pendingCatalog?: PendingCatalog) => send(exists ? `attendances/${encodeURIComponent(concert.id)}` : 'attendances', exists ? 'PATCH' : 'POST', { concert, ...(venue ? { venue } : {}), ...(pendingCatalog ? { pendingCatalog } : {}) }),
     remove: (id: string) => send(`attendances/${encodeURIComponent(id)}`, 'DELETE'),
   }
 }

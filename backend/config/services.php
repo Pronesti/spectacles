@@ -1,6 +1,14 @@
 <?php
 
+$musicBrainzContact = trim((string) env('MUSICBRAINZ_CONTACT', ''));
+$musicBrainzUserAgent = trim((string) env('MUSICBRAINZ_USER_AGENT', ''));
+
+if ($musicBrainzUserAgent === '' && $musicBrainzContact !== '') {
+    $musicBrainzUserAgent = 'Spectacles/1.0 ('.$musicBrainzContact.')';
+}
+
 return [
+    'musicbrainz' => ['enabled' => env('MUSICBRAINZ_ENABLED', false), 'user_agent' => $musicBrainzUserAgent],
 
     /*
     |--------------------------------------------------------------------------

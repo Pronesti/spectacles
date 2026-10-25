@@ -1,10 +1,10 @@
 import { catalogUuid, decodeCatalogEvent, decodeCatalogPage } from './catalog.ts'
 import type { CatalogByKind, CatalogKind, CatalogPage } from './catalog.ts'
-export type CatalogFilters = { q?: string; venue_uuid?: string; year?: number; month?: number; day?: number; provider?: string; resource_type?: string; provider_resource_id?: string; type?: string; city?: string; country_code?: string; disambiguation?: string; artist_uuid?: string }
+export type CatalogFilters = { q?: string; venue_uuid?: string; year?: number; month?: number; day?: number; provider?: string; resource_type?: string; provider_resource_id?: string; type?: string; city?: string; country_code?: string; disambiguation?: string; artist_uuid?: string; artist_uuids?: string[]; artist_mbids?: string[] }
 const allowed: Record<CatalogKind, string[]> = {
   events: ['q', 'venue_uuid', 'year', 'month', 'day', 'provider', 'resource_type', 'provider_resource_id'],
   artists: ['q', 'type', 'provider', 'resource_type', 'provider_resource_id'], venues: ['q', 'city', 'country_code'],
-  songs: ['q', 'disambiguation'], tours: ['q', 'artist_uuid'],
+  songs: ['q', 'disambiguation'], tours: ['q', 'artist_uuid', 'artist_uuids', 'artist_mbids'],
 }
 export class CatalogApiError extends Error {
   readonly status: number
@@ -37,11 +37,13 @@ export function createCatalogClient(baseUrl: string, fetcher: typeof fetch = fet
     } finally { clearTimeout(timer); signal?.removeEventListener('abort', abort) }
   }
   return {
-    async search<K extends CatalogKind>(kind: K, filters: CatalogFilters = {}, page = 1, signal?: AbortSignal): Promise<CatalogPage<CatalogByKind[K]>> {
+    async search<K extends CatalogKind>(kind: K, filters: CatalogFilters = {}, page = 1, signal?: AbortSignal, perPage = 20): Promise<CatalogPage<CatalogByKind[K]>> {
       if (!Number.isInteger(page) || page < 1 || page > 100000) throw new CatalogApiError(422, 'Invalid catalog page.')
-      const query = new URLSearchParams({ page: String(page), per_page: '20' })
+      if (!Number.isInteger(perPage) || perPage < 1 || perPage > 100) throw new CatalogApiError(422, 'Invalid catalog page size.')
+      const query = new URLSearchParams({ page: String(page), per_page: String(perPage) })
       for (const [key, value] of Object.entries(filters)) {
         if (!allowed[kind].includes(key)) throw new CatalogApiError(422, 'These search filters are not supported.')
+        if (Array.isArray(value)) { value.forEach((id, index) => query.set(`filter[${key}][${index}]`, id)); continue }
         if (value !== undefined && value !== '') query.set(`filter[${key}]`, String(value))
       }
       const value = await get(`${kind}?${query}`, signal)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\CatalogDraftResolver;
 use App\Http\Requests\SaveConcertRequest;
 use App\Http\Resources\CollectionResource;
 use App\Models\Artist;
@@ -73,6 +74,7 @@ class CollectionController extends Controller
                     $attendance = $existingAttendance;
                 }
             }
+            $data = app(CatalogDraftResolver::class)->resolve($data, $request->validated('pendingCatalog', []));
             $eventId = $data['catalog']['eventId'] ?? null;
             if ($eventId !== null) {
                 $event = Event::query()->where('external_id', $eventId)->firstOrFail();
