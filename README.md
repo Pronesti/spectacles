@@ -34,6 +34,54 @@ The frontend’s `VITE_API_BASE_URL` is the backend URL **without `/api`**. The 
 
 The health API does not use a database. Account endpoints require the User identity migration and durable session/cache storage; `.env.example` selects `database` for both. The queue remains `sync`. Existing `.env` files are not overwritten by Composer; update their session/cache settings when enabling accounts.
 
+## Local development with Yerd
+
+Yerd detects the repository because its parent directory is parked. Configure that site to proxy Vite and link the Laravel subdirectory separately (run from the repository root):
+
+```sh
+yerd root spectacles frontend
+yerd front-controller spectacles off
+yerd secure spectacles
+yerd link spectacles-api "$PWD/backend"
+yerd domain primary spectacles-api api.spectacles.test
+yerd secure spectacles-api
+yerd use spectacles-api 8.5
+yerd proxy add spectacles / http://127.0.0.1:5173
+```
+
+Set these values in `backend/.env`:
+
+```dotenv
+APP_URL=https://api.spectacles.test
+FRONTEND_URLS=https://spectacles.test,http://localhost:5173,http://localhost:3000
+```
+
+Set these values in `frontend/.env`:
+
+```dotenv
+VITE_API_BASE_URL=https://api.spectacles.test
+DEV_SERVER_URL=https://spectacles.test
+```
+
+Run `php artisan config:clear` from `backend/`, then `npm run dev` from `frontend/`. Open `https://spectacles.test`; the API is at `https://api.spectacles.test/api/health`. Yerd serves Laravel through PHP-FPM, so `composer run dev` is unnecessary in this mode. Keep Vite running while developing; Yerd’s proxy does not start it automatically. `DEV_SERVER_URL` configures the exact allowed hostname and secure live-reload WebSocket; it is optional for localhost development and is not needed on Cloud.
+
+### Automatic local Vite startup
+
+On this Mac, `~/Library/LaunchAgents/local.spectacles.vite.plist` starts the frontend at login and restarts it if it exits. It runs the installed Vite CLI with Yerd’s Node executable from this checkout, bound to `127.0.0.1:5173`; Yerd continues to provide HTTPS. No terminal needs to stay open. The agent reads `frontend/.env`. It requires this checkout and its installed `node_modules`; update its absolute paths if the project moves. It runs while your macOS user session is active.
+
+Logs: `~/Library/Logs/spectacles/vite.log` and `vite-error.log`.
+
+```sh
+# Restart after changing frontend environment or configuration:
+launchctl kickstart -k "gui/$(id -u)/local.spectacles.vite"
+# Stop and disable for the current login session:
+launchctl bootout "gui/$(id -u)/local.spectacles.vite"
+# Enable again (when unloaded):
+launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/local.spectacles.vite.plist"
+```
+
+To permanently disable automatic startup, boot it out and remove its plist from `~/Library/LaunchAgents/`. While the agent is active, do not start a second Vite process on port 5173.
+
 ## Account API
 
 The backend supports Sanctum cookie/session authentication at `/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/logout`, and GET/PATCH `/api/v1/me`. The React account screens use these endpoints for session restoration, registration, login, supported profile changes, and logout.
