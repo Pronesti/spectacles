@@ -1,0 +1,88 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A09",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Os%20Paralamas%20do%20Sucesso%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:51.305297+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:52.045Z",
+    "count": 1,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "f197a8df-ac2b-4e78-9913-4abf13741f12",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "Os Paralamas do Sucesso",
+        "sort-name": "Paralamas do Sucesso, Os",
+        "area": {
+          "id": "9443d4f5-668c-4f30-96bd-6caf831de30f",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Rio de Janeiro",
+          "sort-name": "Rio de Janeiro",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1977",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Paralamas",
+            "name": "Paralamas",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Paralamas do Sucesso",
+            "name": "Paralamas do Sucesso",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 2,
+            "name": "rock"
+          },
+          {
+            "count": 1,
+            "name": "ska"
+          },
+          {
+            "count": 1,
+            "name": "new wave"
+          },
+          {
+            "count": 2,
+            "name": "brazilian"
+          },
+          {
+            "count": 1,
+            "name": "brasil"
+          },
+          {
+            "count": 1,
+            "name": "pop rock brasil"
+          },
+          {
+            "count": 1,
+            "name": "rock brasil"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.806
+}

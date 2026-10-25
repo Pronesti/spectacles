@@ -1,0 +1,245 @@
+{
+  "frozen_before_batch": true,
+  "purpose": "Argentina-first exploratory sample, not a statistical accuracy benchmark",
+  "cases": [
+    {
+      "case_id": "MB-A01",
+      "entity": "artist",
+      "query": "artist:\"Soda Stereo\"",
+      "expected": "Soda Stereo",
+      "country": "AR",
+      "reuse": "mb-canonical-artist-search.json"
+    },
+    {
+      "case_id": "MB-A02",
+      "entity": "artist",
+      "query": "artist:\"El Mato a un Policia Motorizado\"",
+      "expected": "El Mato a un Policia Motorizado",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-A03",
+      "entity": "artist",
+      "query": "artist:\"WOS\"",
+      "expected": "WOS",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-A04",
+      "entity": "artist",
+      "query": "artist:\"Eruca Sativa\"",
+      "expected": "Eruca Sativa",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-A05",
+      "entity": "artist",
+      "query": "artist:\"No Te Va Gustar\"",
+      "expected": "No Te Va Gustar",
+      "country": "UY"
+    },
+    {
+      "case_id": "MB-A06",
+      "entity": "artist",
+      "query": "artist:\"Los Bunkers\"",
+      "expected": "Los Bunkers",
+      "country": "CL"
+    },
+    {
+      "case_id": "MB-A07",
+      "entity": "artist",
+      "query": "artist:\"Zoé\"",
+      "expected": "Zoé",
+      "country": "MX"
+    },
+    {
+      "case_id": "MB-A08",
+      "entity": "artist",
+      "query": "artist:\"Aterciopelados\"",
+      "expected": "Aterciopelados",
+      "country": "CO"
+    },
+    {
+      "case_id": "MB-A09",
+      "entity": "artist",
+      "query": "artist:\"Os Paralamas do Sucesso\"",
+      "expected": "Os Paralamas do Sucesso",
+      "country": "BR"
+    },
+    {
+      "case_id": "MB-W01",
+      "entity": "work",
+      "query": "work:\"Siguiendo la luna\"",
+      "expected": "Siguiendo la luna",
+      "country": "AR",
+      "reuse": "mb-work-search-access.json"
+    },
+    {
+      "case_id": "MB-W02",
+      "entity": "work",
+      "query": "work:\"De musica ligera\"",
+      "expected": "De musica ligera",
+      "context": "Soda Stereo / Gustavo Cerati and Zeta Bosio"
+    },
+    {
+      "case_id": "MB-W03",
+      "entity": "work",
+      "query": "work:\"El fantasma de Canterville\"",
+      "expected": "El fantasma de Canterville",
+      "context": "Charly García composition, multiple performers"
+    },
+    {
+      "case_id": "MB-W04",
+      "entity": "work",
+      "query": "work:\"Nada personal\"",
+      "expected": "Nada personal",
+      "context": "Soda Stereo song; title ambiguity expected"
+    },
+    {
+      "case_id": "MB-W05",
+      "entity": "work",
+      "query": "work:\"Eres\"",
+      "expected": "Eres",
+      "context": "Café Tacvba; title ambiguity expected"
+    },
+    {
+      "case_id": "MB-W06",
+      "entity": "work",
+      "query": "work:\"Pais tropical\"",
+      "expected": "Pais tropical",
+      "context": "Jorge Ben Jor; accentless query"
+    },
+    {
+      "case_id": "MB-P01",
+      "entity": "place",
+      "query": "place:\"Niceto Club\"",
+      "expected": "Niceto Club",
+      "city": "Buenos Aires",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-P02",
+      "entity": "place",
+      "query": "place:\"Teatro Colón\"",
+      "expected": "Teatro Colón",
+      "city": "Buenos Aires",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-P03",
+      "entity": "place",
+      "query": "place:\"Luna Park\"",
+      "expected": "Luna Park",
+      "city": "Buenos Aires",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-P04",
+      "entity": "place",
+      "query": "place:\"Quality Espacio\"",
+      "expected": "Quality Espacio",
+      "city": "Córdoba",
+      "country": "AR"
+    },
+    {
+      "case_id": "MB-P05",
+      "entity": "place",
+      "query": "place:\"Teatro de Verano\"",
+      "expected": "Teatro de Verano",
+      "city": "Montevideo",
+      "country": "UY"
+    },
+    {
+      "case_id": "MB-P06",
+      "entity": "place",
+      "query": "place:\"Foro Sol\"",
+      "expected": "Foro Sol",
+      "city": "Mexico City",
+      "country": "MX"
+    },
+    {
+      "case_id": "MB-P07",
+      "entity": "place",
+      "query": "place:\"Movistar Arena\"",
+      "expected": "Movistar Arena",
+      "city": "Buenos Aires, Bogotá, Santiago ambiguity check",
+      "country": "multiple"
+    },
+    {
+      "case_id": "MB-P08",
+      "entity": "place",
+      "query": "place:\"Allianz Parque\"",
+      "expected": "Allianz Parque",
+      "city": "São Paulo",
+      "country": "BR"
+    },
+    {
+      "case_id": "MB-E01",
+      "entity": "event",
+      "query": "artist:\"Soda Stereo\" AND begin:2007-12-21",
+      "expected": "Soda Stereo 2007-12-21",
+      "city": "Buenos Aires",
+      "date": "2007-12-21"
+    },
+    {
+      "case_id": "MB-E02",
+      "entity": "event",
+      "query": "artist:\"Taylor Swift\" AND begin:2023-11-09",
+      "expected": "Taylor Swift 2023-11-09",
+      "city": "Buenos Aires",
+      "date": "2023-11-09"
+    },
+    {
+      "case_id": "MB-E03",
+      "entity": "event",
+      "query": "artist:\"El Mató a un Policía Motorizado\" AND begin:2013-03-01",
+      "expected": "El Mató a un Policía Motorizado 2013-03-01",
+      "city": "Buenos Aires",
+      "date": "2013-03-01"
+    },
+    {
+      "case_id": "MB-E04",
+      "entity": "event",
+      "query": "artist:\"Soda Stereo\" AND begin:2020-02-29",
+      "expected": "Soda Stereo 2020-02-29",
+      "city": "Bogotá",
+      "date": "2020-02-29"
+    },
+    {
+      "case_id": "MB-E05",
+      "entity": "event",
+      "query": "artist:\"Ty Segall\" AND begin:2026-11-07",
+      "expected": "Ty Segall 2026-11-07",
+      "city": "Buenos Aires",
+      "date": "2026-11-07"
+    },
+    {
+      "case_id": "MB-T01",
+      "entity": "series",
+      "query": "series:\"Me verás volver\"",
+      "expected": "Me verás volver",
+      "expected_type": "Tour"
+    },
+    {
+      "case_id": "MB-T02",
+      "entity": "series",
+      "query": "series:\"Gracias totales\"",
+      "expected": "Gracias totales",
+      "expected_type": "Tour"
+    },
+    {
+      "case_id": "MB-T03",
+      "entity": "series",
+      "query": "series:\"The Eras Tour\"",
+      "expected": "The Eras Tour",
+      "expected_type": "Tour"
+    },
+    {
+      "case_id": "MB-T04",
+      "entity": "series",
+      "query": "series:\"World's Hottest Tour\"",
+      "expected": "World's Hottest Tour",
+      "expected_type": "Tour"
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G09",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Foro+Sol%2C+Ciudad+de+M%C3%A9xico&filter=countrycode%3Amx&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:27.302694+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Foro",
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "04120",
+        "district": "Coyoacán",
+        "neighbourhood": "Colonia Churubusco",
+        "suburb": "San Diego Churubusco",
+        "street": "Calle Atletas",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.1431205,
+        "lat": 19.3558065,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "county": "Benito Juárez",
+        "county_code": "BJ",
+        "result_type": "amenity",
+        "formatted": "Foro, Calle Atletas, San Diego Churubusco, 04120 Mexico City, Mexico",
+        "address_line1": "Foro",
+        "address_line2": "Calle Atletas, San Diego Churubusco, 04120 Mexico City, Mexico",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F29V44+8Q",
+        "plus_code_short": "9V44+8Q Mexico City, Benito Juárez, Mexico",
+        "rank": {
+          "importance": 9.399328603031995e-05,
+          "popularity": 7.353126139234498,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51c7b8e2e228c958c05948348122165b3340f00102f9017b5a3a3300000000c00201920304466f726fe203216f70656e7374726565746d61703a76656e75653a7761792f383539343632323637",
+        "bbox": {
+          "lon1": -99.1434956,
+          "lat1": 19.3555604,
+          "lon2": -99.1427454,
+          "lat2": 19.3560518
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Foro Lanziloti",
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "01000",
+        "district": "Álvaro Obregón",
+        "neighbourhood": "San Ángel",
+        "suburb": "San Ángel",
+        "street": "Calle Monasterio",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.1885707,
+        "lat": 19.3453003,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "county": "Benito Juárez",
+        "county_code": "BJ",
+        "result_type": "amenity",
+        "formatted": "Foro Lanziloti, Calle Monasterio, San Ángel, 01000 Mexico City, Mexico",
+        "address_line1": "Foro Lanziloti",
+        "address_line2": "Calle Monasterio, San Ángel, 01000 Mexico City, Mexico",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F28RW6+4H",
+        "plus_code_short": "8RW6+4H Mexico City, Benito Juárez, Mexico",
+        "rank": {
+          "importance": 9.399328603031995e-05,
+          "popularity": 7.460334145421757,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51f75ed78a11cc58c0598bccb79965583340f00102f90161d37b5100000000c0020192030e466f726f204c616e7a696c6f7469e203226f70656e7374726565746d61703a76656e75653a7761792f31333637303639353337",
+        "bbox": {
+          "lon1": -99.1886325,
+          "lat1": 19.3452389,
+          "lon2": -99.1884952,
+          "lat2": 19.3454247
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Foro Abierto",
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "03100",
+        "district": "Benito Juárez",
+        "neighbourhood": "Colonia Del Valle Centro",
+        "suburb": "Del Valle",
+        "street": "Calle Matías Romero",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.1649185,
+        "lat": 19.380374,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "county": "Benito Juárez",
+        "county_code": "BJ",
+        "result_type": "amenity",
+        "formatted": "Foro Abierto, Calle Matías Romero, Del Valle, 03100 Mexico City, Mexico",
+        "address_line1": "Foro Abierto",
+        "address_line2": "Calle Matías Romero, Del Valle, 03100 Mexico City, Mexico",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F29RJP+42",
+        "plus_code_short": "9RJP+42 Mexico City, Benito Juárez, Mexico",
+        "rank": {
+          "importance": 9.399328603031995e-05,
+          "popularity": 7.302802916764094,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51580053068eca58c059ab3fc23060613340f00102f9013d4c9b1700000000c0020192030c466f726f204162696572746fe203216f70656e7374726565746d61703a76656e75653a7761792f333936303533353635",
+        "bbox": {
+          "lon1": -99.165041,
+          "lat1": 19.3802908,
+          "lon2": -99.164796,
+          "lat2": 19.3804572
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Estadio GNP Seguros",
+        "other_names": {
+          "loc_name": "Foro Sol"
+        },
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "08400",
+        "district": "Iztacalco",
+        "street": "Avenida Río Churubusco",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.0955714,
+        "lat": 19.4050224,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "result_type": "amenity",
+        "formatted": "Estadio GNP Seguros, Avenida Río Churubusco, 08400 Mexico City, Mexico",
+        "address_line1": "Estadio GNP Seguros",
+        "address_line2": "Avenida Río Churubusco, 08400 Mexico City, Mexico",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F2CW43+2Q",
+        "plus_code_short": "CW43+2Q Mexico City, Mexico",
+        "rank": {
+          "importance": 0.3867453017489014,
+          "popularity": 6.790741299965928,
+          "confidence": 0,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51b55b81d71dc658c059be254a8caf673340f00102f9013e9a674e00000000c002019203134573746164696f20474e502053656775726f73",
+        "bbox": {
+          "lon1": -99.096819,
+          "lat1": 19.4038648,
+          "lon2": -99.0940943,
+          "lat2": 19.4062149
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Foro Lucerna",
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "06600",
+        "district": "Cuauhtémoc",
+        "neighbourhood": "Juárez",
+        "suburb": "Roma",
+        "street": "Calle Lucerna",
+        "housenumber": "64",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.156706,
+        "lat": 19.4299546,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "county": "Benito Juárez",
+        "county_code": "BJ",
+        "result_type": "amenity",
+        "formatted": "Foro Lucerna, Calle Lucerna 64, Roma, 06600 Mexico City, Mexico",
+        "address_line1": "Foro Lucerna",
+        "address_line2": "Calle Lucerna 64, Roma, 06600 Mexico City, Mexico",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F2CRHV+X8",
+        "plus_code_short": "CRHV+X8 Mexico City, Benito Juárez, Mexico",
+        "rank": {
+          "importance": 9.399328603031995e-05,
+          "popularity": 7.90655696492342,
+          "confidence": 0,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "5191459a7807ca58c059c7c33181116e3340f00103f9010b2ac71d01000000c0020192030c466f726f204c756365726e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373934353538393837",
+        "bbox": {
+          "lon1": -99.156756,
+          "lat1": 19.4299046,
+          "lon2": -99.156656,
+          "lat2": 19.4300046
+        }
+      }
+    ],
+    "query": {
+      "text": "Foro Sol, Ciudad de México",
+      "parsed": {
+        "house": "foro sol",
+        "city": "ciudad de méxico",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 1.106
+}

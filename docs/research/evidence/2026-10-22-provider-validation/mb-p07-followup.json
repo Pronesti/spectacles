@@ -1,0 +1,68 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-P07",
+  "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Movistar%20Arena%22&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:18.023589+00:00",
+  "phase": "bounded access retry",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:33:18.770Z",
+    "count": 2,
+    "offset": 0,
+    "places": [
+      {
+        "id": "50573105-4880-4a66-b668-0356374918f0",
+        "type": "Indoor arena",
+        "type-id": "a77c11f6-82fa-3cc0-9041-ac60e5f6e024",
+        "score": 100,
+        "name": "Movistar Arena",
+        "address": "Humboldt 450, C1414 CABA",
+        "coordinates": {
+          "latitude": "-34.594335",
+          "longitude": "-58.448113"
+        },
+        "area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "2019-11-01",
+          "ended": null
+        }
+      },
+      {
+        "id": "0d12edbd-23f8-4045-a34a-0d4c9beb0b7b",
+        "type": "Indoor arena",
+        "type-id": "a77c11f6-82fa-3cc0-9041-ac60e5f6e024",
+        "score": 100,
+        "name": "Movistar Arena",
+        "address": "Dg. 61c #26-36, Bogotá, Cundinamarca",
+        "coordinates": {
+          "latitude": "4.649167",
+          "longitude": "-74.077222"
+        },
+        "area": {
+          "id": "6f85c2b6-4250-468b-9bd8-300fd8b451ad",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Bogotá",
+          "sort-name": "Bogotá",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1973-05-01",
+          "ended": null
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.817
+}

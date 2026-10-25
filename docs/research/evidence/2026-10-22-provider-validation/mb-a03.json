@@ -1,0 +1,175 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A03",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22WOS%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:28:15.341866+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:28:16.403Z",
+    "count": 7,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "63572bc8-bc59-419c-997d-4846ff9f5cc5",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 100,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "WOS",
+        "sort-name": "WOS",
+        "gender": "male",
+        "country": "AR",
+        "area": {
+          "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Argentina",
+          "sort-name": "Argentina",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Argentine rapper",
+        "life-span": {
+          "begin": "1998-01-23",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "WOS DS3",
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+            "name": "WOS DS3",
+            "locale": null,
+            "type": "Search hint",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Oliva, Valentín",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Valentín Oliva",
+            "locale": "es",
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "c4975c26-8768-4f90-a48a-49df49e16370",
+        "score": 92,
+        "name": "W.O.S.",
+        "sort-name": "W.O.S.",
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "61a72649-e9cf-43d6-8158-82a38fc022c5",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 92,
+        "name": "WOS",
+        "sort-name": "WOS",
+        "area": {
+          "id": "c9ac1239-e832-41bc-9930-e252a1fd1105",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Berlin",
+          "sort-name": "Berlin",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Female duo / Live From Earth",
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "28d52380-b71b-4b58-8a4c-5c88283cd582",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 84,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "Sergio WoS",
+        "sort-name": "WoS, Sergio",
+        "gender": "male",
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "3ab999d8-8132-4da9-a374-e379995fec98",
+        "score": 84,
+        "name": "Julita Woś",
+        "sort-name": "Woś, Julita",
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "81a5f88e-e263-4827-a055-bd794b1811c4",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 84,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "Lech Woś",
+        "sort-name": "Lech Woś",
+        "gender": "male",
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "88aa22de-95bf-47e7-9151-0a7182372df2",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 78,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "Wos Las Palmas",
+        "sort-name": "Wos Las Palmas",
+        "gender": "male",
+        "country": "ES",
+        "area": {
+          "id": "471c46a7-afc5-31c4-923c-d0444f5053a4",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Spain",
+          "sort-name": "Spain",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Vega Padrón, Alejandro",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Alejandro Vega Padrón",
+            "locale": null,
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 1.123
+}

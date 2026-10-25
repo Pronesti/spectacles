@@ -1,0 +1,268 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-A02",
+  "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Teatro+Colo&filter=countrycode%3Aar&bias=proximity%3A-58.3831%2C-34.6011&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:32.656437+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Teatro Colón",
+        "other_names": {
+          "name:lt": "Kolono teatras",
+          "name:ru": "Театр Колон",
+          "name:uk": "Театр Колумба"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1055AAB",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "quarter": "Microcentro",
+        "street": "Cerrito",
+        "housenumber": "628",
+        "iso3166_2": "AR-C",
+        "lon": -58.3831869,
+        "lat": -34.6010855,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 8.11551563047805,
+        "formatted": "Teatro Colón, Cerrito 628, San Nicolás, C1055 AAB Buenos Aires, Argentina",
+        "address_line1": "Teatro Colón",
+        "address_line2": "Cerrito 628, San Nicolás, C1055 AAB Buenos Aires, Argentina",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JX8+HP",
+        "plus_code_short": "X8+HP Buenos Aires, Argentina",
+        "rank": {
+          "importance": 0.5480701866571246,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51b8e0b1440c314dc059c74ca25ef04c41c0f00102f901f79f680100000000c0020192030d54656174726f20436f6cc3b36e",
+        "bbox": {
+          "lon1": -58.383815,
+          "lat1": -34.6013592,
+          "lon2": -58.3825435,
+          "lat2": -34.6008023
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Teatro Colón",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "1009",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "quarter": "Microcentro",
+        "street": "Metrobús 9 de Julio (Sur)",
+        "iso3166_2": "AR-C",
+        "lon": -58.3817115,
+        "lat": -34.6011497,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 127.20600123220504,
+        "formatted": "Teatro Colón, Metrobús 9 de Julio (Sur), San Nicolás, 1009 Buenos Aires, Argentina",
+        "address_line1": "Teatro Colón",
+        "address_line2": "Metrobús 9 de Julio (Sur), San Nicolás, 1009 Buenos Aires, Argentina",
+        "category": "public_transport.bus",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JX9+G8",
+        "plus_code_short": "X9+G8 Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51e98024ecdb304dc05907c02e79f24c41c0f00103f9016fcb64cd00000000c0020192030d54656174726f20436f6cc3b36e",
+        "bbox": {
+          "lon1": -58.3817615,
+          "lat1": -34.6011997,
+          "lon2": -58.3816615,
+          "lat2": -34.6010997
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Tribunales - Teatro Colón",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "1013",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "quarter": "Microcentro",
+        "street": "Tucumán",
+        "iso3166_2": "AR-C",
+        "lon": -58.3848333,
+        "lat": -34.6014303,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 162.84023394797475,
+        "formatted": "Tribunales - Teatro Colón, Tucumán, San Nicolás, 1013 Buenos Aires, Argentina",
+        "address_line1": "Tribunales - Teatro Colón",
+        "address_line2": "Tucumán, San Nicolás, 1013 Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JX8+C3",
+        "plus_code_short": "X8+C3 Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51b4f4b23742314dc05967a906abfb4c41c0f00103f90199f2450f00000000c0020192031a54726962756e616c6573202d2054656174726f20436f6cc3b36e",
+        "bbox": {
+          "lon1": -58.3848833,
+          "lat1": -34.6014803,
+          "lon2": -58.3847833,
+          "lat2": -34.6013803
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Instituto Superior de Arte del Teatro Colón",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "1055",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "street": "Viamonte",
+        "iso3166_2": "AR-C",
+        "lon": -58.3882783,
+        "lat": -34.6008238,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 474.9516701233554,
+        "formatted": "Instituto Superior de Arte del Teatro Colón, Viamonte, San Nicolás, 1055 Buenos Aires, Argentina",
+        "address_line1": "Instituto Superior de Arte del Teatro Colón",
+        "address_line2": "Viamonte, San Nicolás, 1055 Buenos Aires, Argentina",
+        "category": "education.college",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JX6+MM",
+        "plus_code_short": "X6+MM Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "518d1f741ab3314dc05948d455cbe74c41c0f00103f901edf4053101000000c0020192032c496e7374697475746f205375706572696f7220646520417274652064656c2054656174726f20436f6cc3b36e",
+        "bbox": {
+          "lon1": -58.3883283,
+          "lat1": -34.6008738,
+          "lon2": -58.3882283,
+          "lat2": -34.6007738
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Colony Theatre",
+        "other_names": {
+          "name": "Teatro Colonial",
+          "name:es": "Teatro Colonial"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1063ACR",
+        "district": "Comuna 1",
+        "suburb": "Monserrat",
+        "street": "Avenida Paseo Colón",
+        "iso3166_2": "AR-C",
+        "lon": -58.3696706,
+        "lat": -34.6125849,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 1772.4326221767549,
+        "formatted": "Colony Theatre, Avenida Paseo Colón, Monserrat, C1063 ACR Buenos Aires, Argentina",
+        "address_line1": "Colony Theatre",
+        "address_line2": "Avenida Paseo Colón, Monserrat, C1063 ACR Buenos Aires, Argentina",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JPJ+X4",
+        "plus_code_short": "PJ+X4 Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "5177a5c05d512f4dc05900c3972e694e41c0f00103f90109adb3b200000000c0020192030e436f6c6f6e792054686561747265",
+        "bbox": {
+          "lon1": -58.3697206,
+          "lat1": -34.6126349,
+          "lon2": -58.3696206,
+          "lat2": -34.6125349
+        }
+      }
+    ],
+    "query": {
+      "text": "Teatro Colo",
+      "categories": []
+    }
+  },
+  "elapsed_seconds": 1.495
+}

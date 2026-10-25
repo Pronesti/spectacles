@@ -1,0 +1,70 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A02",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22El%20Mato%20a%20un%20Policia%20Motorizado%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:28:13.266875+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:28:14.039Z",
+    "count": 1,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "9eaf4321-20b8-4611-bc82-493a361104e3",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "El Mató a un Policía Motorizado",
+        "sort-name": "El Mató a un Policía Motorizado",
+        "country": "AR",
+        "area": {
+          "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Argentina",
+          "sort-name": "Argentina",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "f2284101-f884-4319-b623-abdecd896576",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "La Plata",
+          "sort-name": "La Plata",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Argentinian indie rock band",
+        "isnis": [
+          "0000000470046696"
+        ],
+        "life-span": {
+          "begin": "2003",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "EMAUPM",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "name": "EMAUPM",
+            "locale": null,
+            "type": "Artist name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 1,
+            "name": "indie rock"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.869
+}

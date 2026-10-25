@@ -1,0 +1,699 @@
+{
+  "validated_on": "2026-10-22",
+  "note": "API evidence only. Documentation browsing and an initial unsaved access failure are excluded from these counts. Geoapify credentials are omitted from URLs. Baseline manifests and follow-up cases must be evaluated separately.",
+  "http_response_counts": {
+    "musicbrainz": {
+      "200": 42,
+      "503": 11
+    },
+    "geoapify": {
+      "200": 23
+    }
+  },
+  "responses": [
+    {
+      "file": "geo-a01.json",
+      "provider": "geoapify",
+      "case_id": "GEO-A01",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:31.246348+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Niceto+Cl&filter=countrycode%3Aar&bias=proximity%3A-58.4389%2C-34.5874&format=json&limit=5"
+    },
+    {
+      "file": "geo-a02.json",
+      "provider": "geoapify",
+      "case_id": "GEO-A02",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:32.656437+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Teatro+Colo&filter=countrycode%3Aar&bias=proximity%3A-58.3831%2C-34.6011&format=json&limit=5"
+    },
+    {
+      "file": "geo-a03.json",
+      "provider": "geoapify",
+      "case_id": "GEO-A03",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:34.457475+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aar&bias=proximity%3A-58.4475%2C-34.5948&format=json&limit=5"
+    },
+    {
+      "file": "geo-a04.json",
+      "provider": "geoapify",
+      "case_id": "GEO-A04",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:35.975497+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aco&bias=proximity%3A-74.0770%2C4.6493&format=json&limit=5"
+    },
+    {
+      "file": "geo-d01.json",
+      "provider": "geoapify",
+      "case_id": "GEO-D01",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:16.769133+00:00",
+      "request_url": "https://api.geoapify.com/v2/place-details?id=51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562e203216f70656e7374726565746d61703a76656e75653a7761792f343332393736333934&features=details"
+    },
+    {
+      "file": "geo-d02.json",
+      "provider": "geoapify",
+      "case_id": "GEO-D02",
+      "phase": "candidate category verification / Places control",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:15.151160+00:00",
+      "request_url": "https://api.geoapify.com/v2/place-details?id=51e7559dd5028552c059103d29931a9a1240f00101f90139e4cd0000000000c0020192030e4d6f766973746172204172656e61e203256f70656e7374726565746d61703a76656e75653a72656c6174696f6e2f3133343933333035&features=details"
+    },
+    {
+      "file": "geo-f01.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F01",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:11.485237+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Estadio+GNP+Seguros%2C+Ciudad+de+M%C3%A9xico&filter=countrycode%3Amx&format=json&limit=5"
+    },
+    {
+      "file": "geo-f02.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F02",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:12.432074+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Quality+Center%2C+Cruz+Roja+Argentina+200%2C+C%C3%B3rdoba&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-f03.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F03",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:15.882380+00:00",
+      "request_url": "https://api.geoapify.com/v2/places?name=Movistar&categories=sport%2Centertainment&filter=circle%3A-74.077%2C4.6493%2C2000&limit=10"
+    },
+    {
+      "file": "geo-f04.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F04",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:18.023620+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aar&bias=proximity%3A-58.3816%2C-34.6037&format=json&limit=5"
+    },
+    {
+      "file": "geo-f05.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F05",
+      "phase": "focused follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:20.047948+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aco&bias=proximity%3A-74.0721%2C4.7110&format=json&limit=5"
+    },
+    {
+      "file": "geo-f06.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F06",
+      "phase": "candidate category verification / Places control",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:16.421813+00:00",
+      "request_url": "https://api.geoapify.com/v2/places?name=Movistar+Arena&categories=sport%2Centertainment&filter=circle%3A-74.077%2C4.6493%2C2000&limit=10"
+    },
+    {
+      "file": "geo-f07.json",
+      "provider": "geoapify",
+      "case_id": "GEO-F07",
+      "phase": "candidate category verification / Places control",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:17.274173+00:00",
+      "request_url": "https://api.geoapify.com/v2/places?categories=sport.stadium&filter=circle%3A-74.077%2C4.6493%2C2000&limit=20"
+    },
+    {
+      "file": "geo-g01.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G01",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:29:17.283456+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Niceto+Club%2C+Buenos+Aires%2C+Argentina&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g02.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G02",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:03.972501+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Teatro+Col%C3%B3n%2C+Buenos+Aires&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g03.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G03",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:10.874872+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Luna+Park%2C+Buenos+Aires&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g04.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G04",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:21.717228+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Movistar+Arena%2C+Buenos+Aires&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g05.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G05",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:22.781887+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Quality+Espacio%2C+C%C3%B3rdoba&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g06.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G06",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:24.146171+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Anfiteatro+Municipal+Humberto+de+Nito%2C+Rosario&filter=countrycode%3Aar&format=json&limit=5"
+    },
+    {
+      "file": "geo-g07.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G07",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:25.044979+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Teatro+de+Verano%2C+Montevideo&filter=countrycode%3Auy&format=json&limit=5"
+    },
+    {
+      "file": "geo-g08.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G08",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:26.271571+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Movistar+Arena%2C+Bogot%C3%A1&filter=countrycode%3Aco&format=json&limit=5"
+    },
+    {
+      "file": "geo-g09.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G09",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:27.302694+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Foro+Sol%2C+Ciudad+de+M%C3%A9xico&filter=countrycode%3Amx&format=json&limit=5"
+    },
+    {
+      "file": "geo-g10.json",
+      "provider": "geoapify",
+      "case_id": "GEO-G10",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:28.714795+00:00",
+      "request_url": "https://api.geoapify.com/v1/geocode/search?text=Allianz+Parque%2C+S%C3%A3o+Paulo&filter=countrycode%3Abr&format=json&limit=5"
+    },
+    {
+      "file": "mb-a02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A02",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:28:13.266875+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22El%20Mato%20a%20un%20Policia%20Motorizado%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A03",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:28:15.341866+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22WOS%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A04",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:28:17.669693+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Eruca%20Sativa%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A05",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:28:19.666187+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22No%20Te%20Va%20Gustar%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a06-attempt2.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A06",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:49.792230+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Los%20Bunkers%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a06.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A06",
+      "phase": "initial probe / baseline",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:28:21.868521+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Los%20Bunkers%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a07-attempt2.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A07",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:08.862922+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Zo%C3%A9%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a07.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A07",
+      "phase": "initial probe / baseline",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:28:23.852060+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Zo%C3%A9%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a08-attempt2.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A08",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:31.950761+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Aterciopelados%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a08.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A08",
+      "phase": "initial probe / baseline",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:28:25.846165+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Aterciopelados%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-a09.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-A09",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:51.305297+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Os%20Paralamas%20do%20Sucesso%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-canonical-artist-search.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-canonical-artist-search",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:26:25.765828+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Soda%20Stereo%22&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-d01.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D01",
+      "phase": "selected candidate hydration / query fallback",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:14.048870+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist/3f8a5e5b-c24b-4068-9f1c-afad8829e06b?inc=aliases%2Burl-rels&fmt=json"
+    },
+    {
+      "file": "mb-d02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D02",
+      "phase": "selected candidate hydration / query fallback",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:18.359580+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording/352f8803-873e-4fe8-a524-e62ccdbd70fd?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json"
+    },
+    {
+      "file": "mb-d03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D03",
+      "phase": "selected candidate hydration / query fallback",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:22.196542+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event/f7fafcd7-37d2-4933-bb6a-f31449cccf04?inc=artist-rels%2Bplace-rels%2Bseries-rels%2Burl-rels&fmt=json"
+    },
+    {
+      "file": "mb-d04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D04",
+      "phase": "selected candidate hydration / query fallback",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:26.148016+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/series/23aa9d94-ffc6-4160-a7f3-31cfba1ea646?inc=event-rels%2Burl-rels&fmt=json"
+    },
+    {
+      "file": "mb-d05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D05",
+      "phase": "composition linkage follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:54.255516+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording/e30223fb-df96-4b93-ab50-c4d0ec513763?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json"
+    },
+    {
+      "file": "mb-d06.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D06",
+      "phase": "composition linkage follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:59.116518+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording/b0c5e206-7fb3-4d01-ae87-d6677f7fd5a7?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json"
+    },
+    {
+      "file": "mb-d07.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D07",
+      "phase": "composition linkage follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:35:03.083985+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording/1bfd067b-4ea8-48a6-8a09-d8e59700f5d2?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json"
+    },
+    {
+      "file": "mb-d08.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-D08",
+      "phase": "composition linkage follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:35:06.949933+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording/5a122519-3611-4a56-96f6-a2050d0359ee?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json"
+    },
+    {
+      "file": "mb-e01-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E01",
+      "phase": "bounded access retry",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:33:21.845952+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22%20AND%20begin%3A2007-12-21&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-e01.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E01",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:30:40.047423+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22%20AND%20begin%3A2007-12-21&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-e02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E02",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:01.241509+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Taylor%20Swift%22%20AND%20begin%3A2023-11-09&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-e03-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E03",
+      "phase": "bounded access retry",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:27.632329+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22El%20Mat%C3%B3%20a%20un%20Polic%C3%ADa%20Motorizado%22%20AND%20begin%3A2013-03-01&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-e03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E03",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:31:22.288908+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22El%20Mat%C3%B3%20a%20un%20Polic%C3%ADa%20Motorizado%22%20AND%20begin%3A2013-03-01&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-e04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E04",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:43.680663+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22%20AND%20begin%3A2020-02-29&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-e05-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E05",
+      "phase": "bounded access retry",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:31.446058+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Ty%20Segall%22%20AND%20begin%3A2026-11-07&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-e05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-E05",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:32:02.723895+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Ty%20Segall%22%20AND%20begin%3A2026-11-07&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-f01-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-F01",
+      "phase": "performer-context follow-up",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:35.250514+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/recording?query=recording%3A%22Eres%22%20AND%20artist%3A%22Caf%C3%A9%20Tacvba%22&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-f02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-F02",
+      "phase": "selected candidate hydration / query fallback",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:34:30.699939+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p01-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P01",
+      "phase": "bounded access retry",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:10.353803+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Niceto%20Club%22&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-p01.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P01",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:30:34.254032+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Niceto%20Club%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P02",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:57.413468+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Teatro%20Col%C3%B3n%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p03-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P03",
+      "phase": "bounded access retry",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:14.215592+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Luna%20Park%22&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-p03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P03",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:31:16.509239+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Luna%20Park%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P04",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:39.802888+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Quality%20Espacio%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P05",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:58.920076+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Teatro%20de%20Verano%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p06.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P06",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:32:08.509363+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Foro%20Sol%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p07-followup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P07",
+      "phase": "bounded access retry",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:33:18.023589+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Movistar%20Arena%22&fmt=json&limit=5"
+    },
+    {
+      "file": "mb-p07.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P07",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:32:12.319233+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Movistar%20Arena%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-p08.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-P08",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:32:18.105877+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Allianz%20Parque%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-t01.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-T01",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:45.983862+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22Me%20ver%C3%A1s%20volver%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-t02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-T02",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:05.054831+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22Gracias%20totales%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-t03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-T03",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:28.073384+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22The%20Eras%20Tour%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-t04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-T04",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:47.496988+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22World%27s%20Hottest%20Tour%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-w02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-W02",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:30.394695+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22De%20musica%20ligera%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-w03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-W03",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:30:53.596203+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22El%20fantasma%20de%20Canterville%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-w04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-W04",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:12.699044+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Nada%20personal%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-w05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-W05",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:35.779816+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Eres%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-w06.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-W06",
+      "phase": "resumed with three-second spacing after pause",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:31:55.114180+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Pais%20tropical%22&fmt=json&limit=10"
+    },
+    {
+      "file": "mb-work-search-access.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-work-search-access",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:26:28.170777+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Siguiendo%20la%20luna%22&fmt=json&limit=5"
+    },
+    {
+      "file": "musicbrainz-access-retry.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-access-retry",
+      "phase": "initial probe / baseline",
+      "http_status": 503,
+      "requested_at_utc": "2026-10-22T17:25:59.493212+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist/?query=artist%3A%22Soda+Stereo%22&fmt=json&limit=5"
+    },
+    {
+      "file": "musicbrainz-known-artist-lookup.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-known-artist-lookup",
+      "phase": "initial probe / baseline",
+      "http_status": 200,
+      "requested_at_utc": "2026-10-22T17:26:13.826535+00:00",
+      "request_url": "https://musicbrainz.org/ws/2/artist/3f8a5e5b-c24b-4068-9f1c-afad8829e06b?fmt=json"
+    }
+  ]
+}

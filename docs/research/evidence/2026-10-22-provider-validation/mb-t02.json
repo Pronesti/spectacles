@@ -1,0 +1,15 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-T02",
+  "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22Gracias%20totales%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:05.054831+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:05.793Z",
+    "count": 0,
+    "offset": 0,
+    "series": []
+  },
+  "elapsed_seconds": 0.802
+}

@@ -1,0 +1,263 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-A03",
+  "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aar&bias=proximity%3A-58.4475%2C-34.5948&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:34.457475+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar Arena",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1414AKN",
+        "city_district": "Comuna 15",
+        "district": "Distrito Audiovisual",
+        "suburb": "Villa Crespo",
+        "street": "Humboldt",
+        "housenumber": "450",
+        "iso3166_2": "AR-C",
+        "lon": -58.4481368,
+        "lat": -34.5942604,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 83.65254982946274,
+        "formatted": "Movistar Arena, Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+        "address_line1": "Movistar Arena",
+        "address_line2": "Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+        "category": "building.sport;sport.stadium",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH42+7P",
+        "plus_code_short": "CH42+7P Buenos Aires, Argentina",
+        "rank": {
+          "importance": 0.3367302927095036,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "512a11f28b5c394dc05969a78bb9104c41c0f00102f901c85ada2900000000c0020192030e4d6f766973746172204172656e61e203216f70656e7374726565746d61703a76656e75653a7761792f373032313735393434",
+        "bbox": {
+          "lon1": -58.4488345,
+          "lat1": -34.5948242,
+          "lon2": -58.4474487,
+          "lat2": -34.5936773
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1414AJN",
+        "district": "Comuna 5",
+        "suburb": "Almagro",
+        "street": "Avenida Ángel Gallardo",
+        "iso3166_2": "AR-C",
+        "lon": -58.4321646,
+        "lat": -34.6022346,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 1629.0070221584565,
+        "formatted": "Movistar, Avenida Ángel Gallardo, Almagro, C1414 AJN Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Ángel Gallardo, Almagro, C1414 AJN Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39HX9+44",
+        "plus_code_short": "9HX9+44 Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5195be6b2b51374dc05984c2fb05164d41c0f00103f9017dc42b1801000000c002019203084d6f766973746172e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373030343838383239",
+        "bbox": {
+          "lon1": -58.4322146,
+          "lat1": -34.6022846,
+          "lon2": -58.4321146,
+          "lat2": -34.6021846
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1425",
+        "district": "Comuna 14",
+        "suburb": "Palermo",
+        "street": "Jorge Luis Borges",
+        "iso3166_2": "AR-C",
+        "lon": -58.4208267,
+        "lat": -34.5820539,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 2823.2449057832237,
+        "formatted": "Movistar, Jorge Luis Borges, Palermo, C1425 Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Jorge Luis Borges, Palermo, C1425 Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH9H+5M",
+        "plus_code_short": "CH9H+5M Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "514de438a6dd354dc0592f8100be804a41c0f00103f9017f85ab1601000000c002019203084d6f766973746172",
+        "bbox": {
+          "lon1": -58.4208767,
+          "lat1": -34.5821039,
+          "lon2": -58.4207767,
+          "lat2": -34.5820039
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1428",
+        "district": "Comuna 13",
+        "suburb": "Belgrano",
+        "street": "Avenida Cabildo",
+        "housenumber": "2030",
+        "iso3166_2": "AR-C",
+        "lon": -58.4563203,
+        "lat": -34.562779,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 3650.999411266585,
+        "formatted": "Movistar, Avenida Cabildo 2030, Belgrano, C1428 Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Cabildo 2030, Belgrano, C1428 Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CGPV+VF",
+        "plus_code_short": "CGPV+VF Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "511e801eb4683a4dc05913f06b24094841c0f00103f901f9ec7bff01000000c002019203084d6f766973746172",
+        "bbox": {
+          "lon1": -58.4563703,
+          "lat1": -34.562829,
+          "lon2": -58.4562703,
+          "lat2": -34.562729
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1428AAT",
+        "district": "Comuna 13",
+        "suburb": "Belgrano",
+        "street": "Avenida Cabildo",
+        "iso3166_2": "AR-C",
+        "lon": -58.4598153,
+        "lat": -34.5586832,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 4171.287503887795,
+        "formatted": "Movistar, Avenida Cabildo, Belgrano, C1428 AAT Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Cabildo, Belgrano, C1428 AAT Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CGRR+G3",
+        "plus_code_short": "CGRR+G3 Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51a8d94d3adb3a4dc0598d695cee824741c0f00103f9016c22363601000000c002019203084d6f766973746172",
+        "bbox": {
+          "lon1": -58.4598653,
+          "lat1": -34.5587332,
+          "lon2": -58.4597653,
+          "lat2": -34.5586332
+        }
+      }
+    ],
+    "query": {
+      "text": "Movistar Ar"
+    }
+  },
+  "elapsed_seconds": 1.214
+}

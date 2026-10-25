@@ -1,0 +1,10 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A08",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Aterciopelados%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:28:25.846165+00:00",
+  "http_status": 503,
+  "retry_after": "0",
+  "response_excerpt": "{\"error\": \"The MusicBrainz web server is currently busy. Please try again later.\"}\n",
+  "elapsed_seconds": 0.774
+}

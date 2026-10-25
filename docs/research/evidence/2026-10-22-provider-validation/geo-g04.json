@@ -1,0 +1,71 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G04",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Movistar+Arena%2C+Buenos+Aires&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:21.717228+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar Arena",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1414AKN",
+        "city_district": "Comuna 15",
+        "district": "Distrito Audiovisual",
+        "suburb": "Villa Crespo",
+        "street": "Humboldt",
+        "housenumber": "450",
+        "iso3166_2": "AR-C",
+        "lon": -58.4481368,
+        "lat": -34.5942604,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "formatted": "Movistar Arena, Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+        "address_line1": "Movistar Arena",
+        "address_line2": "Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+        "category": "building.sport;sport.stadium",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH42+7P",
+        "plus_code_short": "CH42+7P Buenos Aires, Argentina",
+        "rank": {
+          "importance": 0.3367302927095036,
+          "popularity": 7.1596621962108316,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "512a11f28b5c394dc05969a78bb9104c41c0f00102f901c85ada2900000000c0020192030e4d6f766973746172204172656e61",
+        "bbox": {
+          "lon1": -58.4488345,
+          "lat1": -34.5948242,
+          "lon2": -58.4474487,
+          "lat2": -34.5936773
+        }
+      }
+    ],
+    "query": {
+      "text": "Movistar Arena, Buenos Aires",
+      "parsed": {
+        "house": "movistar arena",
+        "city": "buenos aires",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 0.759
+}

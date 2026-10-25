@@ -1,0 +1,62 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-known-artist-lookup",
+  "request_url": "https://musicbrainz.org/ws/2/artist/3f8a5e5b-c24b-4068-9f1c-afad8829e06b?fmt=json",
+  "requested_at_utc": "2026-10-22T17:26:13.826535+00:00",
+  "purpose": "Check entity lookup separately from the failing artist search.",
+  "http_status": 200,
+  "response": {
+    "ipis": [],
+    "gender-id": null,
+    "disambiguation": "",
+    "end-area": {
+      "sort-name": "Buenos Aires",
+      "type": null,
+      "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+      "type-id": null,
+      "disambiguation": "",
+      "name": "Buenos Aires",
+      "iso-3166-2-codes": [
+        "AR-C"
+      ]
+    },
+    "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+    "area": {
+      "iso-3166-1-codes": [
+        "AR"
+      ],
+      "name": "Argentina",
+      "disambiguation": "",
+      "type-id": null,
+      "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+      "type": null,
+      "sort-name": "Argentina"
+    },
+    "country": "AR",
+    "isnis": [
+      "0000000097590406"
+    ],
+    "name": "Soda Stereo",
+    "life-span": {
+      "ended": true,
+      "begin": "1982",
+      "end": "2007"
+    },
+    "gender": null,
+    "type": "Group",
+    "sort-name": "Soda Stereo",
+    "begin-area": {
+      "sort-name": "Buenos Aires",
+      "type": null,
+      "type-id": null,
+      "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+      "name": "Buenos Aires",
+      "disambiguation": "",
+      "iso-3166-2-codes": [
+        "AR-C"
+      ]
+    },
+    "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b"
+  },
+  "elapsed_seconds": 1.018
+}

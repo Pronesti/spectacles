@@ -1,0 +1,190 @@
+{
+  "observed_on": "2026-10-22",
+  "method": "Exploratory public-page readings through research browser; some supplied page versions are cached. Not an authenticated API benchmark or a random coverage sample. No full song lists or website payloads retained. Presence is not independently verified completeness/accuracy.",
+  "setlistfm_cases": [
+    {
+      "case_id": "SFM-01",
+      "country": "AR",
+      "artist": "Soda Stereo",
+      "date": "2007-12-21",
+      "location": "Buenos Aires / River Plate",
+      "url": "https://www.setlist.fm/setlist/soda-stereo/2007/estadio-river-plate-buenos-aires-argentina-4bd68356.html",
+      "status": "songs_present",
+      "observation": "Tour, encores, guests, tape and performance notes visible."
+    },
+    {
+      "case_id": "SFM-02",
+      "country": "AR",
+      "artist": "Taylor Swift",
+      "date": "2023-11-09",
+      "location": "Buenos Aires / River Plate",
+      "url": "https://www.setlist.fm/setlist/taylor-swift/2023/estadio-river-plate-buenos-aires-argentina-43a18b7b.html",
+      "status": "songs_present",
+      "observation": "Tour and named sections visible; same concert as SFM-03/04."
+    },
+    {
+      "case_id": "SFM-03",
+      "country": "AR",
+      "artist": "Sabrina Carpenter",
+      "date": "2023-11-09",
+      "location": "Buenos Aires / River Plate",
+      "url": "https://www.setlist.fm/setlist/sabrina-carpenter/2023/estadio-river-plate-buenos-aires-argentina-53a18b7d.html",
+      "status": "songs_present",
+      "observation": "Opening act; cover and tape distinction visible."
+    },
+    {
+      "case_id": "SFM-04",
+      "country": "AR",
+      "artist": "LOUTA",
+      "date": "2023-11-09",
+      "location": "Buenos Aires / River Plate",
+      "url": "https://www.setlist.fm/setlist/louta/2023/estadio-river-plate-buenos-aires-argentina-4ba18b42.html",
+      "status": "songs_present",
+      "observation": "Opening act; guest performer visible."
+    },
+    {
+      "case_id": "SFM-05",
+      "country": "AR",
+      "artist": "El Mató a un Policía Motorizado",
+      "date": "2013-03-01",
+      "location": "Buenos Aires / Niceto Club",
+      "url": "https://www.setlist.fm/setlist/el-mato-a-un-policia-motorizado/2013/niceto-club-buenos-aires-argentina-23db04a7.html",
+      "status": "empty_setlist",
+      "observation": "Event present, page explicitly says no songs yet."
+    },
+    {
+      "case_id": "SFM-06",
+      "country": "AR",
+      "artist": "Eruca Sativa",
+      "date": "2024-06-01",
+      "location": "Buenos Aires / Teatro Vorterix",
+      "url": "https://www.setlist.fm/setlist/eruca-sativa/2024/teatro-vorterix-buenos-aires-argentina-3ba86c48.html",
+      "status": "songs_present",
+      "observation": "Guest artists, covers, and separate doors/scheduled/start times visible on website."
+    },
+    {
+      "case_id": "SFM-07",
+      "country": "UY",
+      "artist": "No Te Va Gustar",
+      "date": "2024-02-03",
+      "location": "Atlántida / Rambla",
+      "url": "https://www.setlist.fm/setlist/no-te-va-gustar/2024/rambla-atlantida-uruguay-2bac78fa.html",
+      "status": "songs_present",
+      "observation": "Canelones Suena Bien festival and 30 años tour visible."
+    },
+    {
+      "case_id": "SFM-08",
+      "country": "CL",
+      "artist": "Los Bunkers",
+      "date": "2024-04-27",
+      "location": "Santiago / Estadio Nacional",
+      "url": "https://www.setlist.fm/setlist/los-bunkers/2024/estadio-nacional-santiago-chile-63abfed7.html",
+      "status": "songs_present",
+      "observation": "Initial browser fetch 429; later read succeeded. Tour, stage and cover distinctions visible."
+    },
+    {
+      "case_id": "SFM-09",
+      "country": "MX",
+      "artist": "Café Tacvba",
+      "date": "2024-04-27",
+      "location": "Santiago de Querétaro / Festival City",
+      "url": "https://www.setlist.fm/setlist/cafe-tacvba/2024/lienzo-charro-hermanos-ramirez-santiago-de-queretaro-mexico-13a86515.html",
+      "status": "explicitly_incomplete",
+      "observation": "Page labels list incomplete; medley and cover distinctions visible."
+    },
+    {
+      "case_id": "SFM-10",
+      "country": "BR",
+      "artist": "Os Paralamas do Sucesso",
+      "date": "2024-09-07",
+      "location": "São Paulo / Memorial da América Latina",
+      "url": "https://www.setlist.fm/setlist/os-paralamas-do-sucesso/2024/memorial-da-america-latina-sao-paulo-brazil-33576079.html",
+      "status": "songs_present",
+      "observation": "Coala Festival; medleys and tape entry visible."
+    },
+    {
+      "case_id": "SFM-11",
+      "country": "CO",
+      "artist": "Soda Stereo",
+      "date": "2020-02-29",
+      "location": "Bogotá / Estadio El Campín",
+      "url": "https://www.setlist.fm/setlist/soda-stereo/2020/estadio-el-campin-bogota-colombia-73999e95.html",
+      "status": "songs_present",
+      "observation": "Gracias totales; prerecorded video performers and live guests distinguished in notes."
+    }
+  ],
+  "summary": {
+    "artist_performance_records": 11,
+    "distinct_concert_dates_locations": 9,
+    "countries": 6,
+    "records_with_songs": 10,
+    "explicitly_incomplete_with_songs": 1,
+    "empty_records": 1
+  },
+  "future_event_checks": [
+    {
+      "provider": "Songkick",
+      "url": "https://www.songkick.com/concerts/43301711-ty-segall-at-niceto-club",
+      "observation": "Ty Segall, Niceto Club, Buenos Aires, 2026-11-07."
+    },
+    {
+      "provider": "Bandsintown",
+      "url": "https://www.bandsintown.com/a/268215-ty-segall",
+      "observation": "Lists Querétaro 2026-10-24, Buenos Aires 2026-11-07, Santiago 2026-11-10, São Paulo 2026-11-15. São Paulo venue Cine Joia."
+    },
+    {
+      "provider": "JamBase",
+      "url": "https://www.jambase.com/band/ty-segall",
+      "observation": "Lists Buenos Aires 2026-11-07, Santiago 2026-11-10, São Paulo 2026-11-15. São Paulo venue Audio Club."
+    },
+    {
+      "provider": "JamBase",
+      "url": "https://www.jambase.com/show/ty-segall-audio-club-20261115",
+      "observation": "Confirms the website currently labels the venue Audio Club; API output not tested."
+    },
+    {
+      "provider": "Drag City / artist label",
+      "url": "https://www.dragcity.com/tours",
+      "observation": "Ty Segall dates match those above; São Paulo venue Cine Joia. Comparison is a discrepancy, not proof of the actual performance venue."
+    },
+    {
+      "provider": "Niceto Club",
+      "url": "https://nicetoclub.com/agenda-niceto-club/",
+      "observation": "Ty Segall 2026-11-07 21:00 and a different Club 69 show 23:59 the same venue/date. Date plus venue is insufficient as a unique event key."
+    },
+    {
+      "provider": "Venti",
+      "url": "https://venti.live/evento/ty-segall-en-niceto-club-18-a-os",
+      "observation": "Research browser returned a minimal page shell; payload could not be validated."
+    },
+    {
+      "provider": "Passline",
+      "url": "https://www.passline.com/eventos/ty-segall-en-blondie",
+      "observation": "Ticket page linked by label exists; subsequent browser extraction unavailable. No general API or reuse grant established."
+    }
+  ],
+  "dependency_checks": [
+    {
+      "provider": "JamBase",
+      "url": "https://www.jambase.com/show/cafe-tacvba-foro-sol-20241205",
+      "observation": "Displays Mexico City 2024-12-05 songs with explicit setlist.fm credit; not evidence of independent setlist licensing."
+    },
+    {
+      "provider": "Concert Archives",
+      "url": "https://www.concertarchives.org/concerts/me-veras-volver--6",
+      "observation": "Soda Stereo 2007-12-21 event metadata visible; setlist section remained a loading placeholder."
+    },
+    {
+      "provider": "Concert Archives",
+      "url": "https://www.concertarchives.org/release-notes",
+      "observation": "May 2025 release notes describe refreshing imported setlist.fm setlists."
+    }
+  ],
+  "authenticated_api_status": {
+    "setlistfm": "blocked: no project API key; no signup performed",
+    "songkick": "blocked: no project key/partnership; new-key application page says applications unavailable",
+    "bandsintown": "blocked: no authorized cross-artist access/app ID",
+    "jambase": "blocked: no project API entitlement; no trial or paid plan activated",
+    "ticketmaster": "blocked: no project API key"
+  }
+}

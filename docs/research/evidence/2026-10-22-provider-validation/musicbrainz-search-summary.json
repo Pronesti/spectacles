@@ -1,0 +1,1583 @@
+{
+  "completed_cases": 32,
+  "planned_cases": 32,
+  "cases": [
+    {
+      "case_id": "MB-A01",
+      "entity": "artist",
+      "query": "artist:\"Soda Stereo\"",
+      "expected": "Soda Stereo",
+      "country": "AR",
+      "reuse": "mb-canonical-artist-search.json",
+      "http_status": 200,
+      "evidence_file": "mb-canonical-artist-search.json",
+      "attempts": [
+        {
+          "file": "mb-canonical-artist-search.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+          "name": "Soda Stereo",
+          "title": null,
+          "score": 100,
+          "country": "AR",
+          "area": {
+            "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Argentina",
+            "sort-name": "Argentina",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A02",
+      "entity": "artist",
+      "query": "artist:\"El Mato a un Policia Motorizado\"",
+      "expected": "El Mato a un Policia Motorizado",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-a02.json",
+      "attempts": [
+        {
+          "file": "mb-a02.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "9eaf4321-20b8-4611-bc82-493a361104e3",
+          "name": "El Mató a un Policía Motorizado",
+          "title": null,
+          "score": 100,
+          "country": "AR",
+          "area": {
+            "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Argentina",
+            "sort-name": "Argentina",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Argentinian indie rock band"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A03",
+      "entity": "artist",
+      "query": "artist:\"WOS\"",
+      "expected": "WOS",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-a03.json",
+      "attempts": [
+        {
+          "file": "mb-a03.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 7,
+      "candidates": [
+        {
+          "id": "63572bc8-bc59-419c-997d-4846ff9f5cc5",
+          "name": "WOS",
+          "title": null,
+          "score": 100,
+          "country": "AR",
+          "area": {
+            "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Argentina",
+            "sort-name": "Argentina",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Argentine rapper"
+        },
+        {
+          "id": "c4975c26-8768-4f90-a48a-49df49e16370",
+          "name": "W.O.S.",
+          "title": null,
+          "score": 92,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "61a72649-e9cf-43d6-8158-82a38fc022c5",
+          "name": "WOS",
+          "title": null,
+          "score": 92,
+          "country": null,
+          "area": {
+            "id": "c9ac1239-e832-41bc-9930-e252a1fd1105",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Berlin",
+            "sort-name": "Berlin",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Female duo / Live From Earth"
+        },
+        {
+          "id": "28d52380-b71b-4b58-8a4c-5c88283cd582",
+          "name": "Sergio WoS",
+          "title": null,
+          "score": 84,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "3ab999d8-8132-4da9-a374-e379995fec98",
+          "name": "Julita Woś",
+          "title": null,
+          "score": 84,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "81a5f88e-e263-4827-a055-bd794b1811c4",
+          "name": "Lech Woś",
+          "title": null,
+          "score": 84,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "88aa22de-95bf-47e7-9151-0a7182372df2",
+          "name": "Wos Las Palmas",
+          "title": null,
+          "score": 78,
+          "country": "ES",
+          "area": {
+            "id": "471c46a7-afc5-31c4-923c-d0444f5053a4",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Spain",
+            "sort-name": "Spain",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A04",
+      "entity": "artist",
+      "query": "artist:\"Eruca Sativa\"",
+      "expected": "Eruca Sativa",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-a04.json",
+      "attempts": [
+        {
+          "file": "mb-a04.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "64409aab-e952-4779-b909-14f66d23cee5",
+          "name": "Eruca Sativa",
+          "title": null,
+          "score": 100,
+          "country": "AR",
+          "area": {
+            "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Argentina",
+            "sort-name": "Argentina",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A05",
+      "entity": "artist",
+      "query": "artist:\"No Te Va Gustar\"",
+      "expected": "No Te Va Gustar",
+      "country": "UY",
+      "http_status": 200,
+      "evidence_file": "mb-a05.json",
+      "attempts": [
+        {
+          "file": "mb-a05.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "bbd05acc-33f0-4db6-bc01-41c8b4bfe2df",
+          "name": "No Te Va Gustar",
+          "title": null,
+          "score": 100,
+          "country": "UY",
+          "area": {
+            "id": "ea88d395-87c9-3c47-b49a-114cad41fd39",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Uruguay",
+            "sort-name": "Uruguay",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A06",
+      "entity": "artist",
+      "query": "artist:\"Los Bunkers\"",
+      "expected": "Los Bunkers",
+      "country": "CL",
+      "http_status": 200,
+      "evidence_file": "mb-a06-attempt2.json",
+      "attempts": [
+        {
+          "file": "mb-a06.json",
+          "status": 503
+        },
+        {
+          "file": "mb-a06-attempt2.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 2,
+      "candidates": [
+        {
+          "id": "e99f6d62-f62b-4e1e-8593-33d5696d85f0",
+          "name": "Los Bunkers",
+          "title": null,
+          "score": 100,
+          "country": "CL",
+          "area": {
+            "id": "82d5f4d6-aed4-3ff5-81d1-5363ac6e97a7",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Chile",
+            "sort-name": "Chile",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Chilean alternative rock band"
+        },
+        {
+          "id": "1d446c4f-ded5-456f-b73e-959d269e5f2a",
+          "name": "Los Bunkers",
+          "title": null,
+          "score": 86,
+          "country": "CO",
+          "area": {
+            "id": "02b60d8d-7164-339d-868d-22d147d9f74a",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Colombia",
+            "sort-name": "Colombia",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Colombian salsa group"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A07",
+      "entity": "artist",
+      "query": "artist:\"Zoé\"",
+      "expected": "Zoé",
+      "country": "MX",
+      "http_status": 200,
+      "evidence_file": "mb-a07-attempt2.json",
+      "attempts": [
+        {
+          "file": "mb-a07.json",
+          "status": 503
+        },
+        {
+          "file": "mb-a07-attempt2.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 556,
+      "candidates": [
+        {
+          "id": "5838185a-0ee6-4a0b-8d4e-76a6e15f7d4b",
+          "name": "Zoé",
+          "title": null,
+          "score": 100,
+          "country": "MX",
+          "area": {
+            "id": "3e08b2cd-69f3-317c-b1e4-e71be581839e",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Mexico",
+            "sort-name": "Mexico",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Mexican rock band"
+        },
+        {
+          "id": "5509e5eb-67a4-49e9-992a-07d895500deb",
+          "name": "Zoë Johnston",
+          "title": null,
+          "score": 96,
+          "country": "GB",
+          "area": {
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "United Kingdom",
+            "sort-name": "United Kingdom",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "e7840b1b-0fc5-42a7-b05a-ffca943308ad",
+          "name": "Gorilla Zoe",
+          "title": null,
+          "score": 93,
+          "country": "US",
+          "area": {
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "United States",
+            "sort-name": "United States",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "103a58c9-e6af-4e96-a7d0-781df510cae6",
+          "name": "Zoë Blade",
+          "title": null,
+          "score": 93,
+          "country": null,
+          "area": {
+            "id": "8e577cfe-54af-4581-906f-eac74b4cd17c",
+            "type": "Subdivision",
+            "type-id": "fd3d44c5-80a1-3842-9745-2c4972d35afa",
+            "name": "Stoke-on-Trent",
+            "sort-name": "Stoke-on-Trent",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "5543b6ac-a73f-4ad5-bf7e-96a04d0f001e",
+          "name": "hARITON zOE",
+          "title": null,
+          "score": 87,
+          "country": "FR",
+          "area": {
+            "id": "08310658-51eb-3801-80de-5a0739207115",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "France",
+            "sort-name": "France",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "SOUND DESIGNER , PRODUCER"
+        },
+        {
+          "id": "9e3e3829-cf0e-4049-a465-6059fe08b440",
+          "name": "Zoë",
+          "title": null,
+          "score": 87,
+          "country": "GB",
+          "area": {
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "United Kingdom",
+            "sort-name": "United Kingdom",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Zoë Pollock - \"Sunshine on a Rainy Day\""
+        },
+        {
+          "id": "c78e9ba0-dd66-4848-84d7-cb22279b1682",
+          "name": "ZOË",
+          "title": null,
+          "score": 87,
+          "country": "AT",
+          "area": {
+            "id": "caac77d1-a5c8-3e6e-8e27-90b44dcc1446",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Austria",
+            "sort-name": "Austria",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "Zoë Straub, known professionally as Zoë, stylized as ZOË"
+        },
+        {
+          "id": "9ecbe580-0d09-40a6-bd31-f7b8fbeb71ab",
+          "name": "Zoe Boekbinder",
+          "title": null,
+          "score": 87,
+          "country": "US",
+          "area": {
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "United States",
+            "sort-name": "United States",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "0c5cd5d6-27c5-42df-859f-f0bf9276d3b0",
+          "name": "Layla Zoe",
+          "title": null,
+          "score": 87,
+          "country": "CA",
+          "area": {
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Canada",
+            "sort-name": "Canada",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "049049a3-267e-47b3-98b8-54d76120a600",
+          "name": "Zoe Wees",
+          "title": null,
+          "score": 85,
+          "country": "DE",
+          "area": {
+            "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Germany",
+            "sort-name": "Germany",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "German singer-songwriter from Hamburg"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A08",
+      "entity": "artist",
+      "query": "artist:\"Aterciopelados\"",
+      "expected": "Aterciopelados",
+      "country": "CO",
+      "http_status": 200,
+      "evidence_file": "mb-a08-attempt2.json",
+      "attempts": [
+        {
+          "file": "mb-a08.json",
+          "status": 503
+        },
+        {
+          "file": "mb-a08-attempt2.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "0ba1966a-e471-4f98-85d7-8ac0c1f836f0",
+          "name": "Aterciopelados",
+          "title": null,
+          "score": 100,
+          "country": "CO",
+          "area": {
+            "id": "02b60d8d-7164-339d-868d-22d147d9f74a",
+            "type": "Country",
+            "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+            "name": "Colombia",
+            "sort-name": "Colombia",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-A09",
+      "entity": "artist",
+      "query": "artist:\"Os Paralamas do Sucesso\"",
+      "expected": "Os Paralamas do Sucesso",
+      "country": "BR",
+      "http_status": 200,
+      "evidence_file": "mb-a09.json",
+      "attempts": [
+        {
+          "file": "mb-a09.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "f197a8df-ac2b-4e78-9913-4abf13741f12",
+          "name": "Os Paralamas do Sucesso",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "9443d4f5-668c-4f30-96bd-6caf831de30f",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Rio de Janeiro",
+            "sort-name": "Rio de Janeiro",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W01",
+      "entity": "work",
+      "query": "work:\"Siguiendo la luna\"",
+      "expected": "Siguiendo la luna",
+      "country": "AR",
+      "reuse": "mb-work-search-access.json",
+      "http_status": 200,
+      "evidence_file": "mb-work-search-access.json",
+      "attempts": [
+        {
+          "file": "mb-work-search-access.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "d54861a1-353a-4a10-a0b5-b4a0d4857049",
+          "name": null,
+          "title": "Siguiendo la luna",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W02",
+      "entity": "work",
+      "query": "work:\"De musica ligera\"",
+      "expected": "De musica ligera",
+      "context": "Soda Stereo / Gustavo Cerati and Zeta Bosio",
+      "http_status": 200,
+      "evidence_file": "mb-w02.json",
+      "attempts": [
+        {
+          "file": "mb-w02.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 2,
+      "candidates": [
+        {
+          "id": "d62e1fec-adf8-3a0a-9ce9-f65bd5209e66",
+          "name": null,
+          "title": "De música ligera",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "33a8b111-2d24-4980-a399-801081f3fa0d",
+          "name": null,
+          "title": "De música ligera",
+          "score": 92,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "English version"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W03",
+      "entity": "work",
+      "query": "work:\"El fantasma de Canterville\"",
+      "expected": "El fantasma de Canterville",
+      "context": "Charly García composition, multiple performers",
+      "http_status": 200,
+      "evidence_file": "mb-w03.json",
+      "attempts": [
+        {
+          "file": "mb-w03.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "8b21973e-836a-441b-9e4d-4e67e7114d75",
+          "name": null,
+          "title": "El fantasma de Canterville",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W04",
+      "entity": "work",
+      "query": "work:\"Nada personal\"",
+      "expected": "Nada personal",
+      "context": "Soda Stereo song; title ambiguity expected",
+      "http_status": 200,
+      "evidence_file": "mb-w04.json",
+      "attempts": [
+        {
+          "file": "mb-w04.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 4,
+      "candidates": [
+        {
+          "id": "d27585d3-aec2-3c72-bab3-503d3d3bf812",
+          "name": null,
+          "title": "Nada personal",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "5c8af2e0-de37-4cbe-929c-21a7632da5bb",
+          "name": null,
+          "title": "Nada personal",
+          "score": 93,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "10324e5f-56a3-467f-bba2-0f0e6c2ae730",
+          "name": null,
+          "title": "Nada personal",
+          "score": 93,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "63805f7f-4e5b-44a2-b164-80ba957dbf39",
+          "name": null,
+          "title": "Nada personal",
+          "score": 93,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W05",
+      "entity": "work",
+      "query": "work:\"Eres\"",
+      "expected": "Eres",
+      "context": "Café Tacvba; title ambiguity expected",
+      "http_status": 200,
+      "evidence_file": "mb-w05.json",
+      "attempts": [
+        {
+          "file": "mb-w05.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 259,
+      "candidates": [
+        {
+          "id": "1c2012f3-de06-49cb-a623-9dbe0ed5671a",
+          "name": null,
+          "title": "Eres",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "c2521793-d280-3676-8958-473d29e602a8",
+          "name": null,
+          "title": "Eres tú",
+          "score": 99,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "22287d4b-5b13-4a36-b5f4-0749d96eed13",
+          "name": null,
+          "title": "Eres",
+          "score": 93,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "c7b4189f-6653-4682-ae91-f26783ef9fc9",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "a1ec440e-df58-4528-8609-cb759245aef5",
+          "name": null,
+          "title": "Eres…",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "036e0876-7dff-4f07-96d4-86b9024ff23c",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "129befa7-6667-4fe3-b2b3-61cc43ca645c",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "d957fc30-5470-4096-b170-2751a3b23ec8",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "aac8e3e9-1b0e-4d9b-b2e3-2d931d0fff13",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "699f3424-e781-49bc-82eb-67e4d62b7a69",
+          "name": null,
+          "title": "Eres",
+          "score": 91,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-W06",
+      "entity": "work",
+      "query": "work:\"Pais tropical\"",
+      "expected": "Pais tropical",
+      "context": "Jorge Ben Jor; accentless query",
+      "http_status": 200,
+      "evidence_file": "mb-w06.json",
+      "attempts": [
+        {
+          "file": "mb-w06.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "f0eb64aa-388e-49be-a924-1bb513a3186e",
+          "name": null,
+          "title": "País tropical",
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-P01",
+      "entity": "place",
+      "query": "place:\"Niceto Club\"",
+      "expected": "Niceto Club",
+      "city": "Buenos Aires",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-p01-followup.json",
+      "attempts": [
+        {
+          "file": "mb-p01.json",
+          "status": 503
+        },
+        {
+          "file": "mb-p01-followup.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-P02",
+      "entity": "place",
+      "query": "place:\"Teatro Colón\"",
+      "expected": "Teatro Colón",
+      "city": "Buenos Aires",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-p02.json",
+      "attempts": [
+        {
+          "file": "mb-p02.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 4,
+      "candidates": [
+        {
+          "id": "5ee23549-5485-445f-8621-577016ae6749",
+          "name": "Teatro Colón",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "6f85c2b6-4250-468b-9bd8-300fd8b451ad",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Bogotá",
+            "sort-name": "Bogotá",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Calle 10 #5–32",
+          "coordinates": {
+            "latitude": "4.59664",
+            "longitude": "-74.076589"
+          },
+          "disambiguation": "Bogotá"
+        },
+        {
+          "id": "e3612847-f020-4754-a91a-cae353a535c8",
+          "name": "Teatro Colón",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Buenos Aires",
+            "sort-name": "Buenos Aires",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": {
+            "latitude": "-34.601083",
+            "longitude": "-58.383083"
+          },
+          "disambiguation": null
+        },
+        {
+          "id": "745842b2-87c0-49a3-910d-2ab245e9e309",
+          "name": "Teatro Colón: Sala Principal",
+          "title": null,
+          "score": 74,
+          "country": null,
+          "area": {
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Buenos Aires",
+            "sort-name": "Buenos Aires",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        },
+        {
+          "id": "2753ba27-dc28-4309-a672-e42559687ea9",
+          "name": "Teatro Colón: Salón Dorado",
+          "title": null,
+          "score": 74,
+          "country": null,
+          "area": {
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Buenos Aires",
+            "sort-name": "Buenos Aires",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": null,
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-P03",
+      "entity": "place",
+      "query": "place:\"Luna Park\"",
+      "expected": "Luna Park",
+      "city": "Buenos Aires",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-p03-followup.json",
+      "attempts": [
+        {
+          "file": "mb-p03.json",
+          "status": 503
+        },
+        {
+          "file": "mb-p03-followup.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 6,
+      "candidates": [
+        {
+          "id": "12c7f7fb-6ee3-49e5-9d3f-ee2285b3db82",
+          "name": "Luna Park",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "b4e9352c-8edf-4911-8fa3-e852afa30501",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Melbourne",
+            "sort-name": "Melbourne",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Foreshore of Port Phillip Bay, St Kilda, Melbourne, Victoria",
+          "coordinates": {
+            "latitude": "-37.868036",
+            "longitude": "144.976369"
+          },
+          "disambiguation": null
+        },
+        {
+          "id": "97264e5f-405c-4b56-bb9a-5d2194920a18",
+          "name": "Luna Park",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "6daa83c1-75fd-433e-b442-c5b061093ecf",
+            "type": "District",
+            "type-id": "84039871-5e47-38ca-a66a-45e512c8290f",
+            "name": "Coney Island",
+            "sort-name": "Coney Island",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": null,
+          "coordinates": {
+            "latitude": "40.573972",
+            "longitude": "-73.978479"
+          },
+          "disambiguation": "Coney Island amusement park, 2010"
+        },
+        {
+          "id": "0033f0ce-c360-4ff2-a281-0a8b279d0511",
+          "name": "Luna Park",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Buenos Aires",
+            "sort-name": "Buenos Aires",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Av. Madero 420",
+          "coordinates": {
+            "latitude": "-34.60222",
+            "longitude": "-58.36861"
+          },
+          "disambiguation": null
+        },
+        {
+          "id": "05c4d147-0d23-4031-a856-1eb353776e96",
+          "name": "Luna Park",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "1f40c6e1-47ba-4e35-996f-fe6ee5840e62",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Los Angeles",
+            "sort-name": "Los Angeles",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "672 S La Brea Ave, Los Angeles, CA 90036",
+          "coordinates": {
+            "latitude": "34.06271",
+            "longitude": "-118.34378"
+          },
+          "disambiguation": "Los Angeles Club"
+        },
+        {
+          "id": "b388d0fb-1997-461d-8f31-97c8e3f9e413",
+          "name": "Luna Park Sydney",
+          "title": null,
+          "score": 85,
+          "country": null,
+          "area": {
+            "id": "3f179da4-83c6-4a28-a627-e46b4a8ff1ed",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Sydney",
+            "sort-name": "Sydney",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "1 Olympic Drive, Milsons Point, NSW Australia",
+          "coordinates": {
+            "latitude": "-33.84707",
+            "longitude": "151.21058"
+          },
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-P04",
+      "entity": "place",
+      "query": "place:\"Quality Espacio\"",
+      "expected": "Quality Espacio",
+      "city": "Córdoba",
+      "country": "AR",
+      "http_status": 200,
+      "evidence_file": "mb-p04.json",
+      "attempts": [
+        {
+          "file": "mb-p04.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-P05",
+      "entity": "place",
+      "query": "place:\"Teatro de Verano\"",
+      "expected": "Teatro de Verano",
+      "city": "Montevideo",
+      "country": "UY",
+      "http_status": 200,
+      "evidence_file": "mb-p05.json",
+      "attempts": [
+        {
+          "file": "mb-p05.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-P06",
+      "entity": "place",
+      "query": "place:\"Foro Sol\"",
+      "expected": "Foro Sol",
+      "city": "Mexico City",
+      "country": "MX",
+      "http_status": 200,
+      "evidence_file": "mb-p06.json",
+      "attempts": [
+        {
+          "file": "mb-p06.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-P07",
+      "entity": "place",
+      "query": "place:\"Movistar Arena\"",
+      "expected": "Movistar Arena",
+      "city": "Buenos Aires, Bogotá, Santiago ambiguity check",
+      "country": "multiple",
+      "http_status": 200,
+      "evidence_file": "mb-p07-followup.json",
+      "attempts": [
+        {
+          "file": "mb-p07.json",
+          "status": 503
+        },
+        {
+          "file": "mb-p07-followup.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 2,
+      "candidates": [
+        {
+          "id": "50573105-4880-4a66-b668-0356374918f0",
+          "name": "Movistar Arena",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Buenos Aires",
+            "sort-name": "Buenos Aires",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Humboldt 450, C1414 CABA",
+          "coordinates": {
+            "latitude": "-34.594335",
+            "longitude": "-58.448113"
+          },
+          "disambiguation": null
+        },
+        {
+          "id": "0d12edbd-23f8-4045-a34a-0d4c9beb0b7b",
+          "name": "Movistar Arena",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "6f85c2b6-4250-468b-9bd8-300fd8b451ad",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "Bogotá",
+            "sort-name": "Bogotá",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Dg. 61c #26-36, Bogotá, Cundinamarca",
+          "coordinates": {
+            "latitude": "4.649167",
+            "longitude": "-74.077222"
+          },
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-P08",
+      "entity": "place",
+      "query": "place:\"Allianz Parque\"",
+      "expected": "Allianz Parque",
+      "city": "São Paulo",
+      "country": "BR",
+      "http_status": 200,
+      "evidence_file": "mb-p08.json",
+      "attempts": [
+        {
+          "file": "mb-p08.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "326577c1-0d8d-4ed7-9dbb-de8d33bc60ca",
+          "name": "Allianz Parque",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": {
+            "id": "33e0f86c-d709-448d-a484-d55778913af1",
+            "type": "City",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "name": "São Paulo",
+            "sort-name": "São Paulo",
+            "life-span": {
+              "ended": null
+            }
+          },
+          "address": "Francisco Matarazzo, 1705 - Água Branca, São Paulo - SP, 05001-200",
+          "coordinates": {
+            "latitude": "-23.5275",
+            "longitude": "-46.6785"
+          },
+          "disambiguation": null
+        }
+      ]
+    },
+    {
+      "case_id": "MB-E01",
+      "entity": "event",
+      "query": "artist:\"Soda Stereo\" AND begin:2007-12-21",
+      "expected": "Soda Stereo 2007-12-21",
+      "city": "Buenos Aires",
+      "date": "2007-12-21",
+      "http_status": 503,
+      "evidence_file": "mb-e01-followup.json",
+      "attempts": [
+        {
+          "file": "mb-e01.json",
+          "status": 503
+        },
+        {
+          "file": "mb-e01-followup.json",
+          "status": 503
+        }
+      ],
+      "total_matches": null,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-E02",
+      "entity": "event",
+      "query": "artist:\"Taylor Swift\" AND begin:2023-11-09",
+      "expected": "Taylor Swift 2023-11-09",
+      "city": "Buenos Aires",
+      "date": "2023-11-09",
+      "http_status": 200,
+      "evidence_file": "mb-e02.json",
+      "attempts": [
+        {
+          "file": "mb-e02.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "f7fafcd7-37d2-4933-bb6a-f31449cccf04",
+          "name": "The Eras Tour: Buenos Aires",
+          "title": null,
+          "score": 100,
+          "country": null,
+          "area": null,
+          "address": null,
+          "coordinates": null,
+          "disambiguation": "night 1"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-E03",
+      "entity": "event",
+      "query": "artist:\"El Mató a un Policía Motorizado\" AND begin:2013-03-01",
+      "expected": "El Mató a un Policía Motorizado 2013-03-01",
+      "city": "Buenos Aires",
+      "date": "2013-03-01",
+      "http_status": 200,
+      "evidence_file": "mb-e03-followup.json",
+      "attempts": [
+        {
+          "file": "mb-e03.json",
+          "status": 503
+        },
+        {
+          "file": "mb-e03-followup.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-E04",
+      "entity": "event",
+      "query": "artist:\"Soda Stereo\" AND begin:2020-02-29",
+      "expected": "Soda Stereo 2020-02-29",
+      "city": "Bogotá",
+      "date": "2020-02-29",
+      "http_status": 200,
+      "evidence_file": "mb-e04.json",
+      "attempts": [
+        {
+          "file": "mb-e04.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-E05",
+      "entity": "event",
+      "query": "artist:\"Ty Segall\" AND begin:2026-11-07",
+      "expected": "Ty Segall 2026-11-07",
+      "city": "Buenos Aires",
+      "date": "2026-11-07",
+      "http_status": 200,
+      "evidence_file": "mb-e05-followup.json",
+      "attempts": [
+        {
+          "file": "mb-e05.json",
+          "status": 503
+        },
+        {
+          "file": "mb-e05-followup.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-T01",
+      "entity": "series",
+      "query": "series:\"Me verás volver\"",
+      "expected": "Me verás volver",
+      "expected_type": "Tour",
+      "http_status": 200,
+      "evidence_file": "mb-t01.json",
+      "attempts": [
+        {
+          "file": "mb-t01.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-T02",
+      "entity": "series",
+      "query": "series:\"Gracias totales\"",
+      "expected": "Gracias totales",
+      "expected_type": "Tour",
+      "http_status": 200,
+      "evidence_file": "mb-t02.json",
+      "attempts": [
+        {
+          "file": "mb-t02.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    },
+    {
+      "case_id": "MB-T03",
+      "entity": "series",
+      "query": "series:\"The Eras Tour\"",
+      "expected": "The Eras Tour",
+      "expected_type": "Tour",
+      "http_status": 200,
+      "evidence_file": "mb-t03.json",
+      "attempts": [
+        {
+          "file": "mb-t03.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 1,
+      "candidates": [
+        {
+          "id": "23aa9d94-ffc6-4160-a7f3-31cfba1ea646",
+          "name": "The Eras Tour",
+          "score": 100,
+          "type": "Tour"
+        }
+      ]
+    },
+    {
+      "case_id": "MB-T04",
+      "entity": "series",
+      "query": "series:\"World's Hottest Tour\"",
+      "expected": "World's Hottest Tour",
+      "expected_type": "Tour",
+      "http_status": 200,
+      "evidence_file": "mb-t04.json",
+      "attempts": [
+        {
+          "file": "mb-t04.json",
+          "status": 200
+        }
+      ],
+      "total_matches": 0,
+      "candidates": []
+    }
+  ],
+  "note": "Final case outcome uses successful same-query retry if available. No result is distinct from an unavailable request. Hydration and changed-query follow-ups excluded."
+}

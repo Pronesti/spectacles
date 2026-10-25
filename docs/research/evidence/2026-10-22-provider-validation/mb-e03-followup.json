@@ -1,0 +1,15 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-E03",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22El%20Mat%C3%B3%20a%20un%20Polic%C3%ADa%20Motorizado%22%20AND%20begin%3A2013-03-01&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:27.632329+00:00",
+  "phase": "bounded access retry",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:33:28.375Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  },
+  "elapsed_seconds": 0.81
+}

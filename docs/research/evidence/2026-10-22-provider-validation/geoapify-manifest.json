@@ -1,0 +1,208 @@
+{
+  "purpose": "Frozen venue search and prefix-autocomplete sample; no API key included",
+  "cases": [
+    {
+      "case_id": "GEO-G01",
+      "endpoint": "search",
+      "expected_name": "Niceto Club",
+      "expected_city": "Buenos Aires",
+      "country": "ar",
+      "expected_address": "Niceto Vega 5510",
+      "source": "https://nicetoclub.com/nosotros/",
+      "params": {
+        "text": "Niceto Club, Buenos Aires",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      },
+      "reuse": "geo-g01.json"
+    },
+    {
+      "case_id": "GEO-G02",
+      "endpoint": "search",
+      "expected_name": "Teatro Colón",
+      "expected_city": "Buenos Aires",
+      "country": "ar",
+      "expected_address": "Cerrito 628 / Libertad 621",
+      "source": "https://teatrocolon.org.ar/en-vivo/",
+      "params": {
+        "text": "Teatro Colón, Buenos Aires",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G03",
+      "endpoint": "search",
+      "expected_name": "Luna Park",
+      "expected_city": "Buenos Aires",
+      "country": "ar",
+      "expected_address": "Avenida Eduardo Madero 470 / Bouchard 465",
+      "source": "https://www.lunapark.com.ar/",
+      "params": {
+        "text": "Luna Park, Buenos Aires",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G04",
+      "endpoint": "search",
+      "expected_name": "Movistar Arena",
+      "expected_city": "Buenos Aires",
+      "country": "ar",
+      "expected_address": "Humboldt 450",
+      "source": "https://login.movistararena.com.ar/Account/Registro/Documento",
+      "params": {
+        "text": "Movistar Arena, Buenos Aires",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G05",
+      "endpoint": "search",
+      "expected_name": "Quality Espacio",
+      "expected_city": "Córdoba",
+      "country": "ar",
+      "expected_address": "Cruz Roja Argentina 200",
+      "source": "https://qualitycenter.com/conocenos/",
+      "params": {
+        "text": "Quality Espacio, Córdoba",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G06",
+      "endpoint": "search",
+      "expected_name": "Anfiteatro Municipal Humberto de Nito",
+      "expected_city": "Rosario",
+      "country": "ar",
+      "expected_address": "Avenida Diario La Capital 1750",
+      "source": "https://www.rosario.gob.ar/inicio/centros-culturales-y-teatros",
+      "params": {
+        "text": "Anfiteatro Municipal Humberto de Nito, Rosario",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G07",
+      "endpoint": "search",
+      "expected_name": "Teatro de Verano",
+      "expected_city": "Montevideo",
+      "country": "uy",
+      "expected_address": "Rambla Wilson, Canteras del Parque Rodó",
+      "source": "https://teatrodeverano.montevideo.gub.uy/",
+      "params": {
+        "text": "Teatro de Verano, Montevideo",
+        "filter": "countrycode:uy",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G08",
+      "endpoint": "search",
+      "expected_name": "Movistar Arena",
+      "expected_city": "Bogotá",
+      "country": "co",
+      "expected_address": "Diagonal 61C # 26-35",
+      "source": "https://movistararena.co/contacto/",
+      "params": {
+        "text": "Movistar Arena, Bogotá",
+        "filter": "countrycode:co",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G09",
+      "endpoint": "search",
+      "expected_name": "Foro Sol",
+      "expected_city": "Ciudad de México",
+      "country": "mx",
+      "expected_address": "Viaducto Río de la Piedad, Granjas México / Estadio GNP Seguros site",
+      "source": "https://www.setlist.fm/venue/foro-sol-mexico-city-mexico-53d63be5.html",
+      "params": {
+        "text": "Foro Sol, Ciudad de México",
+        "filter": "countrycode:mx",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-G10",
+      "endpoint": "search",
+      "expected_name": "Allianz Parque",
+      "expected_city": "São Paulo",
+      "country": "br",
+      "expected_address": "Avenida Francisco Matarazzo 1705 / Rua Palestra Itália 200",
+      "source": "https://allianzparque.com.br/category/agenda/shows/",
+      "params": {
+        "text": "Allianz Parque, São Paulo",
+        "filter": "countrycode:br",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-A01",
+      "endpoint": "autocomplete",
+      "expected_name": "Niceto Club, Buenos Aires",
+      "country": "ar",
+      "params": {
+        "text": "Niceto Cl",
+        "filter": "countrycode:ar",
+        "bias": "proximity:-58.4389,-34.5874",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-A02",
+      "endpoint": "autocomplete",
+      "expected_name": "Teatro Colón, Buenos Aires",
+      "country": "ar",
+      "params": {
+        "text": "Teatro Colo",
+        "filter": "countrycode:ar",
+        "bias": "proximity:-58.3831,-34.6011",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-A03",
+      "endpoint": "autocomplete",
+      "expected_name": "Movistar Arena, Buenos Aires",
+      "country": "ar",
+      "params": {
+        "text": "Movistar Ar",
+        "filter": "countrycode:ar",
+        "bias": "proximity:-58.4475,-34.5948",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-A04",
+      "endpoint": "autocomplete",
+      "expected_name": "Movistar Arena, Bogotá",
+      "country": "co",
+      "params": {
+        "text": "Movistar Ar",
+        "filter": "countrycode:co",
+        "bias": "proximity:-74.0770,4.6493",
+        "format": "json",
+        "limit": 5
+      }
+    }
+  ]
+}

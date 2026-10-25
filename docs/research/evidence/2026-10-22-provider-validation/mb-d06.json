@@ -1,0 +1,36 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-D06",
+  "request_url": "https://musicbrainz.org/ws/2/recording/b0c5e206-7fb3-4d01-ae87-d6677f7fd5a7?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json",
+  "requested_at_utc": "2026-10-22T17:34:59.116518+00:00",
+  "phase": "composition linkage follow-up",
+  "http_status": 200,
+  "response": {
+    "first-release-date": "2003-06-04",
+    "id": "b0c5e206-7fb3-4d01-ae87-d6677f7fd5a7",
+    "length": 267600,
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "artist": {
+          "type": "Group",
+          "sort-name": "Café Tacuba",
+          "disambiguation": "",
+          "country": "MX",
+          "name": "Café Tacvba",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "id": "c2b37a39-c66a-44b2-b190-a69485ae5d95"
+        },
+        "name": "Café Tacvba"
+      }
+    ],
+    "relations": [],
+    "title": "Eres",
+    "isrcs": [
+      "USMC10300331"
+    ],
+    "video": false,
+    "disambiguation": ""
+  },
+  "elapsed_seconds": 0.963
+}

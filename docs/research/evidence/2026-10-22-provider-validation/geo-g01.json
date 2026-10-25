@@ -1,0 +1,76 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G01",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Niceto+Club%2C+Buenos+Aires%2C+Argentina&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:29:17.283456+00:00",
+  "expected": "Niceto Club, Niceto Vega 5510, Buenos Aires, Argentina",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Niceto Club",
+        "other_names": {
+          "short_name": "Niceto"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1414BBC",
+        "city_district": "Comuna 14",
+        "district": "Distrito Audiovisual",
+        "suburb": "Palermo",
+        "street": "Avenida Coronel Niceto Vega",
+        "housenumber": "5510",
+        "iso3166_2": "AR-C",
+        "lon": -58.4389128,
+        "lat": -34.5874108,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "formatted": "Niceto Club, Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+        "address_line1": "Niceto Club",
+        "address_line2": "Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+        "category": "adult.nightclub",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH76+2C",
+        "plus_code_short": "CH76+2C Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "popularity": 7.507715444955541,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562",
+        "bbox": {
+          "lon1": -58.4391261,
+          "lat1": -34.5875882,
+          "lon2": -58.4386946,
+          "lat2": -34.5872008
+        }
+      }
+    ],
+    "query": {
+      "text": "Niceto Club, Buenos Aires, Argentina",
+      "parsed": {
+        "house": "niceto club",
+        "city": "buenos aires",
+        "country": "argentina",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 1.24
+}

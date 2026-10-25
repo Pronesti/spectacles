@@ -1,0 +1,274 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-W02",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22De%20musica%20ligera%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:30:30.394695+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:30:31.173Z",
+    "count": 2,
+    "offset": 0,
+    "works": [
+      {
+        "id": "d62e1fec-adf8-3a0a-9ce9-f65bd5209e66",
+        "type": "Song",
+        "score": 100,
+        "title": "De música ligera",
+        "language": "spa",
+        "iswcs": [
+          "T-037.260.754-9"
+        ],
+        "relations": [
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "979d01bc-a4da-4c80-8cc1-be40bd35cd5e",
+              "name": "Gustavo Cerati",
+              "sort-name": "Cerati, Gustavo"
+            }
+          },
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "979d01bc-a4da-4c80-8cc1-be40bd35cd5e",
+              "name": "Gustavo Cerati",
+              "sort-name": "Cerati, Gustavo"
+            }
+          },
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "99e4da3c-0742-461f-9184-b190a75c2d88",
+              "name": "Zeta Bosio",
+              "sort-name": "Bosio, Zeta"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "86069a0c-0275-4589-800f-9805f702d25f",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ac02ff67-f358-4427-ba21-7eeff7aa0316",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "97cad3a8-dcef-45f5-afb9-90bbd58b34b8",
+              "title": "De música ligera",
+              "video": true
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "5dfca009-9de2-45f7-a7ea-8c5ebe0faab8",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7518b997-74db-4d3a-91ad-b028c70cb3de",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "bb8942cc-ffb2-4c75-9276-2c94ee1d732b",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c42b22e4-5bef-4381-94bd-ccafcc020749",
+              "title": "Música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "6f5848ef-4688-47cc-9a21-799f541fd148",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8ab03052-363b-41a4-b5e8-55b1ebe0f8a0",
+              "title": "De música ligera (Live at the Roxy)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2b1e9874-9a10-455b-a134-a4ab545db6c8",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "6b37d841-224f-46e1-aafc-cac13ac31fbe",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "a3b9b13b-4bf6-4d28-932e-1acb9584faee",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "16762293-a933-4f00-a07c-de4ce73dfcbd",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7a0893d1-090e-4b4f-b755-dbacd445d97a",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "0b6fd7bd-451d-4354-85ed-13f217bc00fd",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "fe8944c1-befa-4242-aaa3-380ab26d3b45",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8e2ae238-4517-40c0-98e1-2bf63cfc9c89",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ec0dbb75-13d7-4020-a0c2-89fc2dbe6926",
+              "title": "De música ligera",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "954dbc33-d973-4ec5-9ba3-fd26b77de682",
+              "title": "De música ligera",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "33a8b111-2d24-4980-a399-801081f3fa0d",
+        "type": "Song",
+        "score": 92,
+        "title": "De música ligera",
+        "language": "eng",
+        "disambiguation": "English version",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "48ce4ef5-013a-4e97-b1fe-5825bcad331d",
+              "title": "De música ligera",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "eng"
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.854
+}

@@ -1,0 +1,66 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-D07",
+  "request_url": "https://musicbrainz.org/ws/2/recording/1bfd067b-4ea8-48a6-8a09-d8e59700f5d2?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json",
+  "requested_at_utc": "2026-10-22T17:35:03.083985+00:00",
+  "phase": "composition linkage follow-up",
+  "http_status": 200,
+  "response": {
+    "artist-credit": [
+      {
+        "artist": {
+          "type": "Person",
+          "disambiguation": "",
+          "id": "dbe1d6c8-1319-4369-924a-65bb1f9fced5",
+          "country": "AR",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "sort-name": "Gieco, León",
+          "name": "León Gieco"
+        },
+        "joinphrase": "",
+        "name": "León Gieco"
+      }
+    ],
+    "first-release-date": "1994",
+    "video": false,
+    "relations": [
+      {
+        "end": null,
+        "ended": false,
+        "direction": "forward",
+        "target-credit": "",
+        "attribute-values": {},
+        "attributes": [],
+        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+        "work": {
+          "disambiguation": "",
+          "type": "Song",
+          "title": "El fantasma de Canterville",
+          "id": "8b21973e-836a-441b-9e4d-4e67e7114d75",
+          "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+          "attributes": [],
+          "language": "spa",
+          "languages": [
+            "spa"
+          ],
+          "iswcs": [
+            "T-037.291.549-5"
+          ]
+        },
+        "type": "performance",
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "work",
+        "source-credit": ""
+      }
+    ],
+    "length": 166160,
+    "title": "El fantasma de Canterville",
+    "id": "1bfd067b-4ea8-48a6-8a09-d8e59700f5d2",
+    "isrcs": [
+      "ARF049400294"
+    ],
+    "disambiguation": "Desenchufado"
+  },
+  "elapsed_seconds": 0.86
+}

@@ -1,0 +1,94 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A06",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Los%20Bunkers%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:30:49.792230+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:30:50.526Z",
+    "count": 2,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "e99f6d62-f62b-4e1e-8593-33d5696d85f0",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "Los Bunkers",
+        "sort-name": "Bunkers, Los",
+        "country": "CL",
+        "area": {
+          "id": "82d5f4d6-aed4-3ff5-81d1-5363ac6e97a7",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Chile",
+          "sort-name": "Chile",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "81720a5e-f81e-4eff-9e09-d52f04e290f7",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Concepción",
+          "sort-name": "Concepción",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Chilean alternative rock band",
+        "life-span": {
+          "begin": "1999",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Los bunkers",
+            "name": "Los bunkers",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 1,
+            "name": "alternative rock"
+          },
+          {
+            "count": 1,
+            "name": "rock"
+          }
+        ]
+      },
+      {
+        "id": "1d446c4f-ded5-456f-b73e-959d269e5f2a",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 86,
+        "name": "Los Bunkers",
+        "sort-name": "Bunkers, Los",
+        "country": "CO",
+        "area": {
+          "id": "02b60d8d-7164-339d-868d-22d147d9f74a",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Colombia",
+          "sort-name": "Colombia",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Colombian salsa group",
+        "life-span": {
+          "ended": null
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.797
+}

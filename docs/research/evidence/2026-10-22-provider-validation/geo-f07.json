@@ -1,0 +1,310 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-F07",
+  "request_url": "https://api.geoapify.com/v2/places?categories=sport.stadium&filter=circle%3A-74.077%2C4.6493%2C2000&limit=20",
+  "requested_at_utc": "2026-10-22T17:34:17.274173+00:00",
+  "phase": "candidate category verification / Places control",
+  "http_status": 200,
+  "response": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Nuevo Estadio Nemesio Camacho",
+          "country": "Colombia",
+          "country_code": "co",
+          "state": "RAP (Especial) Central",
+          "city": "Bogota",
+          "postcode": "111311",
+          "district": "UPZs de Bogotá",
+          "suburb": "Localidad Teusaquillo",
+          "street": "Diagonal 61C",
+          "iso3166_2": "CO-DC",
+          "lon": -74.0757875,
+          "lat": 4.6475617,
+          "formatted": "Nuevo Estadio Nemesio Camacho, Diagonal 61C, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "address_line1": "Nuevo Estadio Nemesio Camacho",
+          "address_line2": "Diagonal 61C, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "categories": [
+            "building",
+            "building.sport",
+            "sport",
+            "sport.stadium"
+          ],
+          "details": [
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 4.647575669798519,
+              "lon": -74.0757833030401,
+              "name": "Nuevo Estadio Nemesio Camacho",
+              "osm_id": 1485142916,
+              "leisure": "stadium",
+              "building": "construction",
+              "osm_type": "w",
+              "wikidata": "Q179027",
+              "wikipedia": "es:Estadio Nemesio Camacho El Campín",
+              "construction": "stadium",
+              "wikimedia_commons": "Category:Estadio Nemesio Camacho El Campín"
+            }
+          },
+          "wiki_and_media": {
+            "wikidata": "Q179027",
+            "wikipedia": "es:Estadio Nemesio Camacho El Campín",
+            "wikimedia_commons": "Category:Estadio Nemesio Camacho El Campín"
+          },
+          "building": {
+            "type": "construction"
+          },
+          "place_id": "51f70836a2d98452c05936e18d131e971240f00102f901847b85580000000092031d4e7565766f204573746164696f204e656d6573696f2043616d6163686f"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0757833030401,
+            4.647575669798519
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Movistar Arena",
+          "old_name": "Coliseo Cubierto El Campín",
+          "country": "Colombia",
+          "country_code": "co",
+          "state": "RAP (Especial) Central",
+          "city": "Bogota",
+          "postcode": "111311",
+          "district": "Galerías",
+          "suburb": "Localidad Teusaquillo",
+          "street": "Carrera 27A",
+          "housenumber": "26-35",
+          "iso3166_2": "CO-DC",
+          "lon": -74.0773213,
+          "lat": 4.6492621,
+          "formatted": "Movistar Arena, Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "address_line1": "Movistar Arena",
+          "address_line2": "Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "categories": [
+            "building",
+            "building.sport",
+            "sport",
+            "sport.stadium"
+          ],
+          "details": [
+            "details",
+            "details.building",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 4.6492591138849395,
+              "lon": -74.07732111427879,
+              "city": "Bogotá",
+              "name": "Movistar Arena",
+              "layer": 1,
+              "sport": "multi",
+              "height": 50,
+              "osm_id": 24020172,
+              "street": "Avenida Norte-Quito-Sur",
+              "leisure": "stadium",
+              "name:es": "Movistar Arena",
+              "building": "stadium",
+              "old_name": "Coliseo Cubierto El Campín",
+              "operator": "Telefónica;Alcadía Mayor de Bogotá",
+              "osm_type": "w",
+              "postcode": 11001,
+              "wikidata": "Q5145745",
+              "wikipedia": "es:Movistar Arena (Colombia)",
+              "roof:shape": "dome",
+              "housenumber": "26-35",
+              "wikimedia_commons": "Category:Movistar Arena (Bogotá)"
+            }
+          },
+          "operator": "Telefónica;Alcadía Mayor de Bogotá",
+          "name_other": {
+            "old_name": "Coliseo Cubierto El Campín"
+          },
+          "name_international": {
+            "es": "Movistar Arena"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q5145745",
+            "wikipedia": "es:Movistar Arena (Colombia)",
+            "wikimedia_commons": "Category:Movistar Arena (Bogotá)"
+          },
+          "building": {
+            "type": "stadium",
+            "height": 50,
+            "roof": {
+              "shape": "dome"
+            }
+          },
+          "place_id": "51884742d4f28452c05922109361d7981240f00102f901cc846e010000000092030e4d6f766973746172204172656e61"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.07732111427879,
+            4.6492591138849395
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria",
+          "ref": 731,
+          "country": "Colombia",
+          "country_code": "co",
+          "state": "RAP (Especial) Central",
+          "city": "Bogota",
+          "postcode": "111321",
+          "district": "Ciudad Universitaria",
+          "suburb": "Localidad Teusaquillo",
+          "street": "Anillo Vial",
+          "iso3166_2": "CO-DC",
+          "lon": -74.0864384,
+          "lat": 4.6403537,
+          "formatted": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria, Anillo Vial, Teusaquillo, 111321 Bogota, RAP (Especial) Central, Colombia",
+          "address_line1": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria",
+          "address_line2": "Anillo Vial, Teusaquillo, 111321 Bogota, RAP (Especial) Central, Colombia",
+          "categories": [
+            "sport",
+            "sport.stadium"
+          ],
+          "details": [
+            "details",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 4.640362148701899,
+              "lon": -74.08646606334625,
+              "ref": 731,
+              "name": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria",
+              "sport": "soccer",
+              "osm_id": 24410567,
+              "leisure": "stadium",
+              "name:es": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria",
+              "osm_type": "w",
+              "wikidata": "Q4722060",
+              "wikipedia": "es:Estadio Alfonso López Pumarejo",
+              "wikimedia_commons": "Category:Estadio Alfonso López (Universidad Nacional, Bogotá)"
+            }
+          },
+          "name_international": {
+            "es": "Estadio Alfonso López Pumarejo de la Ciudad Universitaria"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q4722060",
+            "wikipedia": "es:Estadio Alfonso López Pumarejo",
+            "wikimedia_commons": "Category:Estadio Alfonso López (Universidad Nacional, Bogotá)"
+          },
+          "place_id": "514e92f4a8888552c05973155918bb8f1240f00102f901c77974010000000092033a4573746164696f20416c666f6e736f204cc3b370657a2050756d6172656a6f206465206c612043697564616420556e6976657273697461726961"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.08646606334625,
+            4.640362148701899
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Estadio Nemesio Camacho El Campín",
+          "country": "Colombia",
+          "country_code": "co",
+          "state": "RAP (Especial) Central",
+          "city": "Bogota",
+          "postcode": "111311",
+          "district": "Galerías",
+          "suburb": "Localidad Teusaquillo",
+          "street": "Avenida Carrera 30",
+          "iso3166_2": "CO-DC",
+          "lon": -74.0776054,
+          "lat": 4.6459495,
+          "formatted": "Estadio Nemesio Camacho El Campín, Avenida Carrera 30, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "address_line1": "Estadio Nemesio Camacho El Campín",
+          "address_line2": "Avenida Carrera 30, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "categories": [
+            "sport",
+            "sport.stadium"
+          ],
+          "details": [
+            "details",
+            "details.contact",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "lat": 4.645957669218141,
+              "lon": -74.07758869592283,
+              "city": "Bogotá",
+              "name": "Estadio Nemesio Camacho El Campín",
+              "email": "estadioelcampin@idrd.gov.co",
+              "phone": 2356577,
+              "osm_id": 24020167,
+              "street": "Avenida Carrera 30",
+              "leisure": "stadium",
+              "name:es": "Estadio Nemesio Camacho El Campín",
+              "website": "https://www.idrd.gov.co/parques/escenarios-idrd/escenarios-idrd/estadio-nemesio-camacho-el-campin",
+              "alt_name": "El Campín",
+              "osm_type": "w",
+              "wikidata": "Q179027",
+              "wikipedia": "es:Estadio Nemesio Camacho El Campín",
+              "wikimedia_commons": "Category:Estadio Nemesio Camacho El Campín",
+              "name:etymology:wikidata": "Q179027"
+            }
+          },
+          "website": "https://www.idrd.gov.co/parques/escenarios-idrd/escenarios-idrd/estadio-nemesio-camacho-el-campin",
+          "name_other": {
+            "alt_name": "El Campín"
+          },
+          "name_international": {
+            "es": "Estadio Nemesio Camacho El Campín"
+          },
+          "contact": {
+            "phone": 2356577,
+            "email": "estadioelcampin@idrd.gov.co"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q179027",
+            "wikipedia": "es:Estadio Nemesio Camacho El Campín",
+            "wikimedia_commons": "Category:Estadio Nemesio Camacho El Campín"
+          },
+          "place_id": "51c8e19336f78452c059b7915fed75951240f00102f901c7846e01000000009203224573746164696f204e656d6573696f2043616d6163686f20456c2043616d70c3ad6e"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.07758869592283,
+            4.645957669218141
+          ]
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.508
+}

@@ -1,0 +1,182 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-work-search-access",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Siguiendo%20la%20luna%22&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:26:28.170777+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:26:29.101Z",
+    "count": 1,
+    "offset": 0,
+    "works": [
+      {
+        "id": "d54861a1-353a-4a10-a0b5-b4a0d4857049",
+        "type": "Song",
+        "score": 100,
+        "title": "Siguiendo la luna",
+        "language": "spa",
+        "iswcs": [
+          "T-037.271.699-8"
+        ],
+        "relations": [
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "55f35a1f-2e52-47ee-b60f-05670fd4c339",
+              "name": "Sergio Rotman",
+              "sort-name": "Rotman, Sergio",
+              "disambiguation": "Argentinian musician, original member of Los Fabulosos Cadillacs"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "55f35a1f-2e52-47ee-b60f-05670fd4c339",
+              "name": "Sergio Rotman",
+              "sort-name": "Rotman, Sergio",
+              "disambiguation": "Argentinian musician, original member of Los Fabulosos Cadillacs"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "51168128-d5a4-454a-ab6d-77d6257fac65",
+              "title": "Siguiendo la luna",
+              "video": true
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "d493ea0e-5691-42ad-abad-b9f97139ad0a",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "73ddbe84-c3f2-48db-937b-71afb6265e14",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7a9cd4e2-39c7-42fe-9712-6b35944701de",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "a7d65c1b-fd03-48ff-a385-d1f34c85fa27",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "0106f9c7-3cbd-443d-b7bd-7ca5f05291cf",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "32fe039c-6651-4806-b0f2-581335725e06",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "b10aa679-5f96-4dfa-8071-807a23a8e0c6",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "621dccf8-bcf0-4c8c-bbfb-49ef1a5b6861",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "11bd8a9e-eb63-4294-95f4-ee4e6d90cb63",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8e46535f-3149-4a5e-96b8-ff054f310ea3",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "50037818-bd32-4cdf-a24f-94a2265e7664",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "37694ade-b50c-466a-8b81-4dfdc330727f",
+              "title": "Siguiendo la luna",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.994
+}

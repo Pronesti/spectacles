@@ -1,0 +1,12 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-E01",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22%20AND%20begin%3A2007-12-21&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:21.845952+00:00",
+  "phase": "bounded access retry",
+  "http_status": 503,
+  "response": {
+    "error": "The MusicBrainz web server is currently busy. Please try again later."
+  },
+  "elapsed_seconds": 0.784
+}

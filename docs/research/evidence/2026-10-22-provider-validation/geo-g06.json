@@ -1,0 +1,67 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G06",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Anfiteatro+Municipal+Humberto+de+Nito%2C+Rosario&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:24.146171+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Anfiteatro Municipal Humberto de Nito",
+        "other_names": {
+          "short_name": "Humberto de Nito"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "region": "Gran Rosario",
+        "state": "Santa Fe",
+        "county": "Departamento Rosario",
+        "city": "Rosario",
+        "postcode": "S2000",
+        "suburb": "Rosario Centro",
+        "street": "Avenida Manuel Belgrano",
+        "iso3166_2": "AR-S",
+        "lon": -60.6224055,
+        "lat": -32.9579483,
+        "state_code": "S",
+        "result_type": "amenity",
+        "formatted": "Anfiteatro Municipal Humberto de Nito, Avenida Manuel Belgrano, Rosario Centro, S2000 Rosario, Argentina",
+        "address_line1": "Anfiteatro Municipal Humberto de Nito",
+        "address_line2": "Avenida Manuel Belgrano, Rosario Centro, S2000 Rosario, Argentina",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47VX29RH+R2",
+        "plus_code_short": "29RH+R2 Rosario, Departamento Rosario, Argentina",
+        "rank": {
+          "importance": 3.750133516437045e-05,
+          "popularity": 5.930216652670473,
+          "confidence": 0.8333333333333334,
+          "match_type": "full_match"
+        },
+        "place_id": "51deacc1fbaa4f4ec05920e1c50c9e7a40c0f00102f9010a3ffc1d00000000c00201920325416e666974656174726f204d756e69636970616c2048756d626572746f206465204e69746f",
+        "bbox": {
+          "lon1": -60.6228746,
+          "lat1": -32.9583562,
+          "lon2": -60.6220964,
+          "lat2": -32.9575836
+        }
+      }
+    ],
+    "query": {
+      "text": "Anfiteatro Municipal Humberto de Nito, Rosario"
+    }
+  },
+  "elapsed_seconds": 0.593
+}

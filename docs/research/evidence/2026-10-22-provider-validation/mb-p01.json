@@ -1,0 +1,11 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-P01",
+  "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Niceto%20Club%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:30:34.254032+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 503,
+  "retry_after": "0",
+  "response_excerpt": "{\"error\": \"The MusicBrainz web server is currently busy. Please try again later.\"}\n",
+  "elapsed_seconds": 0.789
+}

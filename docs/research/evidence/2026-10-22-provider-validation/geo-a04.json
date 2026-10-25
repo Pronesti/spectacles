@@ -1,0 +1,254 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-A04",
+  "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aco&bias=proximity%3A-74.0770%2C4.6493&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:35.975497+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "country_code": "co",
+        "name": "Movistar Arena",
+        "housenumber": "26-35",
+        "street": "Avenida Norte-Quito-Sur",
+        "country": "Colombia",
+        "county": "Bogotá, D.C.",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "postcode": "11001",
+        "state": "Bogota D.C.",
+        "state_code": "DC",
+        "county_code": "SF",
+        "city": "Bogotá",
+        "lon": -74.077258,
+        "lat": 4.649268,
+        "result_type": "amenity",
+        "distance": 28.814476644084223,
+        "formatted": "Movistar Arena, Avenida Norte-Quito-Sur 26-35, 11001 Bogotá, DC, Colombia",
+        "address_line1": "Movistar Arena",
+        "address_line2": "Avenida Norte-Quito-Sur 26-35, 11001 Bogotá, DC, Colombia",
+        "timezone": {
+          "name": "America/Bogota",
+          "offset_STD": "-05:00",
+          "offset_DST": "-05:00",
+          "offset_STD_seconds": -18000,
+          "offset_DST_seconds": -18000
+        },
+        "plus_code": "67P7JWXF+P3",
+        "plus_code_short": "JWXF+P3 Bogotá, Bogotá, D.C., Colombia",
+        "iso3166_2": "CO-DC",
+        "rank": {
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51aed689cbf18452c059795be9b5d9981240f00102f901cc846e0100000000c0020192030e4d6f766973746172204172656e61e203206f70656e7374726565746d61703a76656e75653a7761792f3234303230313732",
+        "bbox": {
+          "lon1": -74.0778412,
+          "lat1": 4.6487424,
+          "lon2": -74.0768023,
+          "lat2": 4.6497752
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar Arena",
+        "old_name": "Coliseo Cubierto El Campín",
+        "other_names": {
+          "old_name": "Coliseo Cubierto El Campín"
+        },
+        "country": "Colombia",
+        "country_code": "co",
+        "state": "RAP (Especial) Central",
+        "city": "Bogota",
+        "postcode": "111311",
+        "district": "Galerías",
+        "suburb": "Localidad Teusaquillo",
+        "street": "Carrera 27A",
+        "housenumber": "26-35",
+        "iso3166_2": "CO-DC",
+        "lon": -74.0773213,
+        "lat": 4.6492621,
+        "result_type": "amenity",
+        "distance": 35.85792956548665,
+        "formatted": "Movistar Arena, Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+        "address_line1": "Movistar Arena",
+        "address_line2": "Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+        "category": "sport.stadium",
+        "timezone": {
+          "name": "America/Bogota",
+          "offset_STD": "-05:00",
+          "offset_DST": "-05:00",
+          "offset_STD_seconds": -18000,
+          "offset_DST_seconds": -18000
+        },
+        "plus_code": "67P7JWXF+P3",
+        "rank": {
+          "importance": 0.319279276758968,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5130b209d5f28452c0590e21f829d8981240f00102f901cc846e0100000000c0020192030e4d6f766973746172204172656e61",
+        "bbox": {
+          "lon1": -74.0778412,
+          "lat1": 4.6487424,
+          "lon2": -74.0768023,
+          "lat2": 4.6497752
+        }
+      },
+      {
+        "country_code": "co",
+        "country": "Colombia",
+        "county": "Bogotá, D.C.",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "street": "Parque Movistar Arena",
+        "state": "Bogota D.C.",
+        "state_code": "DC",
+        "county_code": "SF",
+        "city": "Bogotá",
+        "lon": -74.077309,
+        "lat": 4.650016,
+        "result_type": "street",
+        "distance": 86.66867100356262,
+        "postcode": "111221",
+        "formatted": "Parque Movistar Arena, 111221 Bogotá, DC, Colombia",
+        "address_line1": "Parque Movistar Arena",
+        "address_line2": "111221 Bogotá, DC, Colombia",
+        "timezone": {
+          "name": "America/Bogota",
+          "offset_STD": "-05:00",
+          "offset_DST": "-05:00",
+          "offset_STD_seconds": -18000,
+          "offset_DST_seconds": -18000
+        },
+        "plus_code": "67P7MW2F+23",
+        "plus_code_short": "MW2F+23 Bogotá, Bogotá, D.C., Colombia",
+        "iso3166_2": "CO-DC",
+        "rank": {
+          "confidence": 0,
+          "confidence_street_level": 0.81,
+          "match_type": "full_match"
+        },
+        "place_id": "51efab72a1f28452c059c78157cb9d991240f00102f901a070012a00000000c00204e203216f70656e7374726565746d61703a76656e75653a7761792f373034373337343430",
+        "bbox": {
+          "lon1": -74.0779588,
+          "lat1": 4.6495945,
+          "lon2": -74.0764582,
+          "lat2": 4.6507484
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Parque Movistar Arena",
+        "country": "Colombia",
+        "country_code": "co",
+        "state": "RAP (Especial) Central",
+        "city": "Bogota",
+        "district": "UPZs de Bogotá",
+        "suburb": "Localidad Teusaquillo",
+        "iso3166_2": "CO-DC",
+        "lon": -74.0773276,
+        "lat": 4.6502291,
+        "result_type": "amenity",
+        "distance": 109.50560757860514,
+        "postcode": "111221",
+        "formatted": "Parque Movistar Arena, Teusaquillo, 111221 Bogota, RAP (Especial) Central, Colombia",
+        "address_line1": "Parque Movistar Arena",
+        "address_line2": "Teusaquillo, 111221 Bogota, RAP (Especial) Central, Colombia",
+        "category": "leisure.park",
+        "timezone": {
+          "name": "America/Bogota",
+          "offset_STD": "-05:00",
+          "offset_DST": "-05:00",
+          "offset_STD_seconds": -18000,
+          "offset_DST_seconds": -18000
+        },
+        "plus_code": "67P7MW2F+33",
+        "rank": {
+          "importance": 0.08007831921873805,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51014576eff28452c0594ba13da8d5991240f00102f901a070012a00000000c00201920315506172717565204d6f766973746172204172656e61",
+        "bbox": {
+          "lon1": -74.0779588,
+          "lat1": 4.6495945,
+          "lon2": -74.0764582,
+          "lat2": 4.6507484
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar Arena",
+        "old_name": "Coliseo",
+        "other_names": {
+          "old_name": "Coliseo"
+        },
+        "country": "Colombia",
+        "country_code": "co",
+        "state": "RAP (Especial) Central",
+        "city": "Bogota",
+        "postcode": "111311",
+        "district": "Galerías",
+        "suburb": "Localidad Teusaquillo",
+        "street": "TransMilenio",
+        "iso3166_2": "CO-DC",
+        "lon": -74.0783207,
+        "lat": 4.6502428,
+        "result_type": "amenity",
+        "distance": 180.04190161318562,
+        "formatted": "Movistar Arena, TransMilenio, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+        "address_line1": "Movistar Arena",
+        "address_line2": "TransMilenio, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+        "timezone": {
+          "name": "America/Bogota",
+          "offset_STD": "-05:00",
+          "offset_DST": "-05:00",
+          "offset_STD_seconds": -18000,
+          "offset_DST_seconds": -18000
+        },
+        "plus_code": "67P7MW2C+3M",
+        "rank": {
+          "importance": 7.831921873803338e-05,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "516446d334038552c0597fd6a13fd9991240f00101f90139e4cd0000000000c0020192030e4d6f766973746172204172656e61",
+        "bbox": {
+          "lon1": -74.0784253,
+          "lat1": 4.6493243,
+          "lon2": -74.0782705,
+          "lat2": 4.6504947
+        }
+      }
+    ],
+    "query": {
+      "text": "Movistar Ar"
+    }
+  },
+  "elapsed_seconds": 1.159
+}

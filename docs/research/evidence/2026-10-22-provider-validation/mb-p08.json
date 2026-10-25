@@ -1,0 +1,42 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-P08",
+  "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Allianz%20Parque%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:32:18.105877+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:32:18.849Z",
+    "count": 1,
+    "offset": 0,
+    "places": [
+      {
+        "id": "326577c1-0d8d-4ed7-9dbb-de8d33bc60ca",
+        "type": "Stadium",
+        "type-id": "62664fbd-cd55-3b5f-a5ea-fb5d1bc0113c",
+        "score": 100,
+        "name": "Allianz Parque",
+        "address": "Francisco Matarazzo, 1705 - Água Branca, São Paulo - SP, 05001-200",
+        "coordinates": {
+          "latitude": "-23.5275",
+          "longitude": "-46.6785"
+        },
+        "area": {
+          "id": "33e0f86c-d709-448d-a484-d55778913af1",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "São Paulo",
+          "sort-name": "São Paulo",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "2014-11-19",
+          "ended": null
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.81
+}

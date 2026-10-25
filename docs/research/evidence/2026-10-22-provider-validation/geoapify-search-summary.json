@@ -1,0 +1,974 @@
+{
+  "completed": 14,
+  "planned": 14,
+  "cases": [
+    {
+      "case_id": "GEO-G01",
+      "expected": "Niceto Club",
+      "http_status": 200,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "name": "Niceto Club",
+          "formatted": "Niceto Club, Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Coronel Niceto Vega",
+          "housenumber": "5510",
+          "result_type": "amenity",
+          "lat": -34.5874108,
+          "lon": -58.4389128,
+          "place_id": "51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "popularity": 7.507715444955541,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G02",
+      "expected": "Teatro Colón",
+      "http_status": 200,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "name": "Teatro Colón",
+          "formatted": "Teatro Colón, Cerrito 628, San Nicolás, C1055 AAB Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Cerrito",
+          "housenumber": "628",
+          "result_type": "amenity",
+          "lat": -34.6010855,
+          "lon": -58.3831869,
+          "place_id": "51b8e0b1440c314dc059c74ca25ef04c41c0f00102f901f79f680100000000c0020192030d54656174726f20436f6cc3b36e",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.5480701866571246,
+            "popularity": 7.953640848669934,
+            "confidence": 1,
+            "confidence_city_level": 0.9,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Buenos Aires",
+          "formatted": "Buenos Aires, Comuna 1, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": null,
+          "housenumber": null,
+          "result_type": "city",
+          "lat": -34.6095579,
+          "lon": -58.3887904,
+          "place_id": "51d77f42e2c3314dc0595cc246fe054e41c0f00101f901ccaf120000000000c0020892030c4275656e6f73204169726573",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.7828158211550639,
+            "popularity": 7.953640848669934,
+            "confidence": 0.225,
+            "confidence_city_level": 0.9,
+            "match_type": "match_by_city_or_disrict"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G03",
+      "expected": "Luna Park",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Luna Park",
+          "formatted": "Luna Park, Avenida Eduardo Madero, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Eduardo Madero",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6020467,
+          "lon": -58.3683591,
+          "place_id": "518dd71764262f4dc0591695c3dd0f4d41c0f00103f9013a2297d902000000c002019203094c756e61205061726b",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "popularity": 7.953640848669934,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Stadium Luna Park",
+          "formatted": "Stadium Luna Park, Avenida Eduardo Madero 420, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Eduardo Madero",
+          "housenumber": "420",
+          "result_type": "amenity",
+          "lat": -34.6024261,
+          "lon": -58.3686914,
+          "place_id": "5182a8a047312f4dc059e0e0664c1c4d41c0f00102f901874ad50100000000c002019203115374616469756d204c756e61205061726b",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.4684571723391885,
+            "popularity": 7.953640848669934,
+            "confidence": 0.9,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Luna",
+          "formatted": "Luna, Parque Patricios, 1870 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Luna",
+          "housenumber": null,
+          "result_type": "street",
+          "lat": -34.641116,
+          "lon": -58.398301,
+          "place_id": "51677bf486fb324dc0599e78ce16105241c0c002049203044c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363030353237",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "popularity": 6.926485243994024,
+            "confidence": 0,
+            "confidence_city_level": 1,
+            "match_type": "match_by_street"
+          }
+        },
+        {
+          "name": "Luna",
+          "formatted": "Luna, Barracas, 1870 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Luna",
+          "housenumber": null,
+          "result_type": "street",
+          "lat": -34.645374,
+          "lon": -58.396865,
+          "place_id": "51a9f6e978cc324dc05927d87f9d9b5241c0c002049203044c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363031363638",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "popularity": 6.700972226403901,
+            "confidence": 0,
+            "confidence_city_level": 1,
+            "match_type": "match_by_street"
+          }
+        },
+        {
+          "name": "Coronel Luna",
+          "formatted": "Coronel Luna, Buenos Aires, 1870 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Coronel Luna",
+          "housenumber": null,
+          "result_type": "street",
+          "lat": -34.665284,
+          "lon": -58.414169,
+          "place_id": "512e02637d03354dc059aa46af06285541c0c0020492030c436f726f6e656c204c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363031393335",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "popularity": 6.488936115576849,
+            "confidence": 0,
+            "confidence_city_level": 1,
+            "match_type": "match_by_street"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G04",
+      "expected": "Movistar Arena",
+      "http_status": 200,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Humboldt",
+          "housenumber": "450",
+          "result_type": "amenity",
+          "lat": -34.5942604,
+          "lon": -58.4481368,
+          "place_id": "512a11f28b5c394dc05969a78bb9104c41c0f00102f901c85ada2900000000c0020192030e4d6f766973746172204172656e61",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.3367302927095036,
+            "popularity": 7.1596621962108316,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G05",
+      "expected": "Quality Espacio",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Espacio Quality",
+          "formatted": "Espacio Quality, Eduardo Crespo, Ejército Argentino, X5000 Cordoba, Argentina",
+          "country_code": "ar",
+          "city": "Cordoba",
+          "street": "Eduardo Crespo",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -31.4448337,
+          "lon": -64.1954798,
+          "place_id": "51d501b5bd820c50c0599fa8119fe0713fc0f00102f9014e30ce0e00000000c0020192030f4573706163696f205175616c697479",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "importance": 6.888303959711631e-05,
+            "popularity": 5.788034450802705,
+            "confidence": 0.6666666666666667,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": null,
+          "formatted": "Espacio Quality, Ejército Argentino, X5000 Cordoba, Argentina",
+          "country_code": "ar",
+          "city": "Cordoba",
+          "street": "Espacio Quality",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -31.444694,
+          "lon": -64.195077,
+          "place_id": "51eacc3d247c0c50c05938ba4a77d7713fc0f00102f9014e30ce0e00000000c00201e203216f70656e7374726565746d61703a76656e75653a7761792f323438333933383036",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "popularity": 5.788034450802705,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Espacio O2",
+          "formatted": "Espacio O2, Faustino Allende 1045, Alta Córdoba, X5001 Cordoba, Argentina",
+          "country_code": "ar",
+          "city": "Cordoba",
+          "street": "Faustino Allende",
+          "housenumber": "1045",
+          "result_type": "amenity",
+          "lat": -31.3991104,
+          "lon": -64.1921682,
+          "place_id": "513295d97b4c0c50c059557e63192c663fc0f00102f90118f6a01100000000c0020192030a4573706163696f204f32e203216f70656e7374726565746d61703a76656e75653a7761792f323935373631343332",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "importance": 6.888303959711631e-05,
+            "popularity": 6.316922174556287,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Espacio Cervecería Córdoba",
+          "formatted": "Espacio Cervecería Córdoba, La Tablada, Alberdi, X5000 Cordoba, Argentina",
+          "country_code": "ar",
+          "city": "Cordoba",
+          "street": "La Tablada",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -31.4021016,
+          "lon": -64.2061365,
+          "place_id": "51c3802557310d50c05956ab6521f0663fc0f00103f901c5aec53c03000000c0020192031c4573706163696f204365727665636572c3ad612043c3b372646f6261e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133393034343930313831",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "importance": 6.888303959711631e-05,
+            "popularity": 6.220460320884854,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Espacio Cultural",
+          "formatted": "Espacio Cultural, Manuel Cardeñosa, Cerro Chico, X5009 Cordoba, Argentina",
+          "country_code": "ar",
+          "city": "Cordoba",
+          "street": "Manuel Cardeñosa",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -31.3663442,
+          "lon": -64.2184757,
+          "place_id": "51209e8081fb0d50c0594c14c6bbc85d3fc0f00103f9012e289f6300000000c002019203104573706163696f2043756c747572616ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f31363731333734383934",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "importance": 6.888303959711631e-05,
+            "popularity": 5.688106729003756,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G06",
+      "expected": "Anfiteatro Municipal Humberto de Nito",
+      "http_status": 200,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "name": "Anfiteatro Municipal Humberto de Nito",
+          "formatted": "Anfiteatro Municipal Humberto de Nito, Avenida Manuel Belgrano, Rosario Centro, S2000 Rosario, Argentina",
+          "country_code": "ar",
+          "city": "Rosario",
+          "street": "Avenida Manuel Belgrano",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -32.9579483,
+          "lon": -60.6224055,
+          "place_id": "51deacc1fbaa4f4ec05920e1c50c9e7a40c0f00102f9010a3ffc1d00000000c00201920325416e666974656174726f204d756e69636970616c2048756d626572746f206465204e69746f",
+          "timezone": "America/Argentina/Cordoba",
+          "rank": {
+            "importance": 3.750133516437045e-05,
+            "popularity": 5.930216652670473,
+            "confidence": 0.8333333333333334,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G07",
+      "expected": "Teatro de Verano",
+      "http_status": 200,
+      "candidate_count": 1,
+      "candidates": [
+        {
+          "name": "Teatro de Verano Ramón Collazo",
+          "formatted": "Teatro de Verano Ramón Collazo, Sendero canteras, 11303 Montevideo, Uruguay",
+          "country_code": "uy",
+          "city": "Montevideo",
+          "street": "Sendero canteras",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.9200458,
+          "lon": -56.1700696,
+          "place_id": "519b0535d7c4154cc0593ce98e0fc47541c0f00102f90114003a0200000000c0020192031f54656174726f20646520566572616e6f2052616dc3b36e20436f6c6c617a6f",
+          "timezone": "America/Montevideo",
+          "rank": {
+            "importance": 0.31977730603466514,
+            "popularity": 5.742715422051011,
+            "confidence": 0.81,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G08",
+      "expected": "Movistar Arena",
+      "http_status": 200,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "country_code": "co",
+          "city": "Bogota",
+          "street": "Carrera 27A",
+          "housenumber": "26-35",
+          "result_type": "amenity",
+          "lat": 4.6492621,
+          "lon": -74.0773213,
+          "place_id": "5130b209d5f28452c0590e21f829d8981240f00102f901cc846e0100000000c0020192030e4d6f766973746172204172656e61",
+          "timezone": "America/Bogota",
+          "rank": {
+            "importance": 0.319279276758968,
+            "popularity": 7.86869877569795,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, TransMilenio, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "country_code": "co",
+          "city": "Bogota",
+          "street": "TransMilenio",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 4.6502428,
+          "lon": -74.0783207,
+          "place_id": "516446d334038552c0597fd6a13fd9991240f00101f90139e4cd0000000000c0020192030e4d6f766973746172204172656e61",
+          "timezone": "America/Bogota",
+          "rank": {
+            "importance": 7.831921873803338e-05,
+            "popularity": 7.819426893606786,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G09",
+      "expected": "Foro Sol",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Foro",
+          "formatted": "Foro, Calle Atletas, San Diego Churubusco, 04120 Mexico City, Mexico",
+          "country_code": "mx",
+          "city": "Mexico City",
+          "street": "Calle Atletas",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 19.3558065,
+          "lon": -99.1431205,
+          "place_id": "51c7b8e2e228c958c05948348122165b3340f00102f9017b5a3a3300000000c00201920304466f726fe203216f70656e7374726565746d61703a76656e75653a7761792f383539343632323637",
+          "timezone": "America/Mexico_City",
+          "rank": {
+            "importance": 9.399328603031995e-05,
+            "popularity": 7.353126139234498,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Foro Lanziloti",
+          "formatted": "Foro Lanziloti, Calle Monasterio, San Ángel, 01000 Mexico City, Mexico",
+          "country_code": "mx",
+          "city": "Mexico City",
+          "street": "Calle Monasterio",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 19.3453003,
+          "lon": -99.1885707,
+          "place_id": "51f75ed78a11cc58c0598bccb79965583340f00102f90161d37b5100000000c0020192030e466f726f204c616e7a696c6f7469e203226f70656e7374726565746d61703a76656e75653a7761792f31333637303639353337",
+          "timezone": "America/Mexico_City",
+          "rank": {
+            "importance": 9.399328603031995e-05,
+            "popularity": 7.460334145421757,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Foro Abierto",
+          "formatted": "Foro Abierto, Calle Matías Romero, Del Valle, 03100 Mexico City, Mexico",
+          "country_code": "mx",
+          "city": "Mexico City",
+          "street": "Calle Matías Romero",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 19.380374,
+          "lon": -99.1649185,
+          "place_id": "51580053068eca58c059ab3fc23060613340f00102f9013d4c9b1700000000c0020192030c466f726f204162696572746fe203216f70656e7374726565746d61703a76656e75653a7761792f333936303533353635",
+          "timezone": "America/Mexico_City",
+          "rank": {
+            "importance": 9.399328603031995e-05,
+            "popularity": 7.302802916764094,
+            "confidence": 1,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Estadio GNP Seguros",
+          "formatted": "Estadio GNP Seguros, Avenida Río Churubusco, 08400 Mexico City, Mexico",
+          "country_code": "mx",
+          "city": "Mexico City",
+          "street": "Avenida Río Churubusco",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 19.4050224,
+          "lon": -99.0955714,
+          "place_id": "51b55b81d71dc658c059be254a8caf673340f00102f9013e9a674e00000000c002019203134573746164696f20474e502053656775726f73",
+          "timezone": "America/Mexico_City",
+          "rank": {
+            "importance": 0.3867453017489014,
+            "popularity": 6.790741299965928,
+            "confidence": 0,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Foro Lucerna",
+          "formatted": "Foro Lucerna, Calle Lucerna 64, Roma, 06600 Mexico City, Mexico",
+          "country_code": "mx",
+          "city": "Mexico City",
+          "street": "Calle Lucerna",
+          "housenumber": "64",
+          "result_type": "amenity",
+          "lat": 19.4299546,
+          "lon": -99.156706,
+          "place_id": "5191459a7807ca58c059c7c33181116e3340f00103f9010b2ac71d01000000c0020192030c466f726f204c756365726e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373934353538393837",
+          "timezone": "America/Mexico_City",
+          "rank": {
+            "importance": 9.399328603031995e-05,
+            "popularity": 7.90655696492342,
+            "confidence": 0,
+            "confidence_city_level": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-G10",
+      "expected": "Allianz Parque",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Nubank Parque",
+          "formatted": "Nubank Parque, Rua Turiassu 1840, São Paulo - SP, 05005-000, Brazil",
+          "country_code": "br",
+          "city": "São Paulo",
+          "street": "Rua Turiassu",
+          "housenumber": "1840",
+          "result_type": "amenity",
+          "lat": -23.5274971,
+          "lon": -46.6785281,
+          "place_id": "5161753f02da5647c0591f3cc90c0a8737c0f00102f901f176c50d00000000c0020192030d4e7562616e6b20506172717565",
+          "timezone": "America/Sao_Paulo",
+          "rank": {
+            "importance": 0.5214628559760609,
+            "popularity": 8.22616041006884,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Allianz",
+          "formatted": "Allianz, Rua Tito 678 L2, Lapa, São Paulo - SP, 05051-000, Brazil",
+          "country_code": "br",
+          "city": "São Paulo",
+          "street": "Rua Tito",
+          "housenumber": "678 L2",
+          "result_type": "amenity",
+          "lat": -23.5280201,
+          "lon": -46.6987838,
+          "place_id": "51c0fc5fbf715947c059722145532c8737c0f00102f901d178f73e00000000c00201920307416c6c69616e7ae203226f70656e7374726565746d61703a76656e75653a7761792f31303536343035373133",
+          "timezone": "America/Sao_Paulo",
+          "rank": {
+            "importance": 7.861829556720863e-05,
+            "popularity": 7.236025712535572,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Hotel Allianz Parque",
+          "formatted": "Hotel Allianz Parque, Rua Palestra Itália 263, Pompéia, São Paulo - SP, 05005-030, Brazil",
+          "country_code": "br",
+          "city": "São Paulo",
+          "street": "Rua Palestra Itália",
+          "housenumber": "263",
+          "result_type": "amenity",
+          "lat": -23.528216,
+          "lon": -46.6802347,
+          "place_id": "515c0d3fee115747c0595439ed29398737c0f00102f901715cfb1e00000000c00201920314486f74656c20416c6c69616e7a20506172717565e203216f70656e7374726565746d61703a76656e75653a7761792f353139373839363831",
+          "timezone": "America/Sao_Paulo",
+          "rank": {
+            "importance": 7.861829556720863e-05,
+            "popularity": 8.21188445227985,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Edifício Allianz",
+          "formatted": "Edifício Allianz, Rua Eugênio de Medeiros 303, Pinheiros, São Paulo - SP, 05425-000, Brazil",
+          "country_code": "br",
+          "city": "São Paulo",
+          "street": "Rua Eugênio de Medeiros",
+          "housenumber": "303",
+          "result_type": "amenity",
+          "lat": -23.5689702,
+          "lon": -46.7006278,
+          "place_id": "518fd5f72bae5947c0590966f107a89137c0f00102f9017aa27b2900000000c0020192031145646966c3ad63696f20416c6c69616e7ae203216f70656e7374726565746d61703a76656e75653a7761792f363935393638333738",
+          "timezone": "America/Sao_Paulo",
+          "rank": {
+            "importance": 7.861829556720863e-05,
+            "popularity": 8.422950522646222,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Allianz",
+          "formatted": "Allianz, Rua Vilela 82, Tatuapé, São Paulo - SP, 03314-000, Brazil",
+          "country_code": "br",
+          "city": "São Paulo",
+          "street": "Rua Vilela",
+          "housenumber": "82",
+          "result_type": "amenity",
+          "lat": -23.5420882,
+          "lon": -46.5656143,
+          "place_id": "513153a40c664847c059298cd24ac68a37c0f00103f9019103e1a301000000c00201920307416c6c69616e7ae203236f70656e7374726565746d61703a76656e75653a6e6f64652f37303434343030303137",
+          "timezone": "America/Sao_Paulo",
+          "rank": {
+            "importance": 7.861829556720863e-05,
+            "popularity": 7.508358082321761,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-A01",
+      "expected": "Niceto Club, Buenos Aires",
+      "http_status": 200,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "name": "Niceto Club",
+          "formatted": "Niceto Club, Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Coronel Niceto Vega",
+          "housenumber": "5510",
+          "result_type": "amenity",
+          "lat": -34.5874108,
+          "lon": -58.4389128,
+          "place_id": "51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562e203216f70656e7374726565746d61703a76656e75653a7761792f343332393736333934",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "La Calle",
+          "formatted": "La Calle, Coronel Niceto Vega 4942, Palermo, 1000 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Coronel Niceto Vega",
+          "housenumber": "4942",
+          "result_type": "amenity",
+          "lat": -34.5912768,
+          "lon": -58.4329577,
+          "place_id": "5194066d286b374dc05918714bf5ae4b41c0f00103f9016e12741b01000000c002019203084c612043616c6c65",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-A02",
+      "expected": "Teatro Colón, Buenos Aires",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Teatro Colón",
+          "formatted": "Teatro Colón, Cerrito 628, San Nicolás, C1055 AAB Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Cerrito",
+          "housenumber": "628",
+          "result_type": "amenity",
+          "lat": -34.6010855,
+          "lon": -58.3831869,
+          "place_id": "51b8e0b1440c314dc059c74ca25ef04c41c0f00102f901f79f680100000000c0020192030d54656174726f20436f6cc3b36e",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.5480701866571246,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Teatro Colón",
+          "formatted": "Teatro Colón, Metrobús 9 de Julio (Sur), San Nicolás, 1009 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Metrobús 9 de Julio (Sur)",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6011497,
+          "lon": -58.3817115,
+          "place_id": "51e98024ecdb304dc05907c02e79f24c41c0f00103f9016fcb64cd00000000c0020192030d54656174726f20436f6cc3b36e",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Tribunales - Teatro Colón",
+          "formatted": "Tribunales - Teatro Colón, Tucumán, San Nicolás, 1013 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Tucumán",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6014303,
+          "lon": -58.3848333,
+          "place_id": "51b4f4b23742314dc05967a906abfb4c41c0f00103f90199f2450f00000000c0020192031a54726962756e616c6573202d2054656174726f20436f6cc3b36e",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Instituto Superior de Arte del Teatro Colón",
+          "formatted": "Instituto Superior de Arte del Teatro Colón, Viamonte, San Nicolás, 1055 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Viamonte",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6008238,
+          "lon": -58.3882783,
+          "place_id": "518d1f741ab3314dc05948d455cbe74c41c0f00103f901edf4053101000000c0020192032c496e7374697475746f205375706572696f7220646520417274652064656c2054656174726f20436f6cc3b36e",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Colony Theatre",
+          "formatted": "Colony Theatre, Avenida Paseo Colón, Monserrat, C1063 ACR Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Paseo Colón",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6125849,
+          "lon": -58.3696706,
+          "place_id": "5177a5c05d512f4dc05900c3972e694e41c0f00103f90109adb3b200000000c0020192030e436f6c6f6e792054686561747265",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 1,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-A03",
+      "expected": "Movistar Arena, Buenos Aires",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, Humboldt 450, Villa Crespo, C1414 AKN Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Humboldt",
+          "housenumber": "450",
+          "result_type": "amenity",
+          "lat": -34.5942604,
+          "lon": -58.4481368,
+          "place_id": "512a11f28b5c394dc05969a78bb9104c41c0f00102f901c85ada2900000000c0020192030e4d6f766973746172204172656e61e203216f70656e7374726565746d61703a76656e75653a7761792f373032313735393434",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 0.3367302927095036,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar",
+          "formatted": "Movistar, Avenida Ángel Gallardo, Almagro, C1414 AJN Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Ángel Gallardo",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.6022346,
+          "lon": -58.4321646,
+          "place_id": "5195be6b2b51374dc05984c2fb05164d41c0f00103f9017dc42b1801000000c002019203084d6f766973746172e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373030343838383239",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar",
+          "formatted": "Movistar, Jorge Luis Borges, Palermo, C1425 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Jorge Luis Borges",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.5820539,
+          "lon": -58.4208267,
+          "place_id": "514de438a6dd354dc0592f8100be804a41c0f00103f9017f85ab1601000000c002019203084d6f766973746172",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar",
+          "formatted": "Movistar, Avenida Cabildo 2030, Belgrano, C1428 Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Cabildo",
+          "housenumber": "2030",
+          "result_type": "amenity",
+          "lat": -34.562779,
+          "lon": -58.4563203,
+          "place_id": "511e801eb4683a4dc05913f06b24094841c0f00103f901f9ec7bff01000000c002019203084d6f766973746172",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar",
+          "formatted": "Movistar, Avenida Cabildo, Belgrano, C1428 AAT Buenos Aires, Argentina",
+          "country_code": "ar",
+          "city": "Buenos Aires",
+          "street": "Avenida Cabildo",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": -34.5586832,
+          "lon": -58.4598153,
+          "place_id": "51a8d94d3adb3a4dc0598d695cee824741c0f00103f9016c22363601000000c002019203084d6f766973746172",
+          "timezone": "America/Argentina/Buenos_Aires",
+          "rank": {
+            "importance": 8.279926756690345e-05,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "GEO-A04",
+      "expected": "Movistar Arena, Bogotá",
+      "http_status": 200,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, Avenida Norte-Quito-Sur 26-35, 11001 Bogotá, DC, Colombia",
+          "country_code": "co",
+          "city": "Bogotá",
+          "street": "Avenida Norte-Quito-Sur",
+          "housenumber": "26-35",
+          "result_type": "amenity",
+          "lat": 4.649268,
+          "lon": -74.077258,
+          "place_id": "51aed689cbf18452c059795be9b5d9981240f00102f901cc846e0100000000c0020192030e4d6f766973746172204172656e61e203206f70656e7374726565746d61703a76656e75653a7761792f3234303230313732",
+          "timezone": "America/Bogota",
+          "rank": {
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, Carrera 27A 26-35, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "country_code": "co",
+          "city": "Bogota",
+          "street": "Carrera 27A",
+          "housenumber": "26-35",
+          "result_type": "amenity",
+          "lat": 4.6492621,
+          "lon": -74.0773213,
+          "place_id": "5130b209d5f28452c0590e21f829d8981240f00102f901cc846e0100000000c0020192030e4d6f766973746172204172656e61",
+          "timezone": "America/Bogota",
+          "rank": {
+            "importance": 0.319279276758968,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": null,
+          "formatted": "Parque Movistar Arena, 111221 Bogotá, DC, Colombia",
+          "country_code": "co",
+          "city": "Bogotá",
+          "street": "Parque Movistar Arena",
+          "housenumber": null,
+          "result_type": "street",
+          "lat": 4.650016,
+          "lon": -74.077309,
+          "place_id": "51efab72a1f28452c059c78157cb9d991240f00102f901a070012a00000000c00204e203216f70656e7374726565746d61703a76656e75653a7761792f373034373337343430",
+          "timezone": "America/Bogota",
+          "rank": {
+            "confidence": 0,
+            "confidence_street_level": 0.81,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Parque Movistar Arena",
+          "formatted": "Parque Movistar Arena, Teusaquillo, 111221 Bogota, RAP (Especial) Central, Colombia",
+          "country_code": "co",
+          "city": "Bogota",
+          "street": null,
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 4.6502291,
+          "lon": -74.0773276,
+          "place_id": "51014576eff28452c0594ba13da8d5991240f00102f901a070012a00000000c00201920315506172717565204d6f766973746172204172656e61",
+          "timezone": "America/Bogota",
+          "rank": {
+            "importance": 0.08007831921873805,
+            "confidence": 0,
+            "confidence_city_level": 0,
+            "match_type": "full_match"
+          }
+        },
+        {
+          "name": "Movistar Arena",
+          "formatted": "Movistar Arena, TransMilenio, Teusaquillo, 111311 Bogota, RAP (Especial) Central, Colombia",
+          "country_code": "co",
+          "city": "Bogota",
+          "street": "TransMilenio",
+          "housenumber": null,
+          "result_type": "amenity",
+          "lat": 4.6502428,
+          "lon": -74.0783207,
+          "place_id": "516446d334038552c0597fd6a13fd9991240f00101f90139e4cd0000000000c0020192030e4d6f766973746172204172656e61",
+          "timezone": "America/Bogota",
+          "rank": {
+            "importance": 7.831921873803338e-05,
+            "confidence": 0,
+            "match_type": "full_match"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-EV04",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Caf%C3%A9%20Tacvba%22%20AND%20begin%3A2024-04-27&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:50:23.214781+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:50:23.964Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  },
+  "elapsed_seconds": 0.823
+}

@@ -1,0 +1,93 @@
+{
+  "research_date": "2026-10-22",
+  "report": "../../2026-10-22-event-setlist-provider-validation.md",
+  "note": "Read-only research. Restricted sources represented by paraphrased observations and URLs, not full imported setlists. HTTP status alone does not establish successful data retrieval.",
+  "evidence_files": [
+    "buenos-aires-cultural-2022.json",
+    "coverage-observations.json",
+    "mb-ev01-retry.json",
+    "mb-ev01.json",
+    "mb-ev02.json",
+    "mb-ev03-retry.json",
+    "mb-ev03.json",
+    "mb-ev04.json",
+    "mb-ev05.json",
+    "musicbrainz-manifest.json",
+    "musicbrainz-summary.json",
+    "rights-review.json"
+  ],
+  "http_attempts": [
+    {
+      "file": "buenos-aires-cultural-2022.json",
+      "provider": "buenos_aires_data",
+      "case_id": null,
+      "http_status": 200,
+      "validation_status": "blocked",
+      "request_url": "https://data.buenosaires.gob.ar/dataset/actividades-culturales/resource/fe5ba957-f331-42b1-b3f4-a56b8f50268a/download",
+      "requested_at_utc": "2026-10-22T17:51:13.875534+00:00"
+    },
+    {
+      "file": "mb-ev01-retry.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV01",
+      "http_status": 200,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Eruca%20Sativa%22%20AND%20begin%3A2024-06-01&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:51:14.100589+00:00"
+    },
+    {
+      "file": "mb-ev01.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV01",
+      "http_status": 503,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Eruca%20Sativa%22%20AND%20begin%3A2024-06-01&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:50:11.771338+00:00"
+    },
+    {
+      "file": "mb-ev02.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV02",
+      "http_status": 200,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Los%20Bunkers%22%20AND%20begin%3A2024-04-27&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:50:15.607719+00:00"
+    },
+    {
+      "file": "mb-ev03-retry.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV03",
+      "http_status": 200,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22No%20Te%20Va%20Gustar%22%20AND%20begin%3A2024-02-03&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:51:17.958526+00:00"
+    },
+    {
+      "file": "mb-ev03.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV03",
+      "http_status": 503,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22No%20Te%20Va%20Gustar%22%20AND%20begin%3A2024-02-03&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:50:19.433688+00:00"
+    },
+    {
+      "file": "mb-ev04.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV04",
+      "http_status": 200,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Caf%C3%A9%20Tacvba%22%20AND%20begin%3A2024-04-27&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:50:23.214781+00:00"
+    },
+    {
+      "file": "mb-ev05.json",
+      "provider": "musicbrainz",
+      "case_id": "MB-EV05",
+      "http_status": 200,
+      "validation_status": null,
+      "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Os%20Paralamas%20do%20Sucesso%22%20AND%20begin%3A2024-09-07&fmt=json&limit=10",
+      "requested_at_utc": "2026-10-22T17:50:27.043381+00:00"
+    }
+  ]
+}

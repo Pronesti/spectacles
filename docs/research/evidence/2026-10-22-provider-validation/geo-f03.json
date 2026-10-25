@@ -1,0 +1,13 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-F03",
+  "request_url": "https://api.geoapify.com/v2/places?name=Movistar&categories=sport%2Centertainment&filter=circle%3A-74.077%2C4.6493%2C2000&limit=10",
+  "requested_at_utc": "2026-10-22T17:33:15.882380+00:00",
+  "phase": "focused follow-up",
+  "http_status": 200,
+  "response": {
+    "type": "FeatureCollection",
+    "features": []
+  },
+  "elapsed_seconds": 0.481
+}

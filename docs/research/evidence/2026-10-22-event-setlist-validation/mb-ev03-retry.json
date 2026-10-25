@@ -1,0 +1,14 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-EV03",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22No%20Te%20Va%20Gustar%22%20AND%20begin%3A2024-02-03&fmt=json&limit=10",
+  "phase": "single bounded retry",
+  "requested_at_utc": "2026-10-22T17:51:17.958526+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:51:18.690Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  }
+}

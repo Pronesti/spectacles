@@ -1,0 +1,14 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-EV02",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Los%20Bunkers%22%20AND%20begin%3A2024-04-27&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:50:15.607719+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:50:16.349Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  },
+  "elapsed_seconds": 0.82
+}
