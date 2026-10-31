@@ -93,3 +93,21 @@ Final combined checks before the local commit:
 Only the no-Artist guidance, empty client-call log, and usable manual/skip actions were observed in the final scoped native fixture. Further browser cases stopped when shared Safari changed to unrelated windows between observation and action; the subagent's in-app browser inventory was unavailable. Its temporary fixture server/source were removed, and the stopped fixture window could not safely be closed. Artist-A browsing, multi-Artist union interaction, scope-change races, and authenticated scoped provider/save/reload acceptance remain unverified in the browser. Automated tests cover these data/query boundaries, but neither the earlier unscoped Tour QA nor fixtures establish the complete final scoped user journey.
 
 Private QA reports/screenshots and operator configuration remain in ignored local paths and are not part of the commit. The PostgreSQL environment limitation and outstanding browser acceptance are retained as explicit verification limits.
+
+## Local creation-draft recovery — 2026-10-25
+
+The subsequent explicit request to save the creation form locally supersedes the original no-browser-draft-storage scope for new concerts only. Each stable account UUID now namespaces one bounded, versioned creation snapshot. Normal dismissal and reload retain the step, entered fields, confirmed identity sidecars, pending editors, query text and explicit Event-change decisions. Only confirmed successful creation or explicit Discard draft removes that snapshot. Saved-concert editing and server collection ownership remain unchanged.
+
+Necessary encrypted MusicBrainz public-identity proofs are preserved, with the existing server expiry/identity validation intact. No auth credentials/cookies/CSRF values, fetched result caches or saved collection mirrors are included. Invalid/unknown-version snapshots remain untouched until explicit discard or successful creation; storage failures warn without blocking editing/server saving. Writes happen synchronously on changes, with no delayed/unmount write that could resurrect a cleared draft. A creation form is bound to its captured owner and keyed again inside ConcertWizard for owner-prop changes.
+
+Verification completed:
+
+- Focused recovery tests: **12 passed** (8 storage/decoder/lifecycle cases; 4 Vite SSR component cases). Existing focused wizard tests: **14 passed**.
+- Full frontend suite: **89 passed**. `npm run lint`, `npm run build`, and `git diff --check` passed. No PHP commands or backend edits were necessary.
+- Native Safari exercised a separate `http://127.0.0.1:5178/recovery-fixture` tab mounting the actual wizard with deterministic disabled clients, synthetic account UUIDs and a nonpersistent save callback. No backend requests or domain records were created by this fixture.
+- Observed: Artist name/type/disambiguation survived X dismissal and full page reload; Tour query and unconfirmed name survived Escape; Event title, notes, tickets flag and unknown-date precision survived Cancel; unconfirmed Setlist row/title/performer/tape plus nested Song fields survived dismissal; nested performer fields survived account A→B→A; B opened an empty wizard; failed save retained the staged row after outside-click/reopen; confirmed synthetic save produced a fresh next creation; explicit discard removed a typed query.
+- The IAB browser inventory was empty, so this was a native Safari component-fixture check, not a new real authenticated production-save test. Existing account/session and the retained QA concert were untouched.
+
+Sanitized evidence: `/Users/pronestivm/Projects/spectacles/qa-output/concert-recovery-20261025/nested-song-restored.png` (cropped to fixture content; browser/contact details excluded). The ignored fixture and report are in that same owned directory. Native date controls retain completed date values exposed to React; incomplete hidden browser date segments are not exposed as serializable text. Partial year/coordinate strings accepted by the state decoder are retained without requiring submission validity; coordinate inputs use decimal text entry to preserve unfinished signs/decimals.
+
+No staging, commit, push, pull request, merge or deployment was performed.

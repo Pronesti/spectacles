@@ -132,6 +132,15 @@ class MusicBrainzClient
         });
     }
 
+    public function publicRead(string $key, string $path, array $parameters, callable $normalize): array
+    {
+        try {
+            return $this->cachedResponse($key, $path, $parameters, $normalize);
+        } catch (QueryException $failure) {
+            throw new MusicBrainzUnavailable;
+        }
+    }
+
     private function cachedResponse(string $key, string $path, array $parameters, callable $normalize): array
     {
         $userAgent = trim((string) config('services.musicbrainz.user_agent'));
@@ -158,14 +167,25 @@ class MusicBrainzClient
             }
             Cache::put('musicbrainz:v1:next-start-ms', $now + 1100, now()->addSeconds(10));
             try {
-                $response = Http::acceptJson()->withUserAgent($userAgent)->connectTimeout(2)->timeout(5)->withoutRedirecting()->get('https://musicbrainz.org/ws/2/'.$path, $parameters);
+                $response = Http::acceptJson()->withUserAgent($userAgent)->connectTimeout(2)->timeout(5)->withoutRedirecting()->withOptions(['stream' => true])->get('https://musicbrainz.org/ws/2/'.$path, $parameters);
             } catch (ConnectionException $failure) {
                 throw new MusicBrainzUnavailable;
             }
             if ($response->status() === 429) {
                 throw new MusicBrainzUnavailable(429, max(1, min(60, (int) $response->header('Retry-After') ?: 2)));
             }
-            $body = $response->json();
+            if ((int) $response->header('Content-Length') > 2097152) {
+                throw new MusicBrainzUnavailable;
+            }
+            $stream = $response->toPsrResponse()->getBody();
+            if ($stream->isSeekable()) {
+                $stream->rewind();
+            }
+            $raw = '';
+            while (! $stream->eof() && strlen($raw) <= 2097152) {
+                $raw .= $stream->read(min(8192, 2097153 - strlen($raw)));
+            }
+            $body = strlen($raw) <= 2097152 ? json_decode($raw, true) : null;
             if (! $response->successful() || ! is_array($body)) {
                 throw new MusicBrainzUnavailable;
             }

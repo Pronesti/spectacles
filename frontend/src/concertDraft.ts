@@ -1,4 +1,4 @@
-import { dateKey, TIMEZONE, validDate } from './domain.ts'
+import { dateKey, validDate } from './domain.ts'
 import type { CatalogChoice, Concert, EventDate, SetlistEntry, Venue } from './domain.ts'
 import type { CatalogEvent, CatalogVenue } from './catalog.ts'
 export type Precision = 'exact' | 'month' | 'year' | 'unknown'
@@ -11,13 +11,13 @@ function dateInput(date: EventDate): { precision: Precision; dateText: string } 
   return { precision: 'exact', dateText: dateKey(date)! }
 }
 export function createConcertDraft(concert?: Concert, initialDate?: string): ConcertDraft {
-  const base: Concert = concert ?? { id: crypto.randomUUID(), title: '', artists: [], venueId: null, date: { year: null, month: null, day: null }, time: '', timezone: TIMEZONE, interested: true, ticketsBought: false, notes: '', setlist: [] }
+  const base: Concert = concert ?? { id: crypto.randomUUID(), title: '', artists: [], venueId: null, date: { year: null, month: null, day: null }, time: '', timezone: null, interested: true, ticketsBought: false, notes: '', setlist: [] }
   const date = concert ? dateInput(concert.date) : { precision: 'exact' as const, dateText: initialDate ?? '' }
   return { concert: { ...base }, artists: base.artists.map((name, index) => ({ name, catalogId: base.catalog?.artistIds[index] ?? null })), tours: [...(base.catalog?.tours ?? [])], eventId: base.catalog?.eventId, ...date, timezoneText: base.timezone ?? '', venueName: '', city: 'Buenos Aires', lat: '', lng: '' }
 }
 export function adoptCatalogVenue(draft: ConcertDraft, venue: CatalogVenue, locals: Venue[]): ConcertDraft {
   const known = locals.find(local => local.catalogId === venue.id)
-  const pending: Venue = { id: known?.id ?? crypto.randomUUID(), catalogId: venue.id, name: venue.name, city: venue.city ?? '', neighborhood: '', lat: venue.lat, lng: venue.lng, timezone: venue.timezone }
+  const pending: Venue = { id: known?.id ?? crypto.randomUUID(), catalogId: venue.id, name: venue.name, city: venue.city ?? '', neighborhood: '', lat: venue.lat, lng: venue.lng, timezone: venue.timezone, address: venue.address ?? null, aliases: venue.aliases ?? [], image: venue.image ?? null, region: venue.region, countryCode: venue.country_code }
   return { ...draft, eventId: undefined, concert: { ...draft.concert, venueId: pending.id }, pendingVenue: pending }
 }
 export function adoptCatalogEvent(draft: ConcertDraft, event: CatalogEvent, locals: Venue[]): ConcertDraft {

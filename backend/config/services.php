@@ -8,6 +8,21 @@ if ($musicBrainzUserAgent === '' && $musicBrainzContact !== '') {
 }
 
 return [
+    'setlistfm' => [
+        'enabled' => env('SETLISTFM_ENABLED', false),
+        'user_agent' => env('SETLISTFM_USER_AGENT', '') ?: $musicBrainzUserAgent,
+        'html_interval_ms' => (int) env('SETLISTFM_HTML_INTERVAL_MS', 2000),
+        'html_daily_limit' => (int) env('SETLISTFM_HTML_DAILY_LIMIT', 0),
+        'cache_seconds' => (int) env('SETLISTFM_CACHE_SECONDS', 0),
+    ],
+    'venue_images' => [
+        'enabled' => env('VENUE_IMAGES_ENABLED', false),
+        'wikidata_interval_ms' => (int) env('VENUE_IMAGES_WIKIDATA_INTERVAL_MS', 1000),
+        'wikidata_daily_limit' => (int) env('VENUE_IMAGES_WIKIDATA_DAILY_LIMIT', 0),
+        'commons_interval_ms' => (int) env('VENUE_IMAGES_COMMONS_INTERVAL_MS', 1000),
+        'commons_daily_limit' => (int) env('VENUE_IMAGES_COMMONS_DAILY_LIMIT', 0),
+        'cache_seconds' => (int) env('VENUE_IMAGES_CACHE_SECONDS', 0),
+    ],
     'musicbrainz' => ['enabled' => env('MUSICBRAINZ_ENABLED', false), 'user_agent' => $musicBrainzUserAgent],
 
     /*

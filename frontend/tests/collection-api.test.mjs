@@ -61,3 +61,13 @@ test('wizard pending metadata travels once beside the concert and is omitted for
   assert.equal(JSON.parse(calls[3].init.body).pendingCatalog, undefined)
   assert.equal(calls.length, 4)
 })
+
+test('expired source proofs expose bounded field guidance without replaying the save',async()=>{
+ let saves=0
+ const client=createCollectionClient('https://api.spectacles.test',async url=>{
+  if(url.endsWith('csrf-cookie'))return new Response(null,{status:204})
+  saves++;return Response.json({errors:{'pendingCatalog.event.selection':['Select these provider details again or use manual creation.'],'pendingCatalog.tours.0.selection':['Select this Tour again.']}},{status:422})
+ },()=> 'XSRF-TOKEN=fixture')
+ await assert.rejects(client.save({id}),e=>e.status===422 && e.message==='Performance: Select these provider details again or use manual creation. Tour: Select this Tour again.')
+ assert.equal(saves,1)
+})

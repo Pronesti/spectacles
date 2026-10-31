@@ -17,6 +17,8 @@ class CollectionResource extends JsonResource
             if ($venue !== null) {
                 $venues[$venue->external_id] = [
                     'id' => $venue->external_id, 'catalogId' => $venue->external_id,
+                    'address' => $venue->address, 'aliases' => $venue->aliases ?? [], 'image' => $venue->image,
+                    'region' => $venue->region, 'countryCode' => $venue->country_code,
                     'name' => $venue->name, 'city' => $venue->city ?? '', 'neighborhood' => '',
                     'lat' => $venue->lat === null ? null : (float) $venue->lat,
                     'lng' => $venue->lng === null ? null : (float) $venue->lng, 'timezone' => $venue->timezone,

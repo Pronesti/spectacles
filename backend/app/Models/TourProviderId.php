@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['tour_id', 'provider', 'resource_type', 'provider_resource_id'])]
+#[Fillable(['tour_id', 'provider', 'resource_type', 'external_provider_id'])]
 class TourProviderId extends Model
 {
     /** @use HasFactory<TourProviderIdFactory> */

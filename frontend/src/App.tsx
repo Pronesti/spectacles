@@ -1,3 +1,4 @@
+import { createCatalogProvidersClient } from './catalogProvidersApi'
 import { ConcertWizard } from './components/ConcertWizard'
 import { createMusicBrainzClient } from './musicbrainzApi'
 import type { PendingCatalog } from './concertWizard'
@@ -32,6 +33,7 @@ const accountClient = createAccountClient(apiBaseUrl)
 const catalogClient = createCatalogClient(apiBaseUrl)
 const collectionClient = createCollectionClient(apiBaseUrl)
 const musicbrainzClient = createMusicBrainzClient(apiBaseUrl)
+const catalogProvidersClient = createCatalogProvidersClient(apiBaseUrl)
 type Connection = { status: 'loading' | 'connected' | 'error'; message: string }
 type Page = 'dashboard' | 'concerts' | 'calendar' | 'map' | 'setlists' | 'profile'
 const navigation: { id: Page; label: string; icon: IconName }[] = [
@@ -52,6 +54,7 @@ function App() {
   const [collectionRetry, setCollectionRetry] = useState(0)
   const [saving, setSaving] = useState(false)
   const locked = useRef(false)
+  const saveFailure = useRef<Error | null>(null)
   const session = useRef('')
   const [today, setToday] = useState(todayKey)
   const [page, setPage] = useState<Page>('dashboard')
@@ -64,7 +67,7 @@ function App() {
   const [accountNotice, setAccountNotice] = useState('')
   const [query, setQuery] = useState(''), [filter, setFilter] = useState('all')
   const [venueFilter, setVenueFilter] = useState<string | undefined>()
-  const [form, setForm] = useState<{ concert?: Concert; date?: string } | null>(null)
+  const [form, setForm] = useState<{ concert?: Concert; date?: string; owner?: string } | null>(null)
   const [detailId, setDetailId] = useState<string | null>(null)
   const [setlistId, setSetlistId] = useState('')
   const [toast, setToast] = useState(''), [undo, setUndo] = useState<Workspace | null>(null)
@@ -79,6 +82,7 @@ function App() {
     setAccountNotice('Your session expired. Your draft remains open, but you must sign in before saving to the database.')
   }, [expireSession])
   const musicbrainz = { client: musicbrainzClient, enabled: account.status === 'authenticated' && Boolean(account.user) && !account.busy, sessionKey: account.user?.id ?? 'guest', onUnauthorized: expireCatalogSession }
+  const providers = { ...musicbrainz, client: catalogProvidersClient }
   const catalog: CatalogAccess = { client: catalogClient, enabled: account.status === 'authenticated' && Boolean(account.user) && !account.busy, sessionKey: account.user?.id ?? 'guest', onUnauthorized: expireCatalogSession }
 
   useEffect(() => {
@@ -91,7 +95,7 @@ function App() {
     // oxlint-disable-next-line react/set-state-in-effect -- Reset account-scoped state before an external collection read.
     setCollection(current => ({ owner, data: current.owner === owner ? current.data : emptyCollection(), status: 'loading', error: '' }))
     void collectionClient.load(controller.signal).then(data => {
-      if (!controller.signal.aborted && session.current === owner) setCollection({ owner, data, status: 'ready', error: '' })
+      if (!controller.signal.aborted && session.current === owner) { setCollection({ owner, data, status: 'ready', error: '' }); setAccountNotice('') }
     }).catch(error => {
       if (!controller.signal.aborted && session.current === owner) setCollection({ owner, data: emptyCollection(), status: 'error', error: error instanceof Error ? error.message : 'Unable to load your collection.' })
     })
@@ -122,7 +126,7 @@ function App() {
     }
     void checkConnection()
     return () => { active = false; clearTimeout(timeout); controller.abort() }
-  }, [attempt])
+  }, [attempt, owner])
 
   const activeAuthView = account.user ? null : authView ?? (!preservingDraft && account.error ? 'login' : null)
   useEffect(() => {
@@ -161,7 +165,7 @@ function App() {
 
   const commit = async (data: Workspace, message: string, undoable = false, pendingCatalog?: PendingCatalog): Promise<boolean> => {
     if (locked.current || !owner || collection.status !== 'ready') return false
-    locked.current = true; setSaving(true)
+    locked.current = true; saveFailure.current = null; setSaving(true)
     const before = workspace
     const changed = data.concerts.find(c => JSON.stringify(c) !== JSON.stringify(before.concerts.find(old => old.id === c.id)))
     const removed = before.concerts.find(c => !data.concerts.some(current => current.id === c.id))
@@ -172,6 +176,7 @@ function App() {
       return true
     } catch (error) {
       if (session.current === owner) {
+        saveFailure.current = error instanceof Error ? error : null
         setAccountNotice(error instanceof Error ? error.message : 'Unable to save your collection.')
         if (error instanceof CollectionError && (error.status === 0 || error.status >= 500 || error.status >= 200 && error.status < 300)) setCollection(current => ({ ...current, status: 'error', error: 'The save response is uncertain. Reload the collection before retrying.' }))
         if (error instanceof CollectionError && error.status === 401) expireCatalogSession()
@@ -184,7 +189,7 @@ function App() {
     const exists = workspace.concerts.some(c => c.id === concert.id)
     const saved = await commit({ ...workspace, venues: venue ? [...workspace.venues.filter(v => v.id !== venue.id), venue] : workspace.venues, concerts: exists ? workspace.concerts.map(c => c.id === concert.id ? concert : c) : [...workspace.concerts, concert] }, exists ? 'Concert updated in the database.' : 'Concert saved in the database.', false, pendingCatalog)
     if (saved) setForm(null)
-    else throw new Error('The database save was not confirmed. Your draft is still here. Check your fields/session, or reload the collection if the response was uncertain.')
+    else throw saveFailure.current ?? new Error('The database save was not confirmed. Your draft is still here. Check your fields/session, or reload the collection if the response was uncertain.')
   }
   const navigate = (id: Page) => { setPage(id); setDetailId(null); window.scrollTo({ top: 0, behavior: 'instant' }); requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true })) }
   const openSetlist = (id: string) => { setSetlistId(id); navigate('setlists') }
@@ -213,22 +218,22 @@ function App() {
         {saving && <p role="status">Saving to the database…</p>}
         {accountNotice && <p className="account-error" role="alert">{accountNotice}</p>}
         <p className="demo-notice">Your collection is saved to your account.</p>
-        <fieldset disabled={saving || collection.status !== 'ready'} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}><div className="page-heading"><div><p className="eyebrow">{pageInfo[0]}</p><h1>{pageInfo[1]}</h1><p className="page-subtitle">{pageInfo[2]}</p></div>{page !== 'map' && page !== 'setlists' && page !== 'profile' && <button className="button primary add-concert" onClick={() => setForm({})}><Icon name="plus" size={21} />Add concert</button>}</div>
+        <fieldset disabled={saving || collection.status !== 'ready'} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}><div className="page-heading"><div><p className="eyebrow">{pageInfo[0]}</p><h1>{pageInfo[1]}</h1><p className="page-subtitle">{pageInfo[2]}</p></div>{page !== 'map' && page !== 'setlists' && page !== 'profile' && <button className="button primary add-concert" onClick={() => setForm({ owner })}><Icon name="plus" size={21} />Add concert</button>}</div>
         {page === 'dashboard' && <div className="dashboard-content"><section className="stats-strip" aria-label="Collection statistics">{[[workspace.concerts.length, 'Concerts', 'music'], [artistCount, 'Artists', 'heart'], [venues.length, 'Venues', 'pin'], [songCount, 'Songs saved', 'list']].map(([value, label, icon]) => <div className="stat" key={label}><span className="stat-label">{label}<Icon name={icon as IconName} size={17} /></span><strong>{value}</strong><small>{label === 'Concerts' ? `${upcoming.length} still to come` : label === 'Artists' ? 'A soundtrack of your own' : label === 'Venues' ? 'Places that feel like home' : 'Ready for another listen'}</small></div>)}</section>
-          {next ? <section className="next-concert" aria-label="Next concert countdown"><img className="stage-photo" src={stagePhoto} alt="A live band silhouetted against lime stage lights" fetchPriority="high" /><div className="next-concert-shade" /><div className="next-concert-copy"><span className="next-label"><i />UP NEXT</span><h2>{next.title}</h2><p><Icon name="pin" size={16} />{workspace.venues.find(v => v.id === next.venueId)?.name ?? 'Venue to confirm'}<span>·</span>{formatDate(next.date)}</p><button className="button photo-button" onClick={() => setDetailId(next.id)}>View concert<Icon name="arrow" size={18} /></button></div><div className="countdown"><span>{daysUntil(next.date, today) === 0 ? 'Tonight' : daysUntil(next.date, today)}</span><small>{daysUntil(next.date, today) === 0 ? 'THE WAIT IS OVER' : 'DAYS TO GO'}</small></div><span className="photo-caption">THE NEXT GREAT MEMORY</span></section> : <section className="next-concert no-upcoming"><Icon name="music" size={40} /><h2>Something to look forward to.</h2><p>Add your next concert and let the countdown begin.</p><button className="button lime" onClick={() => setForm({})}><Icon name="plus" />Add a concert</button></section>}
+          {next ? <section className="next-concert" aria-label="Next concert countdown"><img className="stage-photo" src={stagePhoto} alt="A live band silhouetted against lime stage lights" fetchPriority="high" /><div className="next-concert-shade" /><div className="next-concert-copy"><span className="next-label"><i />UP NEXT</span><h2>{next.title}</h2><p><Icon name="pin" size={16} />{workspace.venues.find(v => v.id === next.venueId)?.name ?? 'Venue to confirm'}<span>·</span>{formatDate(next.date)}</p><button className="button photo-button" onClick={() => setDetailId(next.id)}>View concert<Icon name="arrow" size={18} /></button></div><div className="countdown"><span>{daysUntil(next.date, today) === 0 ? 'Tonight' : daysUntil(next.date, today)}</span><small>{daysUntil(next.date, today) === 0 ? 'THE WAIT IS OVER' : 'DAYS TO GO'}</small></div><span className="photo-caption">THE NEXT GREAT MEMORY</span></section> : <section className="next-concert no-upcoming"><Icon name="music" size={40} /><h2>Something to look forward to.</h2><p>Add your next concert and let the countdown begin.</p><button className="button lime" onClick={() => setForm({ owner })}><Icon name="plus" />Add a concert</button></section>}
           <div className="dashboard-lower"><section className="upcoming-section"><div className="section-heading"><div><h2>Coming up<span className="lime-dot">.</span></h2><p>Good things on the horizon.</p></div><button className="text-button" onClick={() => { setFilter('upcoming'); setQuery(''); setVenueFilter(undefined); navigate('concerts') }}>View all<Icon name="arrow" size={16} /></button></div><ConcertList compact concerts={upcoming.slice(0, 3)} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} /></section>
             <section className="setlist-preview"><span className="setlist-preview-icon"><Icon name="music" size={23} /></span><p className="eyebrow">THE LAST ENCORE</p><h2>Still ringing<br />in your ears.</h2>{recent ? <><p>{recent.title} · {formatDate(recent.date)}</p><ol>{recent.setlist.filter(e => e.type === 'song').slice(0, 3).map((e, i) => <li key={e.id}><span>{String(i + 1).padStart(2, '0')}</span>{e.title}</li>)}</ol><button className="text-button" onClick={() => openSetlist(recent.id)}>Revisit the setlist<Icon name="arrow" size={17} /></button></> : <><p>The show ends. The songs stay.</p><button className="text-button" onClick={() => navigate('setlists')}>Start a setlist<Icon name="arrow" size={17} /></button></>}</section></div>
           <Heatmap concerts={workspace.concerts} today={today} onOpen={c => setDetailId(c.id)} />
         </div>}
         {page === 'concerts' && <section><div className="collection-toolbar"><label className="search-field"><Icon name="search" size={19} /><span className="sr-only">Search artists or venues</span><input id="concert-search" placeholder="Search artists or venues" value={query} onChange={e => setQuery(e.target.value)} /></label><div className="filter-tabs" aria-label="Filter concerts">{[['all', 'All concerts'], ['upcoming', 'Upcoming'], ['past', 'Past'], ['unconfirmed', 'Date to confirm']].map(([value, label]) => <button key={value} aria-pressed={filter === value} className={filter === value ? 'active' : ''} onClick={() => setFilter(value)}>{label}</button>)}</div></div>{venueFilter && <div className="active-filter"><Icon name="pin" size={15} />{workspace.venues.find(v => v.id === venueFilter)?.name}<button className="icon-button" aria-label="Clear venue filter" onClick={() => setVenueFilter(undefined)}><Icon name="close" size={15} /></button></div>}<div className="collection-summary"><span>{visibleConcerts.length} concert{visibleConcerts.length === 1 ? '' : 's'}</span><span>All dates in each concert’s local time</span></div><ConcertList concerts={visibleConcerts} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} onEdit={c => setForm({ concert: c })} onTicket={c => updateConcert({ ...c, ticketsBought: !c.ticketsBought }, 'Ticket preference saved.')} /></section>}
-        {page === 'calendar' && <CalendarView concerts={workspace.concerts} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} onAdd={date => setForm({ date })} />}
+        {page === 'calendar' && <CalendarView concerts={workspace.concerts} venues={workspace.venues} today={today} onOpen={c => setDetailId(c.id)} onAdd={date => setForm({ date, owner })} />}
         {page === 'map' && <VenueMap workspace={workspace} onViewConcerts={venue => { setVenueFilter(venue.id); setFilter('all'); setQuery(''); navigate('concerts') }} />}
         {page === 'setlists' && <SetlistsView key={setlistId} catalog={catalog} concerts={workspace.concerts} venues={workspace.venues} selectedId={setlistId} onSelect={setSetlistId} onUpdate={updateConcert} />}
         {page === 'profile' && account.user && <ProfileView key={account.user.id} user={account.user} counts={{ concerts: workspace.concerts.length, artists: artistCount, venues: venues.length }} busy={account.busy} onSave={saveProfile} onCancel={() => navigate('dashboard')} />}
         </fieldset><footer className="page-footer"><span>Spectacles<span className="brand-period">.</span> <span>A personal archive of being there.</span></span><span>Your concert collection</span></footer>
       </main>
     </div>
-    {form && (form.concert ? <ConcertForm busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} concert={form.concert} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} /> : <ConcertWizard onReloadCollection={collection.status === 'error' ? () => setCollectionRetry(value => value + 1) : undefined} busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} musicbrainz={musicbrainz} initialDate={form.date} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} />)}
+    {form && (form.concert ? <ConcertForm busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} concert={form.concert} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} /> : (!owner && preservingDraft && form.owner === collection.owner || owner && owner === form.owner) ? <ConcertWizard providers={providers} key={form.owner} owner={form.owner} onReloadCollection={collection.status === 'error' ? () => setCollectionRetry(value => value + 1) : undefined} busy={saving} onSignIn={!owner ? () => changeEntry('login') : undefined} disabled={saving || !owner || collection.status !== 'ready'} catalog={catalog} musicbrainz={musicbrainz} initialDate={form.date} venues={workspace.venues} onClose={() => { if (!saving) setForm(null) }} onSave={saveConcert} /> : null)}
     {detail && <Dialog title={detail.title} drawer onClose={() => setDetailId(null)}><fieldset disabled={saving || !owner} style={{ display: 'contents' }}><div className="concert-detail"><div className="detail-photo"><img src={stagePhoto} alt="Light spilling across a live concert crowd" /></div><p className={`detail-date ${relation(detail.date, today)}`}><Icon name="calendar" />{formatDate(detail.date, true)}{detail.time && ` · ${detail.time}`}</p><h3>{workspace.venues.find(v => v.id === detail.venueId)?.name ?? 'Venue to confirm'}</h3><p className="muted">{workspace.venues.find(v => v.id === detail.venueId)?.city || 'Location to confirm'}</p><p className="detail-lineup"><span className="eyebrow">LINEUP</span>{detail.artists.join(' · ') || 'Lineup to confirm'}</p><div className="detail-flags"><label><input type="checkbox" checked={detail.interested} onChange={() => updateConcert({ ...detail, interested: !detail.interested }, 'Interest preference saved.')} /><Icon name="heart" size={18} />Interested</label><label><input type="checkbox" checked={detail.ticketsBought} onChange={() => updateConcert({ ...detail, ticketsBought: !detail.ticketsBought }, 'Ticket preference saved.')} /><Icon name="ticket" size={18} />Tickets bought</label></div>{detail.notes && <div className="detail-notes"><span className="eyebrow">NOTES</span><p>{detail.notes}</p></div>}<button className="button primary" onClick={() => openSetlist(detail.id)}><Icon name="list" size={18} />{detail.setlist.length ? 'View & edit setlist' : 'Start the setlist'}<Icon name="arrow" size={18} /></button><button className="button secondary" onClick={() => { setDetailId(null); setForm({ concert: detail }) }}><Icon name="edit" size={18} />Edit concert</button><button className="text-button delete-concert" onClick={() => { void commit({ ...workspace, concerts: workspace.concerts.filter(c => c.id !== detail.id) }, `${detail.title} removed.`, true).then(saved => { if (saved) setDetailId(null) }) }}><Icon name="trash" size={17} />Delete concert</button><p className="hint">Saved to your account.</p></div></fieldset></Dialog>}
     {preservingDraft && activeAuthView && <Dialog title="Sign in again" onClose={() => setAuthView(null)}><AuthView mode={activeAuthView} busy={account.busy} notice={account.error || accountNotice} onSwitch={changeEntry} onExplore={() => setAuthView(null)} onSubmit={submitAccount} /></Dialog>}
     {healthOpen && <Dialog title="API connection" onClose={() => setHealthOpen(false)}><div className={`health-content ${connection.status}`}><span className="health-status">{connection.status}</span><p role="status" aria-live="polite">{connection.message}</p><code>{apiBaseUrl}/api/health</code>{connection.status === 'error' && <p className="hint">Check the API URL and the backend’s allowed frontend origin.</p>}<p className="muted">This checks the Laravel health endpoint. Your collection is stored in the database.</p><button className="button primary" disabled={connection.status === 'loading'} onClick={() => setAttempt(v => v + 1)}><Icon name="refresh" size={17} />{connection.status === 'loading' ? 'Checking…' : 'Check again'}</button></div></Dialog>}

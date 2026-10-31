@@ -47,7 +47,7 @@ class MusicBrainzController extends Controller
                 'work' => [SongProviderId::class, 'song'],
                 'series' => [TourProviderId::class, 'tour'],
             };
-            $matches = $reference::query()->with($relation)->where('provider', 'musicbrainz')->where('resource_type', $kind)->whereIn('provider_resource_id', array_column($rows, 'id'))->get()->keyBy('provider_resource_id');
+            $matches = $reference::query()->with($relation)->where('provider', 'musicbrainz')->where('resource_type', $kind)->whereIn($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', array_column($rows, 'id'))->get()->keyBy($kind === 'series' ? 'external_provider_id' : 'provider_resource_id');
             foreach ($rows as &$row) {
                 $model = $matches->get($row['id'])?->{$relation};
                 $row['local'] = $model === null ? null : ['id' => $model->external_id, 'label' => $kind === 'work' ? $model->title : $model->name, 'artistType' => $kind === 'artist' ? $model->type : null, 'disambiguation' => $kind === 'series' ? null : $model->disambiguation];

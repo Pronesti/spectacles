@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CatalogProviderController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\MusicBrainzController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +23,16 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/musicbrainz/artists', [MusicBrainzController::class, 'artists'])->middleware('throttle:musicbrainz');
         Route::get('/musicbrainz/works', [MusicBrainzController::class, 'works'])->middleware('throttle:musicbrainz');
         Route::get('/musicbrainz/tours', [MusicBrainzController::class, 'tours'])->middleware('throttle:musicbrainz');
+        Route::middleware('throttle:catalog-providers')->group(function (): void {
+            Route::get('/providers/setlistfm/tours', [CatalogProviderController::class, 'tours']);
+            Route::get('/providers/setlistfm/performances', [CatalogProviderController::class, 'performances']);
+            Route::get('/providers/setlistfm/performances/{id}', [CatalogProviderController::class, 'preview'])->where('id', '[a-zA-Z0-9_-]{1,128}');
+            Route::get('/providers/setlistfm/venues/{id}', [CatalogProviderController::class, 'venue'])->where('id', '[a-zA-Z0-9_-]{1,128}');
+            Route::get('/providers/venues/{uuid}', [CatalogProviderController::class, 'catalogVenue'])->whereUuid('uuid');
+            Route::post('/providers/venues/confirm', [CatalogProviderController::class, 'confirmVenue']);
+            Route::get('/musicbrainz/places', [CatalogProviderController::class, 'places']);
+            Route::get('/musicbrainz/places/{mbid}', [CatalogProviderController::class, 'place'])->whereUuid('mbid');
+        });
         Route::get('/collection', [CollectionController::class, 'index']);
         Route::post('/attendances', [CollectionController::class, 'store']);
         Route::patch('/attendances/{attendance}', [CollectionController::class, 'update'])->whereUuid('attendance');

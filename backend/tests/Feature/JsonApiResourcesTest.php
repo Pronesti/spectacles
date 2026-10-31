@@ -51,11 +51,14 @@ class JsonApiResourcesTest extends TestCase
         $this->assertArrayNotHasKey('remember_token', $attributes);
         $this->assertArrayNotHasKey('email', $attributes);
         foreach (array_keys($model->getAttributes()) as $key) {
-            if ($key === 'id' || (str_ends_with($key, '_id') && $key !== 'provider_resource_id')) {
+            if ($key === 'id' || (str_ends_with($key, '_id') && ! in_array($key, ['provider_resource_id', 'external_provider_id'], true))) {
                 $this->assertArrayNotHasKey($key, $attributes);
             }
         }
         $this->assertSame($model->created_at->toJSON(), $attributes['created_at']);
+        if ($model->getAttribute('external_provider_id') !== null) {
+            $this->assertSame($model->external_provider_id, $attributes['external_provider_id']);
+        }
         if ($model->getAttribute('provider_resource_id') !== null) {
             $this->assertSame($model->provider_resource_id, $attributes['provider_resource_id']);
         }
@@ -175,7 +178,7 @@ class JsonApiResourcesTest extends TestCase
             $this->assertTrue(Str::isUuid($object['id']));
             foreach (array_keys($object['attributes'] ?? []) as $key) {
                 $this->assertFalse($key === 'id' || $key === 'external_id'
-                    || (str_ends_with($key, '_id') && $key !== 'provider_resource_id'), $key);
+                    || (str_ends_with($key, '_id') && ! in_array($key, ['provider_resource_id', 'external_provider_id'], true)), $key);
             }
             foreach ($object['relationships'] ?? [] as $relationship) {
                 $data = $relationship['data'];

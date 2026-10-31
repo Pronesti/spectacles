@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Http\CatalogProviderData;
+use App\Http\CatalogProviderUnavailable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -50,7 +52,7 @@ class SaveConcertRequest extends FormRequest
             'concert.setlist.*.tape' => ['required', 'boolean'],
             'concert.setlist.*.songCatalogId' => ['sometimes', 'uuid', 'exists:songs,external_id'],
             'concert.setlist.*.artistCatalogId' => ['sometimes', 'uuid', 'exists:artists,external_id'],
-            'venue' => ['sometimes', 'array:id,name,city,neighborhood,lat,lng,catalogId,timezone'],
+            'venue' => ['sometimes', 'array:id,name,city,neighborhood,lat,lng,catalogId,timezone,region,countryCode,address,aliases,image'],
             'venue.id' => ['required_with:venue', 'uuid'],
             'venue.name' => ['required_with:venue', 'string', 'max:255'],
             'venue.city' => ['present_with:venue', 'nullable', 'string', 'max:255'],
@@ -58,6 +60,12 @@ class SaveConcertRequest extends FormRequest
             'venue.lat' => ['present_with:venue', 'nullable', 'numeric', 'between:-90,90'],
             'venue.lng' => ['present_with:venue', 'nullable', 'numeric', 'between:-180,180'],
             'venue.catalogId' => ['sometimes', 'uuid', 'exists:venues,external_id'],
+            'venue.region' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'venue.countryCode' => ['sometimes', 'nullable', 'regex:/^[A-Z]{2}$/D'],
+            'venue.address' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'venue.aliases' => ['sometimes', 'array', 'max:100'],
+            'venue.aliases.*' => ['required', 'string', 'max:255', 'distinct'],
+            'venue.image' => ['sometimes', 'nullable', 'array:url,thumbnailUrl,sourceUrl,credit,license,licenseUrl'],
             'venue.timezone' => ['sometimes', 'nullable', 'timezone'],
         ];
     }
@@ -69,6 +77,16 @@ class SaveConcertRequest extends FormRequest
                 return;
             }
             PendingCatalogRules::check($this->input('concert'), $this->input('pendingCatalog', []), $validator);
+            if ($this->has('pendingCatalog.venue') && $this->has('venue.catalogId')) {
+                $validator->errors()->add('pendingCatalog.venue', 'Choose one Venue identity.');
+            }
+            if ($this->input('venue.image') !== null) {
+                try {
+                    CatalogProviderData::image($this->input('venue.image'));
+                } catch (CatalogProviderUnavailable) {
+                    $validator->errors()->add('venue.image', 'Choose valid attributed image metadata.');
+                }
+            }
             $date = $this->input('concert.date', []);
             $year = $date['year'] ?? null;
             $month = $date['month'] ?? null;

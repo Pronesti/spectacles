@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sanctum::getAccessTokenFromRequestUsing(fn (Request $request): ?string => null);
+        RateLimiter::for('catalog-providers', fn (Request $request): Limit => Limit::perMinute(30)->by($request->user()->external_id));
         RateLimiter::for('musicbrainz', fn (Request $request): Limit => Limit::perMinute(30)->by($request->user()->external_id));
         RateLimiter::for('registration', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
         RateLimiter::for('login', function (Request $request): array {

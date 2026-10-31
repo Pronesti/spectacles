@@ -26,7 +26,8 @@ class ProviderReferencesTest extends TestCase
             $two['external_id'] = (string) Str::uuid7();
             $two['provider'] = $one->provider;
             $two['resource_type'] = $one->resource_type;
-            $two['provider_resource_id'] = $one->provider_resource_id;
+            $column = $one instanceof TourProviderId ? 'external_provider_id' : 'provider_resource_id';
+            $two[$column] = $one->{$column};
             $this->assertDatabaseRejects(fn () => DB::table($one->getTable())->insert($two));
         }
     }

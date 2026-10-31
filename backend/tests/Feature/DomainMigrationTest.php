@@ -26,17 +26,21 @@ class DomainMigrationTest extends TestCase
         DB::setDefaultConnection('domain_cycle');
         try {
             Artisan::call('migrate', ['--database' => 'domain_cycle', '--force' => true, '--no-interaction' => true]);
+            $this->assertTrue(Schema::hasColumn('venue_provider_ids', 'source_url'));
+            $this->assertTrue(Schema::hasColumn('tours', 'search_name'));
             $id = DB::table('users')->insertGetId([
                 'name' => 'Retained', 'email' => 'retained@example.com',
                 'password' => 'retained', 'external_id' => (string) Str::uuid7(),
             ]);
-            Artisan::call('migrate:rollback', ['--database' => 'domain_cycle', '--step' => 7, '--force' => true, '--no-interaction' => true]);
+            Artisan::call('migrate:rollback', ['--database' => 'domain_cycle', '--step' => 10, '--force' => true, '--no-interaction' => true]);
             $this->assertFalse(Schema::hasTable('attendances'));
             $this->assertFalse(Schema::hasTable('event_provider_references'));
             $this->assertFalse(Schema::hasColumn('users', 'external_id'));
             $this->assertSame('retained', DB::table('users')->find($id)->password);
             Artisan::call('migrate', ['--database' => 'domain_cycle', '--force' => true, '--no-interaction' => true]);
             $this->assertTrue(Schema::hasTable('setlist_entries'));
+            $this->assertTrue(Schema::hasColumn('venue_provider_ids', 'source_url'));
+            $this->assertTrue(Schema::hasColumn('tours', 'search_name'));
             $this->assertTrue(Schema::hasTable('event_provider_references'));
             $this->assertTrue(Str::isUuid(DB::table('users')->find($id)->external_id));
             $this->assertSame('retained@example.com', DB::table('users')->find($id)->email);

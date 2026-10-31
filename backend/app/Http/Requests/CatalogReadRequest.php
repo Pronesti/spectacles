@@ -61,6 +61,8 @@ class CatalogReadRequest extends FormRequest
             'events' => [
                 'q' => $text,
                 'venue_uuid' => ['sometimes', 'required', 'uuid'],
+                'artist_uuid' => ['sometimes', 'required', 'uuid'],
+                'artist_mbid' => ['sometimes', 'required', 'uuid'],
                 'year' => ['sometimes', 'required', 'integer', 'between:1,9999'],
                 'month' => ['sometimes', 'required', 'integer', 'between:1,12'],
                 'day' => ['sometimes', 'required', 'integer', 'between:1,31'],

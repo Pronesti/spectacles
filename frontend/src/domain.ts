@@ -3,7 +3,8 @@ export const TIMEZONE = 'America/Argentina/Buenos_Aires'
 
 export type EventDate = { year: number | null; month: number | null; day: number | null }
 export type CatalogChoice = { name: string; catalogId: string | null }
-export type Venue = { id: string; name: string; city: string; neighborhood: string; lat: number | null; lng: number | null; catalogId?: string; timezone?: string | null }
+export type VenueImage = { url: string; thumbnailUrl: string; sourceUrl: string; credit: string; license: string; licenseUrl: string }
+export type Venue = { id: string; name: string; city: string; neighborhood: string; lat: number | null; lng: number | null; catalogId?: string; timezone?: string | null; region?: string | null; countryCode?: string | null; address?: string | null; aliases?: string[]; image?: VenueImage | null }
 export type SetlistEntry = { id: string; type: 'song' | 'note'; title: string; artist: string; tape: boolean; songCatalogId?: string; artistCatalogId?: string }
 export type Concert = {
   id: string; title: string; artists: string[]; venueId: string | null; date: EventDate;
@@ -115,6 +116,8 @@ export function decodeWorkspace(raw: string): Workspace | null {
       if ((venue.lat === null) !== (venue.lng === null) || venue.lat !== null && (Math.abs(venue.lat) > 90 || Math.abs(venue.lng!) > 180)) return null
       if (venue.catalogId !== undefined && !publicUuid(venue.catalogId)) return null
       if (venue.timezone !== undefined && venue.timezone !== null) { if (!text(venue.timezone)) return null; try { new Intl.DateTimeFormat('en', { timeZone: venue.timezone }) } catch { return null } }
+      if (!validVenueMetadata(venue)) return null
+      venue.address ??= null; venue.aliases ??= []; venue.image ??= null
       venueIds.add(venue.id)
     }
     for (const concert of data.concerts) {
@@ -177,4 +180,25 @@ export function filteredConcerts(concerts: Concert[], venues: Venue[], query: st
     const when = relation(concert.date, today)
     return matches && (!venueId || concert.venueId === venueId) && (filter === 'all' || filter === 'upcoming' && (when === 'upcoming' || when === 'today') || filter === when)
   }), filter === 'past')
+}
+
+export function validVenueMetadata(value: Record<string, unknown>): boolean {
+  const bounded = (v: unknown, max: number): v is string => typeof v === 'string' && v.length <= max
+  if (value.address !== undefined && value.address !== null && !bounded(value.address, 2000)) return false
+  if (value.region !== undefined && value.region !== null && !bounded(value.region, 255)) return false
+  if (value.countryCode !== undefined && value.countryCode !== null && (typeof value.countryCode !== 'string' || !/^[A-Z]{2}$/.test(value.countryCode))) return false
+  if (value.aliases !== undefined && (!Array.isArray(value.aliases) || value.aliases.length > 100 || value.aliases.some(a => !bounded(a, 255) || !a.trim()) || new Set(value.aliases).size !== value.aliases.length)) return false
+  if (value.image === undefined || value.image === null) return true
+  if (!record(value.image) || Object.keys(value.image).some(k => !['url','thumbnailUrl','sourceUrl','credit','license','licenseUrl'].includes(k))) return false
+  for (const key of ['url','thumbnailUrl','sourceUrl','licenseUrl','credit','license']) {
+    const field = value.image[key]
+    if (!bounded(field, key === 'credit' ? 2000 : key === 'license' ? 255 : 2048) || !field.trim() || /[<>]/.test(field)) return false
+    if (key === 'credit' || key === 'license') continue
+    try {
+      const url = new URL(field)
+      const hosts = key === 'url' || key === 'thumbnailUrl' ? ['upload.wikimedia.org','thumb.wikimedia.org'] : key === 'sourceUrl' ? ['commons.wikimedia.org'] : ['commons.wikimedia.org','creativecommons.org']
+      if (url.protocol !== 'https:' || !hosts.includes(url.hostname) || url.username || url.password || url.port) return false
+    } catch { return false }
+  }
+  return true
 }

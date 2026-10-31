@@ -16,9 +16,9 @@ export function autocompleteKey(state: AutocompleteState, key: string, keys: str
   return { state: { ...state, activeKey }, pickKey: null, preventDefault: false }
 }
 
-/** One abortable read owns both stages; only a successful empty catalog can use the provider. */
+/** Automatic fallback requires an empty catalog; explicit source reads survive local failures. */
 export async function searchEntity<Local extends { total: number }, Remote>(options: {
-  query: string; signal: AbortSignal; providerEnabled: boolean;
+  query: string; signal: AbortSignal; providerEnabled: boolean; externalRequested?: boolean;
   local: (query: string, perPage: number, signal: AbortSignal) => Promise<Local>;
   publishLocal: (result: Local) => void;
   provider: (query: string, signal: AbortSignal) => Promise<Remote>;
@@ -26,10 +26,20 @@ export async function searchEntity<Local extends { total: number }, Remote>(opti
 }) {
   const query = options.query.trim(), length = [...query].length
   if (options.signal.aborted || (length > 0 && length < 3)) return
-  const result = await options.local(query, length === 0 ? 5 : 20, options.signal)
+  let result: Local
+  try { result = await options.local(query, length === 0 ? 5 : 20, options.signal) }
+  catch (error) {
+    const unauthorized = !!error && typeof error === 'object' && 'status' in error && error.status === 401
+    if (options.externalRequested && options.providerEnabled && length >= 3 && !unauthorized && !options.signal.aborted) {
+      const remote = await options.provider(query, options.signal)
+      if (!options.signal.aborted) options.publishProvider(remote)
+    }
+    if (!options.signal.aborted) throw error
+    return
+  }
   if (options.signal.aborted) return
   options.publishLocal(result)
-  if (result.total !== 0 || length < 3 || !options.providerEnabled || options.signal.aborted) return
+  if (result.total !== 0 && !options.externalRequested || length < 3 || !options.providerEnabled || options.signal.aborted) return
   const remote = await options.provider(query, options.signal)
   if (!options.signal.aborted) options.publishProvider(remote)
 }

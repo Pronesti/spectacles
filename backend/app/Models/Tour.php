@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 #[Fillable(['name'])]
 class Tour extends Model
@@ -16,6 +17,13 @@ class Tour extends Model
     use HasFactory, HasPublicId;
 
     protected $table = 'tours';
+
+    protected static function booted(): void
+    {
+        static::saving(function (Tour $tour): void {
+            $tour->search_name = mb_strtolower(Str::ascii($tour->name));
+        });
+    }
 
     /** @return HasMany<TourArtist, $this> */
     public function artistLinks(): HasMany

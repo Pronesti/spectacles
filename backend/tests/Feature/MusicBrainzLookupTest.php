@@ -203,7 +203,7 @@ class MusicBrainzLookupTest extends TestCase
         Http::assertSentCount(2);
         $this->get('/api/v1/musicbrainz/tours?'.http_build_query(['q' => 'Same', 'artist_mbids' => [$a]]))->assertOk()->assertJsonCount(1, 'data');
         $tour = Tour::factory()->create(['name' => 'Saved spelling']);
-        TourProviderId::factory()->create(['tour_id' => $tour->id, 'provider' => 'musicbrainz', 'resource_type' => 'series', 'provider_resource_id' => $t1]);
+        TourProviderId::factory()->create(['tour_id' => $tour->id, 'provider' => 'musicbrainz', 'resource_type' => 'series', 'external_provider_id' => $t1]);
         $this->get($url)->assertOk()->assertJsonPath('data.0.local.id', $tour->external_id)->assertJsonPath('data.0.local.label', 'Saved spelling');
         Http::assertSentCount(2);
         $this->assertDatabaseCount('tour_artists', 0);

@@ -1,10 +1,10 @@
-import { validDate } from './domain.ts'
-import type { EventDate } from './domain.ts'
+import { validDate, validVenueMetadata } from './domain.ts'
+import type { EventDate, VenueImage } from './domain.ts'
 
 export type CatalogKind = 'events' | 'artists' | 'venues' | 'songs' | 'tours'
 export type CatalogArtist = { id: string; name: string; type: string | null; disambiguation: string | null }
 export type CatalogSong = { id: string; title: string; disambiguation: string | null }
-export type CatalogVenue = { id: string; name: string; street: string | null; house_number: string | null; postal_code: string | null; city: string | null; region: string | null; country_code: string | null; lat: number | null; lng: number | null; timezone: string | null }
+export type CatalogVenue = { id: string; name: string; street: string | null; house_number: string | null; postal_code: string | null; city: string | null; region: string | null; country_code: string | null; lat: number | null; lng: number | null; timezone: string | null; address?: string | null; aliases?: string[]; image?: VenueImage | null }
 export type CatalogTour = { id: string; name: string; artists: CatalogArtist[] }
 export type CatalogEvent = { id: string; title: string; type: string; date: EventDate; time: string | null; timezone: string | null; venue: CatalogVenue | null; artists: CatalogArtist[]; tours: CatalogTour[] }
 export type CatalogByKind = { events: CatalogEvent; artists: CatalogArtist; venues: CatalogVenue; songs: CatalogSong; tours: CatalogTour }
@@ -55,7 +55,8 @@ function decoder(document: unknown) {
     }
     const lat = coordinate(a.lat), lng = coordinate(a.lng)
     if ((lat === null) !== (lng === null) || lat !== null && (Math.abs(lat) > 90 || Math.abs(lng!) > 180)) return invalid()
-    return { id: row.id, name: string(a.name), street: nullableString(a.street), house_number: nullableString(a.house_number), postal_code: nullableString(a.postal_code), city: nullableString(a.city), region: nullableString(a.region), country_code: nullableString(a.country_code), lat, lng, timezone: timezone(a.timezone) }
+    if (!validVenueMetadata({ ...a, countryCode: a.country_code })) return invalid()
+    return { address: (a.address ?? null) as string | null, aliases: (a.aliases ?? []) as string[], image: (a.image ?? null) as VenueImage | null, id: row.id, name: string(a.name), street: nullableString(a.street), house_number: nullableString(a.house_number), postal_code: nullableString(a.postal_code), city: nullableString(a.city), region: nullableString(a.region), country_code: nullableString(a.country_code), lat, lng, timezone: timezone(a.timezone) }
   }
   const tour = (row: Obj): CatalogTour => ({ id: row.id, name: string(row.attributes.name), artists: many(row, 'artistLinks', 'tour_artists').map(link => artist(resolve(relation(link, 'artist'), 'artists'))) })
   const event = (row: Obj, requireTours = false): CatalogEvent => {

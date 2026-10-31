@@ -77,7 +77,7 @@ test('saved workspace round-trip preserves explicit false, sparse dates, and zer
   workspace.concerts[0].date = { year: 2026, month: null, day: null }
   workspace.venues[0].lat = 0
   workspace.venues[0].lng = 0
-  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), workspace)
+  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), { ...workspace, venues: workspace.venues.map(v => ({...v, address: null, aliases: [], image: null})) })
 })
 
 test('unreadable saves and broken venue references are rejected without partial hydration', () => {

@@ -17,7 +17,7 @@ class TourProviderIdFactory extends Factory
         return [
             'tour_id' => Tour::factory(),
             'provider' => 'musicbrainz', 'resource_type' => 'series',
-            'provider_resource_id' => (string) fake()->uuid(),
+            'external_provider_id' => (string) fake()->uuid(),
         ];
     }
 }

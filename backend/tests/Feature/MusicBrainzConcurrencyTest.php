@@ -85,7 +85,7 @@ class MusicBrainzConcurrencyTest extends TestCase
             $this->assertTrue(Str::isUuid($ids[0]));
             $this->assertSame($ids[0], $ids[1]);
             $this->assertSame(1, $parent::query()->where($field, $label)->count());
-            $this->assertSame(1, $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where('provider_resource_id', $mbid)->count());
+            $this->assertSame(1, $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->count());
         } finally {
             foreach ($processes as [$process, $pipes]) {
                 if (is_resource($process)) {
@@ -98,7 +98,7 @@ class MusicBrainzConcurrencyTest extends TestCase
                     proc_close($process);
                 }
             }
-            $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where('provider_resource_id', $mbid)->delete();
+            $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->delete();
             $parent::query()->where($field, $label)->delete();
             foreach (glob($directory.'/*') as $file) {
                 unlink($file);

@@ -197,7 +197,7 @@ class MusicBrainzSaveTest extends TestCase
         $this->assertDatabaseCount('tours', 1);
         $this->assertDatabaseCount('tour_provider_ids', 1);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'musicbrainz',
-            'resource_type' => 'series', 'provider_resource_id' => '23aa9d94-ffc6-4160-a7f3-31cfba1ea646']);
+            'resource_type' => 'series', 'external_provider_id' => '23aa9d94-ffc6-4160-a7f3-31cfba1ea646']);
         Http::assertNothingSent();
     }
 

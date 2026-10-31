@@ -35,6 +35,26 @@ class CatalogReadEndpointsTest extends TestCase
         $this->actingAs(User::factory()->create());
     }
 
+    public function test_saved_single_artist_and_tour_event_makes_tour_searchable_without_guessing_ambiguous_lineups(): void
+    {
+        $artist = Artist::factory()->create();
+        $other = Artist::factory()->create();
+        $tour = Tour::factory()->create(['name' => 'Britpop Tour']);
+        $event = Event::factory()->create();
+        EventArtist::factory()->create(['event_id' => $event->id, 'artist_id' => $artist->id]);
+        EventTour::factory()->create(['event_id' => $event->id, 'tour_id' => $tour->id]);
+        $mbid = (string) Str::uuid();
+        ArtistProviderId::factory()->create(['artist_id' => $artist->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
+        foreach ([['artist_uuid' => $artist->external_id], ['artist_uuids' => [$artist->external_id]], ['artist_mbids' => [$mbid]]] as $scope) {
+            $this->read('tours', ['filter' => [...$scope, 'q' => 'Britpop']])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tour->external_id);
+        }
+        $this->read('tours', ['filter' => ['artist_uuid' => $other->external_id]])->assertOk()->assertJsonCount(0, 'data');
+        EventArtist::factory()->create(['event_id' => $event->id, 'artist_id' => $other->id]);
+        $this->read('tours', ['filter' => ['artist_uuid' => $artist->external_id]])->assertOk()->assertJsonCount(0, 'data');
+        $this->read('tours', ['filter' => ['artist_uuid' => $other->external_id]])->assertOk()->assertJsonCount(0, 'data');
+        Http::assertNothingSent();
+    }
+
     public function test_tour_union_scope_preserves_manual_artist_links_and_pending_provider_identity(): void
     {
         $a = Artist::factory()->create();
@@ -58,6 +78,43 @@ class CatalogReadEndpointsTest extends TestCase
         $this->assertDatabaseCount('tours', 3);
         $this->assertDatabaseCount('tour_artists', 3);
         Http::assertNothingSent();
+    }
+
+    public function test_tour_search_normalizes_accents_with_exact_scope_and_paginated_totals(): void
+    {
+        $mana = Artist::factory()->create(['name' => 'Maná']);
+        $other = Artist::factory()->create();
+        $mbid = '55441123-89a2-49ab-ae3f-df7a3e86835a';
+        ArtistProviderId::factory()->create(['artist_id' => $mana->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
+        $wanted = Tour::factory()->create(['name' => 'México lindo y querido']);
+        $second = Tour::factory()->create(['name' => 'México lindo y querido II']);
+        $unrelated = Tour::factory()->create(['name' => 'México lindo y querido']);
+        foreach ([[$wanted, $mana], [$second, $mana], [$unrelated, $other]] as [$tour, $artist]) {
+            TourArtist::factory()->create(['tour_id' => $tour->id, 'artist_id' => $artist->id]);
+        }
+        foreach (['mexico lindo y querido', 'MÉXICO LINDO Y QUERIDO', "Me\u{0301}xico lindo y querido"] as $query) {
+            $response = $this->read('tours', ['filter' => ['q' => $query, 'artist_mbids' => [$mbid]], 'per_page' => 1])
+                ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('meta.total', 2)->assertJsonPath('meta.last_page', 2);
+            $response->assertJsonPath('data.0.id', $wanted->external_id)->assertJsonPath('data.0.attributes.name', 'México lindo y querido');
+            $this->read('tours', ['filter' => ['q' => $query, 'artist_uuids' => [$mana->external_id]], 'per_page' => 1, 'page' => 2])
+                ->assertOk()->assertJsonPath('data.0.id', $second->external_id)->assertJsonPath('meta.total', 2);
+        }
+        $wanted->update(['name' => 'Canción nueva']);
+        $this->read('tours', ['filter' => ['q' => 'cancion nueva', 'artist_uuid' => $mana->external_id]])
+            ->assertOk()->assertJsonPath('data.0.id', $wanted->external_id)->assertJsonPath('meta.total', 1);
+        Http::assertNothingSent();
+    }
+
+    public function test_tour_search_migration_backfills_existing_names_without_changing_display(): void
+    {
+        $tour = Tour::factory()->create(['name' => 'México lindo y querido']);
+        $migration = require database_path('migrations/2026_10_26_022251_add_search_name_to_tours_table.php');
+        $migration->down();
+        $migration->up();
+
+        $this->assertSame('mexico lindo y querido', DB::table('tours')->where('id', $tour->id)->value('search_name'));
+        $this->read('tours', ['filter' => ['q' => 'mexico lindo y querido']])
+            ->assertOk()->assertJsonPath('data.0.id', $tour->external_id)->assertJsonPath('data.0.attributes.name', 'México lindo y querido');
     }
 
     /** @return array<string, list<string>> */
@@ -135,6 +192,12 @@ class CatalogReadEndpointsTest extends TestCase
         $filter = ['q' => 'björk', 'venue_uuid' => $venue->external_id, 'year' => 2024, 'month' => 2, 'day' => 29];
         $this->read('events', ['filter' => $filter])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $wanted->external_id);
         $this->read('events', ['filter' => ['q' => 'Live night']])->assertJsonPath('data.0.id', $wanted->external_id);
+        $mbid = (string) Str::uuid();
+        ArtistProviderId::factory()->create(['artist_id' => $artist->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
+        foreach ([['artist_uuid' => $artist->external_id], ['artist_mbid' => $mbid]] as $scope) {
+            $this->read('events', ['filter' => [...$scope, 'year' => 2024, 'month' => 2, 'day' => 29]])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $wanted->external_id);
+        }
+        $this->read('events', ['filter' => ['artist_uuid' => (string) Str::uuid(), 'year' => 2024, 'month' => 2, 'day' => 29]])->assertOk()->assertJsonCount(0, 'data');
         $this->read('events', ['filter' => ['venue_uuid' => (string) Str::uuid()]])->assertOk()->assertJsonPath('data', []);
     }
 

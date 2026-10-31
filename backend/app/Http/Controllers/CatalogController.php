@@ -15,6 +15,7 @@ use App\Models\Tour;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class CatalogController extends Controller
 {
@@ -36,6 +37,8 @@ class CatalogController extends Controller
                     $this->text($group, ['events.title'], $term);
                     $group->orWhereHas('artistLinks.artist', fn (Builder $artist): Builder => $this->text($artist, ['artists.name'], $term));
                 });
+            } elseif ($request->catalog() === 'tours') {
+                $this->text($query, ['tours.search_name'], mb_strtolower(Str::ascii($term)));
             } else {
                 $columns = $request->catalog() === 'artists' ? ['artists.name', 'artists.disambiguation'] : [$query->getModel()->getTable().'.'.$display];
                 $this->text($query, $columns, $term);
@@ -49,6 +52,12 @@ class CatalogController extends Controller
             }
             if (isset($filter['venue_uuid'])) {
                 $query->whereHas('venue', fn (Builder $venue): Builder => $venue->where('external_id', $filter['venue_uuid']));
+            }
+            if (isset($filter['artist_uuid'])) {
+                $query->whereHas('artistLinks.artist', fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
+            }
+            if (isset($filter['artist_mbid'])) {
+                $query->whereHas('artistLinks.artist.providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->where('provider_resource_id', strtolower($filter['artist_mbid'])));
             }
         }
         if ($request->catalog() === 'artists' && isset($filter['type'])) {
@@ -66,14 +75,15 @@ class CatalogController extends Controller
             $this->text($query, ['songs.disambiguation'], $filter['disambiguation']);
         }
         if ($request->catalog() === 'tours' && (array_key_exists('artist_uuids', $filter) || array_key_exists('artist_mbids', $filter))) {
-            $query->whereHas('artistLinks.artist', function (Builder $artist) use ($filter): void {
+            $matchArtist = function (Builder $artist) use ($filter): void {
                 $artist->where(function (Builder $scope) use ($filter): void {
                     $scope->whereIn('external_id', array_map('strtolower', $filter['artist_uuids'] ?? []))
                         ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map('strtolower', $filter['artist_mbids'] ?? [])));
                 });
-            });
+            };
+            $this->scopeToursToArtist($query, $matchArtist);
         } elseif ($request->catalog() === 'tours' && isset($filter['artist_uuid'])) {
-            $query->whereHas('artistLinks.artist', fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
+            $this->scopeToursToArtist($query, fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
         }
         if (in_array($request->catalog(), ['events', 'artists'], true) && isset($filter['provider'])) {
             $relation = $request->catalog() === 'events' ? 'providerReferences' : 'providerIds';
@@ -89,6 +99,16 @@ class CatalogController extends Controller
             ->appends($request->query());
 
         return $resource::collection($page)->toResponse($request)->header('Cache-Control', 'private, no-store');
+    }
+
+    private function scopeToursToArtist(Builder $query, callable $matchArtist): void
+    {
+        $query->where(function (Builder $scope) use ($matchArtist): void {
+            $scope->whereHas('artistLinks.artist', $matchArtist)
+                ->orWhereHas('eventLinks.event', function (Builder $event) use ($matchArtist): void {
+                    $event->has('artistLinks', '=', 1)->has('tourLinks', '=', 1)->whereHas('artistLinks.artist', $matchArtist);
+                });
+        });
     }
 
     public function show(CatalogReadRequest $request, Event $event): JsonResponse

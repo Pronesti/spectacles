@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\CatalogDraftResolver;
+use App\Http\EventDraftResolver;
 use App\Http\Requests\SaveConcertRequest;
 use App\Http\Resources\CollectionResource;
+use App\Http\VenueDraftResolver;
 use App\Models\Artist;
 use App\Models\Attendance;
 use App\Models\AttendanceMember;
-use App\Models\Event;
 use App\Models\SetlistEntry;
 use App\Models\Song;
-use App\Models\Tour;
 use App\Models\User;
-use App\Models\Venue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class CollectionController extends Controller
 {
@@ -74,43 +72,13 @@ class CollectionController extends Controller
                     $attendance = $existingAttendance;
                 }
             }
-            $data = app(CatalogDraftResolver::class)->resolve($data, $request->validated('pendingCatalog', []));
-            $eventId = $data['catalog']['eventId'] ?? null;
-            if ($eventId !== null) {
-                $event = Event::query()->where('external_id', $eventId)->firstOrFail();
-            } else {
+            $pending = $request->validated('pendingCatalog', []);
+            if (! isset($data['catalog']['eventId'])) {
                 abort_if($attendance !== null && ($attendance->owner_user_id !== $request->user()->id || $attendance->members()->count() > 1), 403, 'Shared Event changes are not available here.');
-                $venueData = $request->validated('venue');
-                if ($venueData !== null) {
-                    $venue = isset($venueData['catalogId'])
-                        ? Venue::query()->where('external_id', $venueData['catalogId'])->firstOrFail()
-                        : Venue::query()->create(['name' => $venueData['name'], 'city' => $venueData['city'], 'lat' => $venueData['lat'], 'lng' => $venueData['lng'], 'timezone' => $venueData['timezone'] ?? null]);
-                } else {
-                    $venue = $data['venueId'] === null ? null : Venue::query()->where('external_id', $data['venueId'])->firstOrFail();
-                }
-                $event = Event::query()->create([
-                    'title' => $data['title'], 'type' => $data['eventType'] ?? 'concert', 'venue_id' => $venue?->id,
-                    ...$data['date'], 'local_start_time' => $data['time'] ?: null, 'timezone' => $data['timezone'],
-                ]);
-                $used = [];
-                foreach ($data['artists'] as $position => $name) {
-                    $uuid = $data['catalog']['artistIds'][$position];
-                    $artist = $uuid === null ? Artist::query()->create(['name' => $name]) : Artist::query()->where('external_id', $uuid)->firstOrFail();
-                    if (in_array($artist->id, $used, true)) {
-                        throw ValidationException::withMessages(['concert.artists' => 'The same Artist cannot appear twice in a lineup.']);
-                    }
-                    $used[] = $artist->id;
-                    $event->artistLinks()->create(['artist_id' => $artist->id, 'position' => $position + 1]);
-                }
-                $used = [];
-                foreach ($data['catalog']['tours'] as $choice) {
-                    $tour = $choice['catalogId'] === null ? Tour::query()->create(['name' => $choice['name']]) : Tour::query()->where('external_id', $choice['catalogId'])->firstOrFail();
-                    if (! in_array($tour->id, $used, true)) {
-                        $event->tourLinks()->create(['tour_id' => $tour->id]);
-                        $used[] = $tour->id;
-                    }
-                }
             }
+            $data = app(CatalogDraftResolver::class)->resolve($data, $pending);
+            $venue = isset($data['catalog']['eventId']) ? null : app(VenueDraftResolver::class)->resolve($data, $request->validated('venue'), $pending['venue'] ?? null);
+            $event = app(EventDraftResolver::class)->resolve($data, $venue, $pending['event'] ?? null);
             $duplicate = AttendanceMember::query()->where('user_id', $request->user()->id)->where('event_id', $event->id);
             if ($attendance !== null) {
                 $duplicate->where('attendance_id', '!=', $attendance->id);

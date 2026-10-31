@@ -34,7 +34,17 @@ export function createCollectionClient(baseUrl: string, fetcher: typeof fetch = 
           419: 'Your session changed. Try again; the save was not replayed.',
           422: 'Check the concert fields and catalog selections. Nothing was saved.',
         }
-        throw new CollectionError(response.status, messages[response.status] ?? 'The collection service is unavailable. Your changes were not confirmed. Reload before retrying.')
+        let detail = ''
+        if (response.status === 422) {
+          try {
+            const payload = await response.json()
+            if (payload?.errors && typeof payload.errors === 'object' && !Array.isArray(payload.errors)) detail = Object.entries(payload.errors).slice(0, 3).flatMap(([path, values]) => {
+              const label = path.startsWith('pendingCatalog.event') ? 'Performance' : path.startsWith('pendingCatalog.venue') || path.startsWith('venue') ? 'Venue' : path.startsWith('pendingCatalog.tours') ? 'Tour' : path.startsWith('pendingCatalog.artists') ? 'Artist' : path.startsWith('concert.date') ? 'Date' : 'Concert'
+              return Array.isArray(values) ? values.filter((v): v is string => typeof v === 'string' && v.length <= 500).slice(0, 1).map(v => `${label}: ${v}`) : []
+            }).join(' ')
+          } catch { /* Keep the known rejected-save status when its optional details are unreadable. */ }
+        }
+        throw new CollectionError(response.status, detail || messages[response.status] || 'The collection service is unavailable. Your changes were not confirmed. Reload before retrying.')
       }
       const result = await response.json()
       const workspace = decodeWorkspace(JSON.stringify(result.data))

@@ -6,7 +6,7 @@ import { decodeCatalogEvent } from '../src/catalog.ts'
 import { catalogFixture, id } from './catalog-fixtures.mjs'
 test('legacy workspaces and new references round-trip without changing local identities', () => {
   const workspace = createDemoWorkspace('2026-10-23')
-  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), workspace)
+  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), { ...workspace, venues: workspace.venues.map(v => ({ address: null, aliases: [], image: null, ...v })) })
   const original = workspace.concerts[0]
   const draft = adoptCatalogEvent(createConcertDraft(original), decodeCatalogEvent(catalogFixture().detail), workspace.venues)
   draft.concert.notes = 'Keep my local notes'; draft.concert.interested = false
@@ -21,7 +21,7 @@ test('legacy workspaces and new references round-trip without changing local ide
   assert.equal(result.concert.catalog.tours[0].catalogId, id(5))
   assert.equal(result.concert.timezone, null); assert.equal(result.concert.time, '00:00:07')
   workspace.concerts[0] = result.concert; workspace.venues.push(result.venue)
-  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), workspace)
+  assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), { ...workspace, venues: workspace.venues.map(v => ({ address: null, aliases: [], image: null, ...v })) })
 })
 test('empty lineup and unknown date/timezone remain valid without inventing facts', () => {
   const f = catalogFixture()
@@ -66,4 +66,14 @@ test('Song selection never infers a performer and manual edits detach only the c
   assert.equal(changeSetlistEntry(performer, { artist: 'Someone else' }).artistCatalogId, undefined)
   const note = changeSetlistEntry(performer, { type: 'note' })
   assert.equal(note.songCatalogId, undefined); assert.equal(note.artistCatalogId, undefined)
+})
+
+test('new concert starts with unknown timezone and existing timezone is preserved', () => {
+  const fresh = createConcertDraft()
+  assert.equal(fresh.timezoneText, '')
+  assert.equal(fresh.concert.timezone, null)
+  fresh.precision = 'unknown'; fresh.artists = [{ name: 'Maná', catalogId: null }]
+  assert.equal(finishConcertDraft(fresh).concert.timezone, null)
+  const existing = { ...fresh.concert, timezone: 'America/Los_Angeles' }
+  assert.equal(createConcertDraft(existing).timezoneText, 'America/Los_Angeles')
 })

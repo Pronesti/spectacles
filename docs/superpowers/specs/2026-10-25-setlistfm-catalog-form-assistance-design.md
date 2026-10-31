@@ -2,7 +2,7 @@
 
 Date: 2026-10-25
 
-Status: Conversational design approved; written specification awaiting user review. Includes the requested update and verification of local concert creation draft recovery. Product implementation and implementation planning have not started.
+Status: Implemented locally on 2026-10-25 in the user-selected current checkout, with the requested GPT-6.1 Sol subagent. Includes the requested update and verification of local concert creation draft recovery. See `docs/superpowers/plans/2026-10-25-setlistfm-catalog-form-assistance.md` and the companion verification report for executed checks and remaining environment/manual proof. Changes are uncommitted; integrations remain disabled by default.
 
 ## Purpose and agreed scope
 

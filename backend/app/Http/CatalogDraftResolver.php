@@ -21,16 +21,20 @@ class CatalogDraftResolver
         $jobs = [];
         foreach (['artists' => 'artist', 'songs' => 'work', 'tours' => 'series'] as $map => $kind) {
             foreach ($pending[$map] ?? [] as $key => $input) {
-                $mbid = $input['selection'] === null ? null : app(MusicBrainzSelection::class)->read($input['selection'], $kind, 'pendingCatalog.'.$map.'.'.$key.'.selection');
+                $path = 'pendingCatalog.'.$map.'.'.$key.'.selection';
+                $ref = $input['selection'] === null ? null : ($kind === 'series'
+                    ? app(CatalogProviderSelection::class)->tour($input['selection'], $path)['ref']
+                    : ['provider' => 'musicbrainz', 'resourceType' => $kind, 'externalId' => app(MusicBrainzSelection::class)->read($input['selection'], $kind, $path)]);
+                $mbid = $ref === null ? null : $ref['externalId'];
                 $fields = $input;
                 unset($fields['selection']);
-                $jobs[] = ['map' => $map, 'key' => $key, 'kind' => $kind, 'mbid' => $mbid, 'fields' => $fields];
+                $jobs[] = ['map' => $map, 'key' => $key, 'kind' => $kind, 'mbid' => $mbid, 'ref' => $ref, 'fields' => $fields];
             }
         }
-        usort($jobs, fn (array $a, array $b): int => strcmp($a['kind'].':'.($a['mbid'] ?? $a['key']), $b['kind'].':'.($b['mbid'] ?? $b['key'])));
+        usort($jobs, fn (array $a, array $b): int => strcmp(json_encode($a['ref'] ?? $a['key']), json_encode($b['ref'] ?? $b['key'])));
         $resolved = [];
         foreach ($jobs as $job) {
-            $resolved[$job['map']][$job['key']] = $this->identity($job['kind'], $job['fields'], $job['mbid'])->external_id;
+            $resolved[$job['map']][$job['key']] = $this->identity($job['kind'], $job['fields'], $job['ref'])->external_id;
         }
         foreach ($pending['lineup'] as $position => $key) {
             $concert['catalog']['artistIds'][$position] = $resolved['artists'][$key];
@@ -51,17 +55,17 @@ class CatalogDraftResolver
         return $concert;
     }
 
-    private function identity(string $kind, array $fields, ?string $mbid): Artist|Song|Tour
+    private function identity(string $kind, array $fields, ?array $ref): Artist|Song|Tour
     {
         [$model, $reference, $foreignKey, $relation] = match ($kind) {
             'artist' => [Artist::class, ArtistProviderId::class, 'artist_id', 'artist'],
             'work' => [Song::class, SongProviderId::class, 'song_id', 'song'],
             'series' => [Tour::class, TourProviderId::class, 'tour_id', 'tour'],
         };
-        if ($mbid === null) {
+        if ($ref === null) {
             return $model::query()->create($fields);
         }
-        $tuple = ['provider' => 'musicbrainz', 'resource_type' => $kind, 'provider_resource_id' => $mbid];
+        $tuple = ['provider' => $ref['provider'], 'resource_type' => $ref['resourceType'], ($kind === 'series' ? 'external_provider_id' : 'provider_resource_id') => $ref['externalId']];
         $existing = $reference::query()->where($tuple)->first();
         if ($existing !== null) {
             return $existing->{$relation};

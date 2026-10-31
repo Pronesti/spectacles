@@ -1,8 +1,8 @@
 import { catalogUuid, decodeCatalogEvent, decodeCatalogPage } from './catalog.ts'
 import type { CatalogByKind, CatalogKind, CatalogPage } from './catalog.ts'
-export type CatalogFilters = { q?: string; venue_uuid?: string; year?: number; month?: number; day?: number; provider?: string; resource_type?: string; provider_resource_id?: string; type?: string; city?: string; country_code?: string; disambiguation?: string; artist_uuid?: string; artist_uuids?: string[]; artist_mbids?: string[] }
+export type CatalogFilters = { q?: string; venue_uuid?: string; year?: number; month?: number; day?: number; provider?: string; resource_type?: string; provider_resource_id?: string; type?: string; city?: string; country_code?: string; disambiguation?: string; artist_uuid?: string; artist_mbid?: string; artist_uuids?: string[]; artist_mbids?: string[] }
 const allowed: Record<CatalogKind, string[]> = {
-  events: ['q', 'venue_uuid', 'year', 'month', 'day', 'provider', 'resource_type', 'provider_resource_id'],
+  events: ['q', 'venue_uuid', 'artist_uuid', 'artist_mbid', 'year', 'month', 'day', 'provider', 'resource_type', 'provider_resource_id'],
   artists: ['q', 'type', 'provider', 'resource_type', 'provider_resource_id'], venues: ['q', 'city', 'country_code'],
   songs: ['q', 'disambiguation'], tours: ['q', 'artist_uuid', 'artist_uuids', 'artist_mbids'],
 }

@@ -1,3 +1,4 @@
+import type { ProviderRef } from './catalogProviders.ts'
 import { adoptCatalogEvent, changeSetlistEntry, createConcertDraft, finishConcertDraft } from './concertDraft.ts'
 import type { ConcertDraft } from './concertDraft.ts'
 import type { CatalogChoice, SetlistEntry, Venue } from './domain.ts'
@@ -6,21 +7,22 @@ import { catalogUuid } from './catalog.ts'
 export type ArtistDraftInput = { name: string; type: string | null; disambiguation: string | null; selection: string | null }
 export type SongDraftInput = { title: string; disambiguation: string | null; selection: string | null }
 export type TourDraftInput = { name: string; selection: string | null }
-export type PendingTour = { key: string; input: TourDraftInput; mbid?: string }
+export type PendingTour = { key: string; input: TourDraftInput; mbid?: string; ref?: ProviderRef }
 export type WizardTourChoice = CatalogChoice & { draft?: PendingTour }
 export type PendingArtist = { key: string; input: ArtistDraftInput; mbid?: string }
 export type PendingSong = { key: string; input: SongDraftInput }
 export type WizardArtistChoice = CatalogChoice & { draft?: PendingArtist }
 export type WizardEntry = SetlistEntry & { songDraft?: PendingSong; performerDraft?: PendingArtist }
-export type PendingCatalog = { tours?: Record<string, TourDraftInput>; tourChoices?: Record<string, string>; artists: Record<string, ArtistDraftInput>; songs: Record<string, SongDraftInput>; lineup: Record<string, string>; entries: Record<string, { song?: string; artist?: string }> }
+export type PendingCatalog = { venue?: { selection: string }; event?: { selection: string }; tours?: Record<string, TourDraftInput>; tourChoices?: Record<string, string>; artists: Record<string, ArtistDraftInput>; songs: Record<string, SongDraftInput>; lineup: Record<string, string>; entries: Record<string, { song?: string; artist?: string }> }
 export type WizardStep = 'artist' | 'tour' | 'event' | 'setlist'
 export const wizardSteps: WizardStep[] = ['artist', 'tour', 'event', 'setlist']
-export type WizardDraft = Omit<ConcertDraft, 'artists' | 'tours' | 'concert'> & { artists: WizardArtistChoice[]; tours: WizardTourChoice[]; concert: Omit<ConcertDraft['concert'], 'setlist'> & { setlist: WizardEntry[] } }
+export type ProviderBinding = { key: string; ref: ProviderRef; selection: string; linkedRefs?: ProviderRef[]; url?: string; venueUrl?: string; venueSources?: import('./catalogProviders.ts').VenueSource[] }
+export type WizardDraft = { providerEvent?: ProviderBinding; providerVenue?: ProviderBinding } & Omit<ConcertDraft, 'artists' | 'tours' | 'concert'> & { artists: WizardArtistChoice[]; tours: WizardTourChoice[]; concert: Omit<ConcertDraft['concert'], 'setlist'> & { setlist: WizardEntry[] } }
 export type WizardState = { step: WizardStep; draft: WizardDraft }
 export type WizardSubmission = { concert: ConcertDraft['concert']; venue?: Venue; pendingCatalog?: PendingCatalog }
 export function createWizard(initialDate?: string): WizardState { return { step: 'artist', draft: createConcertDraft(undefined, initialDate) } }
-export function adoptWizardEvent(state: WizardState, event: CatalogEvent, venues: Venue[]): WizardState { return { ...state, draft: adoptCatalogEvent(state.draft, event, venues) } }
-export function detachWizardEvent(state: WizardState): WizardState { return { ...state, draft: { ...state.draft, eventId: undefined } } }
+export function adoptWizardEvent(state: WizardState, event: CatalogEvent, venues: Venue[]): WizardState { const draft = { ...adoptCatalogEvent(state.draft, event, venues) }; delete (draft as WizardDraft).providerEvent; delete (draft as WizardDraft).providerVenue; return { ...state, draft } }
+export function detachWizardEvent(state: WizardState): WizardState { const draft = { ...state.draft }; delete draft.eventId; delete draft.providerEvent; return { ...state, draft } }
 export function changeTourInput(input: TourDraftInput, patch: Partial<TourDraftInput>): TourDraftInput { return { ...input, ...patch, ...(patch.name !== undefined && patch.name !== input.name ? { selection: null } : {}) } }
 export function changeArtistInput(input: ArtistDraftInput, patch: Partial<ArtistDraftInput>): ArtistDraftInput { return { ...input, ...patch, ...(patch.name !== undefined && patch.name !== input.name ? { selection: null } : {}) } }
 export function changeSongInput(input: SongDraftInput, patch: Partial<SongDraftInput>): SongDraftInput { return { ...input, ...patch, ...(patch.title !== undefined && patch.title !== input.title ? { selection: null } : {}) } }
@@ -36,7 +38,7 @@ export function wizardStepError(state: WizardState, step: WizardStep): string | 
     if (step === 'artist' || step === 'tour') {
       const choices = step === 'artist' ? state.draft.artists : state.draft.tours
       if (choices.length > 100 || choices.some(c => !c.name.trim() || c.name.length > 255)) throw new Error('Enter valid names (up to 100 choices).')
-      const keys = choices.map(choice => choice.catalogId ? `local:${choice.catalogId}` : choice.draft ? choice.draft.input.selection && choice.draft.mbid ? `musicbrainz:${choice.draft.mbid}` : `draft:${choice.draft.key}` : null).filter(Boolean)
+      const keys = choices.map(choice => choice.catalogId ? `local:${choice.catalogId}` : choice.draft ? choice.draft.input.selection && 'ref' in choice.draft && choice.draft.ref ? `${choice.draft.ref.provider}:${choice.draft.ref.resourceType}:${choice.draft.ref.externalId}` : choice.draft.input.selection && choice.draft.mbid ? `musicbrainz:${choice.draft.mbid}` : `draft:${choice.draft.key}` : null).filter(Boolean)
       if (new Set(keys).size !== keys.length) throw new Error('Choose each identity only once.')
     }
     if (step === 'event') finishConcertDraft(state.draft)
@@ -79,7 +81,7 @@ export function finishWizard(state: WizardState): WizardSubmission {
     const draft = choice.draft
     if (!draft) return
     if (choice.catalogId || state.draft.eventId || choice.name !== draft.input.name) throw new Error('Choose one Tour identity.')
-    if (!catalogUuid(draft.key) || !draft.input.name.trim() || draft.input.name.length > 255 || draft.input.selection !== null && (typeof draft.input.selection !== 'string' || !draft.input.selection.trim() || draft.input.selection.length > 4096)) throw new Error('Check new Tour fields.')
+    if (!catalogUuid(draft.key) || !draft.input.name.trim() || draft.input.name.length > 255 || draft.input.selection !== null && (typeof draft.input.selection !== 'string' || !draft.input.selection.trim() || draft.input.selection.length > 32768)) throw new Error('Check new Tour fields.')
     if (pending.artists[draft.key] || pending.songs[draft.key]) throw new Error('Draft identities must be distinct.')
     pending.tours ??= {}; pending.tourChoices ??= {}
     const previous = pending.tours[draft.key]
@@ -87,8 +89,10 @@ export function finishWizard(state: WizardState): WizardSubmission {
     pending.tours[draft.key] = { name: draft.input.name, selection: draft.input.selection }
     pending.tourChoices[String(index)] = draft.key
   })
+  if (state.draft.providerEvent) pending.event = { selection: state.draft.providerEvent.selection }
+  if (state.draft.providerVenue) pending.venue = { selection: state.draft.providerVenue.selection }
   const result = finishConcertDraft(state.draft)
   const catalog = result.concert.catalog!
   const tours = catalog.tours.map(choice => ({ name: choice.name, catalogId: choice.catalogId }))
-  return { ...result, concert: { ...result.concert, catalog: { ...catalog, tours }, setlist }, ...(Object.keys(pending.artists).length || Object.keys(pending.songs).length || Object.keys(pending.tours ?? {}).length ? { pendingCatalog: pending } : {}) }
+  return { ...result, concert: { ...result.concert, catalog: { ...catalog, tours }, setlist }, ...(Object.keys(pending.artists).length || Object.keys(pending.songs).length || Object.keys(pending.tours ?? {}).length || pending.event || pending.venue ? { pendingCatalog: pending } : {}) }
 }

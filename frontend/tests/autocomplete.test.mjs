@@ -57,3 +57,19 @@ test('Tour scope unions persisted and confirmed pending Artists without guessing
   assert.deepEqual(tourArtistScope([{name:'Same',catalogId:'local-a'},confirmed,{name:'Manual',catalogId:null},{...confirmed,draft:{...confirmed.draft,input:{selection:null}}},{name:'Duplicate',catalogId:'local-a'}]), {artist_uuids:['local-a'],artist_mbids:['provider-a']})
   assert.deepEqual(tourArtistScope([]), {artist_uuids:[],artist_mbids:[]})
 })
+
+test('explicit provider search survives local failure, retains its error and suppresses obsolete account results', async () => {
+ const {searchEntity}=await import('../src/autocomplete.ts')
+ const seen=[],controller=new AbortController()
+ const options={query:'Maná',signal:controller.signal,providerEnabled:true,externalRequested:true,
+ local:async()=>{throw new Error('local offline')},publishLocal:()=>{},provider:async()=>['source'],publishProvider:r=>seen.push(r)}
+ await assert.rejects(searchEntity(options),/local offline/)
+ assert.deepEqual(seen,[['source']])
+ seen.length=0
+ await assert.rejects(searchEntity({...options,local:async()=>{throw Object.assign(new Error('unauthorized'),{status:401})}}),/unauthorized/)
+ assert.deepEqual(seen,[])
+ let release
+ const held=searchEntity({...options,local:async()=>({total:0}),provider:()=>new Promise(done=>{release=done})})
+ await Promise.resolve();controller.abort();release(['old-account']);await held
+ assert.deepEqual(seen,[])
+})
