@@ -1,0 +1,167 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-P03",
+  "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Luna%20Park%22&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:14.215592+00:00",
+  "phase": "bounded access retry",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:33:14.951Z",
+    "count": 6,
+    "offset": 0,
+    "places": [
+      {
+        "id": "12c7f7fb-6ee3-49e5-9d3f-ee2285b3db82",
+        "type": "Venue",
+        "type-id": "cd92781a-a73f-30e8-a430-55d7521338db",
+        "score": 100,
+        "name": "Luna Park",
+        "address": "Foreshore of Port Phillip Bay, St Kilda, Melbourne, Victoria",
+        "coordinates": {
+          "latitude": "-37.868036",
+          "longitude": "144.976369"
+        },
+        "area": {
+          "id": "b4e9352c-8edf-4911-8fa3-e852afa30501",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Melbourne",
+          "sort-name": "Melbourne",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1913-12-13",
+          "ended": null
+        }
+      },
+      {
+        "id": "97264e5f-405c-4b56-bb9a-5d2194920a18",
+        "type": "Park",
+        "type-id": "9c482e19-7975-4d38-bfca-ef00ba919c92",
+        "score": 100,
+        "name": "Luna Park",
+        "disambiguation": "Coney Island amusement park, 2010",
+        "coordinates": {
+          "latitude": "40.573972",
+          "longitude": "-73.978479"
+        },
+        "area": {
+          "id": "6daa83c1-75fd-433e-b442-c5b061093ecf",
+          "type": "District",
+          "type-id": "84039871-5e47-38ca-a66a-45e512c8290f",
+          "name": "Coney Island",
+          "sort-name": "Coney Island",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "2010-05-29",
+          "ended": null
+        }
+      },
+      {
+        "id": "0033f0ce-c360-4ff2-a281-0a8b279d0511",
+        "type": "Indoor arena",
+        "type-id": "a77c11f6-82fa-3cc0-9041-ac60e5f6e024",
+        "score": 100,
+        "name": "Luna Park",
+        "address": "Av. Madero 420",
+        "coordinates": {
+          "latitude": "-34.60222",
+          "longitude": "-58.36861"
+        },
+        "area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1932-02-06",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Luna Park, Stadium",
+            "type-id": "fb68f9a2-622c-319b-83b0-bbff4127cdc5",
+            "name": "Stadium Luna Park",
+            "locale": "en",
+            "type": "Place name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Luna Park, Estadio",
+            "type-id": "fb68f9a2-622c-319b-83b0-bbff4127cdc5",
+            "name": "Estadio Luna Park",
+            "locale": "es",
+            "type": "Place name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "05c4d147-0d23-4031-a856-1eb353776e96",
+        "type": "Club",
+        "type-id": "d7a75895-e1a4-44e7-b76e-80a3913b13c8",
+        "score": 100,
+        "name": "Luna Park",
+        "disambiguation": "Los Angeles Club",
+        "address": "672 S La Brea Ave, Los Angeles, CA 90036",
+        "coordinates": {
+          "latitude": "34.06271",
+          "longitude": "-118.34378"
+        },
+        "area": {
+          "id": "1f40c6e1-47ba-4e35-996f-fe6ee5840e62",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Los Angeles",
+          "sort-name": "Los Angeles",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "b388d0fb-1997-461d-8f31-97c8e3f9e413",
+        "type": "Venue",
+        "type-id": "cd92781a-a73f-30e8-a430-55d7521338db",
+        "score": 85,
+        "name": "Luna Park Sydney",
+        "address": "1 Olympic Drive, Milsons Point, NSW Australia",
+        "coordinates": {
+          "latitude": "-33.84707",
+          "longitude": "151.21058"
+        },
+        "area": {
+          "id": "3f179da4-83c6-4a28-a627-e46b4a8ff1ed",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Sydney",
+          "sort-name": "Sydney",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.801
+}

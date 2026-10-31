@@ -1,0 +1,119 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-P02",
+  "request_url": "https://musicbrainz.org/ws/2/place?query=place%3A%22Teatro%20Col%C3%B3n%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:30:57.413468+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:30:58.170Z",
+    "count": 4,
+    "offset": 0,
+    "places": [
+      {
+        "id": "5ee23549-5485-445f-8621-577016ae6749",
+        "type": "Venue",
+        "type-id": "cd92781a-a73f-30e8-a430-55d7521338db",
+        "score": 100,
+        "name": "Teatro Colón",
+        "disambiguation": "Bogotá",
+        "address": "Calle 10 #5–32",
+        "coordinates": {
+          "latitude": "4.59664",
+          "longitude": "-74.076589"
+        },
+        "area": {
+          "id": "6f85c2b6-4250-468b-9bd8-300fd8b451ad",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Bogotá",
+          "sort-name": "Bogotá",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Teatro de Cristóbal Colón",
+            "type-id": "fb68f9a2-622c-319b-83b0-bbff4127cdc5",
+            "name": "Teatro de Cristóbal Colón",
+            "locale": null,
+            "type": "Place name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "e3612847-f020-4754-a91a-cae353a535c8",
+        "type": "Concert hall / Theatre",
+        "type-id": "e3e38e27-d866-4877-920d-916a124e7111",
+        "score": 100,
+        "name": "Teatro Colón",
+        "coordinates": {
+          "latitude": "-34.601083",
+          "longitude": "-58.383083"
+        },
+        "area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1908",
+          "ended": null
+        }
+      },
+      {
+        "id": "745842b2-87c0-49a3-910d-2ab245e9e309",
+        "type": "Concert hall / Theatre",
+        "type-id": "e3e38e27-d866-4877-920d-916a124e7111",
+        "score": 74,
+        "name": "Teatro Colón: Sala Principal",
+        "area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        }
+      },
+      {
+        "id": "2753ba27-dc28-4309-a672-e42559687ea9",
+        "type": "Concert hall / Theatre",
+        "type-id": "e3e38e27-d866-4877-920d-916a124e7111",
+        "score": 74,
+        "name": "Teatro Colón: Salón Dorado",
+        "area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "ended": null
+        }
+      }
+    ]
+  },
+  "elapsed_seconds": 0.821
+}

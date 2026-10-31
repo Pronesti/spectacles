@@ -1,0 +1,13 @@
+{
+  "provider": "buenos_aires_data",
+  "request_url": "https://data.buenosaires.gob.ar/dataset/actividades-culturales/resource/fe5ba957-f331-42b1-b3f4-a56b8f50268a/download",
+  "dataset_url": "https://data.buenosaires.gob.ar/dataset/actividades-culturales",
+  "license": "CC-BY-2.5-AR",
+  "requested_at_utc": "2026-10-22T17:51:13.875534+00:00",
+  "note": "Summarized research evidence, not product data. Selected rows abbreviated and fields omitted. Attribution: Ministerio de Cultura, Gobierno de la Ciudad de Buenos Aires.",
+  "http_status": 200,
+  "content_type": "text/html",
+  "validation_status": "blocked",
+  "reason": "HTTP 200 returned an HTML Request Rejected page rather than CSV. Dataset rows were not retrieved or validated. Do not interpret as an empty dataset.",
+  "response_excerpt": "Request Rejected: The requested URL was rejected. Please consult with your administrator."
+}

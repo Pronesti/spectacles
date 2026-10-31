@@ -1,0 +1,265 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G03",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Luna+Park%2C+Buenos+Aires&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:10.874872+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Luna Park",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1106ABG",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "street": "Avenida Eduardo Madero",
+        "iso3166_2": "AR-C",
+        "lon": -58.3683591,
+        "lat": -34.6020467,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "formatted": "Luna Park, Avenida Eduardo Madero, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+        "address_line1": "Luna Park",
+        "address_line2": "Avenida Eduardo Madero, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+        "category": "public_transport.bus",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JXJ+5M",
+        "plus_code_short": "XJ+5M Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "popularity": 7.953640848669934,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "518dd71764262f4dc0591695c3dd0f4d41c0f00103f9013a2297d902000000c002019203094c756e61205061726b",
+        "bbox": {
+          "lon1": -58.3684091,
+          "lat1": -34.6020967,
+          "lon2": -58.3683091,
+          "lat2": -34.6019967
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Stadium Luna Park",
+        "other_names": {
+          "name:de": "Luna Park"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1106ABG",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "street": "Avenida Eduardo Madero",
+        "housenumber": "420",
+        "iso3166_2": "AR-C",
+        "lon": -58.3686914,
+        "lat": -34.6024261,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "formatted": "Stadium Luna Park, Avenida Eduardo Madero 420, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+        "address_line1": "Stadium Luna Park",
+        "address_line2": "Avenida Eduardo Madero 420, San Nicolás, C1106 ABG Buenos Aires, Argentina",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JXJ+2G",
+        "plus_code_short": "XJ+2G Buenos Aires, Argentina",
+        "rank": {
+          "importance": 0.4684571723391885,
+          "popularity": 7.953640848669934,
+          "confidence": 0.9,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "5182a8a047312f4dc059e0e0664c1c4d41c0f00102f901874ad50100000000c002019203115374616469756d204c756e61205061726b",
+        "bbox": {
+          "lon1": -58.3690585,
+          "lat1": -34.602796,
+          "lon2": -58.3683427,
+          "lat2": -34.6018398
+        }
+      },
+      {
+        "country_code": "ar",
+        "name": "Luna",
+        "street": "Luna",
+        "country": "Argentina",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "state": "Autonomous City of Buenos Aires",
+        "state_code": "CF",
+        "city": "Buenos Aires",
+        "district": "Comuna 4",
+        "suburb": "Parque Patricios",
+        "iso3166_2": "AR-C",
+        "lon": -58.398301,
+        "lat": -34.641116,
+        "result_type": "street",
+        "postcode": "1870",
+        "formatted": "Luna, Parque Patricios, 1870 Buenos Aires, Argentina",
+        "address_line1": "Luna",
+        "address_line2": "Parque Patricios, 1870 Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39J52+HM",
+        "plus_code_short": "9J52+HM Buenos Aires, Autonomous City of Buenos Aires, Argentina",
+        "rank": {
+          "popularity": 6.926485243994024,
+          "confidence": 0,
+          "confidence_city_level": 1,
+          "match_type": "match_by_street"
+        },
+        "place_id": "51677bf486fb324dc0599e78ce16105241c0c002049203044c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363030353237",
+        "bbox": {
+          "lon1": -58.400485,
+          "lat1": -34.646255,
+          "lon2": -58.396657,
+          "lat2": -34.636201
+        }
+      },
+      {
+        "country_code": "ar",
+        "name": "Luna",
+        "street": "Luna",
+        "country": "Argentina",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "state": "Autonomous City of Buenos Aires",
+        "state_code": "CF",
+        "city": "Buenos Aires",
+        "district": "Comuna 4",
+        "suburb": "Barracas",
+        "iso3166_2": "AR-C",
+        "lon": -58.396865,
+        "lat": -34.645374,
+        "result_type": "street",
+        "postcode": "1870",
+        "formatted": "Luna, Barracas, 1870 Buenos Aires, Argentina",
+        "address_line1": "Luna",
+        "address_line2": "Barracas, 1870 Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39J33+V7",
+        "plus_code_short": "9J33+V7 Buenos Aires, Autonomous City of Buenos Aires, Argentina",
+        "rank": {
+          "popularity": 6.700972226403901,
+          "confidence": 0,
+          "confidence_city_level": 1,
+          "match_type": "match_by_street"
+        },
+        "place_id": "51a9f6e978cc324dc05927d87f9d9b5241c0c002049203044c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363031363638",
+        "bbox": {
+          "lon1": -58.397264,
+          "lat1": -34.646222,
+          "lon2": -58.396549,
+          "lat2": -34.644576
+        }
+      },
+      {
+        "country_code": "ar",
+        "name": "Coronel Luna",
+        "street": "Coronel Luna",
+        "country": "Argentina",
+        "county": "Lanús",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "state": "Buenos Aires",
+        "state_code": "BA",
+        "county_code": "LS",
+        "iso3166_2": "AR-B",
+        "lon": -58.414169,
+        "lat": -34.665284,
+        "result_type": "street",
+        "city": "Buenos Aires",
+        "suburb": "Buenos Aires",
+        "district": "Comuna 1",
+        "postcode": "1870",
+        "formatted": "Coronel Luna, Buenos Aires, 1870 Buenos Aires, Argentina",
+        "address_line1": "Coronel Luna",
+        "address_line2": "Buenos Aires, 1870 Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q38HMP+V8",
+        "plus_code_short": "8HMP+V8 Buenos Aires, Lanús, Argentina",
+        "rank": {
+          "popularity": 6.488936115576849,
+          "confidence": 0,
+          "confidence_city_level": 1,
+          "match_type": "match_by_street"
+        },
+        "place_id": "512e02637d03354dc059aa46af06285541c0c0020492030c436f726f6e656c204c756e61e203266f70656e7374726565746d61703a7374726565743a706f6c796c696e653a3238363031393335",
+        "bbox": {
+          "lon1": -58.417597,
+          "lat1": -34.66533,
+          "lon2": -58.410836,
+          "lat2": -34.66471
+        }
+      }
+    ],
+    "query": {
+      "text": "Luna Park, Buenos Aires",
+      "parsed": {
+        "house": "luna park",
+        "city": "buenos aires",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 10.538
+}

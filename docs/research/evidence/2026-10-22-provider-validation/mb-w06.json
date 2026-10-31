@@ -1,0 +1,118 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-W06",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Pais%20tropical%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:55.114180+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:55.848Z",
+    "count": 1,
+    "offset": 0,
+    "works": [
+      {
+        "id": "f0eb64aa-388e-49be-a924-1bb513a3186e",
+        "type": "Song",
+        "score": 100,
+        "title": "País tropical",
+        "language": "por",
+        "relations": [
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "19499124-36d4-4ccc-b28d-04dde3d2076f",
+              "name": "Jorge Ben Jor",
+              "sort-name": "Ben Jor, Jorge"
+            }
+          },
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "19499124-36d4-4ccc-b28d-04dde3d2076f",
+              "name": "Jorge Ben Jor",
+              "sort-name": "Ben Jor, Jorge"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "683aa2e7-bee7-4d6d-9ec3-f5605c864ed0",
+              "title": "País tropical",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e6e0046a-141f-44b0-be50-e1122b5764bf",
+              "title": "Pais tropical",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c21548ce-1033-4dda-a824-05c624ac0af3",
+              "title": "País tropical / Deixa isso pra lá",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c0b42883-7c5d-4ffc-b032-17024a92198b",
+              "title": "País tropical",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "f52c035d-9215-48e1-b81f-46ced0a562cd",
+              "title": "Pais tropical / Fio maravilha / Taj Mahal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "08b81caa-c570-4e80-a9be-33aa309b8b01",
+              "title": "País Tropical",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ed66bdd9-d783-4b15-a61b-f9c25211b5d1",
+              "title": "País tropical",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "por"
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.8
+}

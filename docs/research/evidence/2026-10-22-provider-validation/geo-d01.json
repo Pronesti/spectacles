@@ -1,0 +1,112 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-D01",
+  "request_url": "https://api.geoapify.com/v2/place-details?id=51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562e203216f70656e7374726565746d61703a76656e75653a7761792f343332393736333934&features=details",
+  "requested_at_utc": "2026-10-22T17:33:16.769133+00:00",
+  "phase": "focused follow-up",
+  "http_status": 200,
+  "response": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "feature_type": "details",
+          "website": "https://nicetoclub.com/",
+          "name": "Niceto Club",
+          "name_other": {
+            "short_name": "Niceto"
+          },
+          "categories": [
+            "adult",
+            "adult.nightclub",
+            "building",
+            "building.entertainment"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Niceto Club",
+              "osm_id": 432976394,
+              "amenity": "nightclub",
+              "website": "https://nicetoclub.com/",
+              "building": "yes",
+              "osm_type": "w",
+              "addr:city": "Ciudad Autónoma de Buenos Aires",
+              "short_name": "Niceto",
+              "addr:street": "Avenida Coronel Niceto Vega",
+              "addr:suburb": "Palermo",
+              "addr:country": "AR",
+              "addr:housenumber": 5510
+            }
+          },
+          "housenumber": "5510",
+          "street": "Avenida Coronel Niceto Vega",
+          "city": "Buenos Aires",
+          "state": "Buenos Aires",
+          "state_code": "B",
+          "postcode": "C1414BBC",
+          "country": "Argentina",
+          "country_code": "ar",
+          "district": "Distrito Audiovisual",
+          "suburb": "Palermo",
+          "formatted": "Niceto Club, Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+          "address_line1": "Niceto Club",
+          "address_line2": "Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+          "lat": -34.5874108,
+          "lon": -58.4389128,
+          "iso3166_2": "AR-C",
+          "timezone": {
+            "name": "America/Argentina/Buenos_Aires",
+            "offset_STD": "-03:00",
+            "offset_DST": "-03:00",
+            "offset_STD_seconds": -10800,
+            "offset_DST_seconds": -10800
+          },
+          "place_id": "517060b54b2e384dc059a3dc8346304b41c0f00102f9010ab2ce190000000092030b4e696365746f20436c7562"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -58.4391261,
+                -34.5874701
+              ],
+              [
+                -58.4389534,
+                -34.5875882
+              ],
+              [
+                -58.4386969,
+                -34.5873514
+              ],
+              [
+                -58.4386946,
+                -34.5873042
+              ],
+              [
+                -58.4388465,
+                -34.5872008
+              ],
+              [
+                -58.4391261,
+                -34.5874701
+              ]
+            ]
+          ]
+        },
+        "bbox": [
+          -58.4391261,
+          -34.5875882,
+          -58.4386946,
+          -34.5872008
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.852
+}

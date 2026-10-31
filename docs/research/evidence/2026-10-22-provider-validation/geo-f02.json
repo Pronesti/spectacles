@@ -1,0 +1,74 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-F02",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Quality+Center%2C+Cruz+Roja+Argentina+200%2C+C%C3%B3rdoba&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:12.432074+00:00",
+  "phase": "focused follow-up",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "state": "Córdoba",
+        "county": "Pedanía Capital",
+        "state_district": "Departamento Capital",
+        "city": "Cordoba",
+        "municipality": "Municipio de Córdoba",
+        "postcode": "X5000",
+        "suburb": "Parque Los Molinos",
+        "street": "Avenida Cruz Roja Argentina",
+        "housenumber": "200",
+        "iso3166_2": "AR-X",
+        "lon": -64.19486503287672,
+        "lat": -31.44352890821918,
+        "state_code": "X",
+        "result_type": "building",
+        "formatted": "Avenida Cruz Roja Argentina 200, Parque Los Molinos, X5000 Cordoba, Argentina",
+        "address_line1": "Avenida Cruz Roja Argentina 200",
+        "address_line2": "Parque Los Molinos, X5000 Cordoba, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQHR44+H3",
+        "rank": {
+          "importance": 9.99999999995449e-06,
+          "popularity": 5.791603440249952,
+          "confidence": 0.81,
+          "confidence_city_level": 1,
+          "confidence_street_level": 0.9,
+          "confidence_building_level": 0.9,
+          "match_type": "match_by_building"
+        },
+        "place_id": "51bad52fab780c50c059c8a14b1c8b713fc0f00102f901497a022100000000c00203",
+        "bbox": {
+          "lon1": -64.194915,
+          "lat1": -31.4435789,
+          "lon2": -64.194815,
+          "lat2": -31.4434789
+        }
+      }
+    ],
+    "query": {
+      "text": "Quality Center, Cruz Roja Argentina 200, Córdoba",
+      "parsed": {
+        "house": "quality center",
+        "housenumber": "200",
+        "street": "cruz roja argentina",
+        "city": "córdoba",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 3.048
+}

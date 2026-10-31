@@ -1,0 +1,46 @@
+{
+  "frozen_before_batch": true,
+  "purpose": "Check known regional performances for a matching Event and usable event.setlist; exploratory only. Prior same-day MusicBrainz evidence is reused separately.",
+  "cases": [
+    {
+      "case_id": "MB-EV01",
+      "artist": "Eruca Sativa",
+      "date": "2024-06-01",
+      "city": "Buenos Aires",
+      "country": "AR",
+      "query": "artist:\"Eruca Sativa\" AND begin:2024-06-01"
+    },
+    {
+      "case_id": "MB-EV02",
+      "artist": "Los Bunkers",
+      "date": "2024-04-27",
+      "city": "Santiago",
+      "country": "CL",
+      "query": "artist:\"Los Bunkers\" AND begin:2024-04-27"
+    },
+    {
+      "case_id": "MB-EV03",
+      "artist": "No Te Va Gustar",
+      "date": "2024-02-03",
+      "city": "Atlántida",
+      "country": "UY",
+      "query": "artist:\"No Te Va Gustar\" AND begin:2024-02-03"
+    },
+    {
+      "case_id": "MB-EV04",
+      "artist": "Café Tacvba",
+      "date": "2024-04-27",
+      "city": "Santiago de Querétaro",
+      "country": "MX",
+      "query": "artist:\"Café Tacvba\" AND begin:2024-04-27"
+    },
+    {
+      "case_id": "MB-EV05",
+      "artist": "Os Paralamas do Sucesso",
+      "date": "2024-09-07",
+      "city": "São Paulo",
+      "country": "BR",
+      "query": "artist:\"Os Paralamas do Sucesso\" AND begin:2024-09-07"
+    }
+  ]
+}

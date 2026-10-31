@@ -1,0 +1,261 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G05",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Quality+Espacio%2C+C%C3%B3rdoba&filter=countrycode%3Aar&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:22.781887+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Espacio Quality",
+        "country": "Argentina",
+        "country_code": "ar",
+        "state": "Córdoba",
+        "county": "Pedanía Capital",
+        "state_district": "Departamento Capital",
+        "city": "Cordoba",
+        "municipality": "Municipio de Córdoba",
+        "postcode": "X5000",
+        "suburb": "Ejército Argentino",
+        "street": "Eduardo Crespo",
+        "iso3166_2": "AR-X",
+        "lon": -64.1954798,
+        "lat": -31.4448337,
+        "state_code": "X",
+        "result_type": "amenity",
+        "formatted": "Espacio Quality, Eduardo Crespo, Ejército Argentino, X5000 Cordoba, Argentina",
+        "address_line1": "Espacio Quality",
+        "address_line2": "Eduardo Crespo, Ejército Argentino, X5000 Cordoba, Argentina",
+        "category": "sport.sports_centre",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQHR43+3R",
+        "rank": {
+          "importance": 6.888303959711631e-05,
+          "popularity": 5.788034450802705,
+          "confidence": 0.6666666666666667,
+          "match_type": "full_match"
+        },
+        "place_id": "51d501b5bd820c50c0599fa8119fe0713fc0f00102f9014e30ce0e00000000c0020192030f4573706163696f205175616c697479",
+        "bbox": {
+          "lon1": -64.1962061,
+          "lat1": -31.4456062,
+          "lon2": -64.1944657,
+          "lat2": -31.4437492
+        }
+      },
+      {
+        "country_code": "ar",
+        "country": "Argentina",
+        "county": "Capital",
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "street": "Espacio Quality",
+        "state": "Cordoba",
+        "state_code": "CD",
+        "county_code": "CB",
+        "city": "Cordoba",
+        "lon": -64.195077,
+        "lat": -31.444694,
+        "result_type": "amenity",
+        "suburb": "Ejército Argentino",
+        "postcode": "X5000",
+        "formatted": "Espacio Quality, Ejército Argentino, X5000 Cordoba, Argentina",
+        "address_line1": "Espacio Quality",
+        "address_line2": "Ejército Argentino, X5000 Cordoba, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQHR43+4X",
+        "iso3166_2": "AR-CD",
+        "rank": {
+          "popularity": 5.788034450802705,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51eacc3d247c0c50c05938ba4a77d7713fc0f00102f9014e30ce0e00000000c00201e203216f70656e7374726565746d61703a76656e75653a7761792f323438333933383036",
+        "bbox": {
+          "lon1": -64.1962061,
+          "lat1": -31.4456062,
+          "lon2": -64.1944657,
+          "lat2": -31.4437492
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Espacio O2",
+        "country": "Argentina",
+        "country_code": "ar",
+        "state": "Córdoba",
+        "county": "Pedanía Capital",
+        "state_district": "Departamento Capital",
+        "city": "Cordoba",
+        "municipality": "Municipio de Córdoba",
+        "postcode": "X5001",
+        "suburb": "Alta Córdoba",
+        "quarter": "Villa  de Emergencia  \"Los Galpones\"",
+        "street": "Faustino Allende",
+        "housenumber": "1045",
+        "iso3166_2": "AR-X",
+        "lon": -64.1921682,
+        "lat": -31.3991104,
+        "state_code": "X",
+        "county_code": "CB",
+        "result_type": "amenity",
+        "formatted": "Espacio O2, Faustino Allende 1045, Alta Córdoba, X5001 Cordoba, Argentina",
+        "address_line1": "Espacio O2",
+        "address_line2": "Faustino Allende 1045, Alta Córdoba, X5001 Cordoba, Argentina",
+        "category": "sport.sports_centre",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQJR25+94",
+        "rank": {
+          "importance": 6.888303959711631e-05,
+          "popularity": 6.316922174556287,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "513295d97b4c0c50c059557e63192c663fc0f00102f90118f6a01100000000c0020192030a4573706163696f204f32e203216f70656e7374726565746d61703a76656e75653a7761792f323935373631343332",
+        "bbox": {
+          "lon1": -64.1924031,
+          "lat1": -31.3994561,
+          "lon2": -64.1919257,
+          "lat2": -31.3987739
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Espacio Cervecería Córdoba",
+        "country": "Argentina",
+        "country_code": "ar",
+        "state": "Córdoba",
+        "county": "Pedanía Capital",
+        "state_district": "Departamento Capital",
+        "city": "Cordoba",
+        "municipality": "Municipio de Córdoba",
+        "postcode": "X5000",
+        "suburb": "Alberdi",
+        "street": "La Tablada",
+        "iso3166_2": "AR-X",
+        "lon": -64.2061365,
+        "lat": -31.4021016,
+        "state_code": "X",
+        "county_code": "CB",
+        "result_type": "amenity",
+        "formatted": "Espacio Cervecería Córdoba, La Tablada, Alberdi, X5000 Cordoba, Argentina",
+        "address_line1": "Espacio Cervecería Córdoba",
+        "address_line2": "La Tablada, Alberdi, X5000 Cordoba, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQHQXV+5G",
+        "rank": {
+          "importance": 6.888303959711631e-05,
+          "popularity": 6.220460320884854,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51c3802557310d50c05956ab6521f0663fc0f00103f901c5aec53c03000000c0020192031c4573706163696f204365727665636572c3ad612043c3b372646f6261e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133393034343930313831",
+        "bbox": {
+          "lon1": -64.2061865,
+          "lat1": -31.4021516,
+          "lon2": -64.2060865,
+          "lat2": -31.4020516
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Espacio Cultural",
+        "country": "Argentina",
+        "country_code": "ar",
+        "state": "Córdoba",
+        "county": "Pedanía Capital",
+        "state_district": "Departamento Capital",
+        "city": "Cordoba",
+        "municipality": "Municipio de Córdoba",
+        "postcode": "X5009",
+        "district": "Cerro Chico Village",
+        "suburb": "Cerro Chico",
+        "street": "Manuel Cardeñosa",
+        "iso3166_2": "AR-X",
+        "lon": -64.2184757,
+        "lat": -31.3663442,
+        "state_code": "X",
+        "county_code": "CB",
+        "result_type": "amenity",
+        "formatted": "Espacio Cultural, Manuel Cardeñosa, Cerro Chico, X5009 Cordoba, Argentina",
+        "address_line1": "Espacio Cultural",
+        "address_line2": "Manuel Cardeñosa, Cerro Chico, X5009 Cordoba, Argentina",
+        "category": "education.library",
+        "timezone": {
+          "name": "America/Argentina/Cordoba",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "47WQJQMJ+FJ",
+        "rank": {
+          "importance": 6.888303959711631e-05,
+          "popularity": 5.688106729003756,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51209e8081fb0d50c0594c14c6bbc85d3fc0f00103f9012e289f6300000000c002019203104573706163696f2043756c747572616ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f31363731333734383934",
+        "bbox": {
+          "lon1": -64.2185257,
+          "lat1": -31.3663942,
+          "lon2": -64.2184257,
+          "lat2": -31.3662942
+        }
+      }
+    ],
+    "query": {
+      "text": "Quality Espacio, Córdoba"
+    }
+  },
+  "elapsed_seconds": 1.061
+}

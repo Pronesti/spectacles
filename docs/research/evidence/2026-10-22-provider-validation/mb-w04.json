@@ -1,0 +1,226 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-W04",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Nada%20personal%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:12.699044+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:13.437Z",
+    "count": 4,
+    "offset": 0,
+    "works": [
+      {
+        "id": "d27585d3-aec2-3c72-bab3-503d3d3bf812",
+        "type": "Song",
+        "score": 100,
+        "title": "Nada personal",
+        "language": "spa",
+        "iswcs": [
+          "T-037.220.616-0"
+        ],
+        "relations": [
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "979d01bc-a4da-4c80-8cc1-be40bd35cd5e",
+              "name": "Gustavo Cerati",
+              "sort-name": "Cerati, Gustavo"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "faa8afe1-fa7b-4ca1-a9bb-ecc0cd981216",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2a565fde-f509-4306-94bf-4c3b60cf837a",
+              "title": "Nada personal (Me verás volver gira 2007)",
+              "video": true
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "b95e3fa0-e72f-402a-af10-aa42428f7c85",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "0138f3d6-ecf8-442e-af7b-e7160a6c3b2a",
+              "title": "Nada personal (Closer mix)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8ec44884-d767-4b80-bf89-9a451df8c694",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "d941233f-b769-4154-8c8e-10ec4403621d",
+              "title": "Nada personal (rémix)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "f33b649f-aac2-45dd-b182-74caad85ce82",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "67703820-96a3-4713-8390-22feea9e2e38",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "4bda920a-fa7a-437b-846a-b550a72516fc",
+              "title": "Nada personal",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "71774dc1-d0fd-4a14-99ce-9b7fa89b2ddb",
+              "title": "Nada personal",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "5c8af2e0-de37-4cbe-929c-21a7632da5bb",
+        "score": 93,
+        "title": "Nada personal",
+        "iswcs": [
+          "T-042.769.638-5"
+        ],
+        "relations": [
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "d8728ca1-9461-4bcb-8599-d87f438b04e2",
+              "name": "Manuel Sánchez Rodríguez",
+              "sort-name": "Sánchez Rodríguez, Manuel"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "ff1db3c6-fe70-4ccf-a3a7-d2063ec18e85",
+              "name": "César López Díaz",
+              "sort-name": "López Díaz, César"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "073d36a5-894d-4b64-a3fc-85a4939e97b4",
+              "title": "Nada personal",
+              "video": null
+            }
+          }
+        ],
+        "languages": []
+      },
+      {
+        "id": "10324e5f-56a3-467f-bba2-0f0e6c2ae730",
+        "type": "Song",
+        "score": 93,
+        "title": "Nada personal",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "4f6f5fef-0baf-4327-988a-b8cfc9a1298d",
+              "title": "Nada personal",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "63805f7f-4e5b-44a2-b164-80ba957dbf39",
+        "type": "Song",
+        "score": 93,
+        "title": "Nada personal",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "9d89551d-50e0-485e-bf8b-9d211cebcdbe",
+              "title": "Nada personal",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.807
+}

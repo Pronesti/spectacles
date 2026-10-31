@@ -1,0 +1,65 @@
+{
+  "phase": "Focused follow-ups; excluded from original sample denominators",
+  "cases": [
+    {
+      "case_id": "GEO-F01",
+      "endpoint": "v1/geocode/search",
+      "params": {
+        "text": "Estadio GNP Seguros, Ciudad de México",
+        "filter": "countrycode:mx",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-F02",
+      "endpoint": "v1/geocode/search",
+      "params": {
+        "text": "Quality Center, Cruz Roja Argentina 200, Córdoba",
+        "filter": "countrycode:ar",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-F03",
+      "endpoint": "v2/places",
+      "params": {
+        "name": "Movistar",
+        "categories": "sport,entertainment",
+        "filter": "circle:-74.077,4.6493,2000",
+        "limit": 10
+      }
+    },
+    {
+      "case_id": "GEO-D01",
+      "endpoint": "v2/place-details",
+      "params": {
+        "id": "51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562e203216f70656e7374726565746d61703a76656e75653a7761792f343332393736333934",
+        "features": "details"
+      }
+    },
+    {
+      "case_id": "GEO-F04",
+      "endpoint": "v1/geocode/autocomplete",
+      "params": {
+        "text": "Movistar Ar",
+        "filter": "countrycode:ar",
+        "bias": "proximity:-58.3816,-34.6037",
+        "format": "json",
+        "limit": 5
+      }
+    },
+    {
+      "case_id": "GEO-F05",
+      "endpoint": "v1/geocode/autocomplete",
+      "params": {
+        "text": "Movistar Ar",
+        "filter": "countrycode:co",
+        "bias": "proximity:-74.0721,4.7110",
+        "format": "json",
+        "limit": 5
+      }
+    }
+  ]
+}

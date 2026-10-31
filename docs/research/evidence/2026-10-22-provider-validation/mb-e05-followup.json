@@ -1,0 +1,15 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-E05",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Ty%20Segall%22%20AND%20begin%3A2026-11-07&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:31.446058+00:00",
+  "phase": "bounded access retry",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:33:32.180Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  },
+  "elapsed_seconds": 0.8
+}

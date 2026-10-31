@@ -1,0 +1,123 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-A01",
+  "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Niceto+Cl&filter=countrycode%3Aar&bias=proximity%3A-58.4389%2C-34.5874&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:31.246348+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Niceto Club",
+        "other_names": {
+          "short_name": "Niceto"
+        },
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1414BBC",
+        "city_district": "Comuna 14",
+        "district": "Distrito Audiovisual",
+        "suburb": "Palermo",
+        "street": "Avenida Coronel Niceto Vega",
+        "housenumber": "5510",
+        "iso3166_2": "AR-C",
+        "lon": -58.4389128,
+        "lat": -34.5874108,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 1.677845064388216,
+        "formatted": "Niceto Club, Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+        "address_line1": "Niceto Club",
+        "address_line2": "Avenida Coronel Niceto Vega 5510, Palermo, C1414 BBC Buenos Aires, Argentina",
+        "category": "adult.nightclub",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH76+2C",
+        "plus_code_short": "CH76+2C Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51dce56c4b2e384dc0599aa8ef46304b41c0f00102f9010ab2ce1900000000c0020192030b4e696365746f20436c7562e203216f70656e7374726565746d61703a76656e75653a7761792f343332393736333934",
+        "bbox": {
+          "lon1": -58.4391261,
+          "lat1": -34.5875882,
+          "lon2": -58.4386946,
+          "lat2": -34.5872008
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "La Calle",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "1000",
+        "district": "Comuna 14",
+        "neighbourhood": "Palermo Soho",
+        "suburb": "Palermo",
+        "street": "Coronel Niceto Vega",
+        "housenumber": "4942",
+        "iso3166_2": "AR-C",
+        "lon": -58.4329577,
+        "lat": -34.5912768,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 694.0636514446703,
+        "formatted": "La Calle, Coronel Niceto Vega 4942, Palermo, 1000 Buenos Aires, Argentina",
+        "address_line1": "La Calle",
+        "address_line2": "Coronel Niceto Vega 4942, Palermo, 1000 Buenos Aires, Argentina",
+        "category": "catering.bar",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH58+FR",
+        "plus_code_short": "CH58+FR Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5194066d286b374dc05918714bf5ae4b41c0f00103f9016e12741b01000000c002019203084c612043616c6c65",
+        "bbox": {
+          "lon1": -58.4330077,
+          "lat1": -34.5913268,
+          "lon2": -58.4329077,
+          "lat2": -34.5912268
+        }
+      }
+    ],
+    "query": {
+      "text": "Niceto Cl",
+      "parsed": {
+        "street": "niceto cl",
+        "expected_type": "unknown"
+      },
+      "categories": []
+    }
+  },
+  "elapsed_seconds": 1.104
+}

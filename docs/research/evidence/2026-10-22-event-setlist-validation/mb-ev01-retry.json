@@ -1,0 +1,14 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-EV01",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Eruca%20Sativa%22%20AND%20begin%3A2024-06-01&fmt=json&limit=10",
+  "phase": "single bounded retry",
+  "requested_at_utc": "2026-10-22T17:51:14.100589+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:51:14.869Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  }
+}

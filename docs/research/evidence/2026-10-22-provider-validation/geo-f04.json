@@ -1,0 +1,265 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-F04",
+  "request_url": "https://api.geoapify.com/v1/geocode/autocomplete?text=Movistar+Ar&filter=countrycode%3Aar&bias=proximity%3A-58.3816%2C-34.6037&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:18.023620+00:00",
+  "phase": "focused follow-up",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1045AAP",
+        "district": "Comuna 1",
+        "neighbourhood": "Abasto",
+        "suburb": "San Nicolás",
+        "street": "Avenida Corrientes",
+        "iso3166_2": "AR-C",
+        "lon": -58.3864485,
+        "lat": -34.6038423,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 444.0388337714578,
+        "formatted": "Movistar, Avenida Corrientes, San Nicolás, C1045 AAP Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Corrientes, San Nicolás, C1045 AAP Buenos Aires, Argentina",
+        "category": "commercial",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q39JW7+FC",
+        "plus_code_short": "W7+FC Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "514c8bfa2477314dc059803859b44a4d41c0f00103f901b5035ea802000000c002019203084d6f766973746172",
+        "bbox": {
+          "lon1": -58.3864985,
+          "lat1": -34.6038923,
+          "lon2": -58.3863985,
+          "lat2": -34.6037923
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "1005",
+        "district": "Comuna 1",
+        "suburb": "San Nicolás",
+        "quarter": "Microcentro",
+        "street": "Florida",
+        "housenumber": "723",
+        "iso3166_2": "AR-C",
+        "lon": -58.3752814,
+        "lat": -34.5995384,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 740.6709491740633,
+        "formatted": "Movistar, Florida 723, San Nicolás, 1005 Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Florida 723, San Nicolás, 1005 Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CJ2F+5V",
+        "plus_code_short": "2F+5V Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5107e68d3809304dc0591c599eacbd4c41c0f00103f90151e3f09f02000000c002019203084d6f766973746172e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3131323733323938373639",
+        "bbox": {
+          "lon1": -58.3753314,
+          "lat1": -34.5995884,
+          "lon2": -58.3752314,
+          "lat2": -34.5994884
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1059ABG",
+        "district": "Comuna 1",
+        "suburb": "Retiro",
+        "street": "Avenida Santa Fe",
+        "iso3166_2": "AR-C",
+        "lon": -58.3852531,
+        "lat": -34.5955384,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 967.1661098383382,
+        "formatted": "Movistar, Avenida Santa Fe, Retiro, C1059 ABG Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Santa Fe, Retiro, C1059 ABG Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CJ37+QV",
+        "plus_code_short": "CJ37+QV Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5160973cf94f314dc0598fc12f9a3a4c41c0f00103f9017d8ad21801000000c002019203084d6f766973746172",
+        "bbox": {
+          "lon1": -58.3853031,
+          "lat1": -34.5955884,
+          "lon2": -58.3852031,
+          "lat2": -34.5954884
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1123AAQ",
+        "district": "Comuna 2",
+        "suburb": "Recoleta",
+        "quarter": "Barrio Norte",
+        "street": "Avenida Santa Fe",
+        "iso3166_2": "AR-C",
+        "lon": -58.3980949,
+        "lat": -34.5956035,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 1757.8137288581438,
+        "formatted": "Movistar, Avenida Santa Fe, Recoleta, C1123 AAQ Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Santa Fe, Recoleta, C1123 AAQ Buenos Aires, Argentina",
+        "category": "commercial.elektronics",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CJ32+QQ",
+        "plus_code_short": "CJ32+QQ Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51291a10c6f4324dc0590bf148bc3c4c41c0f00103f9010400a51801000000c002019203084d6f766973746172e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373038343333393234",
+        "bbox": {
+          "lon1": -58.3981449,
+          "lat1": -34.5956535,
+          "lon2": -58.3980449,
+          "lat2": -34.5955535
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Movistar",
+        "country": "Argentina",
+        "country_code": "ar",
+        "city": "Buenos Aires",
+        "postcode": "C1123AAF",
+        "district": "Comuna 2",
+        "suburb": "Recoleta",
+        "quarter": "Barrio Norte",
+        "street": "Avenida Santa Fe",
+        "housenumber": "2324",
+        "iso3166_2": "AR-C",
+        "lon": -58.4000844,
+        "lat": -34.5951968,
+        "state": "Buenos Aires",
+        "state_code": "B",
+        "result_type": "amenity",
+        "distance": 1938.144103139233,
+        "formatted": "Movistar, Avenida Santa Fe 2324, Recoleta, C1123 AAF Buenos Aires, Argentina",
+        "address_line1": "Movistar",
+        "address_line2": "Avenida Santa Fe 2324, Recoleta, C1123 AAF Buenos Aires, Argentina",
+        "timezone": {
+          "name": "America/Argentina/Buenos_Aires",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q3CH3X+WX",
+        "plus_code_short": "CH3X+WX Buenos Aires, Argentina",
+        "rank": {
+          "importance": 8.279926756690345e-05,
+          "confidence": 0,
+          "confidence_city_level": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51e4d132f735334dc0598857a3682f4c41c0f00103f90111c4f09f02000000c002019203084d6f766973746172e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3131323733323930373639",
+        "bbox": {
+          "lon1": -58.4001344,
+          "lat1": -34.5952468,
+          "lon2": -58.4000344,
+          "lat2": -34.5951468
+        }
+      }
+    ],
+    "query": {
+      "text": "Movistar Ar"
+    }
+  },
+  "elapsed_seconds": 1.62
+}

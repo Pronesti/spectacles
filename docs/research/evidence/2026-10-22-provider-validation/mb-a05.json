@@ -1,0 +1,95 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A05",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22No%20Te%20Va%20Gustar%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:28:19.666187+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:28:20.600Z",
+    "count": 1,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "bbd05acc-33f0-4db6-bc01-41c8b4bfe2df",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "No Te Va Gustar",
+        "sort-name": "No Te Va Gustar",
+        "country": "UY",
+        "area": {
+          "id": "ea88d395-87c9-3c47-b49a-114cad41fd39",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Uruguay",
+          "sort-name": "Uruguay",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "bdf7509d-e81a-4286-a55b-c159be4267d7",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Montevideo",
+          "sort-name": "Montevideo",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "1994",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "No Te Va Gustar",
+            "name": "No Te Va Gustar",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "No te va gustar",
+            "name": "No te va gustar",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Notevagustar",
+            "name": "Notevagustar",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "No Te Va a Gustar",
+            "name": "No Te Va a Gustar",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "NTVG",
+            "name": "NTVG",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.998
+}

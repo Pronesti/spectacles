@@ -1,0 +1,277 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G10",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Allianz+Parque%2C+S%C3%A3o+Paulo&filter=countrycode%3Abr&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:28.714795+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Nubank Parque",
+        "old_name": "Estádio Palestra Itália;Allianz Parque",
+        "other_names": {
+          "alt_name": "Arena do Palmeiras",
+          "loc_name": "Parque Antarctica;Parque Antártica",
+          "old_name": "Estádio Palestra Itália;Allianz Parque"
+        },
+        "country": "Brazil",
+        "country_code": "br",
+        "region": "Southeast Region",
+        "state": "São Paulo",
+        "city": "São Paulo",
+        "postcode": "05005-000",
+        "district": "Perdizes",
+        "street": "Rua Turiassu",
+        "housenumber": "1840",
+        "iso3166_2": "BR-SP",
+        "lon": -46.6785281,
+        "lat": -23.5274971,
+        "state_code": "SP",
+        "result_type": "amenity",
+        "formatted": "Nubank Parque, Rua Turiassu 1840, São Paulo - SP, 05005-000, Brazil",
+        "address_line1": "Nubank Parque",
+        "address_line2": "Rua Turiassu 1840, São Paulo - SP, 05005-000, Brazil",
+        "category": "sport.stadium",
+        "timezone": {
+          "name": "America/Sao_Paulo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "588MF8FC+2H",
+        "plus_code_short": "F8FC+2H São Paulo, Brazil",
+        "rank": {
+          "importance": 0.5214628559760609,
+          "popularity": 8.22616041006884,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "5161753f02da5647c0591f3cc90c0a8737c0f00102f901f176c50d00000000c0020192030d4e7562616e6b20506172717565",
+        "bbox": {
+          "lon1": -46.6796033,
+          "lat1": -23.5285313,
+          "lon2": -46.6775085,
+          "lat2": -23.5264126
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Allianz",
+        "country": "Brazil",
+        "country_code": "br",
+        "region": "Southeast Region",
+        "state": "São Paulo",
+        "city": "São Paulo",
+        "postcode": "05051-000",
+        "district": "Vila Romana",
+        "suburb": "Lapa",
+        "street": "Rua Tito",
+        "housenumber": "678 L2",
+        "iso3166_2": "BR-SP",
+        "lon": -46.6987838,
+        "lat": -23.5280201,
+        "state_code": "SP",
+        "county": "Sao Paulo",
+        "county_code": "SP",
+        "result_type": "amenity",
+        "formatted": "Allianz, Rua Tito 678 L2, Lapa, São Paulo - SP, 05051-000, Brazil",
+        "address_line1": "Allianz",
+        "address_line2": "Rua Tito 678 L2, Lapa, São Paulo - SP, 05051-000, Brazil",
+        "timezone": {
+          "name": "America/Sao_Paulo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "588MF8C2+QF",
+        "plus_code_short": "F8C2+QF São Paulo, Sao Paulo, Brazil",
+        "rank": {
+          "importance": 7.861829556720863e-05,
+          "popularity": 7.236025712535572,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "51c0fc5fbf715947c059722145532c8737c0f00102f901d178f73e00000000c00201920307416c6c69616e7ae203226f70656e7374726565746d61703a76656e75653a7761792f31303536343035373133",
+        "bbox": {
+          "lon1": -46.6988127,
+          "lat1": -23.5280322,
+          "lon2": -46.6987548,
+          "lat2": -23.5280081
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Hotel Allianz Parque",
+        "country": "Brazil",
+        "country_code": "br",
+        "region": "Southeast Region",
+        "state": "São Paulo",
+        "city": "São Paulo",
+        "postcode": "05005-030",
+        "district": "Perdizes",
+        "suburb": "Pompéia",
+        "street": "Rua Palestra Itália",
+        "housenumber": "263",
+        "iso3166_2": "BR-SP",
+        "lon": -46.6802347,
+        "lat": -23.528216,
+        "state_code": "SP",
+        "county": "Sao Paulo",
+        "county_code": "SP",
+        "result_type": "amenity",
+        "formatted": "Hotel Allianz Parque, Rua Palestra Itália 263, Pompéia, São Paulo - SP, 05005-030, Brazil",
+        "address_line1": "Hotel Allianz Parque",
+        "address_line2": "Rua Palestra Itália 263, Pompéia, São Paulo - SP, 05005-030, Brazil",
+        "category": "accommodation.hotel",
+        "timezone": {
+          "name": "America/Sao_Paulo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "588MF8C9+PW",
+        "plus_code_short": "F8C9+PW São Paulo, Sao Paulo, Brazil",
+        "rank": {
+          "importance": 7.861829556720863e-05,
+          "popularity": 8.21188445227985,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "515c0d3fee115747c0595439ed29398737c0f00102f901715cfb1e00000000c00201920314486f74656c20416c6c69616e7a20506172717565e203216f70656e7374726565746d61703a76656e75653a7761792f353139373839363831",
+        "bbox": {
+          "lon1": -46.6804241,
+          "lat1": -23.528366,
+          "lon2": -46.6800454,
+          "lat2": -23.5280768
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Edifício Allianz",
+        "country": "Brazil",
+        "country_code": "br",
+        "region": "Southeast Region",
+        "state": "São Paulo",
+        "city": "São Paulo",
+        "postcode": "05425-000",
+        "district": "Pinheiros",
+        "suburb": "Pinheiros",
+        "street": "Rua Eugênio de Medeiros",
+        "housenumber": "303",
+        "iso3166_2": "BR-SP",
+        "lon": -46.7006278,
+        "lat": -23.5689702,
+        "state_code": "SP",
+        "county": "Sao Paulo",
+        "county_code": "SP",
+        "result_type": "amenity",
+        "formatted": "Edifício Allianz, Rua Eugênio de Medeiros 303, Pinheiros, São Paulo - SP, 05425-000, Brazil",
+        "address_line1": "Edifício Allianz",
+        "address_line2": "Rua Eugênio de Medeiros 303, Pinheiros, São Paulo - SP, 05425-000, Brazil",
+        "category": "building.office",
+        "timezone": {
+          "name": "America/Sao_Paulo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "588MC7JX+CP",
+        "plus_code_short": "C7JX+CP São Paulo, Sao Paulo, Brazil",
+        "rank": {
+          "importance": 7.861829556720863e-05,
+          "popularity": 8.422950522646222,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "518fd5f72bae5947c0590966f107a89137c0f00102f9017aa27b2900000000c0020192031145646966c3ad63696f20416c6c69616e7ae203216f70656e7374726565746d61703a76656e75653a7761792f363935393638333738",
+        "bbox": {
+          "lon1": -46.7008554,
+          "lat1": -23.5691255,
+          "lon2": -46.7004056,
+          "lat2": -23.568724
+        }
+      },
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Allianz",
+        "country": "Brazil",
+        "country_code": "br",
+        "region": "Southeast Region",
+        "state": "São Paulo",
+        "city": "São Paulo",
+        "postcode": "03314-000",
+        "suburb": "Tatuapé",
+        "quarter": "Vila Gomes Cardim",
+        "street": "Rua Vilela",
+        "housenumber": "82",
+        "iso3166_2": "BR-SP",
+        "lon": -46.5656143,
+        "lat": -23.5420882,
+        "state_code": "SP",
+        "county": "Sao Paulo",
+        "district": "Jardim Paulista",
+        "county_code": "SP",
+        "result_type": "amenity",
+        "formatted": "Allianz, Rua Vilela 82, Tatuapé, São Paulo - SP, 03314-000, Brazil",
+        "address_line1": "Allianz",
+        "address_line2": "Rua Vilela 82, Tatuapé, São Paulo - SP, 03314-000, Brazil",
+        "timezone": {
+          "name": "America/Sao_Paulo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "588MFC5M+5Q",
+        "plus_code_short": "FC5M+5Q São Paulo, Sao Paulo, Brazil",
+        "rank": {
+          "importance": 7.861829556720863e-05,
+          "popularity": 7.508358082321761,
+          "confidence": 0,
+          "match_type": "full_match"
+        },
+        "place_id": "513153a40c664847c059298cd24ac68a37c0f00103f9019103e1a301000000c00201920307416c6c69616e7ae203236f70656e7374726565746d61703a76656e75653a6e6f64652f37303434343030303137",
+        "bbox": {
+          "lon1": -46.5656643,
+          "lat1": -23.5421382,
+          "lon2": -46.5655643,
+          "lat2": -23.5420382
+        }
+      }
+    ],
+    "query": {
+      "text": "Allianz Parque, São Paulo"
+    }
+  },
+  "elapsed_seconds": 2.23
+}

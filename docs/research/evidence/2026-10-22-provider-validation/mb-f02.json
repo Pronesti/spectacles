@@ -1,0 +1,222 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-F02",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:34:30.699939+00:00",
+  "phase": "selected candidate hydration / query fallback",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:34:31.441Z",
+    "count": 3,
+    "offset": 0,
+    "events": [
+      {
+        "id": "647e1bc5-54d8-4fde-b3e5-fccd399282ec",
+        "type": "Concert",
+        "score": 100,
+        "name": "Soda Stereo",
+        "life-span": {
+          "begin": "1986-05-07",
+          "end": "1986-05-07"
+        },
+        "relations": [
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+              "name": "Soda Stereo",
+              "sort-name": "Soda Stereo"
+            }
+          },
+          {
+            "type": "held at",
+            "type-id": "e2c6f697-07dc-38b1-be0b-83d740165532",
+            "direction": "backward",
+            "place": {
+              "id": "b4740d92-fb9f-46cc-93ae-76e14c9be183",
+              "name": "Club Ferrocarril"
+            }
+          }
+        ]
+      },
+      {
+        "id": "8120574d-6b28-47bf-a4c1-af51e26d4087",
+        "type": "Concert",
+        "score": 100,
+        "name": "Soda Stereo",
+        "life-span": {
+          "begin": "1986-01-07",
+          "end": "1986-01-07"
+        },
+        "relations": [
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+              "name": "Soda Stereo",
+              "sort-name": "Soda Stereo"
+            }
+          },
+          {
+            "type": "held at",
+            "type-id": "e2c6f697-07dc-38b1-be0b-83d740165532",
+            "direction": "backward",
+            "place": {
+              "id": "b4740d92-fb9f-46cc-93ae-76e14c9be183",
+              "name": "Club Ferrocarril"
+            }
+          }
+        ]
+      },
+      {
+        "id": "3525bdb8-a8a3-4e66-9fb1-c89b09c88f67",
+        "type": "Festival",
+        "score": 42,
+        "name": "Rock in Bali 1987",
+        "life-span": {
+          "begin": "1987-01-23",
+          "end": "1987-01-25"
+        },
+        "relations": [
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+              "name": "Soda Stereo",
+              "sort-name": "Soda Stereo"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "598469a8-3bd6-4f8a-a5bc-a2e15e128eae",
+              "name": "Enanitos Verdes",
+              "sort-name": "Enanitos Verdes"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "a093ceb2-3c31-4105-9596-60114980ba3b",
+              "name": "Los Violadores",
+              "sort-name": "Violadores, Los"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "5a092e7c-faa9-45d0-88c6-052205804e6c",
+              "name": "Andrés Calamaro",
+              "sort-name": "Calamaro, Andrés"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "485b6cd5-94c1-4f97-a67a-b20cfad560b8",
+              "name": "La Sobrecarga",
+              "sort-name": "Sobrecarga, La"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "dd2460e6-8d6a-48f4-9231-c6f9b1188a7e",
+              "name": "Clase 65",
+              "sort-name": "Clase 65"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "985b05cf-1a57-40dc-8ee7-6596440a6821",
+              "name": "Virus",
+              "sort-name": "Virus",
+              "disambiguation": "Argentinian new wave pop band"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "abfbd5c8-c763-45e0-b321-14f6268c8410",
+              "name": "Sumo",
+              "sort-name": "Sumo",
+              "disambiguation": "Argentine 80s rock band"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "6e46f85e-9d9b-4079-87e6-eab785300ad7",
+              "name": "David Lebón",
+              "sort-name": "Lebón, David"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "3873372e-d552-4aa3-b0b4-fce386894a44",
+              "name": "Fricción",
+              "sort-name": "Fricción"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "61026c7e-2f37-49f4-988d-f6d592185c68",
+              "name": "Cosméticos",
+              "sort-name": "Cosméticos",
+              "disambiguation": "Argentinean new wave band"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "2334c108-513f-4497-a32e-d2810b15ee74",
+              "name": "Los Argentinos",
+              "sort-name": "Argentinos, Los"
+            }
+          },
+          {
+            "type": "held at",
+            "type-id": "e2c6f697-07dc-38b1-be0b-83d740165532",
+            "direction": "backward",
+            "place": {
+              "id": "d2b1015d-84c2-48af-ab82-97fb6266d7b1",
+              "name": "Bali Beach"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.809
+}

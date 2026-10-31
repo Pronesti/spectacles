@@ -1,0 +1,5598 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-D04",
+  "request_url": "https://musicbrainz.org/ws/2/series/23aa9d94-ffc6-4160-a7f3-31cfba1ea646?inc=event-rels%2Burl-rels&fmt=json",
+  "requested_at_utc": "2026-10-22T17:34:26.148016+00:00",
+  "phase": "selected candidate hydration / query fallback",
+  "http_status": 200,
+  "response": {
+    "relations": [
+      {
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-05",
+            "end": "2024-07-05"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Amsterdam",
+          "id": "ed480708-c62a-4ef3-93b4-8154a87904bc",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:00"
+        },
+        "ordering-key": 113,
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.28"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward"
+      },
+      {
+        "ordering-key": 114,
+        "event": {
+          "time": "18:00",
+          "id": "c0675944-9370-4b44-9844-b6db6fadceaf",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Amsterdam",
+          "disambiguation": "night 3",
+          "life-span": {
+            "ended": true,
+            "end": "2024-07-06",
+            "begin": "2024-07-06"
+          },
+          "setlist": ""
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.29"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.27"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of",
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "a5e23111-a684-457c-b1e5-97852f404d1b",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Amsterdam",
+          "disambiguation": "night 1",
+          "life-span": {
+            "begin": "2024-07-04",
+            "end": "2024-07-04",
+            "ended": true
+          },
+          "setlist": "",
+          "time": "18:00"
+        },
+        "ordering-key": 112,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": ""
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.6"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 6,
+        "event": {
+          "time": "18:30",
+          "id": "71f22d05-5f95-4aa3-8222-99adb23df05e",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-04-01",
+            "begin": "2023-04-01"
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Arlington"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.7"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "type": "Concert",
+          "id": "92b95aaf-a26c-478d-8148-c27c236f0489",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Arlington",
+          "disambiguation": "night 3",
+          "life-span": {
+            "end": "2023-04-02",
+            "begin": "2023-04-02",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 7,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "18:30",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "cc9bbb80-2b8c-4162-989a-d606a7f56f6e",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Arlington",
+          "disambiguation": "night 1",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-03-31",
+            "end": "2023-03-31",
+            "ended": true
+          }
+        },
+        "ordering-key": 5,
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.5"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.14"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "time": "18:30",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-04-28",
+            "end": "2023-04-28"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Atlanta",
+          "disambiguation": "night 1",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "d956efa8-11eb-4404-9e1a-3202c0eedce0",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 14,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.15"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 15,
+        "event": {
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-04-29",
+            "end": "2023-04-29"
+          },
+          "name": "The Eras Tour: Atlanta",
+          "disambiguation": "night 2",
+          "id": "cfde942f-6666-443e-83ed-76c317cba3e8",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:30"
+        }
+      },
+      {
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.16"
+        },
+        "attributes": [
+          "number"
+        ],
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 16,
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "end": "2023-04-30",
+            "begin": "2023-04-30",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Atlanta",
+          "disambiguation": "night 3",
+          "id": "c1ec756f-1d77-4706-abdb-091a4d171039",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:30"
+        }
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "2.1"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 58,
+        "event": {
+          "time": "19:00",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "f7fafcd7-37d2-4933-bb6a-f31449cccf04",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "end": "2023-11-09",
+            "begin": "2023-11-09",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Buenos Aires",
+          "disambiguation": "night 1"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 59,
+        "event": {
+          "time": "19:00",
+          "cancelled": true,
+          "name": "The Eras Tour: Buenos Aires",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-11-10",
+            "end": "2023-11-10",
+            "ended": true
+          },
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "50db84af-aed0-4a9d-a909-4127e768c164",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "2.2"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "19:00",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "de2d7abe-caa4-47f7-988c-5f7b46a3fed6",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Buenos Aires",
+          "disambiguation": "night 2",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-11-11",
+            "end": "2023-11-11"
+          },
+          "setlist": ""
+        },
+        "ordering-key": 60,
+        "type": "part of",
+        "attribute-values": {
+          "number": "2.3"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "19:00",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "9479e62e-2956-49aa-bc4f-61c7e61d6a0c",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Buenos Aires",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-11-12",
+            "end": "2023-11-12"
+          },
+          "cancelled": false
+        },
+        "ordering-key": 61,
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "2.4"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward"
+      },
+      {
+        "event": {
+          "time": "16:00",
+          "type": "Concert",
+          "id": "016c6591-532a-4b4d-96fa-84288cab09ed",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "end": "2024-06-18",
+            "begin": "2024-06-18",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "",
+          "name": "The Eras Tour: Cardiff",
+          "cancelled": false
+        },
+        "ordering-key": 105,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.20"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of"
+      },
+      {
+        "attribute-values": {
+          "number": "1.29"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "type": "Concert",
+          "id": "27a855e8-a3ca-45e1-8050-17a36a40b5f4",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Chicago",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-06-02",
+            "end": "2023-06-02"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 29,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "ordering-key": 30,
+        "event": {
+          "time": "18:30",
+          "id": "3a979f03-0720-4522-8cf4-b89732bb58b4",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "begin": "2023-06-03",
+            "end": "2023-06-03",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Chicago"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.30"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of"
+      },
+      {
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 31,
+        "event": {
+          "type": "Concert",
+          "id": "e7b6e0d3-6299-4353-9d7b-7febb8c9fd91",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-06-04",
+            "begin": "2023-06-04"
+          },
+          "name": "The Eras Tour: Chicago",
+          "disambiguation": "night 3",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.31"
+        }
+      },
+      {
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.39"
+        },
+        "attributes": [
+          "number"
+        ],
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 39,
+        "event": {
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Cincinnati",
+          "life-span": {
+            "ended": true,
+            "end": "2023-07-01",
+            "begin": "2023-07-01"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "aa9248a1-20c1-4aae-9d10-b323dbc003cc",
+          "time": "18:25"
+        }
+      },
+      {
+        "attribute-values": {
+          "number": "1.38"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "5e9513b6-1636-405a-9853-44010288cc90",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Cincinnati",
+          "life-span": {
+            "end": "2023-06-30",
+            "begin": "2023-06-30",
+            "ended": true
+          },
+          "setlist": "",
+          "time": "18:30"
+        },
+        "ordering-key": 38,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.43"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "id": "a37b28ae-a5c1-4f19-a83d-8779c5fa922b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Denver",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-07-15",
+            "end": "2023-07-15"
+          },
+          "cancelled": false
+        },
+        "ordering-key": 43
+      },
+      {
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.42"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of",
+        "event": {
+          "time": "18:30",
+          "life-span": {
+            "begin": "2023-07-14",
+            "end": "2023-07-14",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Denver",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "07b911e0-e05d-4c0d-94c1-1c2d4e80c42e",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 42,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": ""
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 33,
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "ac69d897-127d-4ce0-8a23-f55231d0234a",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-06-10",
+            "begin": "2023-06-10",
+            "ended": true
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Detroit",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.33"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        }
+      },
+      {
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "b796a4d3-6bb9-4c39-a06a-f016926a27de",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-06-09",
+            "end": "2023-06-09",
+            "ended": true
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Detroit",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 32,
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.32"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward"
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.24"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 109,
+        "event": {
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Dublin",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2024-06-28",
+            "begin": "2024-06-28"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "daf805c1-f872-4a1f-965c-4157b034620a",
+          "time": "17:00"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 110,
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "c28bebe9-8ff6-42e0-bd5b-bd2f2ab89d6c",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Dublin",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-06-29",
+            "end": "2024-06-29",
+            "ended": true
+          },
+          "time": "17:00"
+        },
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.25"
+        },
+        "attributes": [
+          "number"
+        ]
+      },
+      {
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2024-06-30",
+            "end": "2024-06-30"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Dublin",
+          "disambiguation": "night 3",
+          "id": "9331b181-a4d9-44d8-8fdd-02d445725e9d",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "17:00"
+        },
+        "ordering-key": 111,
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.26"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward"
+      },
+      {
+        "ordering-key": 26,
+        "event": {
+          "time": "18:30",
+          "id": "42f00905-e9ee-4046-9677-ad35ad9ed02c",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2023-05-26",
+            "begin": "2023-05-26",
+            "ended": true
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: East Rutherford"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.26"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.27"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 27,
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "68864322-f82b-4eac-b1c9-64cf63101e1a",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-05-27",
+            "end": "2023-05-27"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: East Rutherford",
+          "disambiguation": "night 2",
+          "cancelled": false
+        }
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "id": "b845a43f-bdee-4cca-a5bd-3462f466fe97",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: East Rutherford",
+          "life-span": {
+            "end": "2023-05-28",
+            "begin": "2023-05-28",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false
+        },
+        "ordering-key": 28,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.28"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "event": {
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Edinburgh",
+          "life-span": {
+            "ended": true,
+            "end": "2024-06-07",
+            "begin": "2024-06-07"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "56cbe9cb-2554-4e78-9bfc-ba1beab08d6b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "16:30"
+        },
+        "ordering-key": 99,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.14"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.15"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2024-06-08",
+            "end": "2024-06-08"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Edinburgh",
+          "disambiguation": "night 2",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "27be92d0-9bb4-4d7f-ae97-d79800a24637",
+          "type": "Concert",
+          "time": "16:30"
+        },
+        "ordering-key": 100
+      },
+      {
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.16"
+        },
+        "attributes": [
+          "number"
+        ],
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 101,
+        "event": {
+          "time": "16:30",
+          "cancelled": false,
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Edinburgh",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-06-09",
+            "end": "2024-06-09"
+          },
+          "setlist": "",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "ebca35b9-adf6-437a-8380-2f82f1d3983a",
+          "type": "Concert"
+        }
+      },
+      {
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.23"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "id": "3a65af9a-3a3b-4df9-adfb-05e8be443c15",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Foxborough",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "end": "2023-05-19",
+            "begin": "2023-05-19"
+          },
+          "setlist": "",
+          "time": "18:30"
+        },
+        "ordering-key": 23
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.24"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "cancelled": false,
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Foxborough",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-05-20",
+            "end": "2023-05-20",
+            "ended": true
+          },
+          "id": "bb58765f-b2c9-4277-8fb9-42be72734f6e",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "ordering-key": 24
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 25,
+        "event": {
+          "type": "Concert",
+          "id": "07a7ea63-1278-4a5e-bb73-d775488777b3",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Foxborough",
+          "disambiguation": "night 3",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-05-21",
+            "end": "2023-05-21"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.25"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "18:15",
+          "type": "Concert",
+          "id": "70376724-d0ea-48af-af4f-7ac171b04843",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Gelsenkirchen",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-18",
+            "end": "2024-07-18"
+          },
+          "cancelled": false
+        },
+        "ordering-key": 120,
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.35"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward"
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.34"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "9be00f85-ce81-4b98-9b5a-93db8e4cc82b",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Gelsenkirchen",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-17",
+            "end": "2024-07-17"
+          },
+          "cancelled": false,
+          "time": "18:15"
+        },
+        "ordering-key": 119
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.36"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 121,
+        "event": {
+          "cancelled": false,
+          "name": "The Eras Tour: Gelsenkirchen",
+          "disambiguation": "night 3",
+          "life-span": {
+            "end": "2024-07-19",
+            "begin": "2024-07-19",
+            "ended": true
+          },
+          "setlist": "",
+          "id": "38a13d78-6d84-4682-94c2-a89de7d604f4",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:15"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.2"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 2,
+        "event": {
+          "id": "a8ad022d-3a9a-4aa8-9c27-9465ae8ff5ea",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Glendale",
+          "life-span": {
+            "ended": true,
+            "end": "2023-03-18",
+            "begin": "2023-03-18"
+          },
+          "setlist": "@ [18fa2604-c608-4e1a-9b9d-05d7360c5817|GAYLE]\r\n* everybody hates me\r\n* sleeping with my friends\r\n* ALEX\r\n* don’t call me pretty\r\n* [b6025a57-0821-3bdd-9b03-ca24e2e08b37|You Oughta Know]\r\n* luv starved\r\n* snow angels\r\n* [fe44657b-9124-49d3-b6e2-8ed422bcca49|abcdefu]\r\n\r\n@ [44cf61b8-5197-448a-b82b-cef6ee89fac5|Paramore]\r\n* [06b8efda-e1df-472c-b7dc-4dfae7f776dd|This Is Why]\r\n* [dc286511-76a2-49d1-9fa8-bd82ec68e9bc|Hard Times]\r\n* [96d52e1b-6c1d-4ef9-95a2-e1fcacb9cbe0|That’s What You Get]\r\n* [13c00b3d-23fd-4c2e-a86f-87590b45b43b|Decode]\r\n* [31ba209c-69ac-34eb-bd23-b0312a7a268d|The Only Exception]\r\n* [06815f1e-a4e9-40d4-9068-1977145032cf|Still Into You]\r\n* [baacb4ba-5e39-4e2a-8081-c951bb66fa25|Rose‐Colored Boy]\r\n* [0651b8df-bf00-314b-b671-edb53fafe293|Misery Business]\r\n* [2124a67b-a219-4a80-81b0-d9b89002ef56|Ain’t It Fun]\r\n\r\n@ [20244d07-534f-4eff-b4d4-930878889970|Taylor Swift]\r\n# Lover\r\n* [4729c835-34b6-457f-a0fa-909b277db116|Miss Americana & the Heartbreak Prince]\r\n* [0e3ae332-8ba1-4040-894f-bb1f4ef925d6|Cruel Summer]\r\n* [543dec53-ac04-4b41-a96e-f26b2ad8f02e|The Man]\r\n* [985d464d-9491-4e68-a573-df9b50a425ab|You Need to Calm Down]\r\n* [fbfa8834-ff6c-4279-a134-130650ad2c25|Lover]\r\n* [08c58cba-5b1d-4593-9e3b-e3d50c043f24|The Archer]\r\n\r\n# Fearless\r\n* [49ad745e-cb41-327a-8544-dba449a766eb|Fearless]\r\n* [4f0b6123-2bbd-3672-a928-b1949a42654d|You Belong With Me]\r\n* [c8975007-ba64-3e81-9a3c-69a3ba2fab95|Love Story]\r\n\r\n# evermore\r\n* [a087f8e8-0834-4c0f-b5df-0f6d6aaf0bee|‘tis the damn season]\r\n* [d4333f22-db44-42e5-adba-f7732570a49f|willow]\r\n* [789801dc-550e-431f-9599-d9b83285ff71|marjorie]\r\n* [a6503d19-0752-408b-9934-1ae426cf9a45|champagne problems]\r\n* [8891737d-96ae-459c-86ac-ae11399652d7|tolerate it]\r\n\r\n# reputation\r\n* [defd6853-e3a8-4197-8d85-04df567f78e2|…Ready for It?]\r\n* [441d26a3-c413-49b5-8cd6-18afd921eb41|Delicate]\r\n* [40a50b24-f5fe-4a58-9b2a-9d1a8a179124|Don’t Blame Me]\r\n* [812506f3-b3fc-4c2f-b621-e50b336b1665|Look What You Made Me Do]\r\n\r\n# Speak Now\r\n* [5569eb48-0821-3d57-ab3b-80f63d3d37e4|Enchanted]\r\n\r\n# Red\r\n* [014f3f6c-e2b0-4217-9e3c-89abf919648b|22]\r\n* [aa42d642-3771-4180-9c53-00ba22df5a4b|We Are Never Ever Getting Back Together]\r\n* [8a999d24-acbb-4992-b580-030b2fe83e90|I Knew You Were Trouble.]\r\n* [6c9d895a-e910-40f3-9b77-9e643eeec369|All Too Well (10 minute version)]\r\n\r\n# folklore\r\n* [f72c870e-904c-4b5f-92b5-360fcfd6b2fe|invisible string]\r\n* [9f24824b-1777-45e1-a829-bba8f0ca5b27|betty]\r\n* [dfc9ac83-8073-4cf8-90d1-3f2fcc1a2409|the last great american dynasty]\r\n* [6ce75487-483b-48a7-a988-9b16f0912e51|august]\r\n* [9ed14afd-649f-4094-8106-8bd0984cadd7|illicit affairs]\r\n* [3c19b20f-dfa4-469a-9502-8f663f6d7df1|my tears ricochet]\r\n* [33d85bba-6afc-4324-8690-28ea9b40c526|cardigan]\r\n\r\n# 1989\r\n* [f4dd8235-123f-4f53-ac07-1fc070016c06|Style]\r\n* [05980852-95f4-4ea2-806a-abf1666951b8|Blank Space]\r\n* [5fa63cad-ca5d-4927-ad27-459388bdebaf|Shake it Off]\r\n* [17567c60-83d9-4fa8-bd79-484ecfed8a26|Wildest Dreams]\r\n* [c23570a3-467c-4ee8-80ff-0a04b339e844|Bad Blood]\r\n\r\n# Surprise songs\r\n* [aef21e05-fd48-440c-beb2-6ddd2678cfbc|this is me trying]\r\n* [65bdb1d3-a969-4dde-967a-9cfa67d0168c|State of Grace]\r\n\r\n# Midnights\r\n* [45e258a3-4552-442c-ba22-7e5a6899c3e8|Lavender Haze]\r\n* [aae062a3-a98c-48e0-ab5f-d52a7953c414|Anti‐Hero]\r\n* [5182b11e-9b69-445c-adf0-74f6a9ac0aef|Midnight Rain]\r\n* [36330f36-f59a-47d4-9cfe-9434b8d25e88|Vigilante Shit]\r\n* [0a271627-b8c6-4b16-9e65-5b4b19449268|Bejeweled]\r\n* [9a345806-abf4-468f-b792-529848c28251|Mastermind]\r\n* [d4edec0a-b935-4328-acd6-5b427b105962|Karma]",
+          "time": "18:30"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.1"
+        },
+        "attributes": [
+          "number"
+        ],
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 1,
+        "event": {
+          "time": "18:30",
+          "setlist": "@ [18fa2604-c608-4e1a-9b9d-05d7360c5817|GAYLE]\r\n* everybody hates me\r\n* sleeping with my friends\r\n* ALEX\r\n* don’t call me pretty\r\n* [b6025a57-0821-3bdd-9b03-ca24e2e08b37|You Oughta Know]\r\n* luv starved\r\n* snow angels\r\n* [fe44657b-9124-49d3-b6e2-8ed422bcca49|abcdefu]\r\n\r\n@ [44cf61b8-5197-448a-b82b-cef6ee89fac5|Paramore]\r\n* [06b8efda-e1df-472c-b7dc-4dfae7f776dd|This Is Why]\r\n* [dc286511-76a2-49d1-9fa8-bd82ec68e9bc|Hard Times]\r\n* [96d52e1b-6c1d-4ef9-95a2-e1fcacb9cbe0|That’s What You Get]\r\n* [13c00b3d-23fd-4c2e-a86f-87590b45b43b|Decode]\r\n* [31ba209c-69ac-34eb-bd23-b0312a7a268d|The Only Exception]\r\n* [06815f1e-a4e9-40d4-9068-1977145032cf|Still Into You]\r\n* [baacb4ba-5e39-4e2a-8081-c951bb66fa25|Rose‐Colored Boy]\r\n* [0651b8df-bf00-314b-b671-edb53fafe293|Misery Business]\r\n* [2124a67b-a219-4a80-81b0-d9b89002ef56|Ain’t It Fun]\r\n\r\n@ [20244d07-534f-4eff-b4d4-930878889970|Taylor Swift]\r\n# Lover\r\n* [4729c835-34b6-457f-a0fa-909b277db116|Miss Americana & the Heartbreak Prince]\r\n* [0e3ae332-8ba1-4040-894f-bb1f4ef925d6|Cruel Summer]\r\n* [543dec53-ac04-4b41-a96e-f26b2ad8f02e|The Man]\r\n* [985d464d-9491-4e68-a573-df9b50a425ab|You Need to Calm Down]\r\n* [fbfa8834-ff6c-4279-a134-130650ad2c25|Lover]\r\n* [08c58cba-5b1d-4593-9e3b-e3d50c043f24|The Archer]\r\n\r\n# Fearless\r\n* [49ad745e-cb41-327a-8544-dba449a766eb|Fearless]\r\n* [4f0b6123-2bbd-3672-a928-b1949a42654d|You Belong With Me]\r\n* [c8975007-ba64-3e81-9a3c-69a3ba2fab95|Love Story]\r\n\r\n# evermore\r\n* [a087f8e8-0834-4c0f-b5df-0f6d6aaf0bee|‘tis the damn season]\r\n* [d4333f22-db44-42e5-adba-f7732570a49f|willow]\r\n* [789801dc-550e-431f-9599-d9b83285ff71|marjorie]\r\n* [a6503d19-0752-408b-9934-1ae426cf9a45|champagne problems]\r\n* [8891737d-96ae-459c-86ac-ae11399652d7|tolerate it]\r\n\r\n# reputation\r\n* [defd6853-e3a8-4197-8d85-04df567f78e2|…Ready for It?]\r\n* [441d26a3-c413-49b5-8cd6-18afd921eb41|Delicate]\r\n* [40a50b24-f5fe-4a58-9b2a-9d1a8a179124|Don’t Blame Me]\r\n* [812506f3-b3fc-4c2f-b621-e50b336b1665|Look What You Made Me Do]\r\n\r\n# Speak Now\r\n* [5569eb48-0821-3d57-ab3b-80f63d3d37e4|Enchanted]\r\n\r\n# Red\r\n* [014f3f6c-e2b0-4217-9e3c-89abf919648b|22]\r\n* [aa42d642-3771-4180-9c53-00ba22df5a4b|We Are Never Ever Getting Back Together]\r\n* [8a999d24-acbb-4992-b580-030b2fe83e90|I Knew You Were Trouble.]\r\n* [6c9d895a-e910-40f3-9b77-9e643eeec369|All Too Well (10 minute version)]\r\n\r\n# folklore\r\n* [f72c870e-904c-4b5f-92b5-360fcfd6b2fe|invisible string]\r\n* [9f24824b-1777-45e1-a829-bba8f0ca5b27|betty]\r\n* [dfc9ac83-8073-4cf8-90d1-3f2fcc1a2409|the last great american dynasty]\r\n* [6ce75487-483b-48a7-a988-9b16f0912e51|august]\r\n* [9ed14afd-649f-4094-8106-8bd0984cadd7|illicit affairs]\r\n* [3c19b20f-dfa4-469a-9502-8f663f6d7df1|my tears ricochet]\r\n* [33d85bba-6afc-4324-8690-28ea9b40c526|cardigan]\r\n\r\n# 1989\r\n* [f4dd8235-123f-4f53-ac07-1fc070016c06|Style]\r\n* [05980852-95f4-4ea2-806a-abf1666951b8|Blank Space]\r\n* [5fa63cad-ca5d-4927-ad27-459388bdebaf|Shake it Off]\r\n* [17567c60-83d9-4fa8-bd79-484ecfed8a26|Wildest Dreams]\r\n* [c23570a3-467c-4ee8-80ff-0a04b339e844|Bad Blood]\r\n\r\n# Surprise songs\r\n* [ce6899e0-afcf-497f-b1a8-97c577cb0712|mirrorball]\r\n* [aa3a2227-dc87-4635-8b67-629be32e7bf9|Tim McGraw]\r\n\r\n# Midnights\r\n* [45e258a3-4552-442c-ba22-7e5a6899c3e8|Lavender Haze]\r\n* [aae062a3-a98c-48e0-ab5f-d52a7953c414|Anti‐Hero]\r\n* [5182b11e-9b69-445c-adf0-74f6a9ac0aef|Midnight Rain]\r\n* [36330f36-f59a-47d4-9cfe-9434b8d25e88|Vigilante Shit]\r\n* [0a271627-b8c6-4b16-9e65-5b4b19449268|Bejeweled]\r\n* [9a345806-abf4-468f-b792-529848c28251|Mastermind]\r\n* [d4edec0a-b935-4328-acd6-5b427b105962|Karma]",
+          "life-span": {
+            "end": "2023-03-17",
+            "begin": "2023-03-17",
+            "ended": true
+          },
+          "name": "The Eras Tour: Glendale",
+          "disambiguation": "night 1",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "da78de0e-f58e-410c-a85e-1705efeda0e8",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        }
+      },
+      {
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.37"
+        },
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 122,
+        "event": {
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Hamburg",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-23",
+            "end": "2024-07-23"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "54279536-3793-41f5-b233-274ff2f46eb2",
+          "time": "18:00"
+        }
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 123,
+        "event": {
+          "time": "18:00",
+          "cancelled": false,
+          "name": "The Eras Tour: Hamburg",
+          "disambiguation": "night 2",
+          "life-span": {
+            "begin": "2024-07-24",
+            "end": "2024-07-24",
+            "ended": true
+          },
+          "setlist": "",
+          "id": "077267af-e73e-4ced-86c5-82d0b5ffba06",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.38"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        }
+      },
+      {
+        "ordering-key": 12,
+        "event": {
+          "time": "18:30",
+          "id": "1e9225bc-d42c-412c-9cca-52fd65a578ca",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "name": "The Eras Tour: Houston",
+          "disambiguation": "night 2",
+          "life-span": {
+            "begin": "2023-04-22",
+            "end": "2023-04-22",
+            "ended": true
+          },
+          "setlist": ""
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.12"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "ordering-key": 11,
+        "event": {
+          "id": "b9f13007-5527-47d2-92d1-7ba0b6c9389b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2023-04-21",
+            "end": "2023-04-21"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Houston",
+          "time": "18:30"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.11"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.13"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "cancelled": false,
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Houston",
+          "life-span": {
+            "end": "2023-04-23",
+            "begin": "2023-04-23",
+            "ended": true
+          },
+          "setlist": "",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "3ddecbf2-3012-4928-8776-16c07c5c6a8c",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "ordering-key": 13
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "5.7"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 143,
+        "event": {
+          "type": "Concert",
+          "id": "4882d32a-19df-40e9-9407-ac2a5c1f5801",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "end": "2024-11-01",
+            "begin": "2024-11-01",
+            "ended": true
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Indianapolis",
+          "cancelled": false,
+          "time": "19:00"
+        }
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "5.8"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "e7723c04-cc6e-4cbe-9acd-45448977acb3",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-11-02",
+            "end": "2024-11-02"
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Indianapolis",
+          "cancelled": false,
+          "time": "19:00"
+        },
+        "ordering-key": 144,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "event": {
+          "type": "Concert",
+          "id": "22f18e4c-b4eb-4bbd-b641-5f194fbe1994",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Indianapolis",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-11-03",
+            "end": "2024-11-03"
+          },
+          "cancelled": false,
+          "time": "19:00"
+        },
+        "ordering-key": 145,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "5.9"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "ordering-key": 41,
+        "event": {
+          "time": "18:30",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-07-08",
+            "end": "2023-07-08",
+            "ended": true
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Kansas City",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "252cb02c-7745-4f26-bfd4-007b014be288",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.41"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "ordering-key": 40,
+        "event": {
+          "time": "18:30",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Kansas City",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-07-07",
+            "end": "2023-07-07",
+            "ended": true
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "e0b3cbfa-7bd8-45c5-ae46-161918828baa"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.40"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.4"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "time": "18:30",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Las Vegas",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-03-25",
+            "end": "2023-03-25"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "83b4b5e4-3e72-471f-aa45-1bcf0eecda81",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 4,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "274f7be7-6ea0-4bc4-909f-e020ae14d0ed",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-03-24",
+            "begin": "2023-03-24",
+            "ended": true
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Las Vegas",
+          "cancelled": false
+        },
+        "ordering-key": 3,
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.3"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward"
+      },
+      {
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.8"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "time": "",
+          "cancelled": false,
+          "name": "The Eras Tour: Lisbon",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-05-24",
+            "end": "2024-05-24"
+          },
+          "setlist": "",
+          "id": "8fc024a3-035e-4974-9b5c-de8dc2ee4e2c",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "ordering-key": 93,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.9"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 94,
+        "event": {
+          "time": "",
+          "id": "57edaa12-945f-4051-b2dd-16d9b8da5467",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "end": "2024-05-25",
+            "begin": "2024-05-25"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Lisbon"
+        }
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.17"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 102,
+        "event": {
+          "time": "16:00",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "4ff290e0-63f9-4c46-ba98-a2321cebd738",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Liverpool",
+          "setlist": "",
+          "life-span": {
+            "end": "2024-06-13",
+            "begin": "2024-06-13",
+            "ended": true
+          },
+          "cancelled": false
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.18"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "af3597d0-0aca-4cf2-8e5e-de68634b927f",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "end": "2024-06-14",
+            "begin": "2024-06-14"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Liverpool",
+          "time": "16:00"
+        },
+        "ordering-key": 103,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.19"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 104,
+        "event": {
+          "time": "16:00",
+          "type": "Concert",
+          "id": "81e6384b-064a-4455-863b-29b866e5e526",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-06-15",
+            "end": "2024-06-15"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Liverpool",
+          "disambiguation": "night 3",
+          "cancelled": false
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "ordering-key": 106,
+        "event": {
+          "time": "17:00",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "end": "2024-06-21",
+            "begin": "2024-06-21"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: London",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "191043f9-3723-4aab-8377-87cd76f380dd",
+          "type": "Concert"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.21"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.22"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "time": "17:00",
+          "type": "Concert",
+          "id": "c9817c86-2445-44e0-b5b1-7085accb1596",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: London",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-06-22",
+            "end": "2024-06-22"
+          },
+          "cancelled": false
+        },
+        "ordering-key": 107,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 133,
+        "event": {
+          "time": "16:45",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-08-16",
+            "end": "2024-08-16",
+            "ended": true
+          },
+          "disambiguation": "night 5",
+          "name": "The Eras Tour: London",
+          "id": "6fd32e7b-ca86-4abe-b6ba-2e3157b98309",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.48"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 134,
+        "event": {
+          "time": "16:45",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2024-08-17",
+            "end": "2024-08-17"
+          },
+          "setlist": "",
+          "disambiguation": "night 6",
+          "name": "The Eras Tour: London",
+          "id": "27fdc41e-da6e-49cb-a082-92067a59be94",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.49"
+        }
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 108,
+        "event": {
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2024-06-23",
+            "begin": "2024-06-23",
+            "ended": true
+          },
+          "name": "The Eras Tour: London",
+          "disambiguation": "night 3",
+          "id": "f8304621-e7ae-45b4-92c8-b5739090ff2b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "15:15"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.23"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.47"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 132,
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "1109bbc4-841c-4788-8716-56666a011232",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-08-15",
+            "end": "2024-08-15"
+          },
+          "disambiguation": "night 4",
+          "name": "The Eras Tour: London",
+          "cancelled": false,
+          "time": "16:30"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.50"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 135,
+        "event": {
+          "id": "aa363e77-9325-42a2-b72f-67132b511812",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "end": "2024-08-19",
+            "begin": "2024-08-19",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 7",
+          "name": "The Eras Tour: London",
+          "time": "16:00"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 136,
+        "event": {
+          "time": "16:00",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "2ec40031-6686-4cef-bef3-49e58ca637fd",
+          "name": "The Eras Tour: London",
+          "disambiguation": "night 8",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2024-08-20",
+            "begin": "2024-08-20"
+          },
+          "cancelled": false
+        },
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.51"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        }
+      },
+      {
+        "event": {
+          "type": "Concert",
+          "id": "b097d8d9-2dcf-4507-b803-59df79da3ade",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "begin": "2023-08-04",
+            "end": "2023-08-04",
+            "ended": true
+          },
+          "name": "The Eras Tour: Los Angeles",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 49,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.49"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.50"
+        },
+        "type": "part of",
+        "ordering-key": 50,
+        "event": {
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Los Angeles",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-08-05",
+            "end": "2023-08-05"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "4dc42fc2-f54b-4214-ab91-9e5ec0cfbcec",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "18:30"
+        },
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "18:30",
+          "id": "6d825765-2ebe-4266-a5b5-4293b711c97f",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Los Angeles",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-08-03",
+            "end": "2023-08-03"
+          },
+          "setlist": ""
+        },
+        "ordering-key": 48,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.48"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "event": {
+          "time": "18:30",
+          "name": "The Eras Tour: Los Angeles",
+          "disambiguation": "night 5",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-08-08",
+            "begin": "2023-08-08"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "20339d6f-ea9f-4564-aaa7-684af8bd34fa",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 52,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.52"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2023-08-09",
+            "begin": "2023-08-09",
+            "ended": true
+          },
+          "disambiguation": "night 6",
+          "name": "The Eras Tour: Los Angeles",
+          "id": "d407ae25-78bf-4cce-a2e5-1e66cababeff",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "ordering-key": 53,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.53"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.51"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "id": "eab05283-5f3c-4a8f-95dc-53b2c9a34917",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-08-07",
+            "begin": "2023-08-07",
+            "ended": true
+          },
+          "disambiguation": "night 4",
+          "name": "The Eras Tour: Los Angeles",
+          "cancelled": false
+        },
+        "ordering-key": 51
+      },
+      {
+        "ordering-key": 97,
+        "event": {
+          "time": "",
+          "id": "334d910a-2b05-4e46-8672-793c4ae2205b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-06-02",
+            "end": "2024-06-02",
+            "ended": true
+          },
+          "name": "The Eras Tour: Lyon",
+          "disambiguation": "night 1"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.12"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of"
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Lyon",
+          "life-span": {
+            "begin": "2024-06-03",
+            "end": "2024-06-03",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "8fbeb8ff-1f0e-48ac-9cf6-514934cdcfe5"
+        },
+        "ordering-key": 98,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.13"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.11"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "2c6a66a8-4c12-411e-8658-2173a360d04f",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Madrid",
+          "life-span": {
+            "begin": "2024-05-30",
+            "end": "2024-05-30",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 96
+      },
+      {
+        "ordering-key": 95,
+        "event": {
+          "type": "Concert",
+          "id": "89a4b479-b19b-40ac-9d05-e6c0fcb8f299",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Madrid",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-05-29",
+            "end": "2024-05-29"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": ""
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.10"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.5"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "19e34c24-914f-48f7-9837-c51f43a44e6f",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-16",
+            "end": "2024-02-16"
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Melbourne",
+          "cancelled": false,
+          "time": "18:20"
+        },
+        "ordering-key": 73
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "18:20",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-17",
+            "end": "2024-02-17"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Melbourne",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "ae40168f-684a-40d7-8650-7e4332ae2d11",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 74,
+        "type": "part of",
+        "attribute-values": {
+          "number": "3.6"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "end": "2024-02-18",
+            "begin": "2024-02-18",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Melbourne",
+          "disambiguation": "night 3",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "cd64797e-1b08-4941-81c9-2ae7065585e0",
+          "type": "Concert",
+          "time": "18:20"
+        },
+        "ordering-key": 75,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.7"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of"
+      },
+      {
+        "ordering-key": 54,
+        "event": {
+          "life-span": {
+            "ended": true,
+            "end": "2023-08-24",
+            "begin": "2023-08-24"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Mexico City",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "16055e10-8e34-4955-846f-06e49d3a2d87",
+          "time": "20:00"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.54"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.55"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 55,
+        "event": {
+          "time": "20:00",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2023-08-25",
+            "begin": "2023-08-25",
+            "ended": true
+          },
+          "name": "The Eras Tour: Mexico City",
+          "disambiguation": "night 2",
+          "id": "18a030f6-c32d-4f33-a82c-d6fa4a553a7c",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        }
+      },
+      {
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.56"
+        },
+        "type": "part of",
+        "ordering-key": 56,
+        "event": {
+          "time": "20:00",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Mexico City",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-08-26",
+            "end": "2023-08-26"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "8aeed79a-8015-4780-81d8-2fde75a19ee3",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "20:00",
+          "disambiguation": "night 4",
+          "name": "The Eras Tour: Mexico City",
+          "life-span": {
+            "begin": "2023-08-27",
+            "end": "2023-08-27",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "a59d886e-3d47-4b48-8747-55f6473503a0"
+        },
+        "ordering-key": 57,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.57"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "5.1"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 137,
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "8cdda610-3156-4b31-a7d7-80bc7ac322bc",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "end": "2024-10-18",
+            "begin": "2024-10-18",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Miami",
+          "time": "19:00"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "attribute-values": {
+          "number": "5.2"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-10-19",
+            "end": "2024-10-19",
+            "ended": true
+          },
+          "name": "The Eras Tour: Miami",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "eda15564-d429-48f6-8769-b809c3618c24",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "19:00"
+        },
+        "ordering-key": 138,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "5.3"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "life-span": {
+            "begin": "2024-10-20",
+            "end": "2024-10-20",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Miami",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "7e3e26fa-5366-49cf-af85-06cdf3796c1d",
+          "time": "19:00"
+        },
+        "ordering-key": 139
+      },
+      {
+        "ordering-key": 117,
+        "event": {
+          "time": "19:30",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-13",
+            "end": "2024-07-13"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Milan",
+          "id": "11e0154a-d677-4908-8263-c267d8932b19",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.32"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "attribute-values": {
+          "number": "4.33"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "time": "19:30",
+          "name": "The Eras Tour: Milan",
+          "disambiguation": "night 2",
+          "life-span": {
+            "begin": "2024-07-14",
+            "end": "2024-07-14",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "31f31430-8dba-4c02-b49d-13bc64019a98"
+        },
+        "ordering-key": 118,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-06-24",
+            "end": "2023-06-24"
+          },
+          "name": "The Eras Tour: Minneapolis",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "5c101573-644d-471b-86dc-85583519fd01",
+          "time": "18:30"
+        },
+        "ordering-key": 37,
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.37"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "18:30",
+          "life-span": {
+            "begin": "2023-06-23",
+            "end": "2023-06-23",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Minneapolis",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "1cdfad37-eb78-4329-90ca-50956566bc66"
+        },
+        "ordering-key": 36,
+        "type": "part of",
+        "attribute-values": {
+          "number": "1.36"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "18:15",
+          "cancelled": false,
+          "life-span": {
+            "begin": "2024-07-27",
+            "end": "2024-07-27",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Munich",
+          "disambiguation": "night 1",
+          "id": "0ae606e9-24cd-434a-914d-ecb4fe40f275",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "ordering-key": 124,
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.39"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward"
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.40"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 125,
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "bbe013cf-8dc7-426c-9271-86bf0f7a8d09",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2024-07-28",
+            "begin": "2024-07-28",
+            "ended": true
+          },
+          "name": "The Eras Tour: Munich",
+          "disambiguation": "night 2",
+          "time": "18:15"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.18"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 18,
+        "event": {
+          "time": "18:30",
+          "id": "46e2c320-4dd3-4134-a42e-b934c3d32818",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-05-06",
+            "end": "2023-05-06"
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Nashville"
+        }
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 17,
+        "event": {
+          "name": "The Eras Tour: Nashville",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-05-05",
+            "end": "2023-05-05"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "9cdc9add-8319-40f7-8c5d-c0bd983e1562",
+          "time": "18:30"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.17"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.19"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "type": "part of",
+        "ordering-key": 19,
+        "event": {
+          "type": "Concert",
+          "id": "b9964a27-79af-4e42-af4c-ca7e912d1968",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Nashville",
+          "disambiguation": "night 3",
+          "life-span": {
+            "end": "2023-05-07",
+            "begin": "2023-05-07",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "type": "Concert",
+          "id": "afa1a3bf-5067-46f8-8127-ac5328c736b0",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: New Orleans",
+          "disambiguation": "night 1",
+          "life-span": {
+            "ended": true,
+            "end": "2024-10-25",
+            "begin": "2024-10-25"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "19:00"
+        },
+        "ordering-key": 140,
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "5.4"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false
+      },
+      {
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "5.5"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of",
+        "event": {
+          "time": "19:00",
+          "name": "The Eras Tour: New Orleans",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "end": "2024-10-26",
+            "begin": "2024-10-26",
+            "ended": true
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "4d1cfefb-424e-4a42-93c2-a4d7c801247f",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "ordering-key": 141,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": ""
+      },
+      {
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "5.6"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of",
+        "ordering-key": 142,
+        "event": {
+          "time": "19:00",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "cdffaa9c-148b-4d41-bff5-de2b3ee70ba9",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-10-27",
+            "end": "2024-10-27"
+          },
+          "name": "The Eras Tour: New Orleans",
+          "disambiguation": "night 3"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.1"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "begin": "2024-05-09",
+            "end": "2024-05-09",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Paris",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "95263445-d518-405b-9357-053849456b6c",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "ordering-key": 86,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 87,
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "end": "2024-05-10",
+            "begin": "2024-05-10"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Paris",
+          "disambiguation": "night 2",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "c7457d21-772d-422e-8167-6f968a698dad",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.2"
+        },
+        "attributes": [
+          "number"
+        ]
+      },
+      {
+        "ordering-key": 88,
+        "event": {
+          "time": "18:30",
+          "cancelled": false,
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Paris",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-05-11",
+            "end": "2024-05-11"
+          },
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "6866f88b-1b6d-411c-a7a5-130fd2a75e6f",
+          "type": "Concert"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.3"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "ordering-key": 89,
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "bb61ec21-72e4-49d7-8fce-852d61158f4d",
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-05-12",
+            "end": "2024-05-12",
+            "ended": true
+          },
+          "name": "The Eras Tour: Paris",
+          "disambiguation": "night 4",
+          "cancelled": false
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.4"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.20"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 20,
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "id": "7a9ef68b-8e6e-400e-8bb4-240bc21bfafe",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Philadelphia",
+          "disambiguation": "night 1",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-05-12",
+            "begin": "2023-05-12"
+          },
+          "cancelled": false
+        }
+      },
+      {
+        "ordering-key": 21,
+        "event": {
+          "time": "18:30",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-05-13",
+            "begin": "2023-05-13",
+            "ended": true
+          },
+          "name": "The Eras Tour: Philadelphia",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "6fba7139-8350-47a7-a312-faa30216606b"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.21"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 22,
+        "event": {
+          "time": "18:30",
+          "cancelled": false,
+          "life-span": {
+            "begin": "2023-05-14",
+            "end": "2023-05-14",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Philadelphia",
+          "disambiguation": "night 3",
+          "id": "801ec536-bf79-4805-b40c-e1eb968ea09d",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.22"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.35"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "type": "Concert",
+          "id": "6d50a1c5-0d31-4da8-a4f9-628e8e15834b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-06-17",
+            "begin": "2023-06-17",
+            "ended": true
+          },
+          "name": "The Eras Tour: Pittsburgh",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "time": "18:30"
+        },
+        "ordering-key": 35,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "ordering-key": 34,
+        "event": {
+          "time": "18:30",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Pittsburgh",
+          "life-span": {
+            "end": "2023-06-16",
+            "begin": "2023-06-16",
+            "ended": true
+          },
+          "setlist": "",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "169a45f6-b662-4e91-97bc-1602fbde477a",
+          "type": "Concert"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "1.34"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 63,
+        "event": {
+          "time": "20:00",
+          "cancelled": true,
+          "name": "The Eras Tour: Rio de Janeiro",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-11-18",
+            "begin": "2023-11-18"
+          },
+          "id": "22a05c48-9ce2-4352-88fe-3e8a999ba383",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "2.6"
+        },
+        "attributes": [
+          "number"
+        ]
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "2.7"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "20:00",
+          "type": "Concert",
+          "id": "c223f87b-530c-4ba7-88c5-eb473acea817",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-11-19",
+            "begin": "2023-11-19"
+          },
+          "name": "The Eras Tour: Rio de Janeiro",
+          "disambiguation": "night 2",
+          "cancelled": false
+        },
+        "ordering-key": 64
+      },
+      {
+        "ordering-key": 62,
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "e3315346-755c-41bc-8ed0-7a4a3b18bf5c",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Rio de Janeiro",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-11-17",
+            "begin": "2023-11-17",
+            "ended": true
+          },
+          "cancelled": false,
+          "time": "20:00"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "2.5"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "2.8"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Rio de Janeiro",
+          "setlist": "",
+          "life-span": {
+            "end": "2023-11-20",
+            "begin": "2023-11-20",
+            "ended": true
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "03b6ae42-78b3-4f22-9a60-602f063259cd",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "20:00"
+        },
+        "ordering-key": 65
+      },
+      {
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.47"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of",
+        "event": {
+          "name": "The Eras Tour: Santa Clara",
+          "disambiguation": "night 2",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-07-29",
+            "end": "2023-07-29"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "d574a3a7-bbbb-47fd-a917-96713b9b5275",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "18:30"
+        },
+        "ordering-key": 47,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": ""
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "end": null,
+        "ordering-key": 46,
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "begin": "2023-07-28",
+            "end": "2023-07-28"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Santa Clara",
+          "id": "d2238bf7-0425-4f0b-be12-12870c5a31e8",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.46"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        }
+      },
+      {
+        "ordering-key": 67,
+        "event": {
+          "type": "Concert",
+          "id": "ca4516fd-6e08-48f6-bab8-c6e50573653b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: São Paulo",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-11-25",
+            "end": "2023-11-25"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "20:00"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "2.10"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of"
+      },
+      {
+        "event": {
+          "type": "Concert",
+          "id": "01fd8ecf-6e8e-4725-9caa-8dcfd6244ae0",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "end": "2023-11-26",
+            "begin": "2023-11-26",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: São Paulo",
+          "cancelled": false,
+          "time": "20:00"
+        },
+        "ordering-key": 68,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "2.11"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "2.9"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of",
+        "ordering-key": 66,
+        "event": {
+          "time": "20:00",
+          "life-span": {
+            "begin": "2023-11-24",
+            "end": "2023-11-24",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: São Paulo",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "26eb60c2-22fd-41de-81eb-06a563a44957",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null
+      },
+      {
+        "attribute-values": {
+          "number": "1.44"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "time": "18:30",
+          "id": "136c148f-3863-40e6-9181-26fe503fcea0",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2023-07-22",
+            "begin": "2023-07-22",
+            "ended": true
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Seattle"
+        },
+        "ordering-key": 44,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.45"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "time": "18:30",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "1ae6ab18-8c33-49dc-9fd3-ae998c8f2128",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2023-07-23",
+            "begin": "2023-07-23"
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Seattle"
+        },
+        "ordering-key": 45
+      },
+      {
+        "event": {
+          "time": "18:00",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "8f4796ed-6840-4371-8dea-865f170542fd",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "ended": true,
+            "end": "2024-03-02",
+            "begin": "2024-03-02"
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Singapore",
+          "disambiguation": "night 1"
+        },
+        "ordering-key": 80,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.12"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "ordering-key": 81,
+        "event": {
+          "life-span": {
+            "ended": true,
+            "begin": "2024-03-03",
+            "end": "2024-03-03"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Singapore",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "e39ad0e4-692a-4269-b7bf-a71d295d57da",
+          "time": "18:00"
+        },
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.13"
+        },
+        "type": "part of"
+      },
+      {
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "3.14"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of",
+        "ordering-key": 82,
+        "event": {
+          "type": "Concert",
+          "id": "d817de7a-788e-491e-a8c0-49885c582038",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "end": "2024-03-04",
+            "begin": "2024-03-04",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Singapore",
+          "cancelled": false,
+          "time": "18:00"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.15"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "disambiguation": "night 4",
+          "name": "The Eras Tour: Singapore",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "end": "2024-03-07",
+            "begin": "2024-03-07"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "206c01a3-4234-4fbd-b541-2ba9bac3c41e",
+          "time": "18:00"
+        },
+        "ordering-key": 83
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.16"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "18:00",
+          "type": "Concert",
+          "id": "6931be5e-434d-4590-a615-2240b8fa4a8a",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "name": "The Eras Tour: Singapore",
+          "disambiguation": "night 5",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-03-08",
+            "end": "2024-03-08"
+          },
+          "cancelled": false
+        },
+        "ordering-key": 84
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "3.17"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 85,
+        "event": {
+          "time": "18:00",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "03d63beb-b41a-4d2e-9346-54567f792a49",
+          "life-span": {
+            "ended": true,
+            "end": "2024-03-09",
+            "begin": "2024-03-09"
+          },
+          "setlist": "",
+          "disambiguation": "night 6",
+          "name": "The Eras Tour: Singapore",
+          "cancelled": false
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.5"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "18:15",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Stockholm",
+          "setlist": "",
+          "life-span": {
+            "end": "2024-05-17",
+            "begin": "2024-05-17",
+            "ended": true
+          },
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "84753c66-2baf-458d-9de5-9048dc9496e1",
+          "type": "Concert"
+        },
+        "ordering-key": 90
+      },
+      {
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 91,
+        "event": {
+          "name": "The Eras Tour: Stockholm",
+          "disambiguation": "night 2",
+          "life-span": {
+            "ended": true,
+            "end": "2024-05-18",
+            "begin": "2024-05-18"
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "cfec55d2-2f87-4719-b95d-119046154079",
+          "time": "18:15"
+        },
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "4.6"
+        },
+        "attributes": [
+          "number"
+        ]
+      },
+      {
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.7"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of",
+        "ordering-key": 92,
+        "event": {
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "f9dfde3f-aec8-4235-b91c-e02b175873bc",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "end": "2024-05-19",
+            "begin": "2024-05-19",
+            "ended": true
+          },
+          "name": "The Eras Tour: Stockholm",
+          "disambiguation": "night 3",
+          "time": "18:15"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null
+      },
+      {
+        "event": {
+          "id": "49f45b9f-7c44-471b-a3f5-b548f42325c4",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-23",
+            "end": "2024-02-23"
+          },
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Sydney",
+          "time": "19:50"
+        },
+        "ordering-key": 76,
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.8"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.9"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of",
+        "event": {
+          "cancelled": false,
+          "name": "The Eras Tour: Sydney",
+          "disambiguation": "night 2",
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-02-24",
+            "end": "2024-02-24",
+            "ended": true
+          },
+          "id": "4bd7cb48-f48c-4ef2-9833-c717fec83d4f",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "time": "18:20"
+        },
+        "ordering-key": 77,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": ""
+      },
+      {
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.10"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "name": "The Eras Tour: Sydney",
+          "disambiguation": "night 3",
+          "life-span": {
+            "begin": "2024-02-25",
+            "end": "2024-02-25",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "030ea885-edb4-4ae3-a20f-dabe70565327",
+          "time": "18:20"
+        },
+        "ordering-key": 78
+      },
+      {
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.11"
+        },
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 79,
+        "event": {
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-26",
+            "end": "2024-02-26"
+          },
+          "name": "The Eras Tour: Sydney",
+          "disambiguation": "night 4",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "46af8fa6-58ec-43cd-9f30-077d8a5d3ce4",
+          "time": "18:20"
+        }
+      },
+      {
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.10"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of",
+        "event": {
+          "time": "18:30",
+          "type": "Concert",
+          "id": "69228bf0-26d6-4641-84a6-692e7b1acbea",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "end": "2023-04-15",
+            "begin": "2023-04-15",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Tampa",
+          "cancelled": false
+        },
+        "ordering-key": 10,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791"
+      },
+      {
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "1.8"
+        },
+        "attributes": [
+          "number"
+        ],
+        "type": "part of",
+        "ordering-key": 8,
+        "event": {
+          "cancelled": false,
+          "life-span": {
+            "end": "2023-04-13",
+            "begin": "2023-04-13",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Tampa",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "7dacec41-51ee-4077-b8f3-c89cb5a68d11",
+          "type": "Concert",
+          "time": "18:30"
+        },
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null
+      },
+      {
+        "event": {
+          "time": "18:30",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2023-04-14",
+            "end": "2023-04-14"
+          },
+          "name": "The Eras Tour: Tampa",
+          "disambiguation": "night 2",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "56a6eddf-3896-43c5-87c1-55edec68c7bf"
+        },
+        "ordering-key": 9,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "1.9"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of"
+      },
+      {
+        "event": {
+          "time": "18:00",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-02-07",
+            "end": "2024-02-07",
+            "ended": true
+          },
+          "name": "The Eras Tour: Tokyo",
+          "disambiguation": "night 1",
+          "id": "85c960c3-89f9-4398-bd58-1fbfd3720e11",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert"
+        },
+        "ordering-key": 69,
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "3.1"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "type": "part of"
+      },
+      {
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 70,
+        "event": {
+          "time": "18:00",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-08",
+            "end": "2024-02-08"
+          },
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Tokyo",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "00c564bd-6f7b-4f23-915a-6ca92393f0cd",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.2"
+        }
+      },
+      {
+        "event": {
+          "time": "18:00",
+          "type": "Concert",
+          "id": "a6886ef1-0e26-4016-b44f-2cadf024fa2e",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Tokyo",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-02-09",
+            "end": "2024-02-09"
+          },
+          "setlist": "",
+          "cancelled": false
+        },
+        "ordering-key": 71,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.3"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "3.4"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "id": "709ded51-71c7-4626-9552-1084883e38a6",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "life-span": {
+            "begin": "2024-02-10",
+            "end": "2024-02-10",
+            "ended": true
+          },
+          "setlist": "",
+          "name": "The Eras Tour: Tokyo",
+          "disambiguation": "night 4",
+          "time": "18:00"
+        },
+        "ordering-key": 72
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 146,
+        "event": {
+          "id": "c1fd93a7-d48d-49e1-b87e-55d4e81e9f86",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Toronto",
+          "life-span": {
+            "begin": "2024-11-14",
+            "end": "2024-11-14",
+            "ended": true
+          },
+          "setlist": "",
+          "time": "19:00"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "5.10"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "type": "part of",
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "5.11"
+        },
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "direction": "backward",
+        "target-type": "event",
+        "ended": false,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "source-credit": "",
+        "target-credit": "",
+        "event": {
+          "cancelled": false,
+          "name": "The Eras Tour: Toronto",
+          "disambiguation": "night 2",
+          "life-span": {
+            "end": "2024-11-15",
+            "begin": "2024-11-15",
+            "ended": true
+          },
+          "setlist": "",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "982f68c9-d678-48b4-a0d6-15c7a2142813",
+          "type": "Concert",
+          "time": "19:00"
+        },
+        "ordering-key": 147
+      },
+      {
+        "attribute-values": {
+          "number": "5.12"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "type": "part of",
+        "event": {
+          "cancelled": false,
+          "name": "The Eras Tour: Toronto",
+          "disambiguation": "night 3",
+          "setlist": "@ [f7441bc7-d7de-4813-a2fc-31a4033d396d|Gracie Abrams]\r\n* [53211b37-e448-40c1-8722-781098f5eae6|Risk]\r\n* [0cad4015-bd68-41f6-8cb3-c716e653e643|I Love You, I’m Sorry]\r\n* [0566c445-e292-47ec-a7d2-5d69c3f17dfe|Where do we go now?]\r\n* [2ed87554-9016-4657-b235-ec7b9af5b5af|That’s So True]\r\n* [e5ff338e-e0b5-467f-837b-52394448f64c|I Told You Things]\r\n* [51a907e3-f976-4e9e-bf29-eef734cdc9f8|Let It Happen]\r\n* [a4cb9837-ed80-4c1b-b500-78696d3c631d|21]\r\n* [883c2118-1859-461d-81f0-9ed38e5f3ab5|Free Now]\r\n* [2e997c5f-5db9-48c8-8211-cdcfe5f44809|Close to You]\r\n\r\n@ [20244d07-534f-4eff-b4d4-930878889970|Taylor Swift]\r\n# Lover\r\n* [4729c835-34b6-457f-a0fa-909b277db116|Miss Americana & the Heartbreak Prince]\r\n* [0e3ae332-8ba1-4040-894f-bb1f4ef925d6|Cruel Summer]\r\n* [543dec53-ac04-4b41-a96e-f26b2ad8f02e|The Man]\r\n* [985d464d-9491-4e68-a573-df9b50a425ab|You Need to Calm Down]\r\n* [fbfa8834-ff6c-4279-a134-130650ad2c25|Lover]\r\n\r\n# Fearless\r\n* [49ad745e-cb41-327a-8544-dba449a766eb|Fearless]\r\n* [4f0b6123-2bbd-3672-a928-b1949a42654d|You Belong With Me]\r\n* [c8975007-ba64-3e81-9a3c-69a3ba2fab95|Love Story]\r\n\r\n# Red\r\n* [014f3f6c-e2b0-4217-9e3c-89abf919648b|22]\r\n* [aa42d642-3771-4180-9c53-00ba22df5a4b|We Are Never Ever Getting Back Together]\r\n* [8a999d24-acbb-4992-b580-030b2fe83e90|I Knew You Were Trouble]\r\n* [6c9d895a-e910-40f3-9b77-9e643eeec369|All Too Well (10 minute version)]\r\n\r\n# Speak Now\r\n* [5569eb48-0821-3d57-ab3b-80f63d3d37e4|Enchanted]\r\n\r\n# reputation\r\n* [defd6853-e3a8-4197-8d85-04df567f78e2|…Ready for It?]\r\n* [441d26a3-c413-49b5-8cd6-18afd921eb41|Delicate]\r\n* [40a50b24-f5fe-4a58-9b2a-9d1a8a179124|Don’t Blame Me]\r\n* [812506f3-b3fc-4c2f-b621-e50b336b1665|Look What You Made Me Do]\r\n\r\n# folklore & evermore\r\n* [33d85bba-6afc-4324-8690-28ea9b40c526|cardigan]\r\n* [9f24824b-1777-45e1-a829-bba8f0ca5b27|betty]\r\n* [a6503d19-0752-408b-9934-1ae426cf9a45|champagne problems]\r\n* [6ce75487-483b-48a7-a988-9b16f0912e51|august]\r\n* [9ed14afd-649f-4094-8106-8bd0984cadd7|illicit affairs]\r\n* [3c19b20f-dfa4-469a-9502-8f663f6d7df1|my tears ricochet]\r\n* [789801dc-550e-431f-9599-d9b83285ff71|marjorie]\r\n* [d4333f22-db44-42e5-adba-f7732570a49f|willow]\r\n\r\n# 1989\r\n* [f4dd8235-123f-4f53-ac07-1fc070016c06|Style]\r\n* [05980852-95f4-4ea2-806a-abf1666951b8|Blank Space]\r\n* [5fa63cad-ca5d-4927-ad27-459388bdebaf|Shake It Off]\r\n* [17567c60-83d9-4fa8-bd79-484ecfed8a26|Wildest Dreams]\r\n* [c23570a3-467c-4ee8-80ff-0a04b339e844|Bad Blood]\r\n\r\n# THE TORTURED POETS DEPARTMENT\r\n* [9fd277d4-4ada-4516-aa90-7fdc2b80f5fe|But Daddy I Love Him] / [0d0c6381-039f-44d4-9cd3-9286bdc9a610|So High School]\r\n* [dd1dd80b-da9b-4932-8bbf-07e25c5692a4|Who’s Afraid of Little Old Me?]\r\n* [5aa09a7a-931a-49d1-904b-cccded07c524|Down Bad]\r\n* [9fdc1f4e-b3bf-4453-9d44-933d9937cb4a|Fortnight]\r\n* [8978f48b-15b0-46bb-b136-10c12024a13c|The Smallest Man Who Ever Lived]\r\n* [9f2009b4-a116-45a5-87c9-f8c9ebc1c946|I Can Do It With a Broken Heart]\r\n\r\n# Surprise songs\r\n* [7a9910ed-c8c6-419e-bbf4-ffdb0c92e6e3|us.] / [1e459e1f-65f0-4e88-94a5-e7c530b11dc9|Out of the Woods] (with Gracie Abrams)\r\n* [5888eb73-f509-47a9-a788-62c769f43c99|You’re on Your Own, Kid] / [27f7d619-abfd-4455-925c-82ff8d00c3f2|long story short]\r\n\r\n# Midnights\r\n* [45e258a3-4552-442c-ba22-7e5a6899c3e8|Lavender Haze]\r\n* [aae062a3-a98c-48e0-ab5f-d52a7953c414|Anti‐Hero]\r\n* [5182b11e-9b69-445c-adf0-74f6a9ac0aef|Midnight Rain]\r\n* [36330f36-f59a-47d4-9cfe-9434b8d25e88|Vigilante Shit]\r\n* [0a271627-b8c6-4b16-9e65-5b4b19449268|Bejeweled]\r\n* [9a345806-abf4-468f-b792-529848c28251|Mastermind]\r\n* [d4edec0a-b935-4328-acd6-5b427b105962|Karma]",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-11-16",
+            "end": "2024-11-16"
+          },
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "d93810fe-308b-4806-85e3-c124d6dc2ab1",
+          "type": "Concert",
+          "time": "19:00"
+        },
+        "ordering-key": 148,
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": ""
+      },
+      {
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 149,
+        "event": {
+          "time": "19:00",
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "618ed8a7-9871-417b-b836-11cf702f6312",
+          "name": "The Eras Tour: Toronto",
+          "disambiguation": "night 4",
+          "setlist": "",
+          "life-span": {
+            "begin": "2024-11-21",
+            "end": "2024-11-21",
+            "ended": true
+          },
+          "cancelled": false
+        },
+        "type": "part of",
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "5.13"
+        },
+        "attributes": [
+          "number"
+        ]
+      },
+      {
+        "ordering-key": 150,
+        "event": {
+          "id": "d1121eca-9ad5-4be6-9cf4-278c03ebc458",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-11-22",
+            "end": "2024-11-22"
+          },
+          "disambiguation": "night 5",
+          "name": "The Eras Tour: Toronto",
+          "time": "19:00"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "5.14"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "life-span": {
+            "ended": true,
+            "end": "2024-11-23",
+            "begin": "2024-11-23"
+          },
+          "setlist": "",
+          "disambiguation": "night 6",
+          "name": "The Eras Tour: Toronto",
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "8ea9cfa6-c1a2-4c04-bc0f-2f8dfbb746e1",
+          "time": "19:00"
+        },
+        "ordering-key": 151,
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "5.15"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward"
+      },
+      {
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "time": "19:00",
+          "type": "Concert",
+          "id": "4464a08e-9333-4e27-a830-f1d971f2d32a",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-12-06",
+            "end": "2024-12-06"
+          },
+          "setlist": "",
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Vancouver",
+          "cancelled": false
+        },
+        "ordering-key": 152,
+        "type": "part of",
+        "attribute-values": {
+          "number": "5.16"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event"
+      },
+      {
+        "type": "part of",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "attribute-values": {
+          "number": "5.17"
+        },
+        "attributes": [
+          "number"
+        ],
+        "ended": false,
+        "target-type": "event",
+        "direction": "backward",
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Vancouver",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-12-07",
+            "end": "2024-12-07"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "id": "098d3d75-9391-412d-8804-d28cbc68698f",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "19:00"
+        },
+        "ordering-key": 153
+      },
+      {
+        "ordering-key": 154,
+        "event": {
+          "time": "19:00",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "0397fa2f-e4dd-478c-a268-dc70926ed30a",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Vancouver",
+          "life-span": {
+            "begin": "2024-12-08",
+            "end": "2024-12-08",
+            "ended": true
+          },
+          "setlist": ""
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "5.18"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 130,
+        "event": {
+          "time": "19:00",
+          "life-span": {
+            "begin": "2024-08-09",
+            "end": "2024-08-09",
+            "ended": true
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Vienna",
+          "cancelled": true,
+          "type": "Concert",
+          "id": "a1fd0af8-7394-4661-8c55-ffe4bcaae248",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        },
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.45"
+        }
+      },
+      {
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "time": "19:00",
+          "name": "The Eras Tour: Vienna",
+          "disambiguation": "night 1",
+          "setlist": "",
+          "life-span": {
+            "end": "2024-08-08",
+            "begin": "2024-08-08",
+            "ended": true
+          },
+          "cancelled": true,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "5c4c313d-bd9c-4363-84f7-6f9f62456a52"
+        },
+        "ordering-key": 129,
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.44"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward"
+      },
+      {
+        "ordering-key": 131,
+        "event": {
+          "time": "19:00",
+          "id": "a45046ad-7921-4772-a850-979bec5ffd2b",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": true,
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-08-10",
+            "end": "2024-08-10"
+          },
+          "disambiguation": "night 3",
+          "name": "The Eras Tour: Vienna"
+        },
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.46"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type": "part of"
+      },
+      {
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.42"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 127,
+        "event": {
+          "time": "20:00",
+          "life-span": {
+            "ended": true,
+            "end": "2024-08-02",
+            "begin": "2024-08-02"
+          },
+          "setlist": "",
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Warsaw",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "87d38d14-deca-4ac1-b3c6-fb5c6af6f703",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b"
+        }
+      },
+      {
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "end": null,
+        "ordering-key": 126,
+        "event": {
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "2d130453-49d6-4627-b439-1246d0dda961",
+          "name": "The Eras Tour: Warsaw",
+          "disambiguation": "night 1",
+          "life-span": {
+            "begin": "2024-08-01",
+            "end": "2024-08-01",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "time": "20:00"
+        },
+        "type": "part of",
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.41"
+        }
+      },
+      {
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "end": null,
+        "ordering-key": 128,
+        "event": {
+          "name": "The Eras Tour: Warsaw",
+          "disambiguation": "night 3",
+          "life-span": {
+            "end": "2024-08-03",
+            "begin": "2024-08-03",
+            "ended": true
+          },
+          "setlist": "",
+          "cancelled": false,
+          "type": "Concert",
+          "id": "faed44cc-b62a-4954-a73c-d94ab82ee8db",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "time": "20:00"
+        },
+        "type": "part of",
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "attribute-values": {
+          "number": "4.43"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null
+      },
+      {
+        "type": "part of",
+        "attribute-values": {
+          "number": "4.30"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "begin": null,
+        "direction": "backward",
+        "ended": false,
+        "target-type": "event",
+        "end": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "target-credit": "",
+        "source-credit": "",
+        "event": {
+          "id": "f768b9cb-064e-47d5-b378-53176f29afef",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "type": "Concert",
+          "cancelled": false,
+          "disambiguation": "night 1",
+          "name": "The Eras Tour: Zürich",
+          "life-span": {
+            "begin": "2024-07-09",
+            "end": "2024-07-09",
+            "ended": true
+          },
+          "setlist": "",
+          "time": "17:45"
+        },
+        "ordering-key": 115
+      },
+      {
+        "end": null,
+        "source-credit": "",
+        "target-credit": "",
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "event": {
+          "disambiguation": "night 2",
+          "name": "The Eras Tour: Zürich",
+          "setlist": "",
+          "life-span": {
+            "ended": true,
+            "begin": "2024-07-10",
+            "end": "2024-07-10"
+          },
+          "cancelled": false,
+          "type": "Concert",
+          "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+          "id": "2e81eae4-4d5a-4093-9f72-b19599d34286",
+          "time": "17:45"
+        },
+        "ordering-key": 116,
+        "type": "part of",
+        "begin": null,
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "attributes": [
+          "number"
+        ],
+        "attribute-values": {
+          "number": "4.31"
+        },
+        "target-type": "event",
+        "ended": false,
+        "direction": "backward"
+      },
+      {
+        "end": null,
+        "type-id": "b79eb9a5-46df-492d-b107-1f1fea71b0eb",
+        "target-credit": "",
+        "source-credit": "",
+        "url": {
+          "id": "266ed12b-e6fa-4979-b1e0-423e8ee4be24",
+          "resource": "https://tstheerastour.taylorswift.com/"
+        },
+        "type": "official homepage",
+        "attribute-values": {},
+        "attributes": [],
+        "attribute-ids": {},
+        "begin": null,
+        "direction": "forward",
+        "ended": false,
+        "target-type": "url"
+      },
+      {
+        "type": "wikidata",
+        "attribute-ids": {},
+        "begin": null,
+        "attribute-values": {},
+        "attributes": [],
+        "ended": false,
+        "target-type": "url",
+        "direction": "forward",
+        "end": null,
+        "target-credit": "",
+        "source-credit": "",
+        "type-id": "a1eecd98-f2f2-420b-ba8e-e5bc61697869",
+        "url": {
+          "id": "3dd72d36-fb45-43fd-9dc4-e39333b41e97",
+          "resource": "https://www.wikidata.org/wiki/Q114977368"
+        }
+      }
+    ],
+    "name": "The Eras Tour",
+    "disambiguation": "",
+    "id": "23aa9d94-ffc6-4160-a7f3-31cfba1ea646",
+    "type-id": "8ff6df0e-3dce-3bdf-bd57-d386c51b0060",
+    "type": "Tour"
+  },
+  "elapsed_seconds": 1.546
+}

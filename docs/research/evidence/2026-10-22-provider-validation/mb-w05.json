@@ -1,0 +1,923 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-W05",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22Eres%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:35.779816+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:36.518Z",
+    "count": 259,
+    "offset": 0,
+    "works": [
+      {
+        "id": "1c2012f3-de06-49cb-a623-9dbe0ed5671a",
+        "type": "Song",
+        "score": 100,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "2612128c-a66a-46a8-a93c-f802df597859",
+              "name": "Ismael Serrano",
+              "sort-name": "Serrano, Ismael",
+              "disambiguation": "Spanish singer-songwriter & guitarist"
+            }
+          },
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "2612128c-a66a-46a8-a93c-f802df597859",
+              "name": "Ismael Serrano",
+              "sort-name": "Serrano, Ismael",
+              "disambiguation": "Spanish singer-songwriter & guitarist"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "9e008fab-173a-443a-b62d-fab2445e08ca",
+              "title": "Eres",
+              "video": true
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "405c8fe7-f274-4db7-aca3-edd91475743c",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8f90b3ad-c7ff-419e-9d92-18ab8ccb7d68",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "6aa4f440-6c14-413c-a796-6f8a9cbe7206",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "bf20f17b-7dee-465c-905b-ad0aee545aa2",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ab86e01d-0110-4d37-9b73-8ab753b01bfb",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "28e4509b-1ea8-4209-bb3b-569903894080",
+              "title": "Eres",
+              "video": true
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "c2521793-d280-3676-8958-473d29e602a8",
+        "type": "Song",
+        "score": 99,
+        "title": "Eres tú",
+        "language": "spa",
+        "iswcs": [
+          "T-041.025.782-7",
+          "T-930.562.721-8"
+        ],
+        "relations": [
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "be9ae249-c57d-4aac-94e9-89a91e1f6731",
+              "name": "Juan Carlos Calderón",
+              "sort-name": "Calderón, Juan Carlos"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "be9ae249-c57d-4aac-94e9-89a91e1f6731",
+              "name": "Juan Carlos Calderón",
+              "sort-name": "Calderón, Juan Carlos"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "175767e3-ff4f-47ab-8247-7d451c630f2d",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "8d27b2ef-a639-417a-9321-f9119f833fc3",
+              "title": "Eres Tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "fcf11a08-842e-4677-8a2d-3d6e9bbd7ff9",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c27960ad-0d05-4b45-9d93-8f9eca3bfd57",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "433cce43-3445-47d2-8cc2-276178a492d6",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "76440b9f-750b-412b-a216-ba1704c97a5b",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "18e3cba2-de55-41d6-af73-2d67bbbea9ed",
+              "title": "Eres Tu (Touch the Wind)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "18e3cba2-de55-41d6-af73-2d67bbbea9ed",
+              "title": "Eres Tu (Touch the Wind)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "58646c4b-c7bb-44cc-8a8b-103ab2d0542b",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ebea501c-f717-4c68-89a2-c88d948cb364",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e024e3b4-4163-4bc8-a99e-1a0a6549a552",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "bc9d6ca7-c777-4fa0-9a07-2c5a70aded22",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "51a9d587-cdc0-4e0f-9f70-8c32e804c6ea",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "5c4c7ab6-da91-41d1-9ba3-6ae9495c4b4c",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "3b852f43-224e-4fad-8cb6-81a8340b881b",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "86994e8a-cf7f-449b-b11a-75385fc09c3c",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "a27c0ded-87c7-402f-9c69-d6705549f2f7",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7a6c0f6f-a5f4-4f01-8f9e-e5f2946d5f58",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7bcc7253-c586-4644-84b4-85f1fab60bdf",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "27db74a0-3da6-47e9-a8ec-3ced3c1951fa",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "569542c0-8129-4bd6-afbd-09d0c5a5656f",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "37a5f2dc-1d31-47de-aa56-d4402be7fe46",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "4672ff4f-71ac-49b1-bed0-03c3fb67144c",
+              "title": "Eres Tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "5a388f9e-1d35-47aa-9475-ef1dcea8e56c",
+              "title": "Eres Tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "cb0742a1-ae2d-4ab1-bdf3-c282ba217605",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "efb0fc57-18af-4f41-81d3-d53a2574092c",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e141d5a7-92f5-4b49-a598-279164b4614b",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e4bcdddc-15a2-4b5b-9d10-b3023c0a0178",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "18267ed3-b8af-4b57-9694-307d38f87d14",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "7a908af2-ac5b-45eb-89c1-72348e4323ce",
+              "title": "Eres Tu (Touch the Wind)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "02df0426-159c-4bf0-8d83-edcbc78fb88c",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "19f072a4-fa66-4dae-9ea3-e9c081d2b15e",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "91213c0f-1c8c-4a8c-b7e8-018de9b6bffa",
+              "title": "Eres Tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2ab19bf3-8e66-4bea-ad7a-b6ee80f30993",
+              "title": "Eres Tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e073a3aa-7696-4915-bb95-34cde39172fc",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "964de76c-3365-40d4-a620-a756b474316e",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "daabf0c8-5d03-4688-af33-a3f5cc6eefe2",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "f9bacc1b-43f1-44fe-8705-04305566f5c2",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c422e201-674e-41df-97f9-9f60c2c162d1",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "114a8d1d-2c19-470a-b2b3-24dcdc865921",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e7412789-189c-4c21-8570-73666f4bcdd1",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "bc30329d-ab8c-411c-ae0e-ebcba9eb0118",
+              "title": "Eres tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "fa9c762b-5af6-409d-a625-b1a9a6e9c2cd",
+              "title": "Eres Tu",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "75fe9a8e-853f-4182-b287-9c9c1d313284",
+              "title": "Eres tú",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2906bcb9-4b11-4ca9-a120-b990e257b0c2",
+              "title": "That’s You",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "9843b7c6-9204-4f40-a03f-38efa87831c7",
+              "title": "Eres tú (Final)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "526a2ce2-a420-4309-a47c-0ae143ca774c",
+              "title": "Eres tú",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "22287d4b-5b13-4a36-b5f4-0749d96eed13",
+        "type": "Song",
+        "score": 93,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2f0604b9-0645-4f07-8b96-54294d631413",
+              "title": "Eres",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "0e9e45e9-173b-4dfc-b644-3fd10aef0010",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "c7b4189f-6653-4682-ae91-f26783ef9fc9",
+        "type": "Song",
+        "score": 91,
+        "title": "Eres",
+        "language": "spa",
+        "iswcs": [
+          "T-044.534.706-7"
+        ],
+        "relations": [
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "927b53df-e49c-4102-b6ab-e7a96be9847b",
+              "name": "Jairo Varela",
+              "sort-name": "Varela, Jairo",
+              "disambiguation": "colombian composer and founder of Grupo Niche"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "634f8556-57f7-4595-b6a1-b891873df738",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "a1ec440e-df58-4528-8609-cb759245aef5",
+        "score": 91,
+        "title": "Eres…",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "a47c8917-b723-4382-9a16-babe0b0cfe37",
+              "name": "Eugénio Rodrigues",
+              "sort-name": "Rodrigues, Eugénio"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "2311feee-0aac-410f-85ff-ec30a832943d",
+              "name": "Pablo Neruda",
+              "sort-name": "Neruda, Pablo"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "1528d08a-fbb0-4a29-a8d7-29cc5dcfc4dd",
+              "title": "Eres ...",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "036e0876-7dff-4f07-96d4-86b9024ff23c",
+        "type": "Song",
+        "score": 91,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "76594736-d452-46b9-9967-c5e27e0a17cb",
+              "name": "José Raquel Ramirez",
+              "sort-name": "Ramirez, José Raquel",
+              "disambiguation": "Songwriter"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "17428a81-5f6d-425a-956e-63d5b1cda856",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "129befa7-6667-4fe3-b2b3-61cc43ca645c",
+        "type": "Song",
+        "score": 91,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "3bffa47d-6a97-4dbd-9c82-f68b9a49628e",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "d957fc30-5470-4096-b170-2751a3b23ec8",
+        "type": "Song",
+        "score": 91,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "2dac74f6-d104-4902-800a-cbfce06f5eb9",
+              "name": "Gogo Muñoz",
+              "sort-name": "Muñoz, Gogo",
+              "disambiguation": "Argentinian songwriter based in Chile"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e95a15cc-8a84-4c11-b30e-a1c164508d2d",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "aac8e3e9-1b0e-4d9b-b2e3-2d931d0fff13",
+        "type": "Song",
+        "score": 91,
+        "title": "Eres",
+        "language": "spa",
+        "relations": [
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e8abc9c9-db96-4b0a-852a-5074b3aa066e",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      },
+      {
+        "id": "699f3424-e781-49bc-82eb-67e4d62b7a69",
+        "score": 91,
+        "title": "Eres",
+        "relations": [
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "78de4e13-e893-4299-a753-fe185e677f48",
+              "name": "Erik Rubín",
+              "sort-name": "Rubín, Erik"
+            }
+          },
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "100146f8-eabd-4cb7-860d-ba48e9e05a1a",
+              "name": "Jay de la Cueva",
+              "sort-name": "De la Cueva, Jay"
+            }
+          },
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "78de4e13-e893-4299-a753-fe185e677f48",
+              "name": "Erik Rubín",
+              "sort-name": "Rubín, Erik"
+            }
+          },
+          {
+            "type": "writer",
+            "type-id": "a255bca1-b157-4518-9108-7b147dc3fc68",
+            "direction": "backward",
+            "artist": {
+              "id": "100146f8-eabd-4cb7-860d-ba48e9e05a1a",
+              "name": "Jay de la Cueva",
+              "sort-name": "De la Cueva, Jay"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "78de4e13-e893-4299-a753-fe185e677f48",
+              "name": "Erik Rubín",
+              "sort-name": "Rubín, Erik"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "100146f8-eabd-4cb7-860d-ba48e9e05a1a",
+              "name": "Jay de la Cueva",
+              "sort-name": "De la Cueva, Jay"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "9edcf05f-23b2-4ee2-9ad5-9b4e4465fdcf",
+              "title": "Eres",
+              "video": null
+            }
+          }
+        ],
+        "languages": []
+      }
+    ]
+  },
+  "elapsed_seconds": 1.017
+}

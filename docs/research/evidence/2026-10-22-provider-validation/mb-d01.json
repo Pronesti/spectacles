@@ -1,0 +1,448 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-D01",
+  "request_url": "https://musicbrainz.org/ws/2/artist/3f8a5e5b-c24b-4068-9f1c-afad8829e06b?inc=aliases%2Burl-rels&fmt=json",
+  "requested_at_utc": "2026-10-22T17:34:14.048870+00:00",
+  "phase": "selected candidate hydration / query fallback",
+  "http_status": 200,
+  "response": {
+    "isnis": [
+      "0000000097590406"
+    ],
+    "country": "AR",
+    "disambiguation": "",
+    "gender": null,
+    "type": "Group",
+    "sort-name": "Soda Stereo",
+    "ipis": [],
+    "relations": [
+      {
+        "attributes": [],
+        "url": {
+          "id": "6689b230-e7c0-4577-a8ef-59cc0e711afe",
+          "resource": "https://www.allmusic.com/artist/mn0000753507"
+        },
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null,
+        "type": "allmusic",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-values": {},
+        "type-id": "6b3e3c85-0002-4f34-aca6-80ace0d7e846",
+        "direction": "forward",
+        "end": null,
+        "ended": false
+      },
+      {
+        "end": null,
+        "type-id": "04a5b104-a4c2-4bac-99a1-7b837c37d9e4",
+        "direction": "forward",
+        "ended": false,
+        "attribute-values": {},
+        "target-credit": "",
+        "source-credit": "",
+        "type": "discogs",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "url": {
+          "id": "ec4a2185-b293-4277-bbaf-ec41968ad5b3",
+          "resource": "https://www.discogs.com/artist/467153"
+        },
+        "attributes": []
+      },
+      {
+        "url": {
+          "id": "b99ef8a3-262e-4597-8a5e-5c0c66937ec6",
+          "resource": "https://open.spotify.com/artist/7An4yvF7hDYDolN4m5zKBp"
+        },
+        "attributes": [],
+        "ended": false,
+        "direction": "forward",
+        "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd",
+        "end": null,
+        "attribute-values": {},
+        "target-credit": "",
+        "source-credit": "",
+        "type": "free streaming",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {}
+      },
+      {
+        "url": {
+          "resource": "https://www.deezer.com/artist/4345",
+          "id": "5fd458f2-a3db-4f8f-999f-b5526fe2ea3d"
+        },
+        "attributes": [],
+        "ended": false,
+        "direction": "forward",
+        "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd",
+        "end": null,
+        "attribute-values": {},
+        "type": "free streaming",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "url"
+      },
+      {
+        "target-credit": "",
+        "type": "last.fm",
+        "source-credit": "",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "direction": "forward",
+        "type-id": "08db8098-c0df-4b78-82c3-c8697b4bba7f",
+        "end": null,
+        "ended": false,
+        "attribute-values": {},
+        "url": {
+          "resource": "https://www.last.fm/music/Soda+Stereo",
+          "id": "42012da5-8d1c-46be-8fe5-e99fe18fcbb0"
+        },
+        "attributes": []
+      },
+      {
+        "attributes": [],
+        "url": {
+          "resource": "http://www.sodastereo.com/",
+          "id": "33865a0b-e39e-4f9d-81ce-82184e52092a"
+        },
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "url",
+        "type": "official homepage",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-values": {},
+        "type-id": "fe33d22f-c3b0-4d68-bd53-a856badf2b15",
+        "direction": "forward",
+        "end": null,
+        "ended": false
+      },
+      {
+        "attributes": [],
+        "url": {
+          "id": "d675d874-f58d-4790-a833-223712b29b23",
+          "resource": "http://id.loc.gov/authorities/names/n2004077070"
+        },
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null,
+        "type": "other databases",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-values": {},
+        "type-id": "d94fb61c-fa20-4e3c-a19a-71a949fb2c55",
+        "direction": "forward",
+        "end": null,
+        "ended": false
+      },
+      {
+        "url": {
+          "id": "b7eac9be-3b79-4245-bb6d-422877b50714",
+          "resource": "http://rock.com.ar/artistas/soda-stereo"
+        },
+        "attributes": [],
+        "ended": false,
+        "type-id": "d94fb61c-fa20-4e3c-a19a-71a949fb2c55",
+        "direction": "forward",
+        "end": null,
+        "attribute-values": {},
+        "type": "other databases",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null
+      },
+      {
+        "target-credit": "",
+        "type": "other databases",
+        "source-credit": "",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "ended": false,
+        "type-id": "d94fb61c-fa20-4e3c-a19a-71a949fb2c55",
+        "end": null,
+        "direction": "forward",
+        "attribute-values": {},
+        "url": {
+          "id": "d2d904b6-95dd-406b-a518-f6ff34c9480c",
+          "resource": "https://rateyourmusic.com/artist/soda_stereo"
+        },
+        "attributes": []
+      },
+      {
+        "ended": false,
+        "type-id": "d94fb61c-fa20-4e3c-a19a-71a949fb2c55",
+        "end": null,
+        "direction": "forward",
+        "attribute-values": {},
+        "target-credit": "",
+        "source-credit": "",
+        "type": "other databases",
+        "begin": null,
+        "target-type": "url",
+        "attribute-ids": {},
+        "url": {
+          "id": "0a705373-1e99-4daa-bf4f-a43c2f390371",
+          "resource": "https://www.whosampled.com/Soda-Stereo/"
+        },
+        "attributes": []
+      },
+      {
+        "attributes": [],
+        "url": {
+          "id": "51473383-3de9-42e7-870c-7a5f84f6df1e",
+          "resource": "https://www.worldcat.org/identities/lccn-n2004077070"
+        },
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "url",
+        "source-credit": "",
+        "type": "other databases",
+        "target-credit": "",
+        "attribute-values": {},
+        "type-id": "d94fb61c-fa20-4e3c-a19a-71a949fb2c55",
+        "end": null,
+        "direction": "forward",
+        "ended": false
+      },
+      {
+        "source-credit": "",
+        "type": "purchase for download",
+        "target-credit": "",
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null,
+        "ended": false,
+        "type-id": "f8319a2f-f824-4617-81c8-be6560b3b203",
+        "end": null,
+        "direction": "forward",
+        "attribute-values": {},
+        "url": {
+          "id": "5ae352ef-b953-48ba-b4ec-4e3e5ace53dd",
+          "resource": "https://music.apple.com/us/artist/302907"
+        },
+        "attributes": []
+      },
+      {
+        "attributes": [],
+        "url": {
+          "resource": "https://secondhandsongs.com/artist/104850",
+          "id": "39691797-570f-46ab-bd74-51db6cdd470a"
+        },
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null,
+        "type": "secondhandsongs",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-values": {},
+        "ended": false,
+        "end": null,
+        "type-id": "79c5b84d-a206-4f4c-9832-78c028c312c3",
+        "direction": "forward"
+      },
+      {
+        "url": {
+          "resource": "https://www.setlist.fm/setlists/soda-stereo-7bd6d204.html",
+          "id": "61fe0c59-4a48-40a9-9482-3339ce20fa4c"
+        },
+        "attributes": [],
+        "ended": false,
+        "type-id": "bf5d0d5e-27a1-4e94-9df7-3cdc67b3b207",
+        "direction": "forward",
+        "end": null,
+        "attribute-values": {},
+        "source-credit": "",
+        "type": "setlistfm",
+        "target-credit": "",
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "url"
+      },
+      {
+        "attribute-values": {},
+        "ended": false,
+        "direction": "forward",
+        "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+        "end": null,
+        "attribute-ids": {},
+        "begin": null,
+        "target-type": "url",
+        "type": "social network",
+        "source-credit": "",
+        "target-credit": "",
+        "attributes": [],
+        "url": {
+          "id": "90a5a910-143a-4287-8660-c13e8068bd5d",
+          "resource": "https://www.facebook.com/sodastereo"
+        }
+      },
+      {
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "target-credit": "",
+        "type": "songkick",
+        "source-credit": "",
+        "attribute-values": {},
+        "ended": false,
+        "direction": "forward",
+        "type-id": "aac9c4bc-a5b9-30b8-9839-e3ac314c6e58",
+        "end": null,
+        "attributes": [],
+        "url": {
+          "resource": "https://www.songkick.com/artists/300691",
+          "id": "3b5c6ff0-1f6c-4921-aba1-e0d8a71f5212"
+        }
+      },
+      {
+        "url": {
+          "id": "a7227e91-916f-4c3a-a234-c63b23ac89fc",
+          "resource": "https://tidal.com/artist/3633734"
+        },
+        "attributes": [],
+        "target-credit": "",
+        "source-credit": "",
+        "type": "streaming",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "ended": false,
+        "direction": "forward",
+        "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+        "end": null,
+        "attribute-values": {}
+      },
+      {
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "target-credit": "",
+        "source-credit": "",
+        "type": "VIAF",
+        "attribute-values": {},
+        "ended": false,
+        "end": null,
+        "type-id": "e8571dcc-35d4-4e91-a577-a3382fd84460",
+        "direction": "forward",
+        "attributes": [],
+        "url": {
+          "id": "e0b3b2b9-306c-4ebd-80a7-1ada4c62c3dd",
+          "resource": "http://viaf.org/viaf/144453715"
+        }
+      },
+      {
+        "url": {
+          "id": "855e8902-a9c9-4ee0-9f96-8407f295128f",
+          "resource": "https://www.wikidata.org/wiki/Q1816849"
+        },
+        "attributes": [],
+        "type": "wikidata",
+        "source-credit": "",
+        "target-credit": "",
+        "attribute-ids": {},
+        "target-type": "url",
+        "begin": null,
+        "ended": false,
+        "end": null,
+        "type-id": "689870a4-a1e4-4912-b17f-7b2664215698",
+        "direction": "forward",
+        "attribute-values": {}
+      },
+      {
+        "ended": false,
+        "direction": "forward",
+        "end": null,
+        "type-id": "6a540e5b-58c6-4192-b6ba-dbc71ec8fcf0",
+        "attribute-values": {},
+        "target-credit": "",
+        "type": "youtube",
+        "source-credit": "",
+        "target-type": "url",
+        "begin": null,
+        "attribute-ids": {},
+        "url": {
+          "resource": "https://www.youtube.com/SodaStereo",
+          "id": "b1bc7e9c-8620-4fe9-bab2-701a61814521"
+        },
+        "attributes": []
+      }
+    ],
+    "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+    "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+    "end-area": {
+      "name": "Buenos Aires",
+      "type": null,
+      "sort-name": "Buenos Aires",
+      "disambiguation": "",
+      "iso-3166-2-codes": [
+        "AR-C"
+      ],
+      "type-id": null,
+      "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588"
+    },
+    "life-span": {
+      "begin": "1982",
+      "end": "2007",
+      "ended": true
+    },
+    "name": "Soda Stereo",
+    "area": {
+      "sort-name": "Argentina",
+      "type": null,
+      "disambiguation": "",
+      "name": "Argentina",
+      "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+      "type-id": null,
+      "iso-3166-1-codes": [
+        "AR"
+      ]
+    },
+    "gender-id": null,
+    "begin-area": {
+      "iso-3166-2-codes": [
+        "AR-C"
+      ],
+      "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+      "type-id": null,
+      "name": "Buenos Aires",
+      "sort-name": "Buenos Aires",
+      "type": null,
+      "disambiguation": ""
+    },
+    "aliases": [
+      {
+        "name": "Soda",
+        "begin": null,
+        "locale": null,
+        "sort-name": "Soda",
+        "type": null,
+        "primary": null,
+        "ended": false,
+        "type-id": null,
+        "end": null
+      },
+      {
+        "end": null,
+        "type-id": null,
+        "ended": false,
+        "primary": null,
+        "type": null,
+        "sort-name": "Soda Estereo",
+        "locale": null,
+        "begin": null,
+        "name": "Soda Estereo"
+      }
+    ]
+  },
+  "elapsed_seconds": 1.304
+}

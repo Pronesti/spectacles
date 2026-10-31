@@ -1,0 +1,69 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-E02",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Taylor%20Swift%22%20AND%20begin%3A2023-11-09&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:01.241509+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:01.988Z",
+    "count": 1,
+    "offset": 0,
+    "events": [
+      {
+        "id": "f7fafcd7-37d2-4933-bb6a-f31449cccf04",
+        "type": "Concert",
+        "score": 100,
+        "name": "The Eras Tour: Buenos Aires",
+        "disambiguation": "night 1",
+        "life-span": {
+          "begin": "2023-11-09",
+          "end": "2023-11-09"
+        },
+        "time": "19:00:00",
+        "relations": [
+          {
+            "type": "support act",
+            "type-id": "492a850e-97eb-306a-a85e-4b6d98527796",
+            "direction": "backward",
+            "artist": {
+              "id": "265399ea-e208-49d9-9695-51fd29f1ed66",
+              "name": "LOUTA",
+              "sort-name": "LOUTA"
+            }
+          },
+          {
+            "type": "support act",
+            "type-id": "492a850e-97eb-306a-a85e-4b6d98527796",
+            "direction": "backward",
+            "artist": {
+              "id": "1882fe91-cdd9-49c9-9956-8e06a3810bd4",
+              "name": "Sabrina Carpenter",
+              "sort-name": "Carpenter, Sabrina"
+            }
+          },
+          {
+            "type": "main performer",
+            "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+            "direction": "backward",
+            "artist": {
+              "id": "20244d07-534f-4eff-b4d4-930878889970",
+              "name": "Taylor Swift",
+              "sort-name": "Swift, Taylor"
+            }
+          },
+          {
+            "type": "held at",
+            "type-id": "e2c6f697-07dc-38b1-be0b-83d740165532",
+            "direction": "backward",
+            "place": {
+              "id": "2b3e65a3-c269-461f-928c-c9f0cb9a7bbc",
+              "name": "Estadio Antonio Vespucio Liberti"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.811
+}

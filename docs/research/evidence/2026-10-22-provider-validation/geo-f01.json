@@ -1,0 +1,73 @@
+{
+  "provider": "Geoapify",
+  "case_id": "GEO-F01",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Estadio+GNP+Seguros%2C+Ciudad+de+M%C3%A9xico&filter=countrycode%3Amx&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:33:11.485237+00:00",
+  "phase": "focused follow-up",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Estadio GNP Seguros",
+        "other_names": {
+          "loc_name": "Foro Sol"
+        },
+        "country": "Mexico",
+        "country_code": "mx",
+        "city": "Mexico City",
+        "postcode": "08400",
+        "district": "Iztacalco",
+        "street": "Avenida Río Churubusco",
+        "iso3166_2": "MX-CMX",
+        "lon": -99.0955714,
+        "lat": 19.4050224,
+        "state": "Mexico City",
+        "state_code": "CMX",
+        "result_type": "amenity",
+        "formatted": "Estadio GNP Seguros, Avenida Río Churubusco, 08400 Mexico City, Mexico",
+        "address_line1": "Estadio GNP Seguros",
+        "address_line2": "Avenida Río Churubusco, 08400 Mexico City, Mexico",
+        "timezone": {
+          "name": "America/Mexico_City",
+          "offset_STD": "-06:00",
+          "offset_DST": "-06:00",
+          "offset_STD_seconds": -21600,
+          "offset_DST_seconds": -21600,
+          "abbreviation_STD": "CST",
+          "abbreviation_DST": "CST"
+        },
+        "plus_code": "76F2CW43+2Q",
+        "plus_code_short": "CW43+2Q Mexico City, Mexico",
+        "rank": {
+          "importance": 0.3867453017489014,
+          "popularity": 6.790741299965928,
+          "confidence": 1,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "51b55b81d71dc658c059be254a8caf673340f00102f9013e9a674e00000000c002019203134573746164696f20474e502053656775726f73",
+        "bbox": {
+          "lon1": -99.096819,
+          "lat1": 19.4038648,
+          "lon2": -99.0940943,
+          "lat2": 19.4062149
+        }
+      }
+    ],
+    "query": {
+      "text": "Estadio GNP Seguros, Ciudad de México",
+      "parsed": {
+        "house": "estadio gnp seguros",
+        "city": "ciudad de méxico",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 0.545
+}

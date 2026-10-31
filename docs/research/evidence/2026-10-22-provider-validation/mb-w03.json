@@ -1,0 +1,211 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-W03",
+  "request_url": "https://musicbrainz.org/ws/2/work?query=work%3A%22El%20fantasma%20de%20Canterville%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:30:53.596203+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:30:54.341Z",
+    "count": 1,
+    "offset": 0,
+    "works": [
+      {
+        "id": "8b21973e-836a-441b-9e4d-4e67e7114d75",
+        "type": "Song",
+        "score": 100,
+        "title": "El fantasma de Canterville",
+        "language": "spa",
+        "iswcs": [
+          "T-037.291.549-5"
+        ],
+        "relations": [
+          {
+            "type": "composer",
+            "type-id": "d59d99ea-23d4-4a80-b066-edca32ee158f",
+            "direction": "backward",
+            "artist": {
+              "id": "dd999ced-1dd4-44b8-ab67-ee5ec23e52b7",
+              "name": "Charly García",
+              "sort-name": "García, Charly"
+            }
+          },
+          {
+            "type": "lyricist",
+            "type-id": "3e48faba-ec01-47fd-8e89-30e81161661c",
+            "direction": "backward",
+            "artist": {
+              "id": "dd999ced-1dd4-44b8-ab67-ee5ec23e52b7",
+              "name": "Charly García",
+              "sort-name": "García, Charly"
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "1bfd067b-4ea8-48a6-8a09-d8e59700f5d2",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "5a122519-3611-4a56-96f6-a2050d0359ee",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "190d5e01-6d74-42ca-8a1f-eff527c6b14f",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "85c4df59-7fd1-47d2-96dc-007bf2f1893d",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "6d2d65c2-1eec-4db4-9265-2b89abb4bd04",
+              "title": "El fantasma de Canterville: en vivo Festival Madres 20 años ¡Ni un paso atrás! (en vivo)",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "0be8d325-e37a-461d-b190-b83ca6541ca3",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "3a405f6c-ec08-45e4-95bf-fe2773efb7d5",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "02b832a4-eeef-448c-9d08-f87ea77beec1",
+              "title": "Fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "e89f4bfc-1b11-4371-b181-66f7dab2bf1e",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "c301f377-e4a0-4bf6-a302-bf54f422430a",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ce134aff-7ba7-4d13-8a3c-db96bcafeb8d",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "ae497f4d-5521-40e6-8313-0934da8eff57",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "5bca4888-655d-4149-b0c5-666bb7e47519",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "177b77f6-a1d6-476d-ab28-cb3a5b34ecaf",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "2562aa2f-2c21-4b9a-8ce8-663cc6606a53",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          },
+          {
+            "type": "performance",
+            "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+            "direction": "backward",
+            "recording": {
+              "id": "497a031d-93f4-4ce6-a395-8e72044e5bf8",
+              "title": "El fantasma de Canterville",
+              "video": null
+            }
+          }
+        ],
+        "languages": [
+          "spa"
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.812
+}

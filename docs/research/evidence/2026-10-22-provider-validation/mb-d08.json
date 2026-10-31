@@ -1,0 +1,79 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-D08",
+  "request_url": "https://musicbrainz.org/ws/2/recording/5a122519-3611-4a56-96f6-a2050d0359ee?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json",
+  "requested_at_utc": "2026-10-22T17:35:06.949933+00:00",
+  "phase": "composition linkage follow-up",
+  "http_status": 200,
+  "response": {
+    "artist-credit": [
+      {
+        "joinphrase": " & ",
+        "artist": {
+          "sort-name": "Gieco, León",
+          "name": "León Gieco",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "disambiguation": "",
+          "type": "Person",
+          "country": "AR",
+          "id": "dbe1d6c8-1319-4369-924a-65bb1f9fced5"
+        },
+        "name": "León Gieco"
+      },
+      {
+        "artist": {
+          "name": "Alejandro Davio",
+          "sort-name": "Davio, Alejandro",
+          "disambiguation": "",
+          "type": "Person",
+          "country": null,
+          "id": "c85a79cc-e8e3-4d8b-b5b5-09725e1df995",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "joinphrase": "",
+        "name": "Alejandro Davio"
+      }
+    ],
+    "first-release-date": "2009",
+    "video": false,
+    "relations": [
+      {
+        "source-credit": "",
+        "target-type": "work",
+        "begin": null,
+        "attribute-ids": {},
+        "work": {
+          "iswcs": [
+            "T-037.291.549-5"
+          ],
+          "language": "spa",
+          "languages": [
+            "spa"
+          ],
+          "title": "El fantasma de Canterville",
+          "id": "8b21973e-836a-441b-9e4d-4e67e7114d75",
+          "disambiguation": "",
+          "type": "Song",
+          "type-id": "f061270a-2fd6-32f1-a641-f0f8676d14e6",
+          "attributes": []
+        },
+        "type": "performance",
+        "type-id": "a3005666-a872-32c3-ad06-98af558e99b0",
+        "attributes": [],
+        "direction": "forward",
+        "attribute-values": {},
+        "target-credit": "",
+        "end": null,
+        "ended": false
+      }
+    ],
+    "length": 200852,
+    "title": "El fantasma de Canterville",
+    "id": "5a122519-3611-4a56-96f6-a2050d0359ee",
+    "isrcs": [
+      "ARF040901222"
+    ],
+    "disambiguation": ""
+  },
+  "elapsed_seconds": 2.874
+}

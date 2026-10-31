@@ -1,0 +1,92 @@
+.wizard-steps{display:flex;gap:.5rem;list-style:none;padding:0;flex-wrap:wrap}.wizard-steps li{flex:1}.wizard-steps button{width:100%;padding:.65rem;border:1px solid var(--border,#ddd);border-radius:8px;background:transparent;color:inherit}.wizard-steps [aria-current=step] button{font-weight:700;border-color:currentColor}.wizard-shared-fields{border:0;padding:0;margin:0;display:contents}.wizard-shared-fields:disabled{opacity:.7}.entity-autocomplete [role=option]{padding:.75rem;cursor:pointer;border-bottom:1px solid var(--border,#ddd)}.entity-autocomplete [role=option] small{display:block}.entity-autocomplete [aria-selected=true]{outline:2px solid currentColor;outline-offset:-2px}.entity-autocomplete .catalog-results{max-height:19rem;overflow:auto}@media(max-width:480px){.wizard-steps{gap:.25rem}.wizard-steps button{font-size:.8rem;padding:.5rem .25rem}}
+
+.provider-performance-picker, .provider-tour-picker, .provider-venue-preview, .venue-draft-fields { border: 1px solid var(--line, #dfe2d8); border-radius: 12px; padding: 14px; margin-block: 14px; min-width: 0; }
+.provider-venue-preview figure { margin: 12px 0; }
+.provider-venue-preview img { display: block; width: 100%; max-height: 240px; object-fit: cover; border-radius: 8px; }
+.provider-venue-preview figcaption { font-size: .8rem; overflow-wrap: anywhere; margin-top: 6px; }
+.provider-performance-picker ul, .provider-tour-picker ul { list-style: none; padding: 0; }
+.provider-performance-picker li, .provider-tour-picker li { margin-block: 8px; }
+.provider-performance-picker button, .provider-tour-picker button, .provider-venue-preview button, .venue-draft-fields button { max-width: 100%; white-space: normal; margin: 4px 8px 4px 0; }
+.wizard-shared-fields { min-width: 0; }
+
+.wizard-tour-discovery { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.wizard-tour-discovery > p, .wizard-tour-discovery > ul { margin-block: 0; }
+.wizard-tour-discovery .provider-tour-picker { margin-block: 0; }
+
+/* Concert creation: ivory/ink/lime design reference, flat selections and one search. */
+.dialog.drawer:has(.concert-creation) { width: min(680px, 100vw); }
+.dialog:has(.concert-creation) .dialog-header { padding: 28px 32px 18px; border-bottom: 0; }
+.dialog:has(.concert-creation) .eyebrow { display: none; }
+.concert-creation { --creation-muted: #596250; --creation-focus: #58752e; font-size: 16px; }
+.concert-creation .form-body { padding: 0 32px 32px; gap: 24px; }
+.concert-creation .form-body > .hint:first-child { margin: 0; color: var(--creation-muted); font-size: 13px; }
+.concert-creation h3 { margin: 0; font-size: clamp(26px, 4vw, 32px); letter-spacing: -.8px; line-height: 1.2; }
+.concert-creation h4 { margin: 0; font-size: 18px; }
+.concert-creation .hint, .concert-creation .optional { color: var(--creation-muted); font-size: 13px; line-height: 1.5; }
+.concert-creation label, .concert-creation .creation-search > label { font-size: 14px; font-weight: 600; }
+.concert-creation input:not([type=checkbox]), .concert-creation select, .concert-creation textarea { min-height: 48px; font-size: 16px; background: var(--paper); border-radius: 6px; }
+.concert-creation :is(button,input,select,textarea,summary):focus-visible { outline: 2px solid var(--creation-focus); outline-offset: 3px; }
+.concert-creation .wizard-steps { flex-wrap: nowrap; gap: 0; margin: 4px 0 8px; }
+.concert-creation .wizard-steps li { position: relative; min-width: 0; }
+.concert-creation .wizard-steps li:not(:last-child)::after { content: ''; position: absolute; top: 19px; left: calc(50% + 20px); right: calc(-50% + 20px); height: 1px; background: var(--line); }
+.concert-creation .wizard-steps button { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 4px; min-height: 64px; font-size: 13px; border: 0; border-radius: 4px; opacity: 1; color: var(--creation-muted); }
+.concert-creation .step-number { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--line); color: var(--ink); }
+.concert-creation .wizard-steps [aria-current=step] button { color: var(--ink); }
+.concert-creation .wizard-steps [aria-current=step] .step-number { background: var(--lime); }
+.creation-step { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.creation-intro { margin: 0; line-height: 1.5; color: var(--creation-muted); }
+.creation-context { margin: 0; padding-bottom: 16px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.creation-search { display: grid; gap: 8px; min-width: 0; }
+.creation-search > label { display: block; }
+.creation-status { color: var(--creation-muted); font-size: 13px; line-height: 1.5; }
+.creation-status:empty { display: none; }
+.creation-results { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); overflow: auto; max-height: min(350px, 48dvh); }
+.creation-results [role=option] { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; padding: 15px 16px; min-height: 48px; cursor: pointer; line-height: 1.4; }
+.creation-results [role=option] + [role=option] { border-top: 1px solid var(--line); }
+.creation-results [role=option]:hover, .creation-results [aria-selected=true] { background: #eaf2d6; }
+.creation-results strong { display: block; font-size: 15px; font-weight: 600; }
+.creation-results small { display: block; color: var(--creation-muted); font-size: 13px; margin-top: 4px; overflow-wrap: anywhere; }
+.creation-results .creation-source { flex: 0 0 auto; font-size: 12px; text-align: right; }
+.creation-results .creation-manual { font-size: 14px; }
+.creation-search .creation-manual-link { justify-self: start; }
+.creation-selection { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px 18px; border-bottom: 1px solid var(--line); }
+.creation-selection strong { display: block; font-size: 18px; line-height: 1.4; overflow-wrap: anywhere; }
+.creation-selection small, .creation-selection .selection-label { display: block; color: var(--creation-muted); font-size: 13px; margin-block: 4px; }
+.creation-selection .selection-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.concert-creation .text-button { min-height: 44px; padding: 8px 4px; font-size: 14px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.creation-conflict { border-left: 3px solid var(--creation-focus); padding: 12px 16px; background: #edf1e4; font-size: 14px; }
+.creation-conflict p { margin-top: 0; line-height: 1.5; }
+.creation-conflict button { min-height: 44px; margin-right: 12px; text-decoration: underline; }
+.creation-conflict > div { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; border-top: 1px solid var(--line); }
+.creation-review, .concert-creation .venue-draft-fields { display: flex; flex-direction: column; gap: 18px; border: 0; border-left: 2px solid var(--line); padding: 0 0 0 20px; margin: 0; border-radius: 0; }
+.concert-creation .creation-performance-review { border: 0; padding: 0; margin: 0; }
+.creation-event-step > section:empty { display: none; }
+.creation-details, .creation-venue-details { border-block: 1px solid var(--line); padding-block: 4px; }
+.creation-search-options { font-size: 13px; color: var(--creation-muted); }
+.concert-creation summary { cursor: pointer; padding-block: 14px; min-height: 44px; font-size: 14px; }
+.creation-details[open] > .wizard-shared-fields { display: flex; flex-direction: column; gap: 20px; padding-block: 12px 20px; }
+.creation-details details[open] { display: flex; flex-direction: column; gap: 16px; }
+.concert-creation .provider-venue-preview { border: 0; border-radius: 0; padding: 0 0 12px; margin: 0; font-size: 14px; }
+.concert-creation .flag-fields { flex-direction: row; flex-wrap: wrap; gap: 20px; }
+.concert-creation .flag-fields > label { min-height: 44px; font-size: 14px; }
+.concert-creation .form-footer { display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 16px 32px max(16px, env(safe-area-inset-bottom)); column-gap: 16px; }
+.concert-creation .form-footer .primary { grid-column: 2; min-height: 48px; }
+.concert-creation .form-footer .primary:first-child { grid-column: 1 / -1; }
+.concert-creation .form-footer .creation-cancel { font-size: 13px; min-height: 44px; border: 0; background: none; width: auto; justify-self: start; padding: 0; color: var(--creation-muted); }
+.concert-creation .form-footer .creation-discard { justify-self: end; color: var(--creation-muted); font-size: 13px; }
+.concert-creation .catalog-event-preview { font-size: 15px; line-height: 1.5; }
+@media (max-width: 480px) {
+  .dialog:has(.concert-creation) .dialog-header { padding: 24px 20px 16px; }
+  .concert-creation .form-body { padding: 0 20px 24px; }
+  .concert-creation .form-footer { padding-inline: 20px; }
+  .concert-creation .form-columns { grid-template-columns: 1fr; }
+  .creation-results [role=option] { padding: 12px; gap: 8px; }
+  .creation-results .creation-source { max-width: 84px; }
+}
+@media (prefers-reduced-motion: reduce) { .dialog.drawer:has(.concert-creation) { animation: none; } }
+.concert-creation .form-footer .button.primary { background: var(--lime); color: var(--ink); border: 1px solid transparent; }
+.concert-creation .form-footer .button.primary:hover { background: #c8eb64; }
+.concert-creation .creation-results { max-height: min(350px, 36dvh); }
+.concert-creation .venue-draft-fields details[open] { display: flex; flex-direction: column; gap: 18px; }
+.concert-creation .creation-search > input::placeholder { color: var(--creation-muted); }
+.creation-results [role=option] > span { min-width: 0; flex: 1; overflow-wrap: anywhere; }

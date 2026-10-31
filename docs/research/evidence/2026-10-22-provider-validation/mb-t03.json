@@ -1,0 +1,41 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-T03",
+  "request_url": "https://musicbrainz.org/ws/2/series?query=series%3A%22The%20Eras%20Tour%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:28.073384+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:28.879Z",
+    "count": 1,
+    "offset": 0,
+    "series": [
+      {
+        "id": "23aa9d94-ffc6-4160-a7f3-31cfba1ea646",
+        "type": "Tour",
+        "type-id": "8ff6df0e-3dce-3bdf-bd57-d386c51b0060",
+        "score": 100,
+        "name": "The Eras Tour",
+        "tags": [
+          {
+            "count": 2,
+            "name": "stadium tour"
+          },
+          {
+            "count": 1,
+            "name": "2023"
+          },
+          {
+            "count": 1,
+            "name": "2024"
+          },
+          {
+            "count": 0,
+            "name": "taylor swift"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.873
+}

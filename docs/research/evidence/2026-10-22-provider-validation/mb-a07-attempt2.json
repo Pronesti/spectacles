@@ -1,0 +1,895 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A07",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Zo%C3%A9%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:08.862922+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:09.627Z",
+    "count": 556,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "5838185a-0ee6-4a0b-8d4e-76a6e15f7d4b",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "Zoé",
+        "sort-name": "Zoé",
+        "country": "MX",
+        "area": {
+          "id": "3e08b2cd-69f3-317c-b1e4-e71be581839e",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Mexico",
+          "sort-name": "Mexico",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "18267499-0eaa-44fb-9e06-94bd35edf10e",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Cuernavaca",
+          "sort-name": "Cuernavaca",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Mexican rock band",
+        "life-span": {
+          "begin": "1997",
+          "ended": null
+        },
+        "tags": [
+          {
+            "count": 1,
+            "name": "alternative rock"
+          },
+          {
+            "count": 1,
+            "name": "neo-psychedelia"
+          },
+          {
+            "count": 1,
+            "name": "leon larregui"
+          },
+          {
+            "count": 1,
+            "name": "zoé"
+          }
+        ]
+      },
+      {
+        "id": "5509e5eb-67a4-49e9-992a-07d895500deb",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 96,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "Zoë Johnston",
+        "sort-name": "Johnston, Zoë",
+        "gender": "female",
+        "country": "GB",
+        "area": {
+          "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "United Kingdom",
+          "sort-name": "United Kingdom",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "f988aff4-5221-4b36-9174-befec694f906",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Nottingham",
+          "sort-name": "Nottingham",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "ipis": [
+          "00400372020"
+        ],
+        "life-span": {
+          "begin": "1976",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Zoë Johnson",
+            "name": "Zoë Johnson",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Zed J",
+            "name": "Zed J",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Zoe Johnston",
+            "name": "Zoe Johnston",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Zoe Johnson",
+            "name": "Zoe Johnson",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 1,
+            "name": "trance"
+          }
+        ]
+      },
+      {
+        "id": "e7840b1b-0fc5-42a7-b05a-ffca943308ad",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 93,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "Gorilla Zoe",
+        "sort-name": "Gorilla Zoe",
+        "gender": "male",
+        "country": "US",
+        "area": {
+          "id": "489ce91b-6658-3307-9877-795b68554c98",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "United States",
+          "sort-name": "United States",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "26e0e534-19ea-4645-bfb3-1aa4e83a4046",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Atlanta",
+          "sort-name": "Atlanta",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "ipis": [
+          "00521528379",
+          "00521528575"
+        ],
+        "isnis": [
+          "000000004654029X"
+        ],
+        "life-span": {
+          "begin": "1983-01-26",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Mathis, Alonzo",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Alonzo Mathis",
+            "locale": null,
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 2,
+            "name": "hip hop"
+          }
+        ]
+      },
+      {
+        "id": "103a58c9-e6af-4e96-a7d0-781df510cae6",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 93,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "Zoë Blade",
+        "sort-name": "Blade, Zoë",
+        "gender": "female",
+        "area": {
+          "id": "8e577cfe-54af-4581-906f-eac74b4cd17c",
+          "type": "Subdivision",
+          "type-id": "fd3d44c5-80a1-3842-9745-2c4972d35afa",
+          "name": "Stoke-on-Trent",
+          "sort-name": "Stoke-on-Trent",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "isnis": [
+          "0000000372371348"
+        ],
+        "life-span": {
+          "begin": "1981-01-13",
+          "ended": null
+        },
+        "tags": [
+          {
+            "count": 1,
+            "name": "electronic"
+          },
+          {
+            "count": 1,
+            "name": "ambient"
+          },
+          {
+            "count": 1,
+            "name": "ambient techno"
+          },
+          {
+            "count": 1,
+            "name": "modular"
+          },
+          {
+            "count": 2,
+            "name": "musicbrainz editor"
+          }
+        ]
+      },
+      {
+        "id": "5543b6ac-a73f-4ad5-bf7e-96a04d0f001e",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 87,
+        "gender-id": "36d3d30a-839d-3eda-8cb3-29be4384e4a9",
+        "name": "hARITON zOE",
+        "sort-name": "hARITON zOE",
+        "gender": "male",
+        "country": "FR",
+        "area": {
+          "id": "08310658-51eb-3801-80de-5a0739207115",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "France",
+          "sort-name": "France",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "904768d0-61ca-3c40-93ac-93adc36fef4b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Ukraine",
+          "sort-name": "Ukraine",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "SOUND DESIGNER , PRODUCER",
+        "ipis": [
+          "01240074599",
+          "01240074697"
+        ],
+        "isnis": [
+          "0000000517055910"
+        ],
+        "life-span": {
+          "begin": "1987-01-09",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Kuzmenko, Dmytro",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Dmytro Kuzmenko",
+            "locale": null,
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "hARITON zOE",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "name": "Hariton Zoe",
+            "locale": "fr",
+            "type": "Artist name",
+            "primary": true,
+            "begin-date": "2016-12-09",
+            "end-date": null
+          },
+          {
+            "sort-name": "hARITON zOE",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "name": "HARITON ZOE",
+            "locale": null,
+            "type": "Artist name",
+            "primary": null,
+            "begin-date": "2016-12-09",
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 1,
+            "name": "electronic"
+          },
+          {
+            "count": 1,
+            "name": "experimental"
+          },
+          {
+            "count": 1,
+            "name": "mastering"
+          },
+          {
+            "count": 1,
+            "name": "electronic music"
+          },
+          {
+            "count": 1,
+            "name": "unique"
+          },
+          {
+            "count": 1,
+            "name": "label"
+          },
+          {
+            "count": 1,
+            "name": "microsound"
+          },
+          {
+            "count": 1,
+            "name": "musical"
+          },
+          {
+            "count": 1,
+            "name": "underground"
+          },
+          {
+            "count": 1,
+            "name": "lofi"
+          },
+          {
+            "count": 1,
+            "name": "experimental electronic"
+          },
+          {
+            "count": 1,
+            "name": "bassline"
+          },
+          {
+            "count": 1,
+            "name": "vacuum"
+          },
+          {
+            "count": 1,
+            "name": "bandcamp"
+          },
+          {
+            "count": 1,
+            "name": "microhouse"
+          },
+          {
+            "count": 1,
+            "name": "sound designer"
+          },
+          {
+            "count": 1,
+            "name": "music label"
+          },
+          {
+            "count": 1,
+            "name": "bot"
+          },
+          {
+            "count": 1,
+            "name": "shaman"
+          },
+          {
+            "count": 1,
+            "name": "source"
+          },
+          {
+            "count": 1,
+            "name": "pro tools"
+          },
+          {
+            "count": 1,
+            "name": "spotify artist"
+          },
+          {
+            "count": 1,
+            "name": "cocoon"
+          },
+          {
+            "count": 1,
+            "name": "prestige"
+          },
+          {
+            "count": 1,
+            "name": "unique tech"
+          },
+          {
+            "count": 1,
+            "name": "hariton zoe"
+          },
+          {
+            "count": 1,
+            "name": "hz"
+          },
+          {
+            "count": 1,
+            "name": "ca va"
+          },
+          {
+            "count": 1,
+            "name": "art tech sound"
+          },
+          {
+            "count": 1,
+            "name": "dmytro kuzmenko"
+          },
+          {
+            "count": 1,
+            "name": "haritonzoe"
+          },
+          {
+            "count": 1,
+            "name": "this is hariton zoe"
+          },
+          {
+            "count": 1,
+            "name": "organisme"
+          },
+          {
+            "count": 1,
+            "name": "unique tech music"
+          },
+          {
+            "count": 1,
+            "name": "techno 2024"
+          },
+          {
+            "count": 1,
+            "name": "hariton"
+          },
+          {
+            "count": 1,
+            "name": "deux glaces"
+          },
+          {
+            "count": 1,
+            "name": "marrakech tune"
+          },
+          {
+            "count": 1,
+            "name": "chill out art tech sound music"
+          },
+          {
+            "count": 1,
+            "name": "hariton zoe music"
+          },
+          {
+            "count": 1,
+            "name": "renix diary"
+          },
+          {
+            "count": 1,
+            "name": "hz haritonzoe haritonzoe zoe harito"
+          },
+          {
+            "count": 1,
+            "name": "sisyphean"
+          },
+          {
+            "count": 1,
+            "name": "tech sound"
+          },
+          {
+            "count": 1,
+            "name": "outgrow"
+          },
+          {
+            "count": 1,
+            "name": "never look back"
+          },
+          {
+            "count": 1,
+            "name": "cosy suite"
+          },
+          {
+            "count": 0,
+            "name": "@hariton zoe"
+          },
+          {
+            "count": 1,
+            "name": "ableton live mao"
+          },
+          {
+            "count": 1,
+            "name": "music for listening"
+          },
+          {
+            "count": 1,
+            "name": "sit down bitch"
+          },
+          {
+            "count": 1,
+            "name": "sound design new"
+          },
+          {
+            "count": 1,
+            "name": "in your playlist"
+          },
+          {
+            "count": 1,
+            "name": "galvanize remix"
+          },
+          {
+            "count": 1,
+            "name": "galvanize hariton zoe"
+          },
+          {
+            "count": 1,
+            "name": "ableton live 12"
+          },
+          {
+            "count": 1,
+            "name": "insolent mosquito"
+          },
+          {
+            "count": 1,
+            "name": "vaccum"
+          },
+          {
+            "count": 1,
+            "name": "dragonfly"
+          },
+          {
+            "count": 1,
+            "name": "pour le soleil (unique tech)"
+          },
+          {
+            "count": 1,
+            "name": "https://s.awa.fm/album/1b971b9e1f1cbace8073"
+          },
+          {
+            "count": 1,
+            "name": "caravaggio"
+          },
+          {
+            "count": 1,
+            "name": "perelman"
+          },
+          {
+            "count": 1,
+            "name": "techno slavs"
+          },
+          {
+            "count": 1,
+            "name": "unexplored planet"
+          }
+        ]
+      },
+      {
+        "id": "9e3e3829-cf0e-4049-a465-6059fe08b440",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 87,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "Zoë",
+        "sort-name": "Zoë",
+        "gender": "female",
+        "country": "GB",
+        "area": {
+          "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "United Kingdom",
+          "sort-name": "United Kingdom",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "1b86fabd-75ac-4b38-b1cd-820609b6be46",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Peckham",
+          "sort-name": "Peckham",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Zoë Pollock - \"Sunshine on a Rainy Day\"",
+        "ipis": [
+          "00162254980"
+        ],
+        "isnis": [
+          "0000000076994399"
+        ],
+        "life-span": {
+          "begin": "1969-01-19",
+          "ended": null
+        }
+      },
+      {
+        "id": "c78e9ba0-dd66-4848-84d7-cb22279b1682",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 87,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "ZOË",
+        "sort-name": "Straub, Zoë",
+        "gender": "female",
+        "country": "AT",
+        "area": {
+          "id": "caac77d1-a5c8-3e6e-8e27-90b44dcc1446",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Austria",
+          "sort-name": "Austria",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "afff1a94-a98b-4322-8874-3148139ab6da",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Wien",
+          "sort-name": "Wien",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "Zoë Straub, known professionally as Zoë, stylized as ZOË",
+        "life-span": {
+          "begin": "1996-12-01",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Straub, Zoë",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Zoë Straub",
+            "locale": null,
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "9ecbe580-0d09-40a6-bd31-f7b8fbeb71ab",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 87,
+        "gender-id": "081c0bf5-da60-37b0-95f8-2207a3f7f9d6",
+        "name": "Zoe Boekbinder",
+        "sort-name": "Boekbinder, Zoe",
+        "gender": "other",
+        "country": "US",
+        "area": {
+          "id": "489ce91b-6658-3307-9877-795b68554c98",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "United States",
+          "sort-name": "United States",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "74b24e62-d2fe-42d2-9d96-31f2da756c77",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Toronto",
+          "sort-name": "Toronto",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "isnis": [
+          "0000000372753207"
+        ],
+        "life-span": {
+          "begin": "1985",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Zoë Boekbinder",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "name": "Zoë Boekbinder",
+            "locale": null,
+            "type": "Artist name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Zoe Bookbinder",
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+            "name": "Zoe Bookbinder",
+            "locale": null,
+            "type": "Search hint",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "0c5cd5d6-27c5-42df-859f-f0bf9276d3b0",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 87,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "Layla Zoe",
+        "sort-name": "Layla Zoe",
+        "gender": "female",
+        "country": "CA",
+        "area": {
+          "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Canada",
+          "sort-name": "Canada",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "01e6ddde-11f9-4f80-b751-452170b1c52b",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Nanaimo",
+          "sort-name": "Nanaimo",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "ipis": [
+          "00484068336",
+          "00484068238"
+        ],
+        "isnis": [
+          "0000000047698320",
+          "0000000464795025"
+        ],
+        "life-span": {
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Stavroff, Layla Zoe",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "name": "Layla Zoe Stavroff",
+            "locale": null,
+            "type": "Legal name",
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ]
+      },
+      {
+        "id": "049049a3-267e-47b3-98b8-54d76120a600",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "score": 85,
+        "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+        "name": "Zoe Wees",
+        "sort-name": "Wees, Zoe",
+        "gender": "female",
+        "country": "DE",
+        "area": {
+          "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Germany",
+          "sort-name": "Germany",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "11a44e18-a2e5-43a9-bee9-aa4f7c83f967",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Hamburg",
+          "sort-name": "Hamburg",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "disambiguation": "German singer-songwriter from Hamburg",
+        "ipis": [
+          "01034223118"
+        ],
+        "isnis": [
+          "000000049139469X"
+        ],
+        "life-span": {
+          "begin": "2002-05-13",
+          "ended": null
+        },
+        "aliases": [
+          {
+            "sort-name": "Wees, Zoë",
+            "name": "Zoë Wees",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 1,
+            "name": "uk pop"
+          },
+          {
+            "count": 1,
+            "name": "singer-songwriter"
+          },
+          {
+            "count": 1,
+            "name": "contemporary pop"
+          },
+          {
+            "count": 1,
+            "name": "female vocals"
+          },
+          {
+            "count": 3,
+            "name": "pop"
+          },
+          {
+            "count": 2,
+            "name": "english"
+          },
+          {
+            "count": 1,
+            "name": "pop soul"
+          },
+          {
+            "count": 1,
+            "name": "female vocalist"
+          },
+          {
+            "count": 1,
+            "name": "sad pop"
+          },
+          {
+            "count": 1,
+            "name": "alt-z"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.83
+}

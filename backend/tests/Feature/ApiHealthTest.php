@@ -14,7 +14,7 @@ class ApiHealthTest extends TestCase
             ->assertHeaderMissing('Set-Cookie');
     }
 
-    public function test_configured_frontend_can_read_the_api_without_credentials(): void
+    public function test_configured_frontend_can_read_the_api_with_credentials(): void
     {
         config(['cors.allowed_origins' => ['https://app.example.com']]);
 
@@ -22,7 +22,7 @@ class ApiHealthTest extends TestCase
             ->getJson('/api/health')
             ->assertOk()
             ->assertHeader('Access-Control-Allow-Origin', 'https://app.example.com')
-            ->assertHeaderMissing('Access-Control-Allow-Credentials');
+            ->assertHeader('Access-Control-Allow-Credentials', 'true');
     }
 
     public function test_other_origins_do_not_receive_cors_permission(): void
@@ -45,11 +45,32 @@ class ApiHealthTest extends TestCase
         ])->options('/api/health')
             ->assertNoContent()
             ->assertHeader('Access-Control-Allow-Origin', 'https://app.example.com')
-            ->assertHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+            ->assertHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     }
 
     public function test_unknown_api_routes_return_json(): void
     {
         $this->get('/api/missing')->assertNotFound()->assertJsonStructure(['message']);
+    }
+
+    public function test_health_remains_session_free_for_a_stateful_frontend(): void
+    {
+        config(['sanctum.stateful' => ['localhost:5173']]);
+        $this->withHeader('Origin', 'http://localhost:5173')->getJson('/api/health')
+            ->assertOk()->assertHeaderMissing('Set-Cookie');
+    }
+
+    public function test_account_preflight_allows_credentials_csrf_and_patch_only_for_configured_origins(): void
+    {
+        config(['cors.allowed_origins' => ['https://spectacles.test']]);
+        $this->withHeaders([
+            'Origin' => 'https://spectacles.test',
+            'Access-Control-Request-Method' => 'PATCH',
+            'Access-Control-Request-Headers' => 'Content-Type, X-XSRF-TOKEN',
+        ])->options('/api/v1/me')->assertNoContent()
+            ->assertHeader('Access-Control-Allow-Origin', 'https://spectacles.test')
+            ->assertHeader('Access-Control-Allow-Credentials', 'true');
+        $response = $this->withHeader('Origin', 'https://untrusted.example')->options('/api/v1/me');
+        $this->assertNotSame('https://untrusted.example', $response->headers->get('Access-Control-Allow-Origin'));
     }
 }

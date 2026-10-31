@@ -1,0 +1,144 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-canonical-artist-search",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Soda%20Stereo%22&fmt=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:26:25.765828+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:26:26.902Z",
+    "count": 1,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "3f8a5e5b-c24b-4068-9f1c-afad8829e06b",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "Soda Stereo",
+        "sort-name": "Soda Stereo",
+        "country": "AR",
+        "area": {
+          "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Argentina",
+          "sort-name": "Argentina",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "end-area": {
+          "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Buenos Aires",
+          "sort-name": "Buenos Aires",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "isnis": [
+          "0000000097590406"
+        ],
+        "life-span": {
+          "begin": "1982",
+          "end": "2007",
+          "ended": true
+        },
+        "aliases": [
+          {
+            "sort-name": "Soda",
+            "name": "Soda",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          },
+          {
+            "sort-name": "Soda Estereo",
+            "name": "Soda Estereo",
+            "locale": null,
+            "type": null,
+            "primary": null,
+            "begin-date": null,
+            "end-date": null
+          }
+        ],
+        "tags": [
+          {
+            "count": 3,
+            "name": "rock"
+          },
+          {
+            "count": 7,
+            "name": "alternative rock"
+          },
+          {
+            "count": 2,
+            "name": "shoegaze"
+          },
+          {
+            "count": 1,
+            "name": "post-punk"
+          },
+          {
+            "count": 3,
+            "name": "new wave"
+          },
+          {
+            "count": 1,
+            "name": "psychedelic rock"
+          },
+          {
+            "count": 1,
+            "name": "pop rock"
+          },
+          {
+            "count": 3,
+            "name": "latin rock"
+          },
+          {
+            "count": 2,
+            "name": "latin"
+          },
+          {
+            "count": -1,
+            "name": "argentina"
+          },
+          {
+            "count": -1,
+            "name": "español"
+          },
+          {
+            "count": 2,
+            "name": "rock en espanol"
+          },
+          {
+            "count": 0,
+            "name": "dinamo"
+          },
+          {
+            "count": 0,
+            "name": "pop/rock"
+          },
+          {
+            "count": 1,
+            "name": "big music"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 1.199
+}

@@ -1,0 +1,69 @@
+{
+  "reviewed_on": "2026-10-22",
+  "note": "Research interpretation of published permissions, not provider approval. Public access does not imply an import license. No provider contacted.",
+  "sources": [
+    {
+      "provider": "setlist.fm",
+      "url": "https://www.setlist.fm/help/terms",
+      "locator": "Ownership section bullets and Use of API section",
+      "outcome": "standard_terms_conflict",
+      "interpretation": "Short caching, as-supplied presentation, modification and competition restrictions. Permanent editable collaborative copies require additional written permission."
+    },
+    {
+      "provider": "Songkick",
+      "url": "https://www.songkick.com/developer/api-terms-of-use",
+      "locator": "4.3, 4.5, 4.6, 4.10; 11",
+      "outcome": "standard_terms_conflict",
+      "interpretation": "24-hour cache maximum; modification and combination with user/manual/third-party concert content restricted; delete data on termination."
+    },
+    {
+      "provider": "Bandsintown",
+      "url": "https://corp.bandsintown.com/data-applications-terms",
+      "locator": "3.d; current API access guidance",
+      "outcome": "standard_terms_insufficient",
+      "interpretation": "Session-based caching and removal conditions do not grant permanent editable copies; cross-artist access requires approval."
+    },
+    {
+      "provider": "Ticketmaster",
+      "url": "https://developer.ticketmaster.com/support/terms-of-use/",
+      "locator": "Licensed Uses and Restrictions: shall 2; shall not 6",
+      "outcome": "unresolved",
+      "interpretation": "Storage limited to reasonable service periods, removal on owner request within 24 hours. No explicit perpetual editable diary license established."
+    },
+    {
+      "provider": "MusicBrainz",
+      "url": "https://raw.githubusercontent.com/metabrainz/musicbrainz-docs/main/musicbrainz_database/index.rst",
+      "locator": "Core data / Events",
+      "outcome": "core_storage_editing_permitted",
+      "interpretation": "Event time and setlist explicitly classified as core CC0. Supplementary content and hosted API commercial use have separate conditions."
+    },
+    {
+      "provider": "JamBase",
+      "url": "https://data.jambase.com/api/docs/bulk-ingest",
+      "locator": "Bulk Ingest & Delta Sync opening",
+      "outcome": "technical_storage_supported_rights_unresolved",
+      "interpretation": "Official docs support own-database ingestion, but perpetual retention, one-time snapshots and end-user edits need applicable production agreement."
+    },
+    {
+      "provider": "JamBase evaluation",
+      "url": "https://www.jambase.com/wp-content/uploads/2023/12/jambase-trial-api-and-data-evaluation-tos-20231229.pdf",
+      "locator": "1; 2; 3.1; 6.2",
+      "outcome": "evaluation_not_production",
+      "interpretation": "Published 2023 evaluation terms prohibit modifying Data and require deletion on termination. Current trial/production agreement applicability must be confirmed."
+    },
+    {
+      "provider": "Concert Archives",
+      "url": "https://www.concertarchives.org/data-requests",
+      "locator": "Data Requests & API",
+      "outcome": "negotiated_export",
+      "interpretation": "No public API; tailored exports considered, large exports normally licensed. Upstream setlist rights must be explicitly covered."
+    },
+    {
+      "provider": "Buenos Aires Data",
+      "url": "https://data.buenosaires.gob.ar/dataset/actividades-culturales",
+      "locator": "Additional information / License",
+      "outcome": "storage_editing_permitted_with_conditions",
+      "interpretation": "CC-BY-2.5-AR; attribution/license link/change notice. Historical 2022 resource; CSV retrieval blocked, freshness and musical catalog completeness unverified."
+    }
+  ]
+}

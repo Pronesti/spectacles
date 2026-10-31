@@ -1,0 +1,15 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-E04",
+  "request_url": "https://musicbrainz.org/ws/2/event?query=artist%3A%22Soda%20Stereo%22%20AND%20begin%3A2020-02-29&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:31:43.680663+00:00",
+  "phase": "resumed with three-second spacing after pause",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:31:44.426Z",
+    "count": 0,
+    "offset": 0,
+    "events": []
+  },
+  "elapsed_seconds": 0.81
+}

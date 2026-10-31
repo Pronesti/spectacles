@@ -1,0 +1,54 @@
+{
+  "provider": "musicbrainz",
+  "case_id": "MB-A04",
+  "request_url": "https://musicbrainz.org/ws/2/artist?query=artist%3A%22Eruca%20Sativa%22&fmt=json&limit=10",
+  "requested_at_utc": "2026-10-22T17:28:17.669693+00:00",
+  "http_status": 200,
+  "response": {
+    "created": "2026-10-22T17:28:18.400Z",
+    "count": 1,
+    "offset": 0,
+    "artists": [
+      {
+        "id": "64409aab-e952-4779-b909-14f66d23cee5",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "score": 100,
+        "name": "Eruca Sativa",
+        "sort-name": "Eruca Sativa",
+        "country": "AR",
+        "area": {
+          "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+          "type": "Country",
+          "type-id": "06dd0ae4-8c74-30bb-b43d-95dcedf961de",
+          "name": "Argentina",
+          "sort-name": "Argentina",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "begin-area": {
+          "id": "1420ce10-868e-4347-ac9c-b439b86bc0cd",
+          "type": "City",
+          "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+          "name": "Córdoba",
+          "sort-name": "Córdoba",
+          "life-span": {
+            "ended": null
+          }
+        },
+        "life-span": {
+          "begin": "2007-11",
+          "ended": null
+        },
+        "tags": [
+          {
+            "count": 1,
+            "name": "latin rock"
+          }
+        ]
+      }
+    ]
+  },
+  "elapsed_seconds": 0.794
+}

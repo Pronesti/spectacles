@@ -1,0 +1,68 @@
+{
+  "provider": "geoapify",
+  "case_id": "GEO-G07",
+  "request_url": "https://api.geoapify.com/v1/geocode/search?text=Teatro+de+Verano%2C+Montevideo&filter=countrycode%3Auy&format=json&limit=5",
+  "requested_at_utc": "2026-10-22T17:30:25.044979+00:00",
+  "http_status": 200,
+  "response": {
+    "results": [
+      {
+        "datasource": {
+          "sourcename": "openstreetmap",
+          "attribution": "© OpenStreetMap contributors",
+          "license": "Open Database License",
+          "url": "https://www.openstreetmap.org/copyright"
+        },
+        "name": "Teatro de Verano Ramón Collazo",
+        "country": "Uruguay",
+        "country_code": "uy",
+        "state": "Montevideo",
+        "city": "Montevideo",
+        "postcode": "11303",
+        "suburb": "Parque Rodó",
+        "street": "Sendero canteras",
+        "iso3166_2": "UY-MO",
+        "lon": -56.1700696,
+        "lat": -34.9200458,
+        "state_code": "MO",
+        "result_type": "amenity",
+        "formatted": "Teatro de Verano Ramón Collazo, Sendero canteras, 11303 Montevideo, Uruguay",
+        "address_line1": "Teatro de Verano Ramón Collazo",
+        "address_line2": "Sendero canteras, 11303 Montevideo, Uruguay",
+        "category": "entertainment.culture.theatre",
+        "timezone": {
+          "name": "America/Montevideo",
+          "offset_STD": "-03:00",
+          "offset_DST": "-03:00",
+          "offset_STD_seconds": -10800,
+          "offset_DST_seconds": -10800
+        },
+        "plus_code": "48Q53RHH+XX",
+        "plus_code_short": "3RHH+XX Montevideo, Uruguay",
+        "rank": {
+          "importance": 0.31977730603466514,
+          "popularity": 5.742715422051011,
+          "confidence": 0.81,
+          "confidence_city_level": 1,
+          "match_type": "full_match"
+        },
+        "place_id": "519b0535d7c4154cc0593ce98e0fc47541c0f00102f90114003a0200000000c0020192031f54656174726f20646520566572616e6f2052616dc3b36e20436f6c6c617a6f",
+        "bbox": {
+          "lon1": -56.1703792,
+          "lat1": -34.9203391,
+          "lon2": -56.1696575,
+          "lat2": -34.9197463
+        }
+      }
+    ],
+    "query": {
+      "text": "Teatro de Verano, Montevideo",
+      "parsed": {
+        "house": "teatro de verano",
+        "city": "montevideo",
+        "expected_type": "amenity"
+      }
+    }
+  },
+  "elapsed_seconds": 0.92
+}

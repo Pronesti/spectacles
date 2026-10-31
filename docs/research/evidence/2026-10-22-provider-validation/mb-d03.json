@@ -1,0 +1,178 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-D03",
+  "request_url": "https://musicbrainz.org/ws/2/event/f7fafcd7-37d2-4933-bb6a-f31449cccf04?inc=artist-rels%2Bplace-rels%2Bseries-rels%2Burl-rels&fmt=json",
+  "requested_at_utc": "2026-10-22T17:34:22.196542+00:00",
+  "phase": "selected candidate hydration / query fallback",
+  "http_status": 200,
+  "response": {
+    "disambiguation": "night 1",
+    "cancelled": false,
+    "time": "19:00",
+    "relations": [
+      {
+        "target-credit": "",
+        "attribute-ids": {},
+        "attribute-values": {},
+        "artist": {
+          "name": "Taylor Swift",
+          "id": "20244d07-534f-4eff-b4d4-930878889970",
+          "country": "US",
+          "disambiguation": "",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "sort-name": "Swift, Taylor",
+          "type": "Person"
+        },
+        "source-credit": "",
+        "direction": "backward",
+        "end": null,
+        "target-type": "artist",
+        "attributes": [],
+        "begin": null,
+        "ended": false,
+        "type-id": "936c7c95-3156-3889-a062-8a0cd57f8946",
+        "type": "main performer"
+      },
+      {
+        "source-credit": "",
+        "artist": {
+          "id": "1882fe91-cdd9-49c9-9956-8e06a3810bd4",
+          "country": "US",
+          "name": "Sabrina Carpenter",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "disambiguation": "",
+          "type": "Person",
+          "sort-name": "Carpenter, Sabrina"
+        },
+        "target-credit": "",
+        "attribute-ids": {},
+        "attribute-values": {},
+        "type-id": "492a850e-97eb-306a-a85e-4b6d98527796",
+        "type": "support act",
+        "direction": "backward",
+        "target-type": "artist",
+        "attributes": [],
+        "end": null,
+        "begin": null,
+        "ended": false
+      },
+      {
+        "target-credit": "",
+        "attribute-values": {},
+        "attribute-ids": {},
+        "source-credit": "",
+        "artist": {
+          "sort-name": "LOUTA",
+          "type": "Person",
+          "name": "LOUTA",
+          "country": "AR",
+          "id": "265399ea-e208-49d9-9695-51fd29f1ed66",
+          "disambiguation": "",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "direction": "backward",
+        "ended": false,
+        "begin": null,
+        "target-type": "artist",
+        "attributes": [],
+        "end": null,
+        "type-id": "492a850e-97eb-306a-a85e-4b6d98527796",
+        "type": "support act"
+      },
+      {
+        "type": "held at",
+        "place": {
+          "coordinates": {
+            "longitude": -58.449694,
+            "latitude": -34.54525
+          },
+          "disambiguation": "",
+          "area": {
+            "disambiguation": "",
+            "iso-3166-2-codes": [
+              "AR-C"
+            ],
+            "type": "City",
+            "sort-name": "Buenos Aires",
+            "type-id": "6fd8f29a-3d0a-32fc-980d-ea697b69da78",
+            "id": "2bd8607d-56fe-4fa1-96e3-3badd6a98588",
+            "name": "Buenos Aires"
+          },
+          "id": "2b3e65a3-c269-461f-928c-c9f0cb9a7bbc",
+          "name": "Estadio Antonio Vespucio Liberti",
+          "type-id": "62664fbd-cd55-3b5f-a5ea-fb5d1bc0113c",
+          "address": "Av Pres. Figueroa Alcorta 7597",
+          "type": "Stadium"
+        },
+        "source-credit": "",
+        "type-id": "e2c6f697-07dc-38b1-be0b-83d740165532",
+        "begin": null,
+        "attribute-values": {},
+        "attributes": [],
+        "target-type": "place",
+        "attribute-ids": {},
+        "end": null,
+        "ended": false,
+        "target-credit": "Estadio River Plate",
+        "direction": "forward"
+      },
+      {
+        "direction": "forward",
+        "ended": false,
+        "target-type": "series",
+        "attributes": [
+          "number"
+        ],
+        "end": null,
+        "begin": null,
+        "type-id": "707d947d-9563-328a-9a7d-0c5b9c3a9791",
+        "type": "part of",
+        "target-credit": "",
+        "attribute-ids": {
+          "number": "a59c5830-5ec7-38fe-9a21-c7ea54f6650a"
+        },
+        "ordering-key": 58,
+        "attribute-values": {
+          "number": "2.1"
+        },
+        "source-credit": "",
+        "series": {
+          "id": "23aa9d94-ffc6-4160-a7f3-31cfba1ea646",
+          "name": "The Eras Tour",
+          "type-id": "8ff6df0e-3dce-3bdf-bd57-d386c51b0060",
+          "disambiguation": "",
+          "type": "Tour"
+        }
+      },
+      {
+        "type": "setlistfm",
+        "url": {
+          "id": "7f65ec0e-9e8c-4ba3-91ac-b838ef0a0987",
+          "resource": "https://www.setlist.fm/setlist/taylor-swift/2023/estadio-river-plate-buenos-aires-argentina-43a18b7b.html"
+        },
+        "type-id": "027fce0c-c621-4fd1-b728-1678ae08f280",
+        "target-type": "url",
+        "attributes": [],
+        "end": null,
+        "begin": null,
+        "ended": false,
+        "direction": "forward",
+        "source-credit": "",
+        "attribute-ids": {},
+        "attribute-values": {},
+        "target-credit": ""
+      }
+    ],
+    "life-span": {
+      "begin": "2023-11-09",
+      "end": "2023-11-09",
+      "ended": true
+    },
+    "setlist": "",
+    "type-id": "ef55e8d7-3d00-394a-8012-f5506a29ff0b",
+    "name": "The Eras Tour: Buenos Aires",
+    "id": "f7fafcd7-37d2-4933-bb6a-f31449cccf04",
+    "type": "Concert"
+  },
+  "elapsed_seconds": 0.945
+}

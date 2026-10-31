@@ -1,0 +1,36 @@
+{
+  "provider": "MusicBrainz",
+  "case_id": "MB-D02",
+  "request_url": "https://musicbrainz.org/ws/2/recording/352f8803-873e-4fe8-a524-e62ccdbd70fd?inc=work-rels%2Bartist-credits%2Burl-rels%2Bisrcs&fmt=json",
+  "requested_at_utc": "2026-10-22T17:34:18.359580+00:00",
+  "phase": "selected candidate hydration / query fallback",
+  "http_status": 200,
+  "response": {
+    "id": "352f8803-873e-4fe8-a524-e62ccdbd70fd",
+    "first-release-date": "2019-09-27",
+    "disambiguation": "MTV Unplugged",
+    "length": 305280,
+    "relations": [],
+    "isrcs": [
+      "MXG801900005"
+    ],
+    "title": "Eres",
+    "artist-credit": [
+      {
+        "artist": {
+          "type": "Group",
+          "sort-name": "Café Tacuba",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "disambiguation": "",
+          "country": "MX",
+          "id": "c2b37a39-c66a-44b2-b190-a69485ae5d95",
+          "name": "Café Tacvba"
+        },
+        "name": "Café Tacvba",
+        "joinphrase": ""
+      }
+    ],
+    "video": false
+  },
+  "elapsed_seconds": 0.833
+}
