@@ -34,6 +34,8 @@ export function GoogleVenueMap({ visits, selectedId, onSelect, apiKey, mapId }: 
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: true,
+        cameraControl: false,
+        zoomControl: true,
         gestureHandling: 'cooperative',
       })
       const bounds = new google.maps.LatLngBounds()
