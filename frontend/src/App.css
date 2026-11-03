@@ -3356,3 +3356,24 @@ input[type=checkbox] {
     background: #c6b271
   }
 }
+
+/* Labeled concert search in the account controls. */
+.topbar-right {
+  gap: 12px;
+}
+
+.topbar-right .topbar-search {
+  display: flex;
+  gap: 8px;
+  width: auto;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+
+.topbar-right .topbar-search:hover {
+  background: var(--lime);
+  border-color: var(--lime);
+}
