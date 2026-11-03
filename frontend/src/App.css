@@ -914,14 +914,24 @@ h1 {
 }
 
 .heat-cell.active {
-  box-shadow: 0 0 0 2px var(--ink);
-  transform: scale(1.15);
-  z-index: 1
+  position: relative;
+  z-index: 1;
+  overflow: visible
+}
+
+.heat-cell.active::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 2px solid #9e87cf;
+  border-radius: 4px;
+  filter: blur(1.2px);
+  pointer-events: none
 }
 
 .heat-cell:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 1px
+  outline: 2px solid #6b842a;
+  outline-offset: 2px
 }
 
 .heat-cell.future.level-1 {
