@@ -41,10 +41,10 @@ test('a pending concert save disables the editable fields and actions together',
   assert.match(html, /Save concert/)
 })
 
-test('calendar keeps unknown dates visible in its confirmation section without inventing a day', () => {
+test('calendar excludes unknown dates without inventing a day or adding a confirmation panel', () => {
   const concert = { id: 'unknown', title: 'Unknown date QA', artists: [], venueId: null, date: { year: null, month: null, day: null }, time: '', timezone: null, interested: false, ticketsBought: false, notes: '', setlist: [] }
   const html = render(CalendarView, { concerts: [concert], venues: [], today: '2026-10-23', onOpen: noop, onAdd: noop })
-  assert.match(html, /Dates still to be confirmed/)
-  assert.match(html, /Unknown date QA/)
+  assert.doesNotMatch(html, /Dates still to be confirmed/)
+  assert.doesNotMatch(html, /Unknown date QA/)
   assert.doesNotMatch(html, /class="calendar-event/)
 })
