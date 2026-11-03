@@ -44,6 +44,6 @@ export function AccountMenu({ user, busy, onProfile, onAuth, onSignOut }: {
       </> : <>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(() => onAuth('login'))}><Icon name="user" size={20} /><span>Sign in</span></button>
         <button disabled={busy} role="menuitem" tabIndex={-1} onClick={() => choose(() => onAuth('register'))}><Icon name="plus" size={20} /><span>Create account</span></button>
-      </>}</div><p>Concerts and setlists are saved to your account.</p></div>}
+      </>}</div></div>}
   </div>
 }
