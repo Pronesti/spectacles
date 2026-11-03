@@ -1,12 +1,15 @@
-import { StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Agentation } from 'agentation'
 import './index.css'
 import App from './App.tsx'
+
+const DevAgentation = import.meta.env.DEV
+  ? lazy(() => import('./components/DevAgentation').then(module => ({ default: module.DevAgentation })))
+  : null
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-    {import.meta.env.DEV && <Agentation endpoint="http://localhost:4747" />}
+    {DevAgentation && <Suspense fallback={null}><DevAgentation /></Suspense>}
   </StrictMode>,
 )
