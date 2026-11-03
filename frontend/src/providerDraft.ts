@@ -32,7 +32,7 @@ export function applyPerformance(state: WizardState, preview: PerformancePreview
   const result = applyProviderVenue(detachPerformance(state), preview.venue)
   const a = preview.artist, t = preview.tour
   const artist: WizardArtistChoice = { name: a.values.name, catalogId: a.localId, ...(a.localId ? {} : { draft: { key: crypto.randomUUID(), mbid: a.ref.externalId, input: { ...a.values, selection: a.selection } } }) }
-  const tours: WizardTourChoice[] = t ? [{ name: t.values.name, catalogId: t.localId, ...(t.localId ? {} : { draft: { key: crypto.randomUUID(), ref: t.ref, input: { name: t.values.name, selection: t.selection } } }) }] : []
+  const tours: WizardTourChoice[] = t ? [{ name: t.values.name, catalogId: t.localId, ...(t.localId ? {} : { draft: { key: crypto.randomUUID(), ref: t.ref, input: { name: t.values.name, selection: t.selection } } }) }] : preview.tourName ? [{ name: preview.tourName, catalogId: null }] : []
   return { ...result, draft: { ...result.draft, artists: [artist], tours, precision: 'exact', dateText: `${String(preview.date.year).padStart(4, '0')}-${String(preview.date.month).padStart(2, '0')}-${String(preview.date.day).padStart(2, '0')}`, timezoneText: preview.timezone ?? '', providerEvent: { key: crypto.randomUUID(), ref: preview.ref, selection: preview.selection }, concert: { ...result.draft.concert, title: a.values.name, eventType: 'concert', time: preview.time ?? '', timezone: preview.timezone } } }
 }
 export function applyManualPerformance(state: WizardState, manual: ManualPerformance): WizardState {

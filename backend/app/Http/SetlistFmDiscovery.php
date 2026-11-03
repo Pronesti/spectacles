@@ -66,6 +66,9 @@ class SetlistFmDiscovery
 
     public function tours(array $scope, string $q, ?string $cursor = null): array
     {
+        if ($this->client->usesApi()) {
+            return $this->apiTours($scope, $q, $cursor);
+        }
         $mbid = $this->artistMbid($scope);
         if ($mbid === null) {
             throw ValidationException::withMessages(['artistMbid' => 'Select one identified Artist.']);
@@ -90,6 +93,12 @@ class SetlistFmDiscovery
 
     public function performances(array $filters): array
     {
+        if ($this->client->usesApi()) {
+            return $this->apiPerformances($filters);
+        }
+        if (isset($filters['tourName']) && ! isset($filters['tourId'])) {
+            throw ValidationException::withMessages(['tourId' => 'Select a Tour with a confirmed website identity.']);
+        }
         $cursor = $filters['cursor'] ?? null;
         unset($filters['cursor']);
         ksort($filters);
@@ -193,6 +202,99 @@ class SetlistFmDiscovery
         return $this->page($items, $allowed ? $this->next('performances', $filters, $page, $offset, $scanned) : null, true);
     }
 
+    private function apiTours(array $scope, string $q, ?string $cursor): array
+    {
+        $mbid = $this->artistMbid($scope);
+        if ($mbid === null) {
+            throw ValidationException::withMessages(['artistMbid' => 'Select one identified Artist.']);
+        }
+        $filters = ['artistMbid' => $mbid, 'q' => $q];
+        [$page, $offset, $scanned] = $this->cursor('api-tours', $filters, $cursor);
+        $result = app(SetlistFmApi::class)->search(['artistMbid' => $mbid, 'p' => $page, ...($q === '' ? [] : ['tourName' => $q])]);
+        $rows = $result['items'];
+        if ($offset > count($rows)) {
+            throw ValidationException::withMessages(['cursor' => 'Search again.']);
+        }
+        $term = mb_strtolower(Str::ascii($q));
+        $items = [];
+        while ($offset < count($rows) && count($items) < 10 && $scanned < 100) {
+            $row = $rows[$offset++];
+            $scanned++;
+            $name = $row['tourName'];
+            if ($name === null || ! str_contains(mb_strtolower(Str::ascii($name)), $term)) {
+                continue;
+            }
+            $items[$name] = ['manual' => true, 'ref' => null, 'values' => ['name' => $name], 'url' => $row['url'], 'artistMbid' => $mbid, 'selection' => null, 'localId' => null];
+        }
+        $more = $offset < count($rows) || $result['more'];
+        if ($offset >= count($rows)) {
+            $page++;
+            $offset = 0;
+        }
+
+        return $this->page(array_values($items), $more && $page <= 10 && $scanned < 100 ? $this->next('api-tours', $filters, $page, $offset, $scanned) : null, true);
+    }
+
+    private function apiPerformances(array $filters): array
+    {
+        $cursor = $filters['cursor'] ?? null;
+        unset($filters['cursor']);
+        ksort($filters);
+        [$page, $offset, $scanned] = $this->cursor('api-performances', $filters, $cursor);
+        $mbid = $this->artistMbid($filters);
+        if (isset($filters['venueUrl'])) {
+            $this->venueUrl($filters['venueId'] ?? '', $filters['venueUrl']);
+        }
+        if ($mbid === null && ! isset($filters['venueId'])) {
+            throw ValidationException::withMessages(['artistMbid' => 'Select an identified Artist or Venue.']);
+        }
+        if (isset($filters['tourId'])) {
+            throw ValidationException::withMessages(['tourId' => 'The API cannot verify website Tour IDs. Choose a Tour name or enter the details manually.']);
+        }
+        $query = ['p' => $page];
+        if ($mbid !== null) {
+            $query['artistMbid'] = $mbid;
+        }
+        foreach (['venueId', 'tourName', 'year', 'countryCode'] as $key) {
+            if (isset($filters[$key])) {
+                $query[$key] = $filters[$key];
+            }
+        }
+        if (isset($filters['date'])) {
+            $query['date'] = substr($filters['date'], 8, 2).'-'.substr($filters['date'], 5, 2).'-'.substr($filters['date'], 0, 4);
+        }
+        $result = app(SetlistFmApi::class)->search($query);
+        $rows = $result['items'];
+        if ($offset > count($rows)) {
+            throw ValidationException::withMessages(['cursor' => 'Search again.']);
+        }
+        $items = [];
+        while ($offset < count($rows) && count($items) < 10 && $scanned < 100) {
+            $row = $rows[$offset++];
+            $scanned++;
+            $dateKey = sprintf('%04d-%02d-%02d', $row['date']['year'], $row['date']['month'], $row['date']['day']);
+            if (($filters['period'] === 'upcoming' ? $dateKey < now()->format('Y-m-d') : $dateKey > now()->format('Y-m-d')) || isset($filters['date']) && $dateKey !== $filters['date'] || isset($filters['year']) && $row['date']['year'] !== (int) $filters['year'] || isset($filters['countryCode']) && $row['venue']['values']['countryCode'] !== $filters['countryCode'] || isset($filters['tourName']) && $row['tourName'] !== $filters['tourName']) {
+                continue;
+            }
+            $term = mb_strtolower(Str::ascii(trim($filters['q'] ?? '')));
+            $haystack = mb_strtolower(Str::ascii(implode(' ', [$row['artist']['values']['name'], $row['venue']['values']['name'], $row['venue']['values']['city'], $row['tourName'] ?? '', $dateKey])));
+            if (array_any(preg_split('/\s+/u', $term, -1, PREG_SPLIT_NO_EMPTY), fn ($part) => ! str_contains($haystack, $part))) {
+                continue;
+            }
+            $summary = $this->summary($row);
+            $manual = ['artist' => $row['artist'], 'venue' => $row['venue'], 'date' => $row['date'], 'tourName' => $row['tourName'], 'time' => null, 'timezone' => null];
+            $summary['locator'] = $this->proofs->issue('locator', [...$summary, 'source' => 'api', 'period' => $filters['period'], 'manual' => $manual]);
+            $items[] = $summary;
+        }
+        $more = $offset < count($rows) || $result['more'];
+        if ($offset >= count($rows)) {
+            $page++;
+            $offset = 0;
+        }
+
+        return $this->page($items, $more && $page <= 10 && $scanned < 100 ? $this->next('api-performances', $filters, $page, $offset, $scanned) : null, true);
+    }
+
     public function preview(string $id, string $locator): array
     {
         $bound = $this->proofs->read($locator, 'locator', 'locator');
@@ -202,6 +304,11 @@ class SetlistFmDiscovery
         $known = EventProviderReference::query()->where('provider', 'setlist_fm')->where('resource_type', 'setlist')->where('provider_resource_id', $id)->first()?->event;
         if ($known !== null && isset($bound['manual'])) {
             $value = CatalogProviderData::performance([...$bound['manual'], 'ref' => $bound['ref'], 'url' => $bound['url'], 'tour' => null]);
+        } elseif ($this->client->usesApi() || ($bound['source'] ?? null) === 'api') {
+            $value = app(SetlistFmApi::class)->detail($id);
+            if (isset($bound['manual']) && $value['artist']['ref'] !== $bound['manual']['artist']['ref']) {
+                throw new CatalogProviderUnavailable;
+            }
         } else {
             try {
                 $parsed = $this->gate->run('setlist_html', 'detail:v3:'.$id, function () use ($bound, $id): array {
@@ -240,7 +347,7 @@ class SetlistFmDiscovery
             $artist['values'] = ['name' => $localArtist->name, 'type' => $localArtist->type, 'disambiguation' => $localArtist->disambiguation];
         }
 
-        return [...$summary, 'locator' => $locator, 'artist' => $artist, 'tour' => $value['tour'] === null ? null : $this->attachEntity($value['tour'], 'tour'), 'venue' => $this->attachEntity($value['venue'], 'venue'), 'time' => $value['time'], 'timezone' => $value['timezone'], 'selection' => $known === null ? $this->proofs->issue('performance', $value) : $locator, 'localEvent' => $local];
+        return [...$summary, 'locator' => $locator, 'artist' => $artist, 'tour' => $value['tour'] === null ? null : $this->attachEntity($value['tour'], 'tour'), 'tourName' => $value['tourName'] ?? null, 'venue' => $this->attachEntity($value['venue'], 'venue'), 'time' => $value['time'], 'timezone' => $value['timezone'], 'selection' => $known === null ? $this->proofs->issue('performance', $value) : $locator, 'localEvent' => $local];
     }
 
     private function venueUrl(string $id, ?string $url): string
@@ -264,6 +371,13 @@ class SetlistFmDiscovery
 
     public function venue(string $id, ?string $url = null): array
     {
+        if ($this->client->usesApi()) {
+            if ($url !== null) {
+                $this->venueUrl($id, $url);
+            }
+
+            return $this->attachEntity(app(SetlistFmApi::class)->venue($id), 'venue');
+        }
         $url = $this->venueUrl($id, $url);
         $value = $this->gate->run('setlist_html', 'venue:v2:'.$url, fn () => $this->html->venue($this->client->html($url), $id), true);
 

@@ -33,7 +33,7 @@ class CatalogProviderRequest extends FormRequest
         $tour = $this->is('api/v1/providers/setlistfm/tours');
         $rules = ['q' => ['sometimes', 'nullable', 'string', 'max:200'], 'artistUuid' => ['sometimes', 'uuid', 'prohibits:artistMbid'], 'artistMbid' => ['sometimes', 'uuid', 'prohibits:artistUuid'], 'cursor' => ['sometimes', 'string', 'max:8192']];
         if (! $tour) {
-            $rules += ['period' => ['required', Rule::in(['past', 'upcoming'])], 'venueUrl' => ['sometimes', 'string', 'max:2048'], 'venueId' => ['required_with:venueUrl', 'regex:/^[a-zA-Z0-9_-]{1,128}$/D'], 'tourId' => ['required_with:tourName', 'regex:/^[a-zA-Z0-9_-]{1,128}$/D'], 'tourName' => ['required_with:tourId', 'string', 'max:255'], 'date' => ['sometimes', 'date_format:Y-m-d'], 'year' => ['sometimes', 'integer', 'between:1,9999'], 'countryCode' => ['sometimes', 'regex:/^[A-Z]{2}$/D']];
+            $rules += ['period' => ['required', Rule::in(['past', 'upcoming'])], 'venueUrl' => ['sometimes', 'string', 'max:2048'], 'venueId' => ['required_with:venueUrl', 'regex:/^[a-zA-Z0-9_-]{1,128}$/D'], 'tourId' => ['sometimes', 'regex:/^[a-zA-Z0-9_-]{1,128}$/D'], 'tourName' => ['required_with:tourId', 'string', 'max:255'], 'date' => ['sometimes', 'date_format:Y-m-d'], 'year' => ['sometimes', 'integer', 'between:1,9999'], 'countryCode' => ['sometimes', 'regex:/^[A-Z]{2}$/D']];
         }
 
         return $rules;

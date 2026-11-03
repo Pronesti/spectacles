@@ -57,3 +57,15 @@ test('each linked Venue has its own canonical URL and mismatched mappings reject
  assert.equal(value.venueSources[1].url,oldUrl)
  assert.throws(()=>decodeVenue({...venue,linkedRefs:[old],venueSources:[{externalId:old.externalId,url:venue.url}]}))
 })
+test('API Tour names remain manual suggestions and cannot decode as provider identities',async()=>{
+ const {decodeTourSearch,tourSuggestionKey}=await import('../src/catalogProviders.ts')
+ const candidate={manual:true,ref:null,selection:null,localId:null,artistMbid:performance.artist.ref.externalId,values:{name:'North American Tour'},url:'https://www.setlist.fm/setlist/the-beatles/1964/hollywood-bowl-63de4613.html'}
+ const decoded=decodeTourSearch(candidate)
+ assert.equal(decoded.ref,null)
+ assert.throws(()=>decodeTour(candidate))
+ assert.throws(()=>decodeTourSearch({...candidate,selection:'fake-provider-proof'}))
+ assert.throws(()=>decodeTourSearch({...candidate,url:'https://evil.example/tour'}))
+ assert.throws(()=>decodeProviderPage({data:[candidate,candidate],meta:{partial:true,next_cursor:null}},decodeTourSearch,tourSuggestionKey))
+ const client=createCatalogProvidersClient('',async()=>new Response(JSON.stringify({data:[candidate],meta:{partial:true,next_cursor:null}})))
+ assert.equal((await client.tours({artistMbid:candidate.artistMbid},'North')).items[0].values.name,candidate.values.name)
+})

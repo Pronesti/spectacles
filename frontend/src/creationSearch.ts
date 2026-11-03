@@ -3,13 +3,14 @@ import type { CatalogFilters } from './catalogApi.ts'
 import type { CatalogAccess } from './components/CatalogPicker.tsx'
 import type { MusicBrainzAccess } from './components/EntityAutocomplete.tsx'
 import type { CatalogProvidersAccess } from './catalogProvidersApi.ts'
-import type { ArtistScope, PerformanceFilters, PerformanceSummary, TourSuggestion, VenueSuggestion } from './catalogProviders.ts'
+import type { ArtistScope, PerformanceFilters, PerformanceSummary, TourSearchSuggestion, VenueSuggestion } from './catalogProviders.ts'
 import type { MusicBrainzCandidate } from './musicbrainz.ts'
+import { tourSuggestionKey } from './catalogProviders.ts'
 import { formatDate } from './domain.ts'
 export type CreationKind = 'artists' | 'tours' | 'venues' | 'events'
 export type CreationMatch = { [K in CreationKind]: { type: 'local'; kind: K; row: CatalogByKind[K] } }[CreationKind]
   | { type: 'musicbrainz'; candidate: MusicBrainzCandidate }
-  | { type: 'tour'; candidate: TourSuggestion }
+  | { type: 'tour'; candidate: TourSearchSuggestion }
   | { type: 'venue'; candidate: VenueSuggestion }
   | { type: 'performance'; candidate: PerformanceSummary }
 export type CreationResult = { items: CreationMatch[]; messages: string[]; partial: boolean; nextPage?: number; nextCursor?: string }
@@ -20,7 +21,9 @@ export function describeCreationMatch(match: CreationMatch) {
     return { key: `local:${match.kind}:${row.id}`, label: 'title' in row ? row.title : row.name, source: 'Your catalog', detail: 'date' in row ? [formatDate(row.date), row.venue?.name].filter(Boolean).join(' · ') : 'city' in row ? row.city ?? '' : 'disambiguation' in row ? row.disambiguation ?? '' : '' }
   }
   if (match.type === 'musicbrainz') { const c = match.candidate; return { key: `musicbrainz:${c.kind}:${c.id}`, label: c.label, source: c.local ? 'Your catalog' : 'MusicBrainz', detail: [c.disambiguation, c.area, c.country].filter(Boolean).join(' · ') } }
+  if (match.type === 'tour' && !match.candidate.ref) return { key: tourSuggestionKey(match.candidate), label: match.candidate.values.name, source: 'setlist.fm', detail: 'Tour name · confirm manually' }
   const c = match.candidate
+  if (!c.ref) throw new Error('Invalid provider identity')
   return { key: `${c.ref.provider}:${c.ref.resourceType}:${c.ref.externalId}`, label: 'values' in c ? c.values.name : `${c.artistName} at ${c.venueName}`, source: c.ref.provider === 'setlist_fm' ? 'setlist.fm' : 'MusicBrainz', detail: 'date' in c ? `${formatDate(c.date)} · ${c.city}` : 'city' in c.values ? c.values.city : '' }
 }
 export function mergeCreationMatches(items: CreationMatch[]): CreationMatch[] {

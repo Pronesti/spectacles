@@ -19,6 +19,7 @@ class ProviderReadGate
     private function read(string $channel, string $cacheKey, callable $fetch, bool $waitForSpacing = false): array
     {
         [$group, $prefix] = match ($channel) {
+            'setlist_api' => ['setlistfm', 'api'],
             'setlist_html' => ['setlistfm', 'html'],
             'wikidata' => ['venue_images', 'wikidata'], 'commons' => ['venue_images', 'commons'],
             default => throw new \InvalidArgumentException('Unknown provider channel.'),

@@ -183,6 +183,11 @@ class CatalogProviderData
             throw new CatalogProviderUnavailable;
         }
 
-        return ['ref' => $ref, 'url' => $value['url'], 'date' => $date, 'artist' => $artist, 'tour' => $tour, 'venue' => $venue, 'time' => $time, 'timezone' => $zone];
+        $result = ['ref' => $ref, 'url' => $value['url'], 'date' => $date, 'artist' => $artist, 'tour' => $tour, 'venue' => $venue, 'time' => $time, 'timezone' => $zone];
+        if (array_key_exists('tourName', $value)) {
+            $result['tourName'] = self::text($value['tourName'], 255, true);
+        }
+
+        return $result;
     }
 }

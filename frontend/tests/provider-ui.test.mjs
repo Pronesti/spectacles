@@ -50,3 +50,8 @@ test('failed performance review presents the error and available manual recovery
  const noManual=renderToStaticMarkup(createElement(PerformanceFeedback,{loading:false,error:'Unavailable',manual:null}))
  assert.doesNotMatch(noManual,/Use available details manually/)
 })
+test('upcoming discovery makes its source coverage limit explicit',()=>{
+ const html=render(Picker,{providers,filters:{period:'upcoming',artistMbid:performance.artist.ref.externalId},onApply(){}})
+ assert.match(html,/only future-dated performances available from setlist.fm/)
+ assert.match(html,/enter missing events manually/)
+})

@@ -62,6 +62,12 @@ class CatalogProviderSelection
             }
 
             $result = ['ref' => $ref, 'url' => $payload['url'], 'period' => $payload['period']];
+            if (isset($payload['source'])) {
+                if (! in_array($payload['source'], ['api', 'html'], true)) {
+                    throw new CatalogProviderUnavailable;
+                }
+                $result['source'] = $payload['source'];
+            }
             if (isset($payload['manual'])) {
                 $manual = $payload['manual'];
                 $normalized = CatalogProviderData::performance(['ref' => $ref, 'url' => $payload['url'], 'artist' => $manual['artist'] ?? [], 'venue' => $manual['venue'] ?? [], 'date' => $manual['date'] ?? [], 'tour' => null, 'time' => null, 'timezone' => null]);

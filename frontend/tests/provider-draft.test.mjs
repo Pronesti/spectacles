@@ -68,3 +68,15 @@ test('history selects the canonical URL for the chosen explicit Venue identity',
  assert.deepEqual(venueHistoryFilters([old],'past',venue.url,sources),{period:'past',venueId:old.externalId,venueUrl:oldUrl})
  assert.equal(venueHistoryFilters([old],'past',venue.url),null)
 })
+test('API performance apply keeps the source Event proof and confirms its Tour as manual',()=>{
+ const input=createWizard()
+ input.draft.concert.notes='Keep my note'
+ input.draft.concert.setlist=[{id:'00000000-0000-4000-8000-000000000021',type:'note',title:'My section',artist:'',tape:false}]
+ const after=applyPerformance(input,{...performance,tour:null,tourName:'API name only'},[])
+ assert.deepEqual(after.draft.tours,[{name:'API name only',catalogId:null}])
+ const submitted=finishWizard(after)
+ assert.equal(submitted.pendingCatalog.event.selection,performance.selection)
+ assert.equal(submitted.pendingCatalog.tours,undefined)
+ assert.equal(submitted.concert.notes,'Keep my note')
+ assert.deepEqual(submitted.concert.setlist,input.draft.concert.setlist)
+})

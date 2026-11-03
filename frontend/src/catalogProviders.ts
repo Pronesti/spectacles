@@ -7,10 +7,12 @@ export type ProviderRef = { provider: 'musicbrainz' | 'setlist_fm'; resourceType
 export type VenueValues = { name: string; city: string; region: string | null; countryCode: string | null; address: string | null; aliases: string[]; lat: number | null; lng: number | null; timezone: string | null; image: VenueImage | null }
 export type ProviderEntity<T> = { ref: ProviderRef; values: T; url: string; selection: string; localId: string | null }
 export type TourSuggestion = ProviderEntity<{ name: string }>
+export type ManualTourSuggestion = { manual: true; ref: null; values: { name: string }; url: string; artistMbid: string; selection: null; localId: null }
+export type TourSearchSuggestion = TourSuggestion | ManualTourSuggestion
 export type VenueSource = { externalId: string; url: string }
 export type VenueSuggestion = ProviderEntity<VenueValues> & { linkedRefs: ProviderRef[]; venueUrl?: string; venueSources?: VenueSource[] }
 export type PerformanceSummary = { ref: ProviderRef; artistName: string; venueName: string; city: string; date: { year: number; month: number; day: number }; url: string; locator: string; localEventId: string | null }
-export type PerformancePreview = PerformanceSummary & { artist: ProviderEntity<{ name: string; type: string | null; disambiguation: string | null }>; tour: TourSuggestion | null; venue: VenueSuggestion; time: string | null; timezone: string | null; selection: string; localEvent: CatalogEvent | null }
+export type PerformancePreview = PerformanceSummary & { artist: ProviderEntity<{ name: string; type: string | null; disambiguation: string | null }>; tour: TourSuggestion | null; tourName?: string | null; venue: VenueSuggestion; time: string | null; timezone: string | null; selection: string; localEvent: CatalogEvent | null }
 export type ManualPerformance = { artist: PerformancePreview['artist']; venue: VenueSuggestion; tourName: string | null; date: PerformanceSummary['date']; time: null; timezone: null }
 export type ProviderPage<T> = { items: T[]; nextCursor: string | null; partial: boolean }
 export type ArtistScope = { artistUuid?: string; artistMbid?: string }
@@ -64,6 +66,17 @@ export function decodeTour(value: unknown): TourSuggestion {
   if (!(v.ref.provider === 'setlist_fm' && v.ref.resourceType === 'tour' || v.ref.provider === 'musicbrainz' && v.ref.resourceType === 'series')) return bad()
   return { ref: v.ref, url: v.url, selection: v.selection, localId: v.localId, values: { name: text(object(v.values).name) } }
 }
+export function tourSuggestionKey(tour: TourSearchSuggestion): string {
+  return tour.ref ? providerKey(tour.ref) : JSON.stringify(['setlist.fm-tour-name', tour.artistMbid, tour.values.name])
+}
+export function decodeTourSearch(value: unknown): TourSearchSuggestion {
+  const v = object(value)
+  if (v.manual !== true) return decodeTour(v)
+  if (v.ref !== null || v.selection !== null || v.localId !== null || !catalogUuid(v.artistMbid)) return bad()
+  const source = url(v.url, ['www.setlist.fm']), u = new URL(source)
+  if (!/^\/setlist\/[^/]+\/\d{4}\/[^/]+\.html$/.test(u.pathname)) return bad()
+  return { manual: true, ref: null, selection: null, localId: null, artistMbid: v.artistMbid, values: { name: text(object(v.values).name) }, url: source }
+}
 function venueSource(value: unknown, refs: ProviderRef[]): string | undefined {
   if (value === undefined || value === null) return undefined
   const source = url(value, ['www.setlist.fm']), u = new URL(source)
@@ -116,17 +129,17 @@ export function decodePerformancePreview(value: unknown): PerformancePreview {
   if (a.ref.provider !== 'musicbrainz' || a.ref.resourceType !== 'artist') return bad()
   const time = nullable(v.time, 32), existing = v.localEvent === null ? null : localEvent(v.localEvent)
   if (time !== null && !/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/.test(time) || (existing?.id ?? null) !== summary.localEventId) return bad()
-  return { ...summary, artist: { ref: a.ref, url: a.url, selection: a.selection, localId: a.localId, values: { name: text(av.name), type: nullable(av.type), disambiguation: nullable(av.disambiguation) } }, tour: v.tour === null ? null : decodeTour(v.tour), venue: decodeVenue(v.venue), time, timezone: zone(v.timezone), selection: text(v.selection, 32768), localEvent: existing }
+  return { ...summary, artist: { ref: a.ref, url: a.url, selection: a.selection, localId: a.localId, values: { name: text(av.name), type: nullable(av.type), disambiguation: nullable(av.disambiguation) } }, tour: v.tour === null ? null : decodeTour(v.tour), ...(v.tourName === undefined ? {} : { tourName: nullable(v.tourName) }), venue: decodeVenue(v.venue), time, timezone: zone(v.timezone), selection: text(v.selection, 32768), localEvent: existing }
 }
 export function decodeManualPerformance(value: unknown): ManualPerformance {
   const v = object(value), a = entity(v.artist), av = object(a.values), date = object(v.date)
   if (a.ref.provider !== 'musicbrainz' || a.ref.resourceType !== 'artist' || !validDate(date as EventDate) || !Number.isInteger(date.year) || !Number.isInteger(date.month) || !Number.isInteger(date.day) || v.time !== null || v.timezone !== null) return bad()
   return { artist: { ref: a.ref, url: a.url, selection: a.selection, localId: a.localId, values: { name: text(av.name), type: nullable(av.type), disambiguation: nullable(av.disambiguation) } }, venue: decodeVenue(v.venue), tourName: nullable(v.tourName), date: date as ManualPerformance['date'], time: null, timezone: null }
 }
-export function decodeProviderPage<T>(value: unknown, decode: (row: unknown) => T): ProviderPage<T> {
+export function decodeProviderPage<T>(value: unknown, decode: (row: unknown) => T, key: (row: T) => string = row => providerKey((row as { ref: ProviderRef }).ref)): ProviderPage<T> {
   const v = object(value), meta = object(v.meta)
   if (!Array.isArray(v.data) || v.data.length > 10 || typeof meta.partial !== 'boolean' || !(meta.next_cursor === null || boundedText(meta.next_cursor, 8192))) return bad()
-  const items = v.data.map(decode), keys = items.map(item => providerKey((item as { ref: ProviderRef }).ref))
+  const items = v.data.map(decode), keys = items.map(key)
   if (new Set(keys).size !== keys.length) return bad()
   return { items, nextCursor: meta.next_cursor as string | null, partial: meta.partial }
 }

@@ -38,7 +38,7 @@ export function WizardEventStep({ state, onChange, onEditingChange, catalog, mus
   const artist = draft.artists.length === 1 ? providerArtistScopes(state)[0]?.scope : undefined
   const sourceTour = draft.tours.length === 1 && draft.tours[0].draft?.ref?.provider === 'setlist_fm' ? draft.tours[0] : null
   const sourceLocked = !!(draft.eventId || draft.providerEvent), reviewing = localEditing || performanceEditing || legacyEditing || legacyVenueEditing || !!recoveredEditor || placeBusy
-  const performance = { period: performanceFilters.period ?? 'past', ...artist, ...(sourceTour?.draft?.ref ? { tourId: sourceTour.draft.ref.externalId, tourName: sourceTour.name } : {}) }
+  const performance = { period: performanceFilters.period ?? 'past', ...artist, ...(sourceTour?.draft?.ref ? { tourId: sourceTour.draft.ref.externalId, tourName: sourceTour.name } : state.draft.tours.length === 1 && !state.draft.tours[0].catalogId ? { tourName: state.draft.tours[0].name } : {}) }
   useEffect(() => { onEditingChange(reviewing); return () => onEditingChange(false) }, [reviewing, onEditingChange])
   useEffect(() => () => latest.cancel(), [latest, providers?.sessionKey, providers?.enabled])
   const setDraft = (patch: Partial<typeof draft>) => onChange({ ...state, draft: { ...draft, ...patch } })
@@ -79,7 +79,7 @@ export function WizardEventStep({ state, onChange, onEditingChange, catalog, mus
     <fieldset disabled={reviewing} className="wizard-shared-fields">
       {(!sourceLocked || changingEvent) && <><CreationSearch kind="events" label="Event or performance" query={eventSearch.value} onQuery={setEventQuery} catalog={catalog} musicbrainz={musicbrainz} providers={providers} performance={performance} onPick={selectEvent} onCreate={() => { if (sourceLocked) setChangeTarget('event'); else { setManualOpen(true); onChange(detachWizardEvent(state)) } }} />
       <RecoveredSearch value={eventSearch.alternative} onUse={() => { setEventQuery(performanceFilters.q ?? ''); setPerformanceFilters({ ...performanceFilters, q: '' }) }} />
-      <details className="creation-search-options"><summary>Search options</summary><label>Performance period<select value={performanceFilters.period ?? 'past'} onChange={e => setPerformanceFilters({ ...performanceFilters, period: e.target.value as 'past' | 'upcoming' })}><option value="past">Past performances</option><option value="upcoming">Upcoming performances</option></select></label></details></>}
+      <details className="creation-search-options"><summary>Search options</summary><label>Performance period<select value={performanceFilters.period ?? 'past'} onChange={e => setPerformanceFilters({ ...performanceFilters, period: e.target.value as 'past' | 'upcoming' })}><option value="past">Past performances</option><option value="upcoming">Upcoming performances</option></select></label>{performance.period === 'upcoming' && <p className="hint">Upcoming results include only future-dated performances available from setlist.fm. Enter missing events manually.</p>}</details></>}
       {changingEvent && <button type="button" className="text-button" onClick={() => setChangingEvent(false)}>Keep selected Event</button>}
     </fieldset>
     <EventCatalogPicker hideSearch requestedId={localPick} onDismiss={() => setLocalPick(undefined)} recoverDraft musicbrainz={musicbrainz} catalog={catalog} onEditingChange={setLocalEditing} onUse={event => { onChange(adoptWizardEvent(latestState.current, event, venues)); setChangingEvent(false); setLocalPick(undefined) }} />

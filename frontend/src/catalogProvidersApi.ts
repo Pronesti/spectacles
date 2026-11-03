@@ -1,4 +1,4 @@
-import { decodeLocalVenue, decodePerformancePreview, decodePerformanceSummary, decodeProviderPage, decodeTour, decodeVenue, decodeManualPerformance, isRecord } from './catalogProviders.ts'
+import { decodeLocalVenue, decodePerformancePreview, decodePerformanceSummary, decodeProviderPage, decodeTourSearch, tourSuggestionKey, decodeVenue, decodeManualPerformance, isRecord } from './catalogProviders.ts'
 import type { ArtistScope, PerformanceFilters, PerformanceSummary, ManualPerformance } from './catalogProviders.ts'
 export class CatalogProvidersError extends Error {
   readonly status: number
@@ -40,7 +40,7 @@ export function createCatalogProvidersClient(baseUrl: string, fetcher: typeof fe
   }
   const single = <T,>(body: unknown, decode: (v: unknown) => T): T => { if (!isRecord(body) || !Array.isArray(body.data) || body.data.length !== 1) throw new Error('Invalid provider response'); return decode(body.data[0]) }
   return {
-    tours: async (scope: ArtistScope, q: string, signal?: AbortSignal, cursor?: string) => decodeProviderPage(await read('providers/setlistfm/tours', { ...scope, q, cursor }, signal), decodeTour),
+    tours: async (scope: ArtistScope, q: string, signal?: AbortSignal, cursor?: string) => decodeProviderPage(await read('providers/setlistfm/tours', { ...scope, q, cursor }, signal), decodeTourSearch, tourSuggestionKey),
     performances: async (filters: PerformanceFilters, signal?: AbortSignal) => decodeProviderPage(await read('providers/setlistfm/performances', { ...filters }, signal), decodePerformanceSummary),
     preview: async (summary: PerformanceSummary, signal?: AbortSignal) => single(await read(`providers/setlistfm/performances/${encodeURIComponent(summary.ref.externalId)}`, { locator: summary.locator }, signal), decodePerformancePreview),
     places: async (q: string, signal?: AbortSignal) => decodeProviderPage(await read('musicbrainz/places', { q }, signal), decodeVenue),

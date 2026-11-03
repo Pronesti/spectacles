@@ -83,7 +83,12 @@ class EventDraftResolver
         $artist = $artistId === null ? null : Artist::where('external_id', $artistId)->first();
         $matches = $matches && $artist !== null && $artist->providerIds()->where($this->tuple($value['artist']['ref']))->exists();
         if ($value['tour'] === null) {
-            $matches = $matches && $concert['catalog']['tours'] === [];
+            if (($value['tourName'] ?? null) !== null) {
+                $tour = $concert['catalog']['tours'][0] ?? null;
+                $matches = $matches && count($concert['catalog']['tours']) === 1 && $tour['catalogId'] === null && $tour['name'] === $value['tourName'];
+            } else {
+                $matches = $matches && $concert['catalog']['tours'] === [];
+            }
         } else {
             $tour = $concert['catalog']['tours'][0] ?? null;
             $ref = $value['tour']['ref'];

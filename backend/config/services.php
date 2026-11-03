@@ -10,6 +10,9 @@ if ($musicBrainzUserAgent === '' && $musicBrainzContact !== '') {
 return [
     'setlistfm' => [
         'enabled' => env('SETLISTFM_ENABLED', false),
+        'api_key' => env('SETLIST_FM_API_KEY', ''),
+        'api_interval_ms' => (int) env('SETLISTFM_API_INTERVAL_MS', 1000),
+        'api_daily_limit' => (int) env('SETLISTFM_API_DAILY_LIMIT', 100),
         'user_agent' => env('SETLISTFM_USER_AGENT', '') ?: $musicBrainzUserAgent,
         'html_interval_ms' => (int) env('SETLISTFM_HTML_INTERVAL_MS', 2000),
         'html_daily_limit' => (int) env('SETLISTFM_HTML_DAILY_LIMIT', 0),
