@@ -1,8 +1,10 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig(({ command, mode, isPreview }) => {
   const env = loadEnv(mode, process.cwd(), ['VITE_', 'DEV_'])
+  const mapEnv = loadEnv(mode, fileURLToPath(new URL('..', import.meta.url)), ['GOOGLE_MAPS_KEY', 'GOOGLE_MAPS_MAP_ID'])
   if (command === 'build' && !env.VITE_API_BASE_URL) {
     throw new Error('Set VITE_API_BASE_URL to the Laravel backend URL before building.')
   }
@@ -14,6 +16,8 @@ export default defineConfig(({ command, mode, isPreview }) => {
   return {
     plugins: [react()],
     define: {
+      'import.meta.env.VITE_GOOGLE_MAPS_API_KEY': JSON.stringify(env.VITE_GOOGLE_MAPS_API_KEY || mapEnv.GOOGLE_MAPS_KEY || ''),
+      'import.meta.env.VITE_GOOGLE_MAPS_MAP_ID': JSON.stringify(env.VITE_GOOGLE_MAPS_MAP_ID || mapEnv.GOOGLE_MAPS_MAP_ID || (command === 'serve' && !isPreview ? 'DEMO_MAP_ID' : '')),
       'import.meta.env.DEV_LOGIN_EMAIL': JSON.stringify(command === 'serve' && !isPreview ? env.DEV_LOGIN_EMAIL || '' : ''),
       'import.meta.env.DEV_LOGIN_PASSWORD': JSON.stringify(command === 'serve' && !isPreview ? env.DEV_LOGIN_PASSWORD || '' : ''),
     },

@@ -10,7 +10,15 @@ The dashboard, concert manager, calendar, activity heatmap, Venue map, profile c
 
 Concert creation and edits use `POST /api/v1/attendances` and `PATCH /api/v1/attendances/{uuid}`. These save Events, manual Artists/Venues/Tours, Attendance notes, member flags, and ordered setlist entries in transactions. Confirmed catalog references reuse existing records. Edits detached from an Event reference create separate Event facts without overwriting the shared catalog. Only accepted members can read/edit an Attendance; only its owner can remove it. `DELETE /api/v1/attendances/{uuid}` archives the Attendance so Undo can restore its memberships and other retained data. Saves use Sanctum cookies and CSRF, publish only after confirmation, and retain editors on failures. Requests are never automatically replayed.
 
-Date precision, nullable timezone/Venue, midnight/seconds, zero coordinates, Unicode names and repeated songs remain supported. The map illustration is static; Venue names and locations come from the database, with missing coordinates kept in the directory. The existing concert photograph remains a design asset.
+Date precision, nullable timezone/Venue, midnight/seconds, zero coordinates, Unicode names and repeated songs remain supported. The venue map uses saved database coordinates; venues without coordinates remain in the directory. The existing concert photograph remains a design asset.
+
+## Venue map
+
+The map and directory include venues referenced by past concerts with confirmed dates, using the app's current calendar date. Upcoming, today, and undated concerts are excluded from visit counts. Each venue appears once across all cities. Selecting a located venue centers Google Maps on it; pins show visit counts. Missing or invalid coordinates never produce guessed pins, and no geocoding runs automatically.
+
+Set `VITE_GOOGLE_MAPS_API_KEY` and `VITE_GOOGLE_MAPS_MAP_ID` in the frontend environment, then restart Vite or rebuild for deployment. Use a Google Cloud project with billing and Maps JavaScript API enabled, a JavaScript map ID, and a browser key restricted to Maps JavaScript API and the exact frontend website origins. Browser keys are public configuration, not server secrets. Keep local values in ignored `.env.local`; do not commit them. Without configuration or saved coordinates, the directory remains available and the map shows an unavailable state. The API loads only when the venue view has located venues and both configuration values are present.
+
+The existing root `.env` names `GOOGLE_MAPS_KEY` and `GOOGLE_MAPS_MAP_ID` are also supported as fallbacks; frontend `VITE_` values take precedence. Only these map settings are exposed to the frontend. Local development can use Google's `DEMO_MAP_ID` when no map ID is supplied; production builds and preview require an explicit map ID.
 
 ## Account authentication
 
