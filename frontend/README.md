@@ -1,5 +1,9 @@
 See [the repository README](../README.md) for setup, verification, and Laravel Cloud deployment.
 
+## Development annotations
+
+Running `npm run dev` includes the [Agentation](https://www.agentation.com/install) toolbar for annotating the UI and copying feedback into an agent. It connects to the local MCP server at `http://localhost:4747` when available. To register the server with Codex, run `codex mcp add agentation -- npx -y agentation-mcp server`, then restart Codex. The toolbar is excluded from production builds.
+
 ## Account collection
 
 The dashboard, concert manager, calendar, activity heatmap, Venue map, profile counts, and setlists read the signed-in user's database collection from `GET /api/v1/collection`. New accounts start empty. No demo generator or browser-local workspace is loaded or saved by the app. Old browser preview records are left untouched and are not automatically imported.
