@@ -17,36 +17,38 @@ class SetlistFmClient
             throw new CatalogProviderUnavailable;
         }
         try {
-            $response = Http::acceptJson()->withHeaders(['x-api-key' => config('services.setlistfm.api_key'), 'Accept-Language' => 'en'])
-                ->withUserAgent(config('services.setlistfm.user_agent') ?: 'Spectacles/1.0')
-                ->connectTimeout(2)->timeout(5)->withoutRedirecting()->withOptions(['stream' => true])
-                ->get('https://api.setlist.fm/rest/1.0/'.$path, $query);
-            if ($response->status() === 429) {
-                throw new CatalogProviderUnavailable(429, max(1, min(3600, (int) $response->header('Retry-After') ?: 2)));
-            }
-            if ($response->status() === 404 && $path === 'search/setlists') {
-                return ['setlist' => [], 'total' => 0, 'page' => $query['p'] ?? 1, 'itemsPerPage' => 20];
-            }
-            if ($response->status() !== 200 || (int) $response->header('Content-Length') > 2097152) {
-                throw new CatalogProviderUnavailable(reason: in_array($response->status(), [401, 403], true) ? 'setlistfm_api_auth' : null);
-            }
-            $stream = $response->toPsrResponse()->getBody();
-            if ($stream->isSeekable()) {
-                $stream->rewind();
-            }
-            $body = '';
-            while (! $stream->eof() && strlen($body) <= 2097152) {
-                $body .= $stream->read(min(8192, 2097153 - strlen($body)));
-            }
-            if (strlen($body) > 2097152) {
-                throw new CatalogProviderUnavailable;
-            }
-            $decoded = json_decode($body, true, 32, JSON_THROW_ON_ERROR);
-            if (! is_array($decoded) || array_is_list($decoded)) {
-                throw new CatalogProviderUnavailable;
-            }
+            return app(ProviderReadGate::class)->apiRequest(function () use ($path, $query): array {
+                $response = Http::acceptJson()->withHeaders(['x-api-key' => config('services.setlistfm.api_key'), 'Accept-Language' => 'en'])
+                    ->withUserAgent(config('services.setlistfm.user_agent') ?: 'Spectacles/1.0')
+                    ->connectTimeout(2)->timeout(5)->withoutRedirecting()->withOptions(['stream' => true])
+                    ->get('https://api.setlist.fm/rest/1.0/'.$path, $query);
+                if ($response->status() === 429) {
+                    throw new CatalogProviderUnavailable(429, max(1, min(3600, (int) $response->header('Retry-After') ?: 2)));
+                }
+                if ($response->status() === 404 && $path === 'search/setlists') {
+                    return ['setlist' => [], 'total' => 0, 'page' => $query['p'] ?? 1, 'itemsPerPage' => 20];
+                }
+                if ($response->status() !== 200 || (int) $response->header('Content-Length') > 2097152) {
+                    throw new CatalogProviderUnavailable(reason: in_array($response->status(), [401, 403], true) ? 'setlistfm_api_auth' : null);
+                }
+                $stream = $response->toPsrResponse()->getBody();
+                if ($stream->isSeekable()) {
+                    $stream->rewind();
+                }
+                $body = '';
+                while (! $stream->eof() && strlen($body) <= 2097152) {
+                    $body .= $stream->read(min(8192, 2097153 - strlen($body)));
+                }
+                if (strlen($body) > 2097152) {
+                    throw new CatalogProviderUnavailable;
+                }
+                $decoded = json_decode($body, true, 32, JSON_THROW_ON_ERROR);
+                if (! is_array($decoded) || array_is_list($decoded)) {
+                    throw new CatalogProviderUnavailable;
+                }
 
-            return $decoded;
+                return $decoded;
+            });
         } catch (CatalogProviderUnavailable $failure) {
             throw $failure;
         } catch (\Throwable $failure) {

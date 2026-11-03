@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -19,10 +20,17 @@ class SetlistFmApiDiscoveryTest extends TestCase
         parent::setUp();
         $this->travelTo(now()->setDate(2026, 11, 2));
         Cache::flush();
+        Sleep::fake(syncWithCarbon: true);
         config(['services.setlistfm.enabled' => true, 'services.setlistfm.api_key' => 'test-server-secret', 'services.setlistfm.api_interval_ms' => 0, 'services.setlistfm.api_daily_limit' => 100, 'services.setlistfm.html_daily_limit' => 0, 'services.setlistfm.cache_seconds' => 900]);
         Http::preventStrayRequests();
         $this->actingAs(User::factory()->create());
         $this->withHeaders(['Accept' => 'application/json']);
+    }
+
+    protected function tearDown(): void
+    {
+        Sleep::fake(false);
+        parent::tearDown();
     }
 
     private function searchUrl(array $filters = []): string
