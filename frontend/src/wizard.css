@@ -40,6 +40,7 @@
 .creation-search > label { display: block; }
 .creation-status { color: var(--creation-muted); font-size: 13px; line-height: 1.5; }
 .creation-status:empty { display: none; }
+.creation-placeholder { padding: 20px 16px; text-align: center; border-bottom: 1px solid var(--line); }
 .creation-results { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); overflow: auto; max-height: min(350px, 48dvh); }
 .creation-results [role=option] { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; padding: 15px 16px; min-height: 48px; cursor: pointer; line-height: 1.4; }
 .creation-results [role=option] + [role=option] { border-top: 1px solid var(--line); }
@@ -48,7 +49,6 @@
 .creation-results small { display: block; color: var(--creation-muted); font-size: 13px; margin-top: 4px; overflow-wrap: anywhere; }
 .creation-results .creation-source { flex: 0 0 auto; font-size: 12px; text-align: right; }
 .creation-results .creation-manual { font-size: 14px; }
-.creation-search .creation-manual-link { justify-self: start; }
 .creation-selection { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px 18px; border-bottom: 1px solid var(--line); }
 .creation-selection strong { display: block; font-size: 18px; line-height: 1.4; overflow-wrap: anywhere; }
 .creation-selection small, .creation-selection .selection-label { display: block; color: var(--creation-muted); font-size: 13px; margin-block: 4px; }
@@ -72,8 +72,6 @@
 .concert-creation .form-footer { display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 16px 32px max(16px, env(safe-area-inset-bottom)); column-gap: 16px; }
 .concert-creation .form-footer .primary { grid-column: 2; min-height: 48px; }
 .concert-creation .form-footer .primary:first-child { grid-column: 1 / -1; }
-.concert-creation .form-footer .creation-cancel { font-size: 13px; min-height: 44px; border: 0; background: none; width: auto; justify-self: start; padding: 0; color: var(--creation-muted); }
-.concert-creation .form-footer .creation-discard { justify-self: end; color: var(--creation-muted); font-size: 13px; }
 .concert-creation .catalog-event-preview { font-size: 15px; line-height: 1.5; }
 @media (max-width: 480px) {
   .dialog:has(.concert-creation) .dialog-header { padding: 24px 20px 16px; }
@@ -90,3 +88,7 @@
 .concert-creation .venue-draft-fields details[open] { display: flex; flex-direction: column; gap: 18px; }
 .concert-creation .creation-search > input::placeholder { color: var(--creation-muted); }
 .creation-results [role=option] > span { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+
+.creation-aria-options [data-focused] { background: #eaf2d6; }
+.concert-creation .creation-aria-results { max-height: none; overflow: hidden; }
+.creation-aria-options { max-height: min(350px, 36dvh); overflow: auto; }

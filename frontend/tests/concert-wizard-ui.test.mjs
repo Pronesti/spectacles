@@ -26,7 +26,7 @@ const render = (Component, props) => renderToStaticMarkup(createElement(Componen
 test('wizard starts with four named steps, one form, Continue and no early Save', () => {
   const html = render(ConcertWizard, { venues: [], catalog, musicbrainz, onClose: () => {}, onSave: async () => {} })
   for (const label of ['Artist', 'Tour', 'Event', 'Setlist']) assert.ok(html.includes(label))
-  assert.match(html, /aria-current="step"/); assert.equal((html.match(/<form\b/g) ?? []).length, 1); assert.match(html, /Continue/); assert.doesNotMatch(html, />Save concert</)
+  assert.match(html, /aria-current="step"/); assert.equal((html.match(/<form\b/g) ?? []).length, 1); assert.match(html, /Continue/); assert.doesNotMatch(html, />Save concert</); assert.doesNotMatch(html, />Cancel<|>Discard draft<|>Create manually</); assert.match(html, /aria-label="Close dialog"/)
 })
 test('combined autocomplete and explicit entity fields expose accessible non-submit actions', () => {
   const html = render(EntityAutocomplete, { kind: 'artists', label: 'Find Artist', catalog, musicbrainz, onPick: () => {} })
@@ -61,7 +61,7 @@ test('Tour keeps manual/optional entry and scopes search to selected Artists', (
     onChange: () => {}, onEditingChange: () => {} })
   assert.match(html, /Search tour/)
   assert.match(html, /Tour for Taylor Swift/); assert.doesNotMatch(html, /type="checkbox"/)
-  assert.match(html, /Create manually/)
+  assert.doesNotMatch(html, />Create manually</)
   assert.match(html, /Skip this step/)
   assert.doesNotMatch(html, /<form/)
 })
@@ -93,4 +93,25 @@ test('legacy multi-selection drafts remain visible with explicit resolution acti
   for (const name of ['First Tour', 'Second Tour']) assert.ok(tour.includes(`Keep only ${name}`))
   assert.equal(state.draft.artists.length, 2); assert.equal(state.draft.tours.length, 2)
   assert.doesNotMatch(artist + tour, /Multiple Artists or an unknown lineup|Search MusicBrainz|Search setlist.fm/)
+})
+
+
+test('creation selectors share React Aria and retain their labels and closed initial state', () => {
+  const state = createWizard()
+  const props = { state, venues: [], catalog, musicbrainz, onChange() {}, onEditingChange() {} }
+  const artist = render(WizardArtistStep, props)
+  assert.match(artist, /data-rac=""/)
+  assert.match(artist, /role="combobox"/)
+  assert.match(artist, /placeholder="Search artist…"/)
+  assert.match(artist, /aria-expanded="false"/)
+  assert.doesNotMatch(artist, />Create manually</)
+  state.draft.artists = [{ name: 'Taylor Swift', catalogId: '00000000-0000-4000-8000-000000000001' }]
+  const tour = render(WizardTourStep, props)
+  assert.match(tour, /placeholder="Search tour…"/)
+  assert.match(tour, /data-rac=""/)
+  const event = render(WizardEventStep, props)
+  for (const label of ['Search venue…', 'Search event or performance…']) assert.ok(event.includes(label))
+  assert.equal((event.match(/role="combobox"/g) ?? []).length, 2)
+  assert.equal((event.match(/aria-expanded="false"/g) ?? []).length, 2)
+  assert.match(event, /data-rac=""/)
 })

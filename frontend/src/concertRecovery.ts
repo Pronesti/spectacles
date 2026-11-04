@@ -35,7 +35,7 @@ export function openRecovery(owner: string, initialDate?: string, storage = brow
     if (raw !== null) {
       const decoded = decodeRecovery(raw, owner)
       if (decoded) { current = decoded; restored = true; notice = 'Your concert draft was restored on this device. It takes priority over a newly selected calendar date.' }
-      else { blocked = true; notice = 'The stored concert draft could not be restored. It has been left untouched. Discard draft to start over, or save this new concert to replace it.' }
+      else { blocked = true; notice = 'The stored concert draft could not be restored. It has been left untouched. Save this new concert to replace it.' }
     }
   } catch { notice = 'Local draft storage is unavailable. Keep this form open to avoid losing changes.' }
   const persist = () => {
