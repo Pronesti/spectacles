@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import type { VenueSuggestion, VenueValues } from '../catalogProviders'
 import { useRecoveryField } from './ConcertRecovery'
 import { useEffect, useRef, useState } from 'react'
@@ -20,6 +21,6 @@ export function VenueDraftFields({ initial, onConfirm, onCancel }: { initial?: V
     <label>Venue name<input ref={nameInput} maxLength={255} value={editor.name} onChange={e => change({ name: e.target.value })} /></label><label>City<input maxLength={255} value={editor.city} onChange={e => change({ city: e.target.value })} /></label><details><summary>Address and map details (optional)</summary><label>Full address<textarea maxLength={2000} value={editor.address} onChange={e => change({ address: e.target.value })} /></label><label>Aliases, one per line<textarea maxLength={2000} value={editor.aliasesText} onChange={e => change({ aliasesText: e.target.value })} /></label>
     <div className="form-columns"><label>Latitude<input inputMode="decimal" value={editor.lat} maxLength={100} onChange={e => change({ lat: e.target.value })} /></label><label>Longitude<input inputMode="decimal" value={editor.lng} maxLength={100} onChange={e => change({ lng: e.target.value })} /></label></div>
     </details>
-    {error && <p role="alert">{error}</p>}<button type="button" onClick={confirm}>Use Venue details</button><button type="button" onClick={cancel}>Cancel Venue editor</button>
+    {error && <p role="alert">{error}</p>}<Button type="button" onPress={confirm}>Use Venue details</Button><Button type="button" onPress={cancel}>Cancel Venue editor</Button>
   </section>
 }

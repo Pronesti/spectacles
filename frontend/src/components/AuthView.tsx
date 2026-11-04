@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AccountApiError, accountErrorMessage, credentialErrors } from '../accountApi'
@@ -9,7 +10,7 @@ function PasswordField({ label, id, value, onChange, error, register }: { label:
   const [visible, setVisible] = useState(false)
   return <div className="account-field"><label htmlFor={id}>{label}</label><span className={`password-input ${error ? 'invalid' : ''}`}>
     <input id={id} type={visible ? 'text' : 'password'} autoComplete={register ? 'new-password' : 'current-password'} required minLength={register ? 12 : 1} maxLength={72} placeholder="Enter your password" value={value} onChange={event => onChange(event.target.value)} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} />
-    <button type="button" className="password-visibility" onClick={() => setVisible(current => !current)} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`} aria-pressed={visible}><Icon name={visible ? 'eyeOff' : 'eye'} size={19} /></button>
+    <Button type="button" className="password-visibility" onPress={() => setVisible(current => !current)} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`} aria-pressed={visible}><Icon name={visible ? 'eyeOff' : 'eye'} size={19} /></Button>
   </span>{error && <small className="field-error" id={`${id}-error`}>{error}</small>}</div>
 }
 type AuthViewProps = {
@@ -46,8 +47,8 @@ function AuthForm({ mode, busy, notice = '', onSwitch, onExplore, onSubmit }: Au
   }
   return <main className={`auth-layout ${register ? 'registration' : ''}`} id="auth-content">
     <section className="auth-side"><header className="auth-header">
-      <button disabled={busy} className="brand" onClick={onExplore} aria-label="Spectacles"><Soundmark /><span>Spectacles<span className="brand-period">.</span></span></button>
-      <div className="auth-switch"><span>{register ? 'Already collecting memories?' : 'New here?'}</span><button disabled={busy} onClick={() => onSwitch(register ? 'login' : 'register')}>{register ? 'Sign in' : 'Create an account'}<Icon name="arrow" size={16} /></button></div>
+      <Button type="button" isDisabled={busy} className="brand" onPress={onExplore} aria-label="Spectacles"><Soundmark /><span>Spectacles<span className="brand-period">.</span></span></Button>
+      <div className="auth-switch"><span>{register ? 'Already collecting memories?' : 'New here?'}</span><Button type="button" isDisabled={busy} onPress={() => onSwitch(register ? 'login' : 'register')}>{register ? 'Sign in' : 'Create an account'}<Icon name="arrow" size={16} /></Button></div>
     </header><div className="auth-form-wrap"><p className="eyebrow">{register ? 'START YOUR COLLECTION' : 'YOUR PERSONAL ENCORE'}</p>
       <h1>{register ? <>Make it your own<span className="lime-dot">.</span></> : 'Welcome back.'}</h1><p className="auth-subtitle">{register ? 'Keep the dates, the places, the songs.' : 'Your next great memory is waiting.'}</p>
       <form onSubmit={submit} noValidate className="auth-form" aria-busy={busy}>
@@ -58,7 +59,7 @@ function AuthForm({ mode, busy, notice = '', onSwitch, onExplore, onSubmit }: Au
           <PasswordField label="Password" id="auth-password" value={password} onChange={value => { setPassword(value); resetError() }} error={errors.password} register={register} />
           {register && <PasswordField label="Confirm password" id="auth-confirmation" value={confirmation} onChange={value => { setConfirmation(value); resetError() }} error={errors.confirmation} register />}
           <p className="password-hint">{register ? 'At least 12 characters and at most 72 UTF-8 bytes.' : 'Use your account email and password.'}</p>
-          <button className="button primary auth-submit" type="submit">{busy ? 'Please wait…' : register ? 'Create account' : 'Sign in'}<Icon name="arrow" size={20} /></button>
+          <Button className="button primary auth-submit" type="submit">{busy ? 'Please wait…' : register ? 'Create account' : 'Sign in'}<Icon name="arrow" size={20} /></Button>
         </fieldset>
       </form>
 

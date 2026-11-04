@@ -43,3 +43,23 @@ test('initial application render checks the session without showing a fabricated
   assert.match(html, /Checking your session/)
   assert.doesNotMatch(html, /Jamie Morgan|jamie@example.com|Local preview profile/)
 })
+
+test('account buttons retain form semantics, visibility labels, and initial disabled saves', () => {
+  const auth = render(AuthView, { mode: 'register', busy: false, onSwitch: noop, onExplore: noop, onSubmit: async () => {} })
+  const buttons = auth.match(/<button\b[^>]*>/g) ?? []
+  const submit = buttons.filter(button => /type="submit"/.test(button))
+  assert.equal(submit.length, 1)
+  assert.match(submit[0], /auth-submit/)
+  const visibility = buttons.filter(button => /password-visibility/.test(button))
+  assert.equal(visibility.length, 2)
+  for (const button of visibility) {
+    assert.match(button, /type="button"/)
+    assert.match(button, /aria-label="Show (?:password|confirm password)"/)
+    assert.match(button, /aria-pressed="false"/)
+  }
+  const profile = render(ProfileView, { user, counts: { concerts: 0, artists: 0, venues: 0 }, busy: false, onSave: async () => user, onCancel: noop })
+  const save = (profile.match(/<button\b[^>]*>/g) ?? []).find(button => /type="submit"/.test(button))
+  assert.ok(save)
+  assert.match(save, /\bdisabled=""/)
+  assert.match(profile, /<button\b[^>]*type="button"[^>]*>Cancel<\/button>/)
+})

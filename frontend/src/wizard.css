@@ -92,3 +92,6 @@
 .creation-aria-options [data-focused] { background: #eaf2d6; }
 .concert-creation .creation-aria-results { max-height: none; overflow: hidden; }
 .creation-aria-options { max-height: min(350px, 36dvh); overflow: auto; }
+
+.entity-autocomplete-popup { display: contents; }
+.entity-autocomplete [role=option][data-focused] { outline: 2px solid currentColor; outline-offset: -2px; }

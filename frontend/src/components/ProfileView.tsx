@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AccountApiError, accountErrorMessage, profileChanges, profileErrors } from '../accountApi'
@@ -50,7 +51,7 @@ export function ProfileView({ user, counts, busy, onSave, onCancel }: {
         <option value="">Application default</option><option value="en">English</option>{legacyLocale && <option value={legacyLocale}>{legacyLocale} (current saved preference)</option>}
       </select>{errors.locale && <small className="field-error" id="profile-locale-error">{errors.locale}</small>}<small id="profile-locale-hint">Saves your preference. The current interface is in English.</small></div></div>
       <p className="profile-local-note"><Icon name="user" size={15} />Name, email, and language are saved to your account.</p>
-      <div className="profile-form-actions"><button className="button secondary" type="button" onClick={onCancel}>Cancel</button><button className="button primary" type="submit" disabled={!dirty}>{busy ? 'Saving…' : 'Save changes'}<Icon name="arrow" size={17} /></button></div>
+      <div className="profile-form-actions"><Button className="button secondary" type="button" onPress={onCancel}>Cancel</Button><Button className="button primary" type="submit" isDisabled={!dirty}>{busy ? 'Saving…' : 'Save changes'}<Icon name="arrow" size={17} /></Button></div>
     </fieldset>
   </form><aside className="profile-story"><Icon name="music" size={24} /><p className="eyebrow">YOUR COLLECTION</p><h2>Your story,<br />so far<span>.</span></h2><p>Your concerts, artists, and venues from the database.</p><div className="profile-story-stats">{[[counts.concerts, 'Concerts'], [counts.artists, 'Artists'], [counts.venues, 'Venues']].map(([count, label]) => <div key={label}><strong>{count}</strong><span><b>{label}</b><small>Your account collection</small></span></div>)}</div></aside></div>
 }

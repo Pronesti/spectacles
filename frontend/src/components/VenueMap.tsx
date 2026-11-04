@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useMemo, useState } from 'react'
 import type { Workspace, Venue } from '../domain'
 import { hasVenueCoordinates, visitedVenues } from '../venueVisits'
@@ -26,15 +27,15 @@ export function VenueMap({ workspace, today, onViewConcerts }: { workspace: Work
         </div>}
         {selected && <section className="selected-venue-detail venue-detail-overlay" aria-label="Selected venue" aria-live="polite">
           <div><h3>{selected.venue.name}</h3><p>{[selected.venue.address, selected.venue.city].filter(Boolean).join(' · ') || 'Address to confirm'}</p>{!hasVenueCoordinates(selected) && <p>Location unavailable; no map pin</p>}</div>
-          <button className="button primary small venue-action" onClick={() => onViewConcerts(selected.venue)}><strong className="concert-total">{selected.count}</strong><span>View {selected.count === 1 ? 'concert' : 'concerts'}</span><Icon name="arrow" size={17} /></button>
+          <Button type="button" className="button primary small venue-action" onPress={() => onViewConcerts(selected.venue)}><strong className="concert-total">{selected.count}</strong><span>View {selected.count === 1 ? 'concert' : 'concerts'}</span><Icon name="arrow" size={17} /></Button>
         </section>}
       </section>
       <aside className="venue-directory" aria-label="Visited venues">
-        {visits.length ? visits.map(({ venue, count }, index) => <button className={`venue-item ${selected?.venue.id === venue.id ? 'selected' : ''}`} key={venue.id} onClick={() => setSelectedId(venue.id)} aria-pressed={selected?.venue.id === venue.id}>
+        {visits.length ? visits.map(({ venue, count }, index) => <Button type="button" className={`venue-item ${selected?.venue.id === venue.id ? 'selected' : ''}`} key={venue.id} onPress={() => setSelectedId(venue.id)} aria-pressed={selected?.venue.id === venue.id}>
           <span className={`venue-art venue-art-${index % 4}`}><Icon name="pin" size={25} /></span>
           <span><strong>{venue.name}</strong><small>{count} {count === 1 ? 'visit' : 'visits'}{venue.city && ` · ${venue.city}`}</small>{!hasVenueCoordinates({ venue, count }) && <small>Location unavailable</small>}</span>
           <Icon name="right" size={18} />
-        </button>) : <div className="empty-state"><p>No visited venues yet.</p></div>}
+        </Button>) : <div className="empty-state"><p>No visited venues yet.</p></div>}
       </aside>
     </div>
 

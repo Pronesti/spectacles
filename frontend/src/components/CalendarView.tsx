@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useState } from 'react'
 import { dateKey, groupByDay, relation, sortConcerts } from '../domain'
 import type { Concert, Venue } from '../domain'
@@ -17,7 +18,7 @@ export function CalendarView({ concerts, venues, today, onOpen, onAdd }: { conce
   const changeMonth = (delta: number) => { const d = new Date(Date.UTC(year, monthNumber - 1 + delta, 1)); setMonth(d.toISOString().slice(0, 7)) }
   const title = start.toLocaleDateString('en', { month: 'long', year: 'numeric', timeZone: 'UTC' })
   return <div className="calendar-layout"><section className="calendar-main" aria-label="Concert calendar">
-    <div className="calendar-toolbar"><button className="button secondary small" onClick={() => setMonth(today.slice(0, 7))}>Today</button><div className="month-controls"><button className="icon-button" aria-label="Previous month" onClick={() => changeMonth(-1)}><Icon name="left" /></button><h2>{title}</h2><button className="icon-button" aria-label="Next month" onClick={() => changeMonth(1)}><Icon name="right" /></button></div><div className="date-legend"><span><i className="past" />Past</span><span><i className="upcoming" />Upcoming</span></div></div>
+    <div className="calendar-toolbar"><Button type="button" className="button secondary small" onPress={() => setMonth(today.slice(0, 7))}>Today</Button><div className="month-controls"><Button type="button" className="icon-button" aria-label="Previous month" onPress={() => changeMonth(-1)}><Icon name="left" /></Button><h2>{title}</h2><Button type="button" className="icon-button" aria-label="Next month" onPress={() => changeMonth(1)}><Icon name="right" /></Button></div><div className="date-legend"><span><i className="past" />Past</span><span><i className="upcoming" />Upcoming</span></div></div>
     <div className="calendar-scroll"><div className="calendar-grid" style={{ '--calendar-weeks': weeks } as React.CSSProperties} role="group" aria-label={title}>
       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <div className="calendar-weekday" key={day}>{day}</div>)}
       {Array.from({ length: weeks * 7 }, (_, index) => {
@@ -25,8 +26,8 @@ export function CalendarView({ concerts, venues, today, onOpen, onAdd }: { conce
         if (day < 1 || day > length) return <div className="calendar-day outside" key={index} />
         const key = `${month}-${String(day).padStart(2, '0')}`; const shows = groups.get(key) ?? []
         return <div className={`calendar-day ${key === today ? 'is-today' : ''}`} key={index} aria-label={key}>
-          <button className="calendar-date" onClick={() => onAdd(key)} aria-label={`Add concert on ${key}`}><span>{day}</span><Icon name="plus" size={13} /></button>
-          {shows.map(concert => <button key={concert.id} className={`calendar-event ${relation(concert.date, today)}`} onClick={() => onOpen(concert)}><strong>{concert.title}</strong><small>{venues.find(v => v.id === concert.venueId)?.name ?? 'Venue to confirm'}</small></button>)}
+          <Button type="button" className="calendar-date" onPress={() => onAdd(key)} aria-label={`Add concert on ${key}`}><span>{day}</span><Icon name="plus" size={13} /></Button>
+          {shows.map(concert => <Button type="button" key={concert.id} className={`calendar-event ${relation(concert.date, today)}`} onPress={() => onOpen(concert)}><strong>{concert.title}</strong><small>{venues.find(v => v.id === concert.venueId)?.name ?? 'Venue to confirm'}</small></Button>)}
         </div>
       })}
     </div></div>

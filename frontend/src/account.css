@@ -47,11 +47,11 @@
 .account-menu-identity span:not(.account-avatar) { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; overflow-wrap: anywhere; }
 .account-menu-identity small { display: block; color: #9aa28c; font-size: 10px; margin-top: 9px; }
 .account-menu-items { border-top: 1px solid var(--line); padding: 12px 0; }
-.account-menu-items button { display: flex; align-items: center; width: 100%; min-height: 48px; gap: 15px; border-radius: 6px; padding: 12px; text-align: left; font-size: 13px; }
-.account-menu-items button:hover, .account-menu-items button:focus-visible { background: #e9f5cb; outline: none; }
-.account-menu-items button:focus-visible { box-shadow: inset 0 0 0 1px #c3d58e; }
-.account-menu-items button > span { flex: 1; }
-.account-menu-items button:last-child { color: var(--muted); }
+.account-menu-items [role=menuitem] { display: flex; align-items: center; width: 100%; min-height: 48px; gap: 15px; border-radius: 6px; padding: 12px; text-align: left; font-size: 13px; }
+.account-menu-items [role=menuitem]:hover, .account-menu-items [role=menuitem]:focus-visible { background: #e9f5cb; outline: none; }
+.account-menu-items [role=menuitem]:focus-visible { box-shadow: inset 0 0 0 1px #c3d58e; }
+.account-menu-items [role=menuitem] > span { flex: 1; }
+.account-menu-items [role=menuitem]:last-child { color: var(--muted); }
 .account-menu-panel > p { margin: 0 12px; padding: 16px 0 8px; border-top: 1px solid var(--line); font-size: 10px; line-height: 1.6; color: #929b83; }
 .account-field { display: flex; flex-direction: column; gap: 9px; font-size: 12px; line-height: 1.5; min-width: 0; }
 .account-field > input, .account-field > textarea, .password-input {
@@ -217,7 +217,7 @@
   .account-trigger { width: 44px; height: 44px; padding: 6px; }
   .account-trigger .account-avatar { width: 27px; height: 27px; font-size: 10px; }
   .account-menu-panel { width: min(305px, calc(100vw - 36px)); right: -3px; top: calc(100% + 8px); }
-  .account-menu-items button { font-size: 14px; min-height: 49px; }
+  .account-menu-items [role=menuitem] { font-size: 14px; min-height: 49px; }
   .account-menu-identity strong { font-size: 16px; }
   .account-menu-identity span:not(.account-avatar) { font-size: 12px; }
   .account-field > input, .account-field > textarea, .password-input input { font-size: 16px; }
@@ -296,3 +296,12 @@
 .dialog .auth-photo, .dialog .auth-header, .dialog .auth-footer { display: none; }
 .dialog .auth-side { min-height: 0; padding: 24px; }
 .dialog .auth-form-wrap { width: 100%; max-width: none; margin: 0; padding: 0; }
+
+/* React Aria positions the existing panel relative to its trigger. */
+.account-menu-panel[data-trigger] { right: auto; }
+.account-menu-items [role=menuitem][data-focused] { background: #e9f5cb; outline: none; }
+.account-menu-items [role=menuitem][data-focus-visible] { box-shadow: inset 0 0 0 1px #c3d58e; }
+@media (max-width: 700px) { .account-menu-panel[data-trigger] { translate: 3px -4px; } }
+
+.account-menu-items [role=menuitem] { cursor: pointer; }
+.account-menu-items [aria-disabled=true] { opacity: .35; cursor: default; }

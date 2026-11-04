@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import type { SetlistEntry } from '../domain'
@@ -15,7 +16,7 @@ export function SetlistEditor({ entry, catalog, onSave, onCancel }: { entry: Set
     const saved = await onSave({ ...draft, title: draft.songCatalogId ? draft.title : draft.title.trim(), artist: draft.artistCatalogId ? draft.artist : draft.artist.trim() })
     if (saved === false) setMessage('The database save was not confirmed. Your entry is still open. Check your connection or session.')
   }
-  return <form className="setlist-editor" onSubmit={submit}><SetlistEntryFields entry={draft} onChange={change} songLookup={<CatalogPicker catalog={catalog} kind="songs" label="Find an existing Song" onPick={song => change({ title: song.title, songCatalogId: song.id })} />} performerLookup={<CatalogPicker catalog={catalog} kind="artists" label="Search a performer" onPick={artist => change({ artist: artist.name, artistCatalogId: artist.id })} />} /><div className="entry-save-actions"><button className="button primary small" type="submit">Save entry</button><button className="button secondary small" type="button" onClick={onCancel}>Cancel</button></div>
+  return <form className="setlist-editor" onSubmit={submit}><SetlistEntryFields entry={draft} onChange={change} songLookup={<CatalogPicker catalog={catalog} kind="songs" label="Find an existing Song" onPick={song => change({ title: song.title, songCatalogId: song.id })} />} performerLookup={<CatalogPicker catalog={catalog} kind="artists" label="Search a performer" onPick={artist => change({ artist: artist.name, artistCatalogId: artist.id })} />} /><div className="entry-save-actions"><Button className="button primary small" type="submit">Save entry</Button><Button className="button secondary small" type="button" onPress={onCancel}>Cancel</Button></div>
     {message && <p role="alert">{message}</p>}<p className="hint">Saved to your account. A Song selection does not identify its performer.</p>
   </form>
 }

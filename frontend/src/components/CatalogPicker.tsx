@@ -1,3 +1,4 @@
+import { Button } from 'react-aria-components'
 import { useEffect, useId, useRef, useState } from 'react'
 import { CatalogApiError, catalogErrorMessage, createLatestRead } from '../catalogApi'
 import type { CatalogClient } from '../catalogApi'
@@ -36,13 +37,13 @@ export function CatalogPicker<K extends CatalogKind>({ catalog, kind, label, onP
   return <section className="catalog-picker" aria-label={label} onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); close() }
   }}>
-    <label htmlFor={id}>{label}</label><div className="catalog-search"><input ref={input} id={id} type="search" autoComplete="off" maxLength={200} disabled={!enabled} value={query} onFocus={() => setOpen(true)} onClick={() => setOpen(true)} onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)} onChange={event => { setQuery(event.target.value); setPage(1); setOpen(true) }} onKeyDown={event => { if (event.key === 'Enter' && !composing && !event.nativeEvent.isComposing) { event.preventDefault(); search() } }} /><button type="button" className="button secondary small" disabled={!enabled} onClick={search}>Search</button></div>
+    <label htmlFor={id}>{label}</label><div className="catalog-search"><input ref={input} id={id} type="search" autoComplete="off" maxLength={200} disabled={!enabled} value={query} onFocus={() => setOpen(true)} onClick={() => setOpen(true)} onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)} onChange={event => { setQuery(event.target.value); setPage(1); setOpen(true) }} onKeyDown={event => { if (event.key === 'Enter' && !composing && !event.nativeEvent.isComposing) { event.preventDefault(); search() } }} /><Button type="button" className="button secondary small" isDisabled={!enabled} onPress={search}>Search</Button></div>
     {!enabled && <p className="hint" role="status">Sign in to search the shared catalog. Manual entry is available below.</p>}
     {open && enabled && <div className="catalog-results" aria-label={`${label} results`}>
       {queryLength > 0 && queryLength < 3 && <p role="status">Type at least 3 characters to search.</p>}{loading && <p role="status">Searching…</p>}
-      {current?.error && <p role="alert">{current.error} <button type="button" className="text-button" onClick={search}>Try again</button></p>}
-      {current?.page && <><p role="status">{current.page.total} results · page {current.page.page} of {current.page.lastPage}</p><ul>{current.page.items.map(row => <li key={row.id}><button type="button" onClick={() => { onPick(row); close() }}><strong>{'name' in row ? row.name : row.title}</strong><small>{hint(row)}</small></button></li>)}</ul>{!current.page.items.length && <p>No matches. Continue with manual entry.</p>}{queryLength > 0 && <div className="catalog-pages"><button type="button" disabled={current.page.page <= 1} onClick={() => setPage(value => value - 1)}>Previous</button><button type="button" disabled={current.page.page >= current.page.lastPage} onClick={() => setPage(value => value + 1)}>Next</button></div>}</>}
-      <button type="button" className="text-button" onClick={close}>Close results</button>
+      {current?.error && <p role="alert">{current.error} <Button type="button" className="text-button" onPress={search}>Try again</Button></p>}
+      {current?.page && <><p role="status">{current.page.total} results · page {current.page.page} of {current.page.lastPage}</p><ul>{current.page.items.map(row => <li key={row.id}><Button type="button" onPress={() => { onPick(row); close() }}><strong>{'name' in row ? row.name : row.title}</strong><small>{hint(row)}</small></Button></li>)}</ul>{!current.page.items.length && <p>No matches. Continue with manual entry.</p>}{queryLength > 0 && <div className="catalog-pages"><Button type="button" isDisabled={current.page.page <= 1} onPress={() => setPage(value => value - 1)}>Previous</Button><Button type="button" isDisabled={current.page.page >= current.page.lastPage} onPress={() => setPage(value => value + 1)}>Next</Button></div>}</>}
+      <Button type="button" className="text-button" onPress={close}>Close results</Button>
     </div>}
   </section>
 }

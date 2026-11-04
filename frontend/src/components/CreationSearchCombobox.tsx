@@ -1,5 +1,6 @@
-import { useContext, useId, useState } from 'react'
-import { ComboBox, ComboBoxStateContext, Input, Label, ListBox, ListBoxItem, PopoverContext, useContextProps } from 'react-aria-components'
+import { useId, useState } from 'react'
+import { ComboBox, Label, ListBox, ListBoxItem } from 'react-aria-components'
+import { InlineComboboxInput, InlineComboboxResults } from './InlineCombobox'
 import type { ReactNode } from 'react'
 import { describeCreationMatch } from '../creationSearch'
 import type { CreationMatch } from '../creationSearch'
@@ -15,32 +16,6 @@ type Props = {
   onPick: (key: string) => void
   onOpenChange: (open: boolean) => void
   onComposing: (composing: boolean) => void
-}
-
-// This menu stays in document flow. Connect its ref to React Aria's combobox
-// rather than using floating-popover positioning/dismiss-on-scroll behavior.
-function InlineResults({ children }: { children: ReactNode }) {
-  const state = useContext(ComboBoxStateContext)
-  const [, ref] = useContextProps({}, null, PopoverContext)
-  // The hidden collection pass needs the ListBox even before state exists.
-  if (!state) return <>{children}</>
-  return state.isOpen ? <section ref={ref} className="creation-search">{children}</section> : null
-}
-
-function SearchInput({ label, onComposing, statusId }: Pick<Props, 'label' | 'onComposing'> & { statusId: string }) {
-  const state = useContext(ComboBoxStateContext)
-  return <Input aria-describedby={state?.isOpen ? statusId : undefined} placeholder={`Search ${label.toLowerCase()}…`} maxLength={200} autoComplete="off"
-    onClick={() => state?.open(null, 'focus')}
-    onKeyDownCapture={event => {
-      if (event.nativeEvent.isComposing) return
-      if (event.key === 'Tab' && state?.isOpen) {
-        event.stopPropagation(); state.close()
-      }
-      if (event.key === 'Escape' && state?.isOpen) {
-        event.preventDefault(); event.stopPropagation(); state.close()
-      }
-    }}
-    onCompositionStart={() => onComposing(true)} onCompositionEnd={() => onComposing(false)} />
 }
 
 export function CreationSearchCombobox({ label, query, rows, status, loading, actions, onQuery, onPick, onOpenChange, onComposing }: Props) {
@@ -60,8 +35,8 @@ export function CreationSearchCombobox({ label, query, rows, status, loading, ac
       onOpenChange(open)
     }}>
     <Label>{label}</Label>
-      <SearchInput statusId={statusId} label={label} onComposing={onComposing} />
-      <InlineResults>
+      <InlineComboboxInput statusId={statusId} placeholder={`Search ${label.toLowerCase()}…`} onComposing={onComposing} />
+      <InlineComboboxResults>
         <div className="creation-results creation-aria-results">
           <div id={statusId} className="creation-status creation-placeholder" role="status" aria-live="polite">{status}</div>
           <ListBox items={items} aria-label={`${label} results`} aria-busy={loading} className="creation-aria-options">
@@ -74,6 +49,6 @@ export function CreationSearchCombobox({ label, query, rows, status, loading, ac
           </ListBox>
         </div>
         {actions}
-      </InlineResults>
+      </InlineComboboxResults>
   </ComboBox>
 }
