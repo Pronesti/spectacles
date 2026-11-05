@@ -1,0 +1,18 @@
+.select-trigger { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; }
+.select-trigger > svg { flex-shrink: 0; }
+.select-value { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-field > .select-trigger { min-height: 46px; padding: 12px 14px; border: 1px solid #d3d9c9; border-radius: 6px; background: var(--paper); color: var(--ink); font: inherit; font-size: 14px; }
+.account-field > .select-trigger[aria-invalid=true] { border-color: #b87962; }
+.select-trigger:focus-visible { outline: 2px solid #8ba84e; outline-offset: 2px; }
+.setlist-toolbar > .setlist-select { width: min(100%, 500px); }
+.setlist-select > .select-trigger { border: 1px solid #d8dccf; background: transparent; border-radius: 7px; padding: 13px 15px; font-size: 12px; }
+.select-popover { width: var(--trigger-width); max-width: calc(100vw - 32px); max-height: min(320px, 50dvh); overflow: auto; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 7px; box-shadow: 0 8px 24px #1d281522; z-index: 200; }
+.select-options { margin: 0; padding: 4px; outline: none; }
+.select-option { padding: 10px 12px; min-height: 40px; border-radius: 4px; font-size: 12px; line-height: 1.5; cursor: pointer; overflow-wrap: anywhere; }
+.select-option[data-selected] { background: #eaf5ce; }
+.select-option[data-focused] { background: #e9f5cb; outline: none; }
+.select-option[data-focus-visible] { box-shadow: inset 0 0 0 1px #8ba84e; }
+@media (max-width: 700px) {
+  .setlist-toolbar > .setlist-select { width: 100%; }
+  .setlist-select > .select-trigger { font-size: 11px; padding: 12px; }
+}

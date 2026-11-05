@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { InteractionDisabledContext } from './InteractionDisabledContext'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Collection, ComboBox, ComboBoxStateContext, Label, ListBox, ListBoxItem, ListBoxSection } from 'react-aria-components'
 import { InlineComboboxInput, InlineComboboxResults } from './InlineCombobox'
 import { CatalogApiError, createLatestRead } from '../catalogApi'
@@ -15,6 +16,7 @@ import { searchEntity } from '../autocomplete'
 import type { EntityOption, LocalEntityOption } from '../autocomplete'
 export type MusicBrainzAccess = { client: ReturnType<typeof createMusicBrainzClient>; enabled: boolean; sessionKey: string; onUnauthorized: () => void }
 export function EntityAutocomplete({ kind, label, recoveryQuery, catalog, musicbrainz, filters = {}, draftArtists = [], queryControl, onLocalIds, suppressEmpty = false, onPick }: { onLocalIds?: (ids: string[]) => void; queryControl?: { value: string; onChange: (value: string) => void }; suppressEmpty?: boolean; recoveryQuery?: Extract<keyof RecoveryFields, `${string}Query`>; kind: CatalogKind; label: string; catalog: CatalogAccess; musicbrainz: MusicBrainzAccess; filters?: CatalogFilters; draftArtists?: WizardArtistChoice[]; onPick: (option: EntityOption) => void }) {
+  const interactionDisabled = useContext(InteractionDisabledContext)
   const { client: localClient, enabled: localEnabled, onUnauthorized: localUnauthorized } = catalog
   const { client: providerClient, enabled: providerEnabled, onUnauthorized: providerUnauthorized } = musicbrainz
   const providerKind: MusicBrainzKind | null = kind === 'artists' ? 'artist' : kind === 'songs' ? 'work' : null
@@ -73,7 +75,7 @@ export function EntityAutocomplete({ kind, label, recoveryQuery, catalog, musicb
     {providerKind && <Button slot={null} type="button" isDisabled={!providerEnabled || queryLength < 3} onPress={() => { setExternalRequested(true); setRetry(n => n + 1); state?.open(null, 'manual') }}>Search MusicBrainz</Button>}
     <Button slot={null} type="button" className="text-button" onPress={() => { state?.close(); pick({ key: 'create', source: 'create', query }) }}>Create manually</Button>
   </>}</ComboBoxStateContext.Consumer>
-  return <ComboBox className="catalog-picker entity-autocomplete" items={options} inputValue={query}
+  return <ComboBox isDisabled={interactionDisabled} className="catalog-picker entity-autocomplete" items={options} inputValue={query}
     onInputChange={value => { setSelected(null); setQuery(value); setExternalRequested(false); setPagination({ scope: filterKey, page: 1 }) }}
     value={selected} onChange={key => { const option = options.find(option => option.key === key); if (option) { setSelected(option.key); pick(option) } }}
     menuTrigger="focus" allowsCustomValue allowsEmptyCollection shouldFocusWrap={false}

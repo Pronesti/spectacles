@@ -1,11 +1,13 @@
-import { Button } from 'react-aria-components'
-import { useMemo, useState } from 'react'
+import { InteractionDisabledContext } from './InteractionDisabledContext'
+import { Button, ListBox, ListBoxItem } from 'react-aria-components'
+import { useContext, useMemo, useState } from 'react'
 import type { Workspace, Venue } from '../domain'
 import { hasVenueCoordinates, visitedVenues } from '../venueVisits'
 import { GoogleVenueMap } from './GoogleVenueMap'
 import { Icon } from './Icon'
 
 export function VenueMap({ workspace, today, onViewConcerts }: { workspace: Workspace; today: string; onViewConcerts: (venue: Venue) => void }) {
+  const interactionDisabled = useContext(InteractionDisabledContext)
   const visits = useMemo(() => visitedVenues(workspace, today), [workspace, today])
   const located = useMemo(() => visits.filter(hasVenueCoordinates), [visits])
   const [selectedId, setSelectedId] = useState('')
@@ -31,11 +33,13 @@ export function VenueMap({ workspace, today, onViewConcerts }: { workspace: Work
         </section>}
       </section>
       <aside className="venue-directory" aria-label="Visited venues">
-        {visits.length ? visits.map(({ venue, count }, index) => <Button type="button" className={`venue-item ${selected?.venue.id === venue.id ? 'selected' : ''}`} key={venue.id} onPress={() => setSelectedId(venue.id)} aria-pressed={selected?.venue.id === venue.id}>
-          <span className={`venue-art venue-art-${index % 4}`}><Icon name="pin" size={25} /></span>
-          <span><strong>{venue.name}</strong><small>{count} {count === 1 ? 'visit' : 'visits'}{venue.city && ` · ${venue.city}`}</small>{!hasVenueCoordinates({ venue, count }) && <small>Location unavailable</small>}</span>
-          <Icon name="right" size={18} />
-        </Button>) : <div className="empty-state"><p>No visited venues yet.</p></div>}
+        {visits.length ? <ListBox className="venue-options" aria-label="Visited venues" selectionMode="single" disallowEmptySelection selectedKeys={selected ? [selected.venue.id] : []} onSelectionChange={keys => { const id = [...keys][0]; if (typeof id === 'string') setSelectedId(id) }}>
+          {visits.map(({ venue, count }, index) => <ListBoxItem isDisabled={interactionDisabled} id={venue.id} textValue={venue.name} className={`venue-item ${selected?.venue.id === venue.id ? 'selected' : ''}`} key={venue.id}>
+            <span className={`venue-art venue-art-${index % 4}`}><Icon name="pin" size={25} /></span>
+            <span><strong>{venue.name}</strong><small>{count} {count === 1 ? 'visit' : 'visits'}{venue.city && ` · ${venue.city}`}</small>{!hasVenueCoordinates({ venue, count }) && <small>Location unavailable</small>}</span>
+            <Icon name="right" size={18} />
+          </ListBoxItem>)}
+        </ListBox> : <div className="empty-state"><p>No visited venues yet.</p></div>}
       </aside>
     </div>
 

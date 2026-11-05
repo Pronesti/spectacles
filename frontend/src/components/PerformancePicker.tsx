@@ -1,3 +1,5 @@
+import { SourceSearchField } from './SourceSearchField'
+import { SourceResults } from './SourceResults'
 import { Button } from 'react-aria-components'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createLatestRead } from '../catalogApi'
@@ -51,10 +53,10 @@ export function PerformancePicker({ providers, filters, query, onApply, onApplyM
   return <section className={`provider-performance-picker ${previewOnly ? 'creation-performance-review' : ''}`}>
     {!previewOnly && <>
     <div className="form-columns">{!history && <label>Performance period<select value={storedFilters.period} onChange={e => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, period: e.target.value as 'past' | 'upcoming' }) }}><option value="past">Past performances</option><option value="upcoming">Upcoming performances</option></select></label>}
-      {query === undefined && <label>Performance search<input maxLength={200} value={storedFilters.q ?? ''} onChange={e => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, q: e.target.value }) }} onKeyDown={e => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { e.preventDefault(); find() } }} /></label>}</div>
+      {query === undefined && <SourceSearchField label="Performance search" value={storedFilters.q ?? ''} onChange={value => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, q: value }) }} onSubmit={() => find()} />}</div>
     <Button type="button" preventFocusOnPress isDisabled={!canSearch || loading} onPress={() => find()}>Search setlist.fm</Button>
     {!canSearch && <p className="hint">Select an identified Artist or a linked Venue to search. Manual entry remains available.</p>}
-    {page && <><ul>{page.items.map(p => <li key={providerKey(p.ref)}><Button type="button" onPress={() => choose(p)}>{p.artistName} · {p.venueName} · {formatDate(p.date)}</Button></li>)}</ul>{!page.items.length && <p role="status">{page.partial ? 'No verified matches in this batch. Continue or narrow the search.' : 'No matching performances. Enter details manually.'}</p>}{page.partial && <p className="hint">These results cover a limited source search. Narrow the filters if needed.</p>}{page.nextCursor && <Button type="button" isDisabled={loading} onPress={() => find(page.nextCursor!)}>Load more performances</Button>}</>}
+    {page && <><SourceResults label="Performance results" items={page.items} getKey={p => providerKey(p.ref)} getText={p => `${p.artistName} · ${p.venueName} · ${formatDate(p.date)}`} onAction={choose} />{!page.items.length && <p role="status">{page.partial ? 'No verified matches in this batch. Continue or narrow the search.' : 'No matching performances. Enter details manually.'}</p>}{page.partial && <p className="hint">These results cover a limited source search. Narrow the filters if needed.</p>}{page.nextCursor && <Button type="button" isDisabled={loading} onPress={() => find(page.nextCursor!)}>Load more performances</Button>}</>}
     </>}
     {effective.period === 'upcoming' && !previewOnly && <p className="hint">Upcoming results include only future-dated performances available from setlist.fm. You can enter missing events manually.</p>}
     {!selected && <PerformanceFeedback loading={loading} error={error} manual={null} />}

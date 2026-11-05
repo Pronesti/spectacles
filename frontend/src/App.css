@@ -3688,3 +3688,9 @@ fieldset:has(.venue-total) { position: relative; }
   .breadcrumb > span { font-size: 18px; }
   .breadcrumb > strong { display: none; }
 }
+
+.venue-options { display: flex; flex-direction: column; gap: 5px; }
+.venue-item[role=option] { cursor: pointer; font-size: inherit; }
+.venue-item[data-focus-visible] { outline: 2px solid #8ba84e; outline-offset: -2px; }
+.heat-cell[role=option] { cursor: pointer; }
+.heat-cell[data-focus-visible] { outline: 2px solid #6b842a; outline-offset: 2px; }

@@ -1,4 +1,5 @@
-import { useId, useState } from 'react'
+import { InteractionDisabledContext } from './InteractionDisabledContext'
+import { useContext, useId, useState } from 'react'
 import { ComboBox, Label, ListBox, ListBoxItem } from 'react-aria-components'
 import { InlineComboboxInput, InlineComboboxResults } from './InlineCombobox'
 import type { ReactNode } from 'react'
@@ -19,13 +20,14 @@ type Props = {
 }
 
 export function CreationSearchCombobox({ label, query, rows, status, loading, actions, onQuery, onPick, onOpenChange, onComposing }: Props) {
+  const interactionDisabled = useContext(InteractionDisabledContext)
   const statusId = useId()
   const [selected, setSelected] = useState<string | null>(null)
   const items = [
     ...rows.map(row => describeCreationMatch(row)),
     { key: 'create', label: `+ Create manually${query.trim() ? `: ${query.trim()}` : ''}`, detail: '', source: '' },
   ]
-  return <ComboBox className="creation-search" items={items} inputValue={query} onInputChange={value => { setSelected(null); onQuery(value) }}
+  return <ComboBox isDisabled={interactionDisabled} className="creation-search" items={items} inputValue={query} onInputChange={value => { setSelected(null); onQuery(value) }}
     value={selected} onChange={key => { if (key !== null) { setSelected(String(key)); onPick(String(key)) } }}
     menuTrigger="focus" allowsCustomValue allowsEmptyCollection shouldFocusWrap={false}
     onOpenChange={open => {

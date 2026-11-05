@@ -1,3 +1,4 @@
+import { SelectField } from './SelectField'
 import { Button } from 'react-aria-components'
 import { useState } from 'react'
 import { formatDate, moveEntry, sortConcerts } from '../domain'
@@ -21,7 +22,7 @@ export function SetlistsView({ concerts, venues, selectedId, onSelect, onUpdate,
     if (saved) setEditing(null)
     return saved
   }} />
-  return <section className="setlists-view"><div className="setlist-toolbar"><label><span className="sr-only">Concert setlist</span><select value={concert.id} onChange={e => { onSelect(e.target.value); setEditing(null) }}>{sorted.map(c => <option key={c.id} value={c.id}>{c.title} — {formatDate(c.date)}</option>)}</select></label><span className="saved-label"><Icon name="check" size={15} />Saved to your account</span></div>
+  return <section className="setlists-view"><div className="setlist-toolbar"><SelectField label="Concert setlist" hiddenLabel className="setlist-select" value={concert.id} onChange={id => { onSelect(id); setEditing(null) }} options={sorted.map(c => ({ id: c.id, label: `${c.title} — ${formatDate(c.date)}` }))} /><span className="saved-label"><Icon name="check" size={15} />Saved to your account</span></div>
     <div className="setlist-banner"><div className="setlist-photo"><img src={stagePhoto} alt="Stage lights and the silhouettes of a live band" /></div><div className="setlist-title"><div className="eyebrow">{formatDate(concert.date)}</div><h2>{concert.title}</h2><p>{venue?.name ?? 'Venue to confirm'}{venue?.city ? ` · ${venue.city}` : ''}</p></div><div className="setlist-count"><strong>{songs}</strong><span>songs</span></div></div>
     <div className="setlist-list-heading"><p>Every song. In its place.</p><div><Button type="button" className="text-button" onPress={() => add('note')}><Icon name="note" size={16} />Add note</Button><Button type="button" className="button primary small" onPress={() => add('song')}><Icon name="plus" size={17} />Add song</Button></div></div>
     <ol className="setlist-rows">{concert.setlist.map((entry, index) => {

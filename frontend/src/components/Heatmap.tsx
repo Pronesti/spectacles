@@ -1,10 +1,12 @@
-import { Button } from 'react-aria-components'
-import { useState } from 'react'
+import { InteractionDisabledContext } from './InteractionDisabledContext'
+import { Button, ListBox, ListBoxItem } from 'react-aria-components'
+import { useContext, useState } from 'react'
 import { groupByDay } from '../domain'
 import type { Concert } from '../domain'
 import { Icon } from './Icon'
 
 export function Heatmap({ concerts, today, onOpen }: { concerts: Concert[]; today: string; onOpen: (concert: Concert) => void }) {
+  const interactionDisabled = useContext(InteractionDisabledContext)
   const [year, setYear] = useState(Number(today.slice(0, 4)))
   const [active, setActive] = useState<string | null>(today)
   const [pinned, setPinned] = useState(false)
@@ -21,21 +23,20 @@ export function Heatmap({ concerts, today, onOpen }: { concerts: Concert[]; toda
   const years = Array.from(new Set([Number(today.slice(0, 4)), ...concerts.flatMap(c => c.date.year === null ? [] : [c.date.year])])).sort((a, b) => b - a)
   return <section className="activity-section" aria-labelledby="activity-heading">
     <div className="section-heading"><div><div className="eyebrow">THE BIGGER PICTURE</div><h2 id="activity-heading">A year in live music<span className="lime-dot">.</span></h2><p>Every little square, a night to remember.</p></div><label className="year-select"><span className="sr-only">Activity year</span><select value={year} onChange={e => { setYear(Number(e.target.value)); setPinned(false); setActive(Number(e.target.value) === Number(today.slice(0, 4)) ? today : null) }}>{years.map(y => <option key={y}>{y}</option>)}</select></label></div>
-    <div className="heatmap-scroll" role="region" aria-label="Annual concert activity, scroll horizontally on smaller screens" tabIndex={0} onMouseLeave={event => { if (!event.currentTarget.contains(document.activeElement)) resetPreview() }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) resetPreview() }}>
+    <div className="heatmap-scroll" role="region" aria-label="Annual concert activity, scroll horizontally on smaller screens" onMouseLeave={event => { if (!event.currentTarget.contains(document.activeElement)) resetPreview() }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) resetPreview() }}>
       <div className="heatmap-inner" style={{ '--weeks': weeks } as React.CSSProperties}>
         <div className="heatmap-months">{Array.from({ length: 12 }, (_, month) => {
           const date = new Date(Date.UTC(year, month, 1)); const day = Math.round((date.getTime() - first.getTime()) / 86_400_000)
           return <span key={month} style={{ gridColumn: Math.floor((day + offset) / 7) + 1 }}>{date.toLocaleString('en', { month: 'short', timeZone: 'UTC' })}</span>
         })}</div>
-        <div className="heatmap-body"><div className="weekday-labels"><span>Mon</span><span>Wed</span><span>Fri</span></div><div className="heatmap-grid">
-          {Array.from({ length: weeks * 7 }, (_, index) => {
-            const day = index - offset
-            if (day < 0 || day >= totalDays) return <span key={index} className="heat-cell outside" />
+        <div className="heatmap-body"><div className="weekday-labels"><span>Mon</span><span>Wed</span><span>Fri</span></div><ListBox key={year} className="heatmap-grid" aria-label={`Concert activity in ${year}`} layout="grid" orientation="horizontal" selectionMode="single" disallowEmptySelection selectedKeys={pinned && active ? [active] : []} onSelectionChange={keys => { const date = [...keys][0]; if (typeof date === 'string') { setPinned(true); setActive(date) } }}>
+          {Array.from({ length: totalDays }, (_, day) => {
+            const index = day + offset
             const date = new Date(Date.UTC(year, 0, day + 1)); const key = date.toISOString().slice(0, 10); const shows = days.get(key) ?? []
             const label = `${date.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}: ${shows.length ? shows.map(c => c.title).join(', ') : 'No concerts'}`
-            return <Button type="button" key={index} className={`heat-cell level-${Math.min(shows.length, 3)} ${active === key ? 'active' : ''} ${key > today ? 'future' : ''}`} aria-label={label} aria-pressed={active === key} onHoverStart={() => previewDate(key)} onFocus={() => previewDate(key)} onPress={() => { setPinned(true); setActive(key) }} />
+            return <ListBoxItem isDisabled={interactionDisabled} id={key} key={key} textValue={label} style={{ gridColumn: Math.floor(index / 7) + 1, gridRow: index % 7 + 1 }} className={`heat-cell level-${Math.min(shows.length, 3)} ${active === key ? 'active' : ''} ${key > today ? 'future' : ''}`} aria-label={label} onHoverStart={() => previewDate(key)} onFocus={() => previewDate(key)}  />
           })}
-        </div></div>
+        </ListBox></div>
       </div>
     </div>
     <div className="heatmap-footer"><span><strong>{yearConcerts.length}</strong> concerts in {year}{yearConcerts.some(c => c.date.day === null) && ' · exact dates shown'}</span><div className="heat-legend"><span>Less</span>{[0, 1, 2, 3].map(level => <i key={level} className={`heat-cell level-${level}`} />)}<span>More</span></div></div>

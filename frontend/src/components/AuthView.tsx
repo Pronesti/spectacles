@@ -1,4 +1,5 @@
-import { Button } from 'react-aria-components'
+import { AccountTextField } from './AccountTextField'
+import { Button, FieldError, Form, Input, Label, TextField, ToggleButton } from 'react-aria-components'
 import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AccountApiError, accountErrorMessage, credentialErrors } from '../accountApi'
@@ -8,10 +9,12 @@ import stagePhoto from '../assets/concert-stage.png'
 
 function PasswordField({ label, id, value, onChange, error, register }: { label: string; id: string; value: string; onChange: (value: string) => void; error?: string; register: boolean }) {
   const [visible, setVisible] = useState(false)
-  return <div className="account-field"><label htmlFor={id}>{label}</label><span className={`password-input ${error ? 'invalid' : ''}`}>
-    <input id={id} type={visible ? 'text' : 'password'} autoComplete={register ? 'new-password' : 'current-password'} required minLength={register ? 12 : 1} maxLength={72} placeholder="Enter your password" value={value} onChange={event => onChange(event.target.value)} aria-invalid={Boolean(error)} aria-describedby={error ? `${id}-error` : undefined} />
-    <Button type="button" className="password-visibility" onPress={() => setVisible(current => !current)} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`} aria-pressed={visible}><Icon name={visible ? 'eyeOff' : 'eye'} size={19} /></Button>
-  </span>{error && <small className="field-error" id={`${id}-error`}>{error}</small>}</div>
+  return <TextField id={id} className="account-field" name={id === 'auth-confirmation' ? 'confirmation' : 'password'} value={value} onChange={onChange} type={visible ? 'text' : 'password'} autoComplete={register ? 'new-password' : 'current-password'} isRequired minLength={register ? 12 : 1} maxLength={72} isInvalid={Boolean(error)} validationBehavior="aria">
+    <Label>{label}</Label><span className={`password-input ${error ? 'invalid' : ''}`}>
+      <Input placeholder="Enter your password" />
+      <ToggleButton className="password-visibility" isSelected={visible} onChange={setVisible} aria-label={`${visible ? 'Hide' : 'Show'} ${label.toLowerCase()}`}><Icon name={visible ? 'eyeOff' : 'eye'} size={19} /></ToggleButton>
+    </span>{error && <FieldError elementType="small" className="field-error">{error}</FieldError>}
+  </TextField>
 }
 type AuthViewProps = {
   mode: AuthMode; busy: boolean; notice?: string; onSwitch: (mode: AuthMode) => void; onExplore: () => void; onSubmit: (mode: AuthMode, input: Credentials) => Promise<void>
@@ -51,17 +54,17 @@ function AuthForm({ mode, busy, notice = '', onSwitch, onExplore, onSubmit }: Au
       <div className="auth-switch"><span>{register ? 'Already collecting memories?' : 'New here?'}</span><Button type="button" isDisabled={busy} onPress={() => onSwitch(register ? 'login' : 'register')}>{register ? 'Sign in' : 'Create an account'}<Icon name="arrow" size={16} /></Button></div>
     </header><div className="auth-form-wrap"><p className="eyebrow">{register ? 'START YOUR COLLECTION' : 'YOUR PERSONAL ENCORE'}</p>
       <h1>{register ? <>Make it your own<span className="lime-dot">.</span></> : 'Welcome back.'}</h1><p className="auth-subtitle">{register ? 'Keep the dates, the places, the songs.' : 'Your next great memory is waiting.'}</p>
-      <form onSubmit={submit} noValidate className="auth-form" aria-busy={busy}>
+      <Form onSubmit={submit} validationBehavior="aria" className="auth-form" aria-busy={busy}>
         {(message || notice) && <p className="account-error" role="alert" tabIndex={-1}>{message || notice}</p>}
         <fieldset className="account-fields" disabled={busy}><legend className="sr-only">{register ? 'Create account' : 'Sign in'}</legend>
-          {register && <div className="account-field"><label htmlFor="auth-name">Your name</label><input autoFocus id="auth-name" autoComplete="name" maxLength={80} required value={name} onChange={event => { setName(event.target.value); resetError() }} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'auth-name-error' : undefined} />{errors.name && <small className="field-error" id="auth-name-error">{errors.name}</small>}</div>}
-          <div className="account-field"><label htmlFor="auth-email">Email</label><input autoFocus={!register} id="auth-email" type="email" autoComplete="email" maxLength={254} required value={email} onChange={event => { setEmail(event.target.value); resetError() }} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'auth-email-error' : undefined} />{errors.email && <small className="field-error" id="auth-email-error">{errors.email}</small>}</div>
+          {register && <AccountTextField id="auth-name" label="Your name" autoFocus autoComplete="name" maxLength={80} value={name} onChange={value => { setName(value); resetError() }} error={errors.name} />}
+          <AccountTextField id="auth-email" label="Email" autoFocus={!register} type="email" autoComplete="email" maxLength={254} value={email} onChange={value => { setEmail(value); resetError() }} error={errors.email} />
           <PasswordField label="Password" id="auth-password" value={password} onChange={value => { setPassword(value); resetError() }} error={errors.password} register={register} />
           {register && <PasswordField label="Confirm password" id="auth-confirmation" value={confirmation} onChange={value => { setConfirmation(value); resetError() }} error={errors.confirmation} register />}
           <p className="password-hint">{register ? 'At least 12 characters and at most 72 UTF-8 bytes.' : 'Use your account email and password.'}</p>
           <Button className="button primary auth-submit" type="submit">{busy ? 'Please wait…' : register ? 'Create account' : 'Sign in'}<Icon name="arrow" size={20} /></Button>
         </fieldset>
-      </form>
+      </Form>
 
       <p className="auth-preview-note">Your concerts, notes, flags, and setlists are saved to your account.</p>
     </div><footer className="auth-footer">A personal archive of being there.</footer></section>

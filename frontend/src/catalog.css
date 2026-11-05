@@ -18,3 +18,10 @@
 .catalog-manual > label { flex: 1; min-width: 0; }
 .catalog-manual > button { min-height: 44px; }
 @media (max-width: 480px) { .catalog-search, .catalog-manual { flex-wrap: wrap; } .catalog-manual > label { flex-basis: 100%; } }
+
+.catalog-picker-options { margin: 0; padding: 0; }
+.catalog-picker-option { width: 100%; min-height: 48px; text-align: left; padding: 10px 8px; display: grid; gap: 5px; cursor: pointer; }
+.catalog-picker-option + .catalog-picker-option { border-top: 1px solid var(--line); }
+.catalog-picker-option:hover, .catalog-picker-option[data-focused] { background: #e9f5cb; }
+.catalog-picker-option[data-focus-visible], .catalog-chip[data-focus-visible] { outline: 2px solid #8ba84e; outline-offset: 2px; }
+.source-results [role=option][data-focus-visible] { outline: 2px solid #8ba84e; outline-offset: 2px; }

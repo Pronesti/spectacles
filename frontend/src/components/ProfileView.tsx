@@ -1,4 +1,6 @@
-import { Button } from 'react-aria-components'
+import { SelectField } from './SelectField'
+import { AccountTextField } from './AccountTextField'
+import { Button, Form } from 'react-aria-components'
 import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { AccountApiError, accountErrorMessage, profileChanges, profileErrors } from '../accountApi'
@@ -40,18 +42,19 @@ export function ProfileView({ user, counts, busy, onSave, onCancel }: {
     } finally { locked.current = false }
   }
   const legacyLocale = user.locale !== null && user.locale !== 'en' ? user.locale : null
-  return <div className="profile-layout"><form className="profile-form" noValidate onSubmit={submit} aria-busy={busy}>
+  return <div className="profile-layout"><Form className="profile-form" validationBehavior="aria" onSubmit={submit} aria-busy={busy}>
     <section className="profile-identity" aria-label="Account identity"><Avatar name={user.name} large /><div className="profile-identity-copy"><strong>{user.name}</strong><span>{user.email}</span><small>Account profile</small></div></section>
     {message && <p className="account-error" role="alert" tabIndex={-1}>{message}</p>}
     <fieldset className="account-fields" disabled={busy}><legend className="sr-only">Edit account profile</legend>
       <div className="profile-fields"><div className="profile-field-row">
-        <div className="account-field"><label htmlFor="profile-name">Display name</label><input id="profile-name" required autoComplete="name" maxLength={80} value={draft.name} onChange={event => change('name', event.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'profile-name-error' : undefined} />{errors.name && <small className="field-error" id="profile-name-error">{errors.name}</small>}</div>
-        <div className="account-field"><label htmlFor="profile-email">Email</label><input id="profile-email" type="email" required autoComplete="email" maxLength={254} value={draft.email} onChange={event => change('email', event.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'profile-email-error' : 'profile-email-hint'} />{errors.email && <small className="field-error" id="profile-email-error">{errors.email}</small>}<small id="profile-email-hint">Changes take effect immediately. Use the new email next time you sign in.</small></div>
-      </div><div className="account-field"><label htmlFor="profile-locale">Preferred language</label><select id="profile-locale" value={draft.locale ?? ''} onChange={event => change('locale', event.target.value || null)} aria-invalid={Boolean(errors.locale)} aria-describedby={errors.locale ? 'profile-locale-error' : 'profile-locale-hint'}>
-        <option value="">Application default</option><option value="en">English</option>{legacyLocale && <option value={legacyLocale}>{legacyLocale} (current saved preference)</option>}
-      </select>{errors.locale && <small className="field-error" id="profile-locale-error">{errors.locale}</small>}<small id="profile-locale-hint">Saves your preference. The current interface is in English.</small></div></div>
+        <AccountTextField id="profile-name" label="Display name" autoComplete="name" maxLength={80} value={draft.name} onChange={value => change('name', value)} error={errors.name} />
+        <AccountTextField id="profile-email" label="Email" type="email" autoComplete="email" maxLength={254} value={draft.email} onChange={value => change('email', value)} error={errors.email} description="Changes take effect immediately. Use the new email next time you sign in." />
+      </div><SelectField id="profile-locale" label="Preferred language" className="account-field" value={draft.locale === null ? 'default' : `locale:${draft.locale}`} onChange={value => change('locale', value === 'default' ? null : value.slice('locale:'.length))} isDisabled={busy} error={errors.locale} description="Saves your preference. The current interface is in English." options={[
+        { id: 'default', label: 'Application default' }, { id: 'locale:en', label: 'English' },
+        ...(legacyLocale ? [{ id: `locale:${legacyLocale}`, label: `${legacyLocale} (current saved preference)` }] : []),
+      ]} /></div>
       <p className="profile-local-note"><Icon name="user" size={15} />Name, email, and language are saved to your account.</p>
       <div className="profile-form-actions"><Button className="button secondary" type="button" onPress={onCancel}>Cancel</Button><Button className="button primary" type="submit" isDisabled={!dirty}>{busy ? 'Saving…' : 'Save changes'}<Icon name="arrow" size={17} /></Button></div>
     </fieldset>
-  </form><aside className="profile-story"><Icon name="music" size={24} /><p className="eyebrow">YOUR COLLECTION</p><h2>Your story,<br />so far<span>.</span></h2><p>Your concerts, artists, and venues from the database.</p><div className="profile-story-stats">{[[counts.concerts, 'Concerts'], [counts.artists, 'Artists'], [counts.venues, 'Venues']].map(([count, label]) => <div key={label}><strong>{count}</strong><span><b>{label}</b><small>Your account collection</small></span></div>)}</div></aside></div>
+  </Form><aside className="profile-story"><Icon name="music" size={24} /><p className="eyebrow">YOUR COLLECTION</p><h2>Your story,<br />so far<span>.</span></h2><p>Your concerts, artists, and venues from the database.</p><div className="profile-story-stats">{[[counts.concerts, 'Concerts'], [counts.artists, 'Artists'], [counts.venues, 'Venues']].map(([count, label]) => <div key={label}><strong>{count}</strong><span><b>{label}</b><small>Your account collection</small></span></div>)}</div></aside></div>
 }

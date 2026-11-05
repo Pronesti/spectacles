@@ -1,3 +1,4 @@
+import { InteractionFieldset } from './InteractionFieldset'
 import { Button } from 'react-aria-components'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
@@ -23,7 +24,7 @@ export function ConcertForm({ concert, venues, initialDate, catalog, disabled = 
   }
   const pending = draft.pendingVenue
   const stagedVenues = pending ? venues.some(venue => venue.id === pending.id) ? venues.map(venue => venue.id === pending.id ? pending : venue) : [...venues, pending] : venues
-  return <Dialog title={concert ? 'Edit concert' : 'Add a concert'} onClose={onClose} drawer><form onSubmit={submit} noValidate className="concert-form"><fieldset disabled={busy} style={{ display: 'contents' }}><div className="form-body"><p className="muted">Choose shared details or enter your own.</p>
+  return <Dialog title={concert ? 'Edit concert' : 'Add a concert'} onClose={onClose} drawer><form onSubmit={submit} noValidate className="concert-form"><InteractionFieldset disabled={busy} style={{ display: 'contents' }}><div className="form-body"><p className="muted">Choose shared details or enter your own.</p>
     <EventCatalogPicker catalog={catalog} onUse={event => setDraft(current => adoptCatalogEvent(current, event, venues))} />
     {draft.eventId && <p className="hint">Using selected Event details.</p>}
     <label>Concert title<input data-autofocus maxLength={255} value={draft.concert.title} onChange={event => field('title', event.target.value)} placeholder="Title, or use the artist names" /></label>
@@ -38,5 +39,5 @@ export function ConcertForm({ concert, venues, initialDate, catalog, disabled = 
     <div className="flag-fields"><label><input type="checkbox" checked={draft.concert.interested} onChange={event => field('interested', event.target.checked, false)} /><Icon name="heart" size={18} />Interested</label><label><input type="checkbox" checked={draft.concert.ticketsBought} onChange={event => field('ticketsBought', event.target.checked, false)} /><Icon name="ticket" size={18} />Tickets bought</label></div>
     <label>Notes <span className="optional">optional</span><textarea rows={3} maxLength={2000} value={draft.concert.notes} onChange={event => field('notes', event.target.value, false)} /></label>
     <p className="hint">Saved to your account in the database. Catalog selections reuse existing records.</p>{error && <p className="form-error" role="alert">{error}</p>}
-  </div><div className="form-footer">{onSignIn && <Button type="button" className="button secondary" onPress={onSignIn}>Sign in again</Button>}<Button type="submit" isDisabled={disabled} className="button primary"><Icon name="plus" />Save concert</Button><Button type="button" className="button secondary" onPress={onClose}>Cancel</Button></div></fieldset></form></Dialog>
+  </div><div className="form-footer">{onSignIn && <Button type="button" className="button secondary" onPress={onSignIn}>Sign in again</Button>}<Button type="submit" isDisabled={disabled} className="button primary"><Icon name="plus" />Save concert</Button><Button type="button" className="button secondary" onPress={onClose}>Cancel</Button></div></InteractionFieldset></form></Dialog>
 }
