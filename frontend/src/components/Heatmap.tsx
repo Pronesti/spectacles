@@ -1,3 +1,4 @@
+import { SelectField } from './SelectField'
 import { InteractionDisabledContext } from './InteractionDisabledContext'
 import { Button, ListBox, ListBoxItem } from 'react-aria-components'
 import { useContext, useState } from 'react'
@@ -22,7 +23,7 @@ export function Heatmap({ concerts, today, onOpen }: { concerts: Concert[]; toda
   const selected = active ? days.get(active) ?? [] : []
   const years = Array.from(new Set([Number(today.slice(0, 4)), ...concerts.flatMap(c => c.date.year === null ? [] : [c.date.year])])).sort((a, b) => b - a)
   return <section className="activity-section" aria-labelledby="activity-heading">
-    <div className="section-heading"><div><div className="eyebrow">THE BIGGER PICTURE</div><h2 id="activity-heading">A year in live music<span className="lime-dot">.</span></h2><p>Every little square, a night to remember.</p></div><label className="year-select"><span className="sr-only">Activity year</span><select value={year} onChange={e => { setYear(Number(e.target.value)); setPinned(false); setActive(Number(e.target.value) === Number(today.slice(0, 4)) ? today : null) }}>{years.map(y => <option key={y}>{y}</option>)}</select></label></div>
+    <div className="section-heading"><div><div className="eyebrow">THE BIGGER PICTURE</div><h2 id="activity-heading">A year in live music<span className="lime-dot">.</span></h2><p>Every little square, a night to remember.</p></div><SelectField label="Activity year" hiddenLabel className="year-select" value={String(year)} onChange={value => { setYear(Number(value)); setPinned(false); setActive(Number(value) === Number(today.slice(0, 4)) ? today : null) }} options={years.map(year => ({ id: String(year), label: String(year) }))} /></div>
     <div className="heatmap-scroll" role="region" aria-label="Annual concert activity, scroll horizontally on smaller screens" onMouseLeave={event => { if (!event.currentTarget.contains(document.activeElement)) resetPreview() }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) resetPreview() }}>
       <div className="heatmap-inner" style={{ '--weeks': weeks } as React.CSSProperties}>
         <div className="heatmap-months">{Array.from({ length: 12 }, (_, month) => {

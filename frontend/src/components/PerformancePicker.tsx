@@ -1,3 +1,4 @@
+import { SelectField } from './SelectField'
 import { SourceSearchField } from './SourceSearchField'
 import { SourceResults } from './SourceResults'
 import { Button } from 'react-aria-components'
@@ -52,7 +53,7 @@ export function PerformancePicker({ providers, filters, query, onApply, onApplyM
   }, [initialSummary])
   return <section className={`provider-performance-picker ${previewOnly ? 'creation-performance-review' : ''}`}>
     {!previewOnly && <>
-    <div className="form-columns">{!history && <label>Performance period<select value={storedFilters.period} onChange={e => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, period: e.target.value as 'past' | 'upcoming' }) }}><option value="past">Past performances</option><option value="upcoming">Upcoming performances</option></select></label>}
+    <div className="form-columns">{!history && <SelectField label="Performance period" className="form-select" value={storedFilters.period} onChange={value => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, period: value as 'past' | 'upcoming' }) }} options={[{ id: 'past', label: 'Past performances' }, { id: 'upcoming', label: 'Upcoming performances' }]} />}
       {query === undefined && <SourceSearchField label="Performance search" value={storedFilters.q ?? ''} onChange={value => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, q: value }) }} onSubmit={() => find()} />}</div>
     <Button type="button" preventFocusOnPress isDisabled={!canSearch || loading} onPress={() => find()}>Search setlist.fm</Button>
     {!canSearch && <p className="hint">Select an identified Artist or a linked Venue to search. Manual entry remains available.</p>}

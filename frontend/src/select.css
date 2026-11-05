@@ -6,13 +6,38 @@
 .select-trigger:focus-visible { outline: 2px solid #8ba84e; outline-offset: 2px; }
 .setlist-toolbar > .setlist-select { width: min(100%, 500px); }
 .setlist-select > .select-trigger { border: 1px solid #d8dccf; background: transparent; border-radius: 7px; padding: 13px 15px; font-size: 12px; }
-.select-popover { width: var(--trigger-width); max-width: calc(100vw - 32px); max-height: min(320px, 50dvh); overflow: auto; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 7px; box-shadow: 0 8px 24px #1d281522; z-index: 200; }
-.select-options { margin: 0; padding: 4px; outline: none; }
-.select-option { padding: 10px 12px; min-height: 40px; border-radius: 4px; font-size: 12px; line-height: 1.5; cursor: pointer; overflow-wrap: anywhere; }
-.select-option[data-selected] { background: #eaf5ce; }
-.select-option[data-focused] { background: #e9f5cb; outline: none; }
+.select-popover { min-width: 160px; width: var(--trigger-width); max-width: calc(100vw - 32px); overflow: auto; padding: 8px; background: var(--paper); color: var(--ink); border: 1px solid #d7ddcc; border-radius: 12px; box-shadow: 0 12px 40px #23301924; z-index: 200; }
+.select-options { margin: 0; padding: 0; max-height: min(320px, 45dvh); overflow-y: auto; overscroll-behavior: contain; outline: none; scrollbar-width: thin; scrollbar-color: #c5ccb9 transparent; }
+.select-option { display: grid; grid-template-columns: minmax(0, 1fr) 22px; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 7px; color: var(--ink); font-size: 13px; line-height: 1.5; cursor: pointer; outline: none; }
+.select-option + .select-option { margin-top: 4px; }
+.select-option-label { min-width: 0; overflow-wrap: anywhere; }
+.select-option-check { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--lime); color: var(--ink); visibility: hidden; }
+.select-option[data-selected] { background: #eaf5ce; font-weight: 600; }
+.select-option[data-selected] .select-option-check { visibility: visible; }
+.select-option[data-focused] { background: #e9f5cb; }
 .select-option[data-focus-visible] { box-shadow: inset 0 0 0 1px #8ba84e; }
 @media (max-width: 700px) {
+  .select-option { font-size: 14px; }
   .setlist-toolbar > .setlist-select { width: 100%; }
   .setlist-select > .select-trigger { font-size: 11px; padding: 12px; }
+}
+
+.form-select, .entry-select { display: flex; flex-direction: column; gap: 9px; min-width: 0; position: relative; font-size: 12px; font-weight: 500; }
+.form-select > .select-trigger, .entry-select > .select-trigger { border: 1px solid #d6dccb; border-radius: 6px; background: transparent; padding: 12px; font-size: 12px; min-height: 42px; max-width: 100%; }
+.form-body .form-select > label { display: block; }
+.setlist-editor .entry-select { flex: 1; min-width: 120px; gap: 8px; font-size: 10px; font-weight: 400; }
+.setlist-editor .entry-select > label { display: block; flex: initial; min-width: 0; }
+.setlist-editor .entry-select > .select-trigger { border-color: #d8dfcc; border-radius: 5px; background: var(--paper); padding: 10px; min-height: 0; }
+.concert-creation :is(.form-select, .entry-select) > label { font-size: 14px; font-weight: 600; }
+.concert-creation :is(.form-select, .entry-select) > .select-trigger { min-height: 48px; font-size: 16px; background: var(--paper); border-radius: 6px; }
+.year-select > .select-trigger { border: 1px solid #d4d8cb; background: transparent; border-radius: 6px; padding: 8px 12px; min-width: 86px; font-size: 11px; }
+@media (max-width: 700px) {
+  .year-select > .select-trigger { min-width: 75px; padding: 8px; font-size: 10px; }
+  .setlist-editor .entry-select { min-width: 100%; }
+}
+
+:is(.provider-performance-picker, .provider-tour-picker, .provider-venue-preview, .venue-draft-fields) .select-trigger { margin: 0; white-space: nowrap; }
+.concert-creation .setlist-editor .entry-select > label { font-size: 10px; }
+@media (max-width: 700px) {
+  .form-body :is(.form-select, .entry-select) > .select-trigger { font-size: 16px; }
 }
