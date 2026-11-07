@@ -14,7 +14,7 @@ import { useRecoveryField } from './ConcertRecovery'
 export function PerformanceFeedback({ loading, error, manual, onUseManual }: { loading: boolean; error: string; manual: ManualPerformance | null; onUseManual?: () => void }) {
   return <>{loading && <p role="status">Loading source details…</p>}{error && <p role="alert">{error}</p>}{manual && onUseManual && <div><p>Tour ID enrichment failed. Available values can fill a manual Event; the Event and Tour will have no setlist.fm identity.</p><Button type="button" onPress={onUseManual}>Use available details manually</Button></div>}</>
 }
-export function PerformancePicker({ providers, filters, query, onApply, onApplyManual, onEditingChange, history = false, previewOnly = false, initialSummary, onDismiss }: { onDismiss?: () => void; previewOnly?: boolean; initialSummary?: PerformanceSummary; query?: string; providers?: CatalogProvidersAccess; filters: PerformanceFilters; onApply: (preview: PerformancePreview) => void; onApplyManual?: (value: ManualPerformance) => void; onEditingChange?: (value: boolean) => void; history?: boolean }) {
+export function PerformancePicker({ providers, filters, query, onApply, onApplyManual, onEditingChange, history = false, previewOnly = false, applyOnSelect = false, initialSummary, onDismiss }: { applyOnSelect?: boolean; onDismiss?: () => void; previewOnly?: boolean; initialSummary?: PerformanceSummary; query?: string; providers?: CatalogProvidersAccess; filters: PerformanceFilters; onApply: (preview: PerformancePreview) => void; onApplyManual?: (value: ManualPerformance) => void; onEditingChange?: (value: boolean) => void; history?: boolean }) {
   const [storedFilters, setFilters] = useRecoveryField(history ? 'historyPerformanceFilters' : 'performanceFilters', filters)
   const [selected, setSelected] = useRecoveryField(history ? 'historyPerformancePreview' : 'performancePreview', null)
   const [decision, setDecision] = useRecoveryField(history ? 'historyPerformanceDecision' : 'performanceDecision', null)
@@ -40,30 +40,31 @@ export function PerformancePicker({ providers, filters, query, onApply, onApplyM
       setPage(previous => ({ ...result, scope:started, items: cursor ? [...new Map([...(previous?.items ?? []), ...result.items].map(p => [providerKey(p.ref), p])).values()] : result.items })); setBusyScope(null)
     }, e => { if (readScope.current === started) failure(e) })
   }
-  const choose = (summary: PerformanceSummary) => {
+  const choose = (summary: PerformanceSummary, immediate = applyOnSelect) => {
     if (!providers?.enabled) return
     const started = scope; setSelected(performanceSummary(summary)); setDecision(null); setDetail(null); setManual(null); setBusyScope(scope); setError('')
-    void preview.run(signal => providers.client.preview(summary, signal), result => { if (readScope.current !== started) return; setDetail({scope:started,value:result}); setBusyScope(null); requestAnimationFrame(() => heading.current?.focus()) }, e => { if (readScope.current === started) failure(e) })
+    void preview.run(signal => providers.client.preview(summary, signal), result => { if (readScope.current !== started) return; if (immediate) { onApply(result); dismiss(); return } setDetail({scope:started,value:result}); setBusyScope(null); requestAnimationFrame(() => heading.current?.focus()) }, e => { if (readScope.current === started) failure(e) })
   }
   const dismiss = () => { preview.cancel(); setSelected(null); setDecision(null); setDetail(null); setManual(null); setError(''); setBusyScope(null); onDismiss?.() }
   useEffect(() => {
-    if (initialSummary) choose(initialSummary)
-    // A new list selection requests review; recovered selections wait for Resume.
+    const choice = initialSummary ?? (applyOnSelect ? selected : null)
+    if (choice) choose(choice)
+    // Direct-selection mode restores the chosen draft identity; other surfaces retain Resume.
     // oxlint-disable-next-line react/exhaustive-deps
-  }, [initialSummary])
+  }, [initialSummary, applyOnSelect, providers?.enabled, providers?.sessionKey])
   return <section className={`provider-performance-picker ${previewOnly ? 'creation-performance-review' : ''}`}>
     {!previewOnly && <>
     <div className="form-columns">{!history && <SelectField label="Performance period" className="form-select" value={storedFilters.period} onChange={value => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, period: value as 'past' | 'upcoming' }) }} options={[{ id: 'past', label: 'Past performances' }, { id: 'upcoming', label: 'Upcoming performances' }]} />}
       {query === undefined && <SourceSearchField label="Performance search" value={storedFilters.q ?? ''} onChange={value => { search.cancel(); preview.cancel(); setBusyScope(null); setDetail(null); setPage(null); setSelected(null); setFilters({ ...effective, q: value }) }} onSubmit={() => find()} />}</div>
     <Button type="button" preventFocusOnPress isDisabled={!canSearch || loading} onPress={() => find()}>Search setlist.fm</Button>
     {!canSearch && <p className="hint">Select an identified Artist or a linked Venue to search. Manual entry remains available.</p>}
-    {page && <><SourceResults label="Performance results" items={page.items} getKey={p => providerKey(p.ref)} getText={p => `${p.artistName} · ${p.venueName} · ${formatDate(p.date)}`} onAction={choose} />{!page.items.length && <p role="status">{page.partial ? 'No verified matches in this batch. Continue or narrow the search.' : 'No matching performances. Enter details manually.'}</p>}{page.partial && <p className="hint">These results cover a limited source search. Narrow the filters if needed.</p>}{page.nextCursor && <Button type="button" isDisabled={loading} onPress={() => find(page.nextCursor!)}>Load more performances</Button>}</>}
+    {page && <><SourceResults label="Performance results" items={page.items} getKey={p => providerKey(p.ref)} getText={p => `${p.artistName} · ${p.venueName} · ${formatDate(p.date)}`} onAction={summary => choose(summary)} />{!page.items.length && <p role="status">{page.partial ? 'No verified matches in this batch. Continue or narrow the search.' : 'No matching performances. Enter details manually.'}</p>}{page.partial && <p className="hint">These results cover a limited source search. Narrow the filters if needed.</p>}{page.nextCursor && <Button type="button" isDisabled={loading} onPress={() => find(page.nextCursor!)}>Load more performances</Button>}</>}
     </>}
     {effective.period === 'upcoming' && !previewOnly && <p className="hint">Upcoming results include only future-dated performances available from setlist.fm. You can enter missing events manually.</p>}
     {!selected && <PerformanceFeedback loading={loading} error={error} manual={null} />}
     {selected && <div className="catalog-event-preview" ref={heading} tabIndex={-1}>
       <PerformanceFeedback loading={loading} error={error} manual={manual} onUseManual={manual && onApplyManual ? () => { onApplyManual(manual); dismiss() } : undefined} />
-      {!detail && <><p>Selected: {selected.artistName} · {selected.venueName} · {formatDate(selected.date)}</p><Button type="button" isDisabled={!providers?.enabled || loading} onPress={() => choose(selected)}>Resume review</Button></>}
+      {!detail && <><p>Selected: {selected.artistName} · {selected.venueName} · {formatDate(selected.date)}</p><Button type="button" isDisabled={!providers?.enabled || loading} onPress={() => choose(selected, false)}>Resume review</Button></>}
       {detail && <><h4>{detail.localEvent?.title ?? detail.artist.values.name}</h4><p>{formatDate(detail.localEvent?.date ?? detail.date)} · {detail.localEvent?.venue?.name ?? detail.venue.values.name}</p><p>{detail.localEvent ? detail.localEvent.artists.map(a => a.name).join(' · ') : detail.artist.values.name}</p><p>{detail.localEvent ? detail.localEvent.tours.map(t => t.name).join(' · ') || 'No Tour' : detail.tour?.values.name ?? detail.tourName ?? 'No Tour information'}</p>
         {!detail.tour && detail.tourName && !detail.localEvent && <p className="hint">This Tour name will be added manually, without a setlist.fm Tour identity.</p>}{detail.localEvent && <p className="hint">This Event already exists. Its saved details and relationships will be used.</p>}
         <p className="hint">Use this concert’s Artist, Tour, Venue and date together. Your notes, flags and setlist stay.</p>
