@@ -37,10 +37,12 @@ test('Venue preview renders attribution and separate period controls without gue
  for(const label of ['Humboldt 450','Arena Ñ','BugWarp','CC BY-SA 4.0','Image source','Past performances','Upcoming performances'])assert.ok(html.includes(label),label)
  assert.doesNotMatch(html,/Venue location:/)
 })
-test('unfinished Venue metadata editor restores signs, whitespace and aliases before confirmation',()=>{
+test('unfinished Venue metadata uses the selected Venue summary until the edit action',()=>{
  const editor={name:'Arena Ñ ',city:'',address:'Humboldt ',aliasesText:'One\nTwo ',lat:'-',lng:'.',selection:'public-proof',ref:venue.ref,metadata:venue.values,url:venue.url}
- const html=render(Fields,{onConfirm(){throw Error('must not confirm')},onCancel(){}},{venueEditor:editor})
- for(const text of ['Arena Ñ ','Humboldt ','One\nTwo ','value="-"','value="."','Use Venue details'])assert.ok(html.includes(text),text)
+ const html=render(Fields,{onConfirm(){throw Error('must not confirm')},onCancel(){}},{venueEditor:{...editor,lat:'',lng:''}})
+ assert.match(html, /class="creation-selection" aria-label="Selected Venue"/); assert.ok(html.includes('Arena Ñ ')); assert.match(html, /aria-label="Edit Venue"/); assert.match(html, /aria-expanded="false"/); assert.doesNotMatch(html, /<input|Use Venue details/)
+ const blank=render(Fields,{onConfirm(){},onCancel(){}},{venueEditor:editor})
+ for(const text of ['Humboldt ','One\nTwo ','value="-"','value="."','Use Venue details'])assert.ok(blank.includes(text),text)
 })
 
 test('failed performance review presents the error and available manual recovery',()=>{

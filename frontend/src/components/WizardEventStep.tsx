@@ -3,7 +3,7 @@ import { SelectField } from './SelectField'
 import { Button } from 'react-aria-components'
 import { discoveryQuery } from '../discoveryQuery'
 import { RecoveredSearch } from './RecoveredSearch'
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import type { Precision } from '../concertDraft'
 import type { Concert, Venue } from '../domain'
 import { adoptWizardEvent, detachWizardEvent } from '../concertWizard'
@@ -14,6 +14,7 @@ import { CreationSelection } from './CreationSelection'
 import { EventCatalogPicker } from './EventCatalogPicker'
 import { PerformancePicker } from './PerformancePicker'
 import { VenuePreview } from './VenuePreview'
+import { prepareVenueDraft, applyVenueDraft, validVenueDraft } from '../venueDraft'
 import { VenueDraftFields } from './VenueDraftFields'
 import { ConcertRecoveryContext, useRecoveryField } from './ConcertRecovery'
 import { applyPerformance, applyManualPerformance, applyProviderVenue, applyLocalVenue, providerArtistScopes } from '../providerDraft'
@@ -21,7 +22,7 @@ import type { PerformanceSummary, VenueSuggestion, VenueValues } from '../catalo
 import type { CreationMatch } from '../creationSearch'
 import { CatalogProvidersError } from '../catalogProvidersApi'
 import { createLatestRead } from '../catalogApi'
-export function WizardEventStep({ state, onChange, onEditingChange, catalog, musicbrainz, providers, venues }: WizardStepProps) {
+export function WizardEventStep({ state, onChange, onEditingChange, catalog, musicbrainz, providers, venues, continueAction }: WizardStepProps) {
   const latestState = useRef(state)
   useLayoutEffect(() => { latestState.current = state }, [state])
   const draft = state.draft, recovery = useContext(ConcertRecoveryContext)
@@ -62,14 +63,15 @@ export function WizardEventStep({ state, onChange, onEditingChange, catalog, mus
     }, e => { setPlaceBusy(false); setPlaceError(e instanceof Error ? e.message : 'Venue details unavailable. Choose again or create manually.'); if (e instanceof CatalogProvidersError && e.status === 401) providers.onUnauthorized() })
   }
   const confirmVenue = (values: VenueValues, selection: string | null, source?: VenueSuggestion) => {
-    if (selection && source) onChange(applyProviderVenue(latestState.current, source))
-    else {
-      const pending: Venue = { ...values, id: crypto.randomUUID(), neighborhood: '' }
-      const next = { ...latestState.current.draft, pendingVenue: pending, concert: { ...latestState.current.draft.concert, venueId: pending.id } }; delete next.providerVenue
-      onChange({ ...latestState.current, draft: next })
-    }
+    onChange(applyVenueDraft(latestState.current, { values, selection, source }))
     setVenueEditor(null); setChangingVenue(false)
   }
+  useImperativeHandle(continueAction, () => () => {
+    if (!recoveredEditor || !validVenueDraft(recoveredEditor) || sourceLocked || changingEvent || localEditing || performanceEditing || legacyEditing || placeBusy) return null
+    const next = applyVenueDraft(latestState.current, prepareVenueDraft(recoveredEditor))
+    setVenueEditor(null); setChangingVenue(false)
+    return next
+  })
   const selectEvent = (option: CreationMatch) => {
     if (option.type === 'local' && option.kind === 'events') { setLocalPick(option.row.id); setPerformancePick(undefined) }
     if (option.type === 'performance') { setPerformancePick(option.candidate); setLocalPick(undefined) }
@@ -95,7 +97,7 @@ export function WizardEventStep({ state, onChange, onEditingChange, catalog, mus
     </InteractionFieldset>
     {placeBusy && <p role="status">Loading Venue details…</p>}{placeError && <p role="alert">{placeError}</p>}
     {recoveredEditor && <VenueDraftFields onConfirm={confirmVenue} onCancel={() => { setVenueEditor(null); setChangingVenue(false) }} />}
-    {venueDisplay && <details className="creation-venue-details" open={!!recovery?.controller.snapshot.fields.venuePreviewRef}><summary>Venue details</summary><VenuePreview compact={!recovery?.controller.snapshot.fields.venuePreviewRef} venue={venueDisplay} providers={providers} onChooseVenue={candidate => onChange(applyProviderVenue(latestState.current, candidate))} onEditingChange={setLegacyVenueEditing} onApplyPerformance={preview => onChange(applyPerformance(latestState.current, preview, venues))} /></details>}
+    {venueDisplay && !recoveredEditor && <details className="creation-venue-details" open={!!recovery?.controller.snapshot.fields.venuePreviewRef}><summary>Venue details</summary><VenuePreview compact={!recovery?.controller.snapshot.fields.venuePreviewRef} venue={venueDisplay} providers={providers} onChooseVenue={candidate => onChange(applyProviderVenue(latestState.current, candidate))} onEditingChange={setLegacyVenueEditing} onApplyPerformance={preview => onChange(applyPerformance(latestState.current, preview, venues))} /></details>}
     {changeTarget && <div role="alert" className="creation-conflict"><p>Changing these details creates a new Event. Your notes and setlist stay.</p><Button type="button" onPress={() => { onChange(detachWizardEvent(state)); if (changeTarget === 'venue') setChangingVenue(true); setManualOpen(true); setChangingEvent(false); setChangeTarget(null) }}>Create new Event using these details</Button><Button type="button" onPress={() => setChangeTarget(null)}>Keep selected Event</Button></div>}
     <details key={sourceLocked ? 'source' : 'manual'} className="creation-details" open={manualOpen || !sourceLocked && !!(draft.dateText || draft.concert.title || draft.concert.venueId === 'new')}><summary>{sourceLocked ? 'Concert details' : 'Add concert details'}</summary>
       <InteractionFieldset disabled={!!draft.eventId || reviewing} className="wizard-shared-fields"><label>Concert title<input maxLength={255} value={draft.concert.title} onChange={e => field('title', e.target.value)} placeholder="Title, or use the Artist name" /></label>

@@ -9,6 +9,7 @@ import type { PendingCatalog, WizardState, WizardStep } from '../concertWizard'
 import type { Concert, Venue } from '../domain'
 import type { CatalogAccess } from './CatalogPicker'
 import type { MusicBrainzAccess } from './EntityAutocomplete'
+import { validVenueDraft } from '../venueDraft'
 import { openRecovery } from '../concertRecovery'
 import { ConcertRecoveryContext } from './ConcertRecovery'
 import { Dialog } from './Dialog'
@@ -26,7 +27,8 @@ function OwnedConcertWizard({ owner = '', venues, initialDate, catalog, musicbra
   const continueAction = useRef<(() => WizardState | null) | null>(null)
   const artistEditor = state.step === 'artist' ? recovery.snapshot.fields.artistEditor : null
   const tourEditor = state.step === 'tour' ? recovery.snapshot.fields.tourEditor : null
-  const canConfirmSelection = state.step === 'artist' && (!!recovery.snapshot.fields.artistDecision || !!artistEditor && validArtistDraft(artistEditor.input)) || state.step === 'tour' && (!!recovery.snapshot.fields.tourDecision || !!tourEditor && validTourDraft(tourEditor.input))
+  const venueEditor = state.step === 'event' ? recovery.snapshot.fields.venueEditor : null
+  const canConfirmSelection = state.step === 'artist' && (!!recovery.snapshot.fields.artistDecision || !!artistEditor && validArtistDraft(artistEditor.input)) || state.step === 'tour' && (!!recovery.snapshot.fields.tourDecision || !!tourEditor && validTourDraft(tourEditor.input)) || state.step === 'event' && !state.draft.eventChoicePending && !!venueEditor && validVenueDraft(venueEditor) && !(state.draft.eventId || state.draft.providerEvent)
   const reviewBlocked = state.step === 'tour' && !!state.draft.lineupReview?.tour || state.step === 'event' && !!state.draft.lineupReview?.event
   const heading = useRef<HTMLHeadingElement>(null), errorMessage = useRef<HTMLParagraphElement>(null)
   useEffect(() => { if (error) errorMessage.current?.focus() }, [error])
