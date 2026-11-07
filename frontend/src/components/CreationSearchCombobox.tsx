@@ -24,10 +24,11 @@ export function CreationSearchCombobox({ label, query, rows, status, loading, ac
   const statusId = useId()
   const [selected, setSelected] = useState<string | null>(null)
   const items = [
+    ...(status ? [{ key: 'status', label: status, detail: '', source: '' }] : []),
     ...rows.map(row => describeCreationMatch(row)),
     { key: 'create', label: `+ Create manually${query.trim() ? `: ${query.trim()}` : ''}`, detail: '', source: '' },
   ]
-  return <ComboBox isDisabled={interactionDisabled} className="creation-search" items={items} inputValue={query} onInputChange={value => { setSelected(null); onQuery(value) }}
+  return <ComboBox isDisabled={interactionDisabled} className="creation-search" items={items} disabledKeys={['status']} inputValue={query} onInputChange={value => { setSelected(null); onQuery(value) }}
     value={selected} onChange={key => { if (key !== null) { setSelected(String(key)); onPick(String(key)) } }}
     menuTrigger="focus" allowsCustomValue allowsEmptyCollection shouldFocusWrap={false}
     onOpenChange={open => {
@@ -40,10 +41,9 @@ export function CreationSearchCombobox({ label, query, rows, status, loading, ac
       <InlineComboboxInput statusId={statusId} placeholder={`Search ${label.toLowerCase()}…`} onComposing={onComposing} />
       <InlineComboboxResults>
         <div className="creation-results creation-aria-results">
-          <div id={statusId} className="creation-status creation-placeholder" role="status" aria-live="polite">{status}</div>
           <ListBox items={items} aria-label={`${label} results`} aria-busy={loading} className="creation-aria-options">
-            {item => <ListBoxItem id={item.key} textValue={item.label} className={item.key === 'create' ? 'creation-manual' : ''}>
-              {item.key === 'create' ? item.label : <>
+            {item => <ListBoxItem id={item.key} textValue={item.label} className={item.key === 'status' ? 'creation-status creation-placeholder' : item.key === 'create' ? 'creation-manual' : ''}>
+              {item.key === 'status' ? <span id={statusId} role="status" aria-live="polite">{item.label}</span> : item.key === 'create' ? item.label : <>
                 <span><strong>{item.label}</strong>{item.detail && <small>{item.detail}</small>}</span>
                 <small className="creation-source">{item.source}</small>
               </>}
