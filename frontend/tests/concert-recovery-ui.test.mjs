@@ -31,11 +31,11 @@ function render(Component, recovery) {
  return renderToStaticMarkup(createElement(context.Provider, { value: { controller: recovery, changed() {} } }, createElement(Component, { state: recovery.snapshot.state, onChange() {}, onEditingChange() {}, venues: [], catalog: access, musicbrainz: access })))
 }
 const artist = { name: 'Unconfirmed Artist', type: 'group', disambiguation: 'Keep details', selection: 'public-proof' }
-test('restored Artist/Tour editors render actual typed values and explicit pending Event decisions', () => {
+test('restored Artist/Tour editors retain typed values while Event replacement is deferred', () => {
  const a = render(Artist, fixture({ artistEditor: { input: artist }, artistDecision: { remove: 0 } }))
- for(const value of ['Unconfirmed Artist','group','Keep details','MusicBrainz match selected','Keep selected Event']) assert.ok(a.includes(value))
+ for(const value of ['Unconfirmed Artist','group','Keep details','MusicBrainz match selected']) assert.ok(a.includes(value)); assert.doesNotMatch(a, /Keep selected Event|Create new Event using these details/)
  const t = render(Tour, fixture({ tourEditor: { input: { name: 'Unconfirmed Tour', selection: 'proof' }, mbid: id(2), context: 'Context' }, tourDecision: { add: { name: 'Local', catalogId: id(3) } } }, 'tour'))
- for(const value of ['Unconfirmed Tour','Context','Keep selected Event']) assert.ok(t.includes(value))
+ for(const value of ['Unconfirmed Tour','Context']) assert.ok(t.includes(value))
 })
 test('restored row and both nested child editors use recovered fields rather than original initial props', () => {
  for(const nested of [{ songEditor: { title: 'Unconfirmed Song', disambiguation: 'Song detail', selection: 'proof' } }, { performerEditor: artist }]) {
@@ -56,4 +56,15 @@ test('creation retains local-recovery guidance and the close control without a d
  const html = renderToStaticMarkup(createElement(Wizard, { owner, venues: [], catalog: access, musicbrainz: access, onClose() {}, onSave: async () => {} }))
  assert.match(html, /Local draft storage is unavailable/); assert.doesNotMatch(html, />Discard draft</); assert.match(html, /aria-label="Close dialog"/)
  assert.equal((html.match(/<form\b/g) ?? []).length, 1)
+})
+
+
+test('unfinished manual Tour uses the fetched selection layout and Continue owns confirmation', () => {
+ const html = render(Tour, fixture({ tourEditor: { input: { name: 'Manual Tour', selection: null } } }, 'tour'))
+ assert.match(html, /class="creation-selection" aria-label="Selected Tour"/)
+ assert.match(html, /<strong>Manual Tour<\/strong>/)
+ assert.match(html, /Change/); assert.match(html, /Remove/)
+ assert.doesNotMatch(html, /creation-review|Review Tour|Use tour|>Cancel<|<input/)
+ const blank = render(Tour, fixture({ tourEditor: { input: { name: '', selection: null } } }, 'tour'))
+ assert.match(blank, /Tour name<input/)
 })

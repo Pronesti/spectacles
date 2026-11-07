@@ -4,7 +4,7 @@ import type { CatalogProvidersAccess } from '../catalogProvidersApi'
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { creationStepError } from '../creationPolicy'
-import { finishWizard, moveWizard, wizardSteps, validArtistDraft } from '../concertWizard'
+import { finishWizard, moveWizard, wizardSteps, validArtistDraft, validTourDraft } from '../concertWizard'
 import type { PendingCatalog, WizardState, WizardStep } from '../concertWizard'
 import type { Concert, Venue } from '../domain'
 import type { CatalogAccess } from './CatalogPicker'
@@ -25,7 +25,8 @@ function OwnedConcertWizard({ owner = '', venues, initialDate, catalog, musicbra
   const [error, setError] = useState(''), [editing, setEditing] = useState(false)
   const continueAction = useRef<(() => WizardState | null) | null>(null)
   const artistEditor = state.step === 'artist' ? recovery.snapshot.fields.artistEditor : null
-  const canConfirmSelection = state.step === 'artist' && (!!recovery.snapshot.fields.artistDecision || !!artistEditor && validArtistDraft(artistEditor.input))
+  const tourEditor = state.step === 'tour' ? recovery.snapshot.fields.tourEditor : null
+  const canConfirmSelection = state.step === 'artist' && (!!recovery.snapshot.fields.artistDecision || !!artistEditor && validArtistDraft(artistEditor.input)) || state.step === 'tour' && (!!recovery.snapshot.fields.tourDecision || !!tourEditor && validTourDraft(tourEditor.input))
   const reviewBlocked = state.step === 'tour' && !!state.draft.lineupReview?.tour || state.step === 'event' && !!state.draft.lineupReview?.event
   const heading = useRef<HTMLHeadingElement>(null), errorMessage = useRef<HTMLParagraphElement>(null)
   useEffect(() => { if (error) errorMessage.current?.focus() }, [error])
