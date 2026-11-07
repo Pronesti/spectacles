@@ -117,3 +117,16 @@ test('creation selectors share React Aria and retain their labels and closed ini
   for (const input of searchInputs) assert.match(input, /aria-expanded="false"/)
   assert.match(event, /data-rac=""/)
 })
+
+
+test('Artist review is read-only with edit and clear controls and delegates confirmation to Continue', () => {
+  const html = render(ArtistDraftFields, { review: true, initial: { name: 'Don Omar', type: 'Person', disambiguation: 'Puerto Rican singer', selection: 'proof' }, onConfirm() {}, onCancel() {} })
+  assert.match(html, /class="creation-selection" aria-label="Selected Artist"/); assert.match(html, /<strong>Don Omar<\/strong>/); assert.doesNotMatch(html, /<input/)
+  assert.match(html, /aria-label="Edit Artist"/)
+  assert.match(html, /aria-label="Clear Artist"/)
+  assert.match(html, /Person · Puerto Rican singer/)
+  assert.doesNotMatch(html, /<summary|>Use artist<|>Cancel</)
+  const empty = render(ArtistDraftFields, { review: true, initial: { name: '', type: null, disambiguation: null, selection: null }, onConfirm() {}, onCancel() {} })
+  assert.doesNotMatch(empty, /readOnly=/)
+  assert.match(empty, /aria-label="Finish editing Artist"/)
+})

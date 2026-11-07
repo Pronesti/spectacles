@@ -96,5 +96,7 @@
 .entity-autocomplete-popup { display: contents; }
 .entity-autocomplete [role=option][data-focused] { outline: 2px solid currentColor; outline-offset: -2px; }
 
+.artist-draft-review, .artist-draft-fields, .tour-draft-review, .venue-draft-review { display: grid; gap: 16px; min-width: 0; }
+.creation-selection .icon-button { width: 44px; height: 44px; }
 .creation-results .creation-placeholder[role=option] { justify-content: center; cursor: default; border-bottom: 0; }
 .creation-results .creation-placeholder[role=option]:hover { background: transparent; }
