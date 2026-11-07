@@ -7,7 +7,7 @@ import type { PerformancePreview, PerformanceSummary, PerformanceFilters, Provid
 import { providerKey } from './catalogProviders.ts'
 export function performanceSummary(p: PerformanceSummary): PerformanceSummary { return { ref: p.ref, artistName: p.artistName, venueName: p.venueName, city: p.city, date: p.date, url: p.url, locator: p.locator, localEventId: p.localEventId } }
 export function detachPerformance(state: WizardState): WizardState {
-  const draft = { ...state.draft }; delete draft.eventId; delete draft.providerEvent
+  const draft = { ...state.draft }; delete draft.eventId; delete draft.providerEvent; delete draft.eventChoicePending; delete draft.manualEvent
   return { ...state, draft }
 }
 export function performanceChangeNeedsDetach(state: WizardState, patch: { artist?: boolean; tour?: boolean; venue?: boolean; date?: boolean }): boolean { return !!(state.draft.eventId || state.draft.providerEvent) && Object.values(patch).some(Boolean) }

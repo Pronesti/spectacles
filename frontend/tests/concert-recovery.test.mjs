@@ -138,3 +138,30 @@ test('canonical Venue navigation survives creation, history filters and unfinish
  assert.deepEqual(restored.snapshot.fields.venueEditor.venueSources,sources)
  assert.deepEqual(restored.snapshot.state.draft.providerVenue.venueSources,sources)
 })
+
+
+test('deferred Tour and Event reviews survive reload with their original choices', () => {
+ const storage = store()
+ const controller = openRecovery(A, undefined, storage)
+ const originalArtist = { name: 'Original Artist', catalogId: id(170) }
+ const originalTour = { name: 'Original Tour', catalogId: id(171) }
+ const state = controller.snapshot.state
+ controller.changeState({ ...state, draft: { ...state.draft, artists: [{name:'New Artist',catalogId:id(172)}], tours:[originalTour], eventId:id(173), lineupReview: { tour: {artists:[originalArtist]}, event: {artists:[originalArtist],tours:[originalTour]} } } })
+ assert.deepEqual(openRecovery(A, undefined, storage).snapshot.state.draft.lineupReview, controller.snapshot.state.draft.lineupReview)
+})
+
+
+test('a required Event reselection survives reload', () => {
+ const storage=store(),draft=openRecovery(A,undefined,storage)
+ const state=draft.snapshot.state
+ draft.changeState({...state,draft:{...state.draft,eventChoicePending:true}})
+ assert.equal(openRecovery(A,undefined,storage).snapshot.state.draft.eventChoicePending,true)
+})
+
+
+test('a manual Event choice and its entered name survive reload', () => {
+ const storage=store(),draft=openRecovery(A,undefined,storage),state=draft.snapshot.state
+ draft.changeState({...state,draft:{...state.draft,manualEvent:true,concert:{...state.draft.concert,title:'My Event'}}})
+ const restored=openRecovery(A,undefined,storage).snapshot.state.draft
+ assert.equal(restored.manualEvent,true);assert.equal(restored.concert.title,'My Event')
+})

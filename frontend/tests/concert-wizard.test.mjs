@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createWizard, moveWizard, finishWizard, adoptWizardEvent, detachWizardEvent, changeWizardEntry, changeArtistInput, changeSongInput, changeTourInput } from '../src/concertWizard.ts'
+import { createWizard, moveWizard, finishWizard, adoptWizardEvent, detachWizardEvent, changeWizardEntry, changeArtistInput, changeSongInput, changeTourInput, changeWizardArtists, changeWizardTours, resolveWizardTour, keepWizardEvent, wizardStepError, beginWizardEventChange, selectManualWizardEvent } from '../src/concertWizard.ts'
 import { id, catalogFixture } from './catalog-fixtures.mjs'
 import { decodeCatalogEvent } from '../src/catalog.ts'
 test('Back retains one draft; finalization collects only referenced identities outside durable rows', () => {
@@ -110,4 +110,78 @@ test('Tour draft keys cannot collide with Artist or Song and cleared proofs seri
   const body = finishWizard(state)
   assert.deepEqual(body.pendingCatalog.tours[tour.draft.key], { name: 'Manual', selection: null })
   assert.deepEqual(body.concert.catalog.tours, [{ name: 'Manual', catalogId: null }])
+})
+
+
+test('upstream changes preserve linked choices and guard only their owning steps', () => {
+  const original = createWizard()
+  original.draft.artists = [{ name: 'Original Artist', catalogId: id(301) }]
+  original.draft.tours = [{ name: 'Original Tour', catalogId: id(302) }]
+  original.draft.eventId = id(303)
+  original.draft.concert.notes = 'Personal notes'
+  original.draft.concert.setlist = [{ id: id(304), type: 'note', title: 'Encore', artist: '', tape: false }]
+  const changed = changeWizardArtists(original, [{ name: 'New Artist', catalogId: id(305) }])
+  assert.equal(wizardStepError(changed, 'artist'), null)
+  assert.equal(moveWizard(changed, 'tour').step, 'tour')
+  assert.deepEqual(changed.draft.tours, original.draft.tours)
+  assert.equal(changed.draft.eventId, original.draft.eventId)
+  assert.match(wizardStepError(changed, 'tour'), /previous Tour/)
+  assert.match(wizardStepError(changed, 'event'), /selected Event/)
+  assert.throws(() => finishWizard(changed), /previous Tour/)
+  const withoutTour = resolveWizardTour(changed, false)
+  assert.deepEqual(withoutTour.draft.tours, [])
+  assert.equal(wizardStepError(withoutTour, 'tour'), null)
+  assert.equal(withoutTour.draft.eventId, original.draft.eventId)
+  assert.ok(withoutTour.draft.lineupReview.event)
+  const detached = detachWizardEvent(withoutTour)
+  assert.equal(detached.draft.eventId, undefined)
+  assert.equal(detached.draft.lineupReview, undefined)
+  assert.equal(detached.draft.concert.notes, 'Personal notes')
+  assert.deepEqual(detached.draft.concert.setlist, original.draft.concert.setlist)
+  assert.deepEqual(keepWizardEvent(withoutTour).draft, original.draft)
+  assert.deepEqual(resolveWizardTour(changed, true).draft, original.draft)
+  assert.deepEqual(changeWizardArtists(changed, original.draft.artists).draft, original.draft)
+  assert.equal(original.draft.lineupReview, undefined)
+})
+
+test('Tour changes defer linked Event replacement and preserve the first rollback context', () => {
+  const original = createWizard()
+  original.draft.artists = [{ name: 'Artist', catalogId: id(310) }]
+  original.draft.tours = [{ name: 'Original Tour', catalogId: id(311) }]
+  original.draft.providerEvent = { key: id(312), ref: { provider: 'setlist_fm', resourceType: 'setlist', externalId: 'abc' }, selection: 'proof' }
+  const first = changeWizardTours(original, [{ name: 'New Tour', catalogId: id(313) }])
+  const second = changeWizardTours(first, [])
+  assert.equal(wizardStepError(second, 'tour'), null)
+  assert.ok(second.draft.providerEvent)
+  assert.match(wizardStepError(second, 'event'), /selected Event/)
+  assert.deepEqual(keepWizardEvent(second).draft, original.draft)
+  assert.deepEqual(changeWizardTours(first, original.draft.tours).draft, original.draft)
+})
+
+
+test('explicit Event change clears its binding and requires a fresh choice while preserving personal draft data', () => {
+ const state=createWizard()
+ state.draft.eventId=id(350)
+ state.draft.concert.notes='Personal notes'
+ state.draft.concert.setlist=[{id:id(351),type:'note',title:'Encore',artist:'',tape:false}]
+ const changed=beginWizardEventChange(state)
+ assert.equal(changed.draft.eventId,undefined)
+ assert.equal(changed.draft.eventChoicePending,true)
+ assert.equal(changed.draft.concert.notes,'Personal notes')
+ assert.deepEqual(changed.draft.concert.setlist,state.draft.concert.setlist)
+ assert.match(wizardStepError(changed,'event'),/Choose an Event/)
+ assert.equal(detachWizardEvent(changed).draft.eventChoicePending,undefined)
+ assert.equal(adoptWizardEvent(changed,decodeCatalogEvent(catalogFixture().detail),[]).draft.eventChoicePending,undefined)
+ assert.equal(state.draft.eventId,id(350))
+})
+
+
+test('manual Event choice uses the typed name and default exact precision without inventing a day', () => {
+ const state=createWizard();state.draft.eventId=id(360);state.draft.precision='month';state.draft.dateText='2026-11';state.draft.concert.notes='Keep'
+ const manual=selectManualWizardEvent(state,' My Event ')
+ assert.equal(manual.draft.manualEvent,true);assert.equal(manual.draft.eventId,undefined)
+ assert.equal(manual.draft.concert.title,'My Event');assert.equal(manual.draft.precision,'exact');assert.equal(manual.draft.dateText,'')
+ assert.equal(manual.draft.concert.notes,'Keep')
+ assert.equal(beginWizardEventChange(manual).draft.manualEvent,undefined)
+ assert.equal(adoptWizardEvent(manual,decodeCatalogEvent(catalogFixture().detail),[]).draft.manualEvent,undefined)
 })

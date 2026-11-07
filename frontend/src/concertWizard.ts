@@ -17,13 +17,64 @@ export type PendingCatalog = { venue?: { selection: string }; event?: { selectio
 export type WizardStep = 'artist' | 'tour' | 'event' | 'setlist'
 export const wizardSteps: WizardStep[] = ['artist', 'tour', 'event', 'setlist']
 export type ProviderBinding = { key: string; ref: ProviderRef; selection: string; linkedRefs?: ProviderRef[]; url?: string; venueUrl?: string; venueSources?: import('./catalogProviders.ts').VenueSource[] }
-export type WizardDraft = { providerEvent?: ProviderBinding; providerVenue?: ProviderBinding } & Omit<ConcertDraft, 'artists' | 'tours' | 'concert'> & { artists: WizardArtistChoice[]; tours: WizardTourChoice[]; concert: Omit<ConcertDraft['concert'], 'setlist'> & { setlist: WizardEntry[] } }
+export type LineupReview = { tour?: { artists: WizardArtistChoice[] }; event?: { artists: WizardArtistChoice[]; tours: WizardTourChoice[] } }
+export type WizardDraft = { eventChoicePending?: boolean; manualEvent?: boolean; lineupReview?: LineupReview; providerEvent?: ProviderBinding; providerVenue?: ProviderBinding } & Omit<ConcertDraft, 'artists' | 'tours' | 'concert'> & { artists: WizardArtistChoice[]; tours: WizardTourChoice[]; concert: Omit<ConcertDraft['concert'], 'setlist'> & { setlist: WizardEntry[] } }
 export type WizardState = { step: WizardStep; draft: WizardDraft }
 export type WizardSubmission = { concert: ConcertDraft['concert']; venue?: Venue; pendingCatalog?: PendingCatalog }
 export function createWizard(initialDate?: string): WizardState { return { step: 'artist', draft: createConcertDraft(undefined, initialDate) } }
-export function adoptWizardEvent(state: WizardState, event: CatalogEvent, venues: Venue[]): WizardState { const draft = { ...adoptCatalogEvent(state.draft, event, venues) }; delete (draft as WizardDraft).providerEvent; delete (draft as WizardDraft).providerVenue; return { ...state, draft } }
-export function detachWizardEvent(state: WizardState): WizardState { const draft = { ...state.draft }; delete draft.eventId; delete draft.providerEvent; return { ...state, draft } }
+export function adoptWizardEvent(state: WizardState, event: CatalogEvent, venues: Venue[]): WizardState { const draft = { ...adoptCatalogEvent(state.draft, event, venues) }; delete (draft as WizardDraft).providerEvent; delete (draft as WizardDraft).providerVenue; delete (draft as WizardDraft).lineupReview; delete (draft as WizardDraft).eventChoicePending; delete (draft as WizardDraft).manualEvent; return { ...state, draft } }
+export function detachWizardEvent(state: WizardState): WizardState { const draft = { ...state.draft }; delete draft.eventId; delete draft.providerEvent; delete draft.eventChoicePending; delete draft.manualEvent; if (draft.lineupReview) { draft.lineupReview = { ...draft.lineupReview }; delete draft.lineupReview.event; if (!draft.lineupReview.tour) delete draft.lineupReview } return { ...state, draft } }
+function sameChoices(a: readonly unknown[], b: readonly unknown[]) { return JSON.stringify(a) === JSON.stringify(b) }
+function reconcileLineup(state: WizardState): WizardState {
+  if (!state.draft.lineupReview) return state
+  const review = { ...state.draft.lineupReview }
+  if (review.tour && sameChoices(state.draft.artists, review.tour.artists)) delete review.tour
+  if (review.event && sameChoices(state.draft.artists, review.event.artists) && sameChoices(state.draft.tours, review.event.tours)) delete review.event
+  const draft: WizardDraft = { ...state.draft, lineupReview: review }
+  if (!review.tour && !review.event) delete draft.lineupReview
+  return { ...state, draft }
+}
+export function changeWizardArtists(state: WizardState, artists: WizardArtistChoice[]): WizardState {
+  if (sameChoices(state.draft.artists, artists)) return state
+  const review = { ...state.draft.lineupReview }
+  if (state.draft.tours.length && !review.tour) review.tour = { artists: state.draft.artists }
+  if ((state.draft.eventId || state.draft.providerEvent) && !review.event) review.event = { artists: state.draft.artists, tours: state.draft.tours }
+  return reconcileLineup({ ...state, draft: { ...state.draft, artists, lineupReview: review } })
+}
+export function changeWizardTours(state: WizardState, tours: WizardTourChoice[]): WizardState {
+  if (sameChoices(state.draft.tours, tours)) return state
+  const review = { ...state.draft.lineupReview }
+  if ((state.draft.eventId || state.draft.providerEvent) && !review.event) review.event = { artists: state.draft.artists, tours: state.draft.tours }
+  return reconcileLineup({ ...state, draft: { ...state.draft, tours, lineupReview: review } })
+}
+export function resolveWizardTour(state: WizardState, keep: boolean): WizardState {
+  const prior = state.draft.lineupReview?.tour
+  if (!prior) return state
+  const review = { ...state.draft.lineupReview }; delete review.tour
+  return reconcileLineup({ ...state, draft: { ...state.draft, ...(keep ? { artists: prior.artists } : { tours: [] }), lineupReview: review } })
+}
+export function keepWizardEvent(state: WizardState): WizardState {
+  const prior = state.draft.lineupReview?.event
+  if (!prior) return state
+  const draft = { ...state.draft, artists: prior.artists, tours: prior.tours }; delete draft.lineupReview
+  return { ...state, draft }
+}
+export function validTourDraft(input: TourDraftInput) { return !!input.name.trim() && input.name.length <= 255 }
+export function selectManualWizardEvent(state: WizardState, name: string): WizardState {
+  const next = detachWizardEvent(state)
+  return { ...next, draft: { ...next.draft, manualEvent: true, precision: 'exact', dateText: state.draft.precision === 'exact' ? state.draft.dateText : '', concert: { ...next.draft.concert, title: name.trim() } } }
+}
+export function beginWizardEventChange(state: WizardState): WizardState {
+  const next = detachWizardEvent(state)
+  return { ...next, draft: { ...next.draft, eventChoicePending: true } }
+}
 export function changeTourInput(input: TourDraftInput, patch: Partial<TourDraftInput>): TourDraftInput { return { ...input, ...patch, ...(patch.name !== undefined && patch.name !== input.name ? { selection: null } : {}) } }
+export function validArtistDraft(input: ArtistDraftInput) {
+  return !!input.name.trim() && input.name.length <= 255 && (input.type?.length ?? 0) <= 255 && (input.disambiguation?.length ?? 0) <= 255
+}
+export function normalizeArtistDraft(input: ArtistDraftInput): ArtistDraftInput {
+  return { ...input, name: input.name.trim(), type: input.type?.trim() || null, disambiguation: input.disambiguation?.trim() || null }
+}
 export function changeArtistInput(input: ArtistDraftInput, patch: Partial<ArtistDraftInput>): ArtistDraftInput { return { ...input, ...patch, ...(patch.name !== undefined && patch.name !== input.name ? { selection: null } : {}) } }
 export function changeSongInput(input: SongDraftInput, patch: Partial<SongDraftInput>): SongDraftInput { return { ...input, ...patch, ...(patch.title !== undefined && patch.title !== input.title ? { selection: null } : {}) } }
 export function changeWizardEntry(entry: WizardEntry, patch: Partial<WizardEntry>): WizardEntry {
@@ -35,6 +86,9 @@ export function changeWizardEntry(entry: WizardEntry, patch: Partial<WizardEntry
 }
 export function wizardStepError(state: WizardState, step: WizardStep): string | null {
   try {
+    if (step === 'tour' && state.draft.lineupReview?.tour) throw new Error('Review the previous Tour for your new Artist.')
+    if (step === 'event' && state.draft.eventChoicePending) throw new Error('Choose an Event or create one manually to continue.')
+    if (step === 'event' && state.draft.lineupReview?.event) throw new Error('Review the selected Event for your new Artist or Tour.')
     if (step === 'artist' || step === 'tour') {
       const choices = step === 'artist' ? state.draft.artists : state.draft.tours
       if (choices.length > 100 || choices.some(c => !c.name.trim() || c.name.length > 255)) throw new Error('Enter valid names (up to 100 choices).')
