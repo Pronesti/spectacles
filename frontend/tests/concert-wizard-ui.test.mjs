@@ -36,11 +36,12 @@ test('combined autocomplete and explicit entity fields expose accessible non-sub
   }
 })
 
-test('Event exposes nonmusic and unknown-fact paths; Setlist remains skippable with draft-only actions', () => {
+test('manual Event emphasizes its date and omits technical fields; Setlist remains skippable', () => {
   const props = {state:createWizard(), venues:[], catalog, musicbrainz, onChange:()=>{}, onEditingChange:()=>{}}
   const html = render(WizardEventStep, props)
-  for (const label of ['Event type', 'theatre', 'Date precision', 'Month only', 'Year only', 'Date to confirm', 'Local time', 'Timezone', 'Venue']) assert.ok(html.includes(label))
-  assert.match(html, /step="1"/); assert.doesNotMatch(html, /<form/)
+  assert.match(html, /event-date-label/); assert.match(html, /type="date" required/); assert.match(html, /Search venue…/)
+  assert.doesNotMatch(html, /Date precision|Event type|Local time|Timezone|More details|Concert title/)
+   assert.doesNotMatch(html, /<form/)
   const setlist = render(WizardSetlistStep, props)
   assert.match(setlist, /Add song/); assert.match(setlist, /Add note/); assert.match(setlist, /empty setlist/); assert.doesNotMatch(setlist, /<form/)
 })
@@ -129,4 +130,69 @@ test('Artist review is read-only with edit and clear controls and delegates conf
   const empty = render(ArtistDraftFields, { review: true, initial: { name: '', type: null, disambiguation: null, selection: null }, onConfirm() {}, onCancel() {} })
   assert.doesNotMatch(empty, /readOnly=/)
   assert.match(empty, /aria-label="Finish editing Artist"/)
+})
+
+
+test('upstream overwrite reviews appear only beside the affected Tour and Event', () => {
+  const state = createWizard()
+  state.draft.artists = [{ name: 'New Artist', catalogId: '00000000-0000-4000-8000-000000000011' }]
+  state.draft.tours = [{ name: 'Original Tour', catalogId: '00000000-0000-4000-8000-000000000012' }]
+  state.draft.eventId = '00000000-0000-4000-8000-000000000013'
+  state.draft.concert.title = 'Original Event'
+  const originalArtists = [{ name: 'Original Artist', catalogId: '00000000-0000-4000-8000-000000000014' }]
+  state.draft.lineupReview = { tour: { artists: originalArtists }, event: { artists: originalArtists, tours: state.draft.tours } }
+  const props = { state, venues: [], catalog, musicbrainz, onChange() {}, onEditingChange() {} }
+  const artist = render(WizardArtistStep, props)
+  assert.match(artist, /New Artist/)
+  assert.doesNotMatch(artist, /role="alert"|Create new Event using these details|Clear previous Tour/)
+  const tour = render(WizardTourStep, props)
+  assert.match(tour, /Original Tour/); assert.match(tour, /Original Artist/)
+  assert.match(tour, /Clear previous Tour/)
+  assert.doesNotMatch(tour, /Create new Event using these details/)
+  const event = render(WizardEventStep, props)
+  assert.match(event, /Original Event/); assert.match(event, /Original Artist/)
+  assert.match(event, /Create new Event using these details/)
+  assert.match(event, /Keep selected Event/)
+})
+
+
+test('fetched and existing Events show their summary and personal fields without manual Venue or concert controls', () => {
+  for(const source of ['catalog','provider']) {
+    const state = createWizard()
+    state.draft.artists = [{name:'Saved Artist', catalogId:'00000000-0000-4000-8000-000000000021'}]
+    state.draft.concert.title = 'Selected performance'
+    state.draft.dateText = '2026-11-07'
+    const venue = {id:'00000000-0000-4000-8000-000000000022',name:'Fetched Venue',city:'City',lat:null,lng:null,neighborhood:''}
+    state.draft.concert.venueId=venue.id
+    if(source==='catalog') state.draft.eventId='00000000-0000-4000-8000-000000000023'
+    else state.draft.providerEvent={key:'00000000-0000-4000-8000-000000000024',ref:{provider:'setlist_fm',resourceType:'setlist',externalId:'abc'},selection:'proof'}
+    const html=render(WizardEventStep,{state,venues:[venue],catalog,musicbrainz,onChange(){},onEditingChange(){}})
+    assert.match(html,/Selected performance/); assert.match(html,/Fetched Venue/)
+    assert.match(html,/Event \/ performance/); assert.match(html,/Notes/); assert.match(html,/Interested/)
+    assert.doesNotMatch(html,/aria-label="Selected Venue"|Venue details|Concert details|Add concert details|Search options|Performance period|Concert title|Date precision/)
+  }
+  const manual=render(WizardEventStep,{state:createWizard(),venues:[],catalog,musicbrainz,onChange(){},onEditingChange(){}})
+  assert.match(manual,/Search venue…/);assert.match(manual,/event-date-label/);assert.doesNotMatch(manual,/Concert title|Date precision/)
+  assert.doesNotMatch(manual,/Search options|Performance period|Venue details/)
+})
+
+
+test('Event reselection has no keep action, overwrite confirmation, or old manual details', () => {
+ const state=createWizard()
+ state.draft.eventChoicePending=true
+ state.draft.concert.title='Previous event'
+ const html=render(WizardEventStep,{state,venues:[],catalog,musicbrainz,onChange(){},onEditingChange(){}})
+ assert.match(html,/Search event or performance…/)
+ assert.doesNotMatch(html,/Keep selected Event|Changing these details creates a new Event|Add concert details|Search venue…/)
+ assert.match(html,/Notes/)
+})
+
+
+test('manual Event replaces search with a selected summary and accessible edit and clear icons', () => {
+ const state=createWizard();state.draft.manualEvent=true;state.draft.concert.title='My Event';state.draft.dateText='2026-11-07'
+ const html=render(WizardEventStep,{state,venues:[],catalog,musicbrainz,onChange(){},onEditingChange(){}})
+ assert.match(html,/aria-label="Selected Event \/ performance"/);assert.match(html,/<strong>My Event<\/strong>/)
+ assert.match(html,/aria-label="Edit Event name"/);assert.match(html,/aria-label="Clear Event"/)
+ assert.match(html,/event-date-label/);assert.match(html,/value="2026-11-07"/)
+ assert.doesNotMatch(html,/Search event or performance…|Concert title|Date precision|More details|Local time|Timezone/)
 })
