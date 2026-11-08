@@ -1,5 +1,6 @@
 import { InteractionFieldset } from './InteractionFieldset'
-import { Button } from 'react-aria-components'
+import { Button, DateField, DateInput, DateSegment, Label } from 'react-aria-components'
+import { parseDate } from '@internationalized/date'
 import { discoveryQuery } from '../discoveryQuery'
 import { RecoveredSearch } from './RecoveredSearch'
 import { useContext, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
@@ -19,6 +20,9 @@ import type { PerformanceSummary, VenueSuggestion, VenueValues } from '../catalo
 import type { CreationMatch } from '../creationSearch'
 import { CatalogProvidersError } from '../catalogProvidersApi'
 import { createLatestRead } from '../catalogApi'
+function dateFieldValue(value: string) {
+  try { return value ? parseDate(value) : null } catch { return null }
+}
 export function WizardEventStep({ state, onChange, onEditingChange, catalog, musicbrainz, providers, venues, continueAction }: WizardStepProps) {
   const latestState = useRef(state)
   useLayoutEffect(() => { latestState.current = state }, [state])
@@ -96,7 +100,10 @@ export function WizardEventStep({ state, onChange, onEditingChange, catalog, mus
     <PerformancePicker applyOnSelect previewOnly initialSummary={performancePick} onDismiss={() => setPerformancePick(undefined)} providers={providers} filters={performance} query={eventSearch.value} onApply={preview => { onChange(applyPerformance(latestState.current, preview, venues)); setPerformancePick(undefined) }} onApplyManual={manual => { onChange(applyManualPerformance(latestState.current, manual)); setPerformancePick(undefined) }} onEditingChange={setPerformanceEditing} />
     {recovery?.controller.snapshot.fields.historyPerformancePreview && <details open><summary>Finish previous performance review</summary><PerformancePicker previewOnly history providers={providers} filters={recovery.controller.snapshot.fields.historyPerformanceFilters ?? { period: 'past' }} onApply={preview => onChange(applyPerformance(latestState.current, preview, venues))} onApplyManual={manual => onChange(applyManualPerformance(latestState.current, manual))} onEditingChange={setLegacyEditing} /></details>}
     {!sourceLocked && !changingEvent && <InteractionFieldset disabled={reviewing} className="manual-event-date wizard-shared-fields">
-      <label className="event-date-label">Date<input type="date" required min="0001-01-01" max="9999-12-31" value={draft.precision === 'exact' ? draft.dateText : ''} onChange={event => setDraft({ precision: 'exact', dateText: event.target.value })} /></label>
+      <DateField className="event-date-label" isRequired isDisabled={reviewing} minValue={parseDate('0001-01-01')} maxValue={parseDate('9999-12-31')} value={dateFieldValue(draft.precision === 'exact' ? draft.dateText : '')} onChange={value => setDraft({ precision: 'exact', dateText: value?.toString() ?? '' })}>
+        <Label>Date</Label>
+        <DateInput className="event-date-input">{segment => <DateSegment segment={segment} />}</DateInput>
+      </DateField>
     </InteractionFieldset>}
     {!sourceLocked && !changingEvent && <>
     {selectedVenueName && !recoveredEditor && <CreationSelection label="Venue" name={selectedVenueName} detail={currentVenue ? currentVenue.city : draft.concert.venueId === 'new' ? draft.city : ''} onChange={() => setChangingVenue(true)} />}

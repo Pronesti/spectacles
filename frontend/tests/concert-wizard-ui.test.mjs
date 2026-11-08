@@ -39,7 +39,11 @@ test('combined autocomplete and explicit entity fields expose accessible non-sub
 test('manual Event emphasizes its date and omits technical fields; Setlist remains skippable', () => {
   const props = {state:createWizard(), venues:[], catalog, musicbrainz, onChange:()=>{}, onEditingChange:()=>{}}
   const html = render(WizardEventStep, props)
-  assert.match(html, /event-date-label/); assert.match(html, /type="date" required/); assert.match(html, /Search venue…/)
+  assert.match(html, /event-date-label/); assert.match(html, /Search venue…/)
+  for (const segment of ['month', 'day', 'year']) {
+    assert.match(html, new RegExp(`<span[^>]*role="spinbutton"[^>]*aria-required="true"[^>]*data-type="${segment}"`))
+  }
+  assert.match(html, /aria-valuemin="1" aria-valuemax="9999"/)
   assert.doesNotMatch(html, /Date precision|Event type|Local time|Timezone|More details|Concert title/)
    assert.doesNotMatch(html, /<form/)
   const setlist = render(WizardSetlistStep, props)
