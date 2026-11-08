@@ -175,7 +175,7 @@ Official guidance: [monorepos](https://laravel.com/cloud/docs/monorepos), [Node.
 
 ## Git workflow
 
-Use `main` as the default branch. Start feature branches from `main`; open release PRs to `dev` and `main` from the same feature branch. Do not merge or rebase `dev` into a feature branch.
+See the project policy in [AGENTS.md](AGENTS.md#git-workflow).
 
 ### Frontend account integration
 
