@@ -3,3 +3,8 @@
 /.env
 /qa-output/
 .impeccable/
+
+# Local Lerd configuration
+.lerd.yaml
+.php-version
+.node-version
