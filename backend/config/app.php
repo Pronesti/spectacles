@@ -123,4 +123,20 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Personal Seed User
+    |--------------------------------------------------------------------------
+    |
+    | The local development account created by the test users seeder. It is
+    | skipped when the email is set to an empty value.
+    |
+    */
+
+    'personal_user' => [
+        'email' => env('SEED_PERSONAL_USER_EMAIL', 'user@example.com'),
+        'name' => env('SEED_PERSONAL_USER_NAME'),
+        'password' => env('SEED_PERSONAL_USER_PASSWORD', 'password'),
+    ],
+
 ];
