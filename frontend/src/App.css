@@ -57,7 +57,21 @@
   display: block;
   width: 4px;
   border-radius: 3px;
-  background: var(--ink)
+  background: var(--ink);
+  transform-origin: center;
+  animation: soundmark-level 1.8s cubic-bezier(.45, 0, .55, 1) infinite;
+  animation-delay: calc(var(--i, 0) * -0.41s)
+}
+
+@keyframes soundmark-level {
+  0%, 100% { transform: scaleY(1) }
+  22% { transform: scaleY(.42) }
+  48% { transform: scaleY(.86) }
+  74% { transform: scaleY(.3) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soundmark i { animation: none }
 }
 
 .nav-eyebrow {

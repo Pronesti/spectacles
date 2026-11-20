@@ -6,6 +6,7 @@ import { ConcertWizard } from './components/ConcertWizard'
 import { createMusicBrainzClient } from './musicbrainzApi'
 import type { PendingCatalog } from './concertWizard'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { daysUntil, filteredConcerts, formatDate, relation, sortConcerts, todayKey, uniqueVenues } from './domain'
 import type { Concert, Venue, Workspace } from './domain'
 import { Icon, Soundmark } from './components/Icon'
@@ -206,7 +207,7 @@ function App() {
   const pageInfo = pageCopy[page]
   const visibleConcerts = filteredConcerts(workspace.concerts, workspace.venues, query, filter, today, venueFilter)
 
-  if (account.status === 'checking' || account.status === 'unavailable' && !preservingDraft) return <main className="account-gate"><Soundmark /><h1>Spectacles<span className="lime-dot">.</span></h1><p role={account.status === 'checking' ? 'status' : 'alert'}>{account.status === 'checking' ? 'Checking your session…' : account.error}</p>{account.status === 'unavailable' && <div><Button type="button" className="button primary" onPress={account.refresh}>Try again</Button></div>}</main>
+  if (account.status === 'checking' || account.status === 'unavailable' && !preservingDraft) return <main className="account-gate"><Soundmark /><h1 aria-label="Spectacles."><span aria-hidden="true">{'Spectacles'.split('').map((letter, i) => <span key={i} className="wordmark-letter" style={{ '--i': i } as CSSProperties}>{letter}</span>)}<span className="lime-dot">.</span></span></h1><p role={account.status === 'checking' ? 'status' : 'alert'}>{account.status === 'checking' ? 'Checking your session…' : account.error}</p>{account.status === 'unavailable' && <div><Button type="button" className="button primary" onPress={account.refresh}>Try again</Button></div>}</main>
   if (!preservingDraft && (activeAuthView || !owner)) return <AuthView key={activeAuthView} mode={activeAuthView ?? 'login'} busy={account.busy} notice={account.error || accountNotice} onSwitch={changeEntry} onExplore={enterPreview} onSubmit={submitAccount} />
 
   return <div className="app-shell"><a className="skip-link" href="#main-content">Skip to content</a>

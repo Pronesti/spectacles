@@ -38,5 +38,5 @@ export function Icon({ name, size = 20, style }: { name: IconName; size?: number
 }
 
 export function Soundmark() {
-  return <span className="soundmark" aria-hidden="true">{[12, 25, 37, 25, 16].map((height, i) => <i key={i} style={{ height }} />)}</span>
+  return <span className="soundmark" aria-hidden="true">{[12, 25, 37, 25, 16].map((height, i) => <i key={i} style={{ height, '--i': i } as CSSProperties} />)}</span>
 }

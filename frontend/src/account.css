@@ -288,6 +288,13 @@
 .demo-notice { color: var(--muted); font-size: 11px; line-height: 1.6; margin: 0 0 20px; }
 .account-gate { min-height: 100dvh; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px; padding: 32px 20px; text-align: center; }
 .account-gate h1 { font-size: clamp(32px, 7vw, 52px); }
+.account-gate h1 .wordmark-letter, .account-gate h1 .lime-dot { display: inline-block; animation: wordmark-letter-rise 620ms cubic-bezier(.16, 1, .3, 1) both; }
+.account-gate h1 .wordmark-letter { animation-delay: calc(var(--i, 0) * 38ms); }
+.account-gate h1 .lime-dot { animation-name: wordmark-dot-in; animation-duration: 420ms; animation-delay: 540ms; }
+@keyframes wordmark-letter-rise { from { opacity: 0; transform: translateY(.42em); } to { opacity: 1; transform: none; } }
+@keyframes wordmark-dot-in { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
+@keyframes wordmark-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .account-gate h1 .wordmark-letter, .account-gate h1 .lime-dot { animation: wordmark-fade-in 240ms ease-out both; } }
 .account-gate > p { max-width: 40ch; line-height: 1.7; }
 .account-gate > div { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
