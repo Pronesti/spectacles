@@ -188,6 +188,17 @@ class CatalogProviderSaveTest extends TestCase
         ProviderHttp::assertNothingSent();
     }
 
+    public function test_empty_provider_selection_objects_are_field_errors(): void
+    {
+        $this->actingAs(User::factory()->create());
+        foreach (['venue', 'event'] as $singleton) {
+            $body = $this->requestBody();
+            $body['pendingCatalog'][$singleton] = [];
+            $this->postJson('/api/v1/attendances', $body)->assertUnprocessable()->assertJsonValidationErrors('pendingCatalog.'.$singleton);
+        }
+        $this->assertDatabaseCount('attendances', 0);
+    }
+
     public function test_malformed_venue_image_is_a_field_error(): void
     {
         $this->actingAs(User::factory()->create());

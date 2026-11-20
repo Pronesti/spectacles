@@ -28,7 +28,7 @@ class PendingCatalogRules
             }
         }
         foreach (['venue', 'event'] as $singleton) {
-            $rules['pendingCatalog.'.$singleton] = ['sometimes', 'array:selection'];
+            $rules['pendingCatalog.'.$singleton] = ['sometimes', 'filled', 'array:selection'];
             $rules['pendingCatalog.'.$singleton.'.selection'] = ['required_with:pendingCatalog.'.$singleton, 'string', 'max:32768'];
         }
         $rules['pendingCatalog.tours'] = ['sometimes', 'array', 'max:100'];
