@@ -1,0 +1,601 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Http/CatalogDraftResolver.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>values" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/CatalogProviderData.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Http/Controllers/CatalogController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\CatalogController\:\:scopeToursToArtist\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/CatalogController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\CatalogController\:\:text\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/CatalogController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\CatalogController\:\:text\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Http/Controllers/CatalogController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ArtistProviderId\:\:\$song\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/MusicBrainzController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\ArtistProviderId\:\:\$tour\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/MusicBrainzController.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Http/Controllers/MusicBrainzController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$region\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/CollectionVenueData.php
+
+		-
+			message: '#^Parameter \$image of class App\\Http\\Data\\CollectionVenueData constructor expects array\<string, string\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Data/CollectionVenueData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ConcertCatalogDraftData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ConcertDraftData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$house_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$region\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$street\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Parameter \$image of class App\\Http\\Data\\LocalVenueData constructor expects array\<string, string\>\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Data/LocalVenueData.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 2
+			path: app/Http/Data/PendingCatalogData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ProviderArtistData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ProviderPerformanceData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ProviderTourData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/ProviderVenueData.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>external_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Data/SetlistEntryData.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>title" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Data/SetlistEntryData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/SetlistEntryDraftData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/TourChoiceDraftData.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$region\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Data/VenueValuesData.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: app/Http/Data/VenueValuesData.php
+
+		-
+			message: '#^Call to function array_is_list\(\) with list\<mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/MusicBrainzClient.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Http/MusicBrainzClient.php
+
+		-
+			message: '#^Parameter \#1 \$array of function uasort contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/MusicBrainzClient.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/MusicBrainzPlaces.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 3
+			path: app/Http/MusicBrainzPlaces.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Http/MusicBrainzPlaces.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/MusicBrainzPlaces.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>resource" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/MusicBrainzPlaces.php
+
+		-
+			message: '#^Call to function is_array\(\) with list\<TData of Spatie\\LaravelData\\Data\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/ProviderReadGate.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Http/ProviderReadGate.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\CatalogProviderRequest\:\:after\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/CatalogProviderRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\CatalogProviderRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/CatalogProviderRequest.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Http/Requests/CatalogReadRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\MusicBrainzSearchRequest\:\:after\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/MusicBrainzSearchRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\MusicBrainzSearchRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/MusicBrainzSearchRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\PendingCatalogRules\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/PendingCatalogRules.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\SaveConcertRequest\:\:after\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/SaveConcertRequest.php
+
+		-
+			message: '#^Method App\\Http\\Requests\\SaveConcertRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Requests/SaveConcertRequest.php
+
+		-
+			message: '#^Method App\\Http\\Resources\\VenueResource\:\:toAttributes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/Resources/VenueResource.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: app/Http/SetlistFmApi.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/SetlistFmApi.php
+
+		-
+			message: '#^Method App\\Http\\SetlistFmDiscovery\:\:page\(\) has parameter \$items with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Http/SetlistFmDiscovery.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>images" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/VenueImageClient.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>pages" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/VenueImageClient.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>resource" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/VenueImageClient.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/VenueImageClient.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$external_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/FrontendQaSeeder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 17
+			path: database/seeders/FrontendQaSeeder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/FrontendQaSeeder.php
+
+		-
+			message: '#^Method Tests\\Feature\\AuthSessionTest\:\:carryCookies\(\) has parameter \$response with generic class Illuminate\\Testing\\TestResponse but does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Feature/AuthSessionTest.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/CatalogProviderSaveTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogProviderSaveTest\:\:requestBody\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CatalogProviderSaveTest.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogReadEndpointsTest\:\:assertNoPrivateQueries\(\) has parameter \$queries with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogReadEndpointsTest\:\:assertSharedOnly\(\) has parameter \$document with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogReadEndpointsTest\:\:read\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogReadEndpointsTest\:\:read\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CatalogReadEndpointsTest\:\:test_unsafe_requests_are_rejected_before_private_queries\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: tests/Feature/CatalogReadEndpointsTest.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$house_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/CatalogTest.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Venue\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/CatalogTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/CatalogTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\CollectionEndpointsTest\:\:draft\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/CollectionEndpointsTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\DomainGraphTest\:\:models\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/DomainGraphTest.php
+
+		-
+			message: '#^Cannot access property \$email on array\<mixed\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DomainMigrationTest.php
+
+		-
+			message: '#^Cannot access property \$external_id on array\<mixed\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DomainMigrationTest.php
+
+		-
+			message: '#^Cannot access property \$password on array\<mixed\>\|object\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DomainMigrationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$external_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/JsonApiResourcesTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\JsonApiResourcesTest\:\:assertPublicResourceObjects\(\) has parameter \$document with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/JsonApiResourcesTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\JsonApiResourcesTest\:\:entities\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/JsonApiResourcesTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/JsonApiResourcesTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/JsonApiResourcesTest.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: tests/Feature/MusicBrainzConcurrencyTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzLookupTest\:\:tourRelations\(\) has parameter \$series with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzLookupTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzLookupTest\:\:tourRelations\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzLookupTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzSaveTest\:\:draft\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzSaveTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzSaveTest\:\:pending\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzSaveTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzSaveTest\:\:withTour\(\) has parameter \$body with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzSaveTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\MusicBrainzSaveTest\:\:withTour\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/MusicBrainzSaveTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsInt\(\) with int\<0, max\> will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Feature/PublicIdentityTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\SetlistFmApiDiscoveryTest\:\:fakeSearch\(\) has parameter \$rows with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/SetlistFmApiDiscoveryTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\SetlistFmApiDiscoveryTest\:\:searchUrl\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/SetlistFmApiDiscoveryTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\SetlistFmApiTest\:\:performance\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/SetlistFmApiTest.php
+
+		-
+			message: '#^Method Tests\\Feature\\SetlistFmApiTest\:\:performance\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Feature/SetlistFmApiTest.php
+
+		-
+			message: '#^Variable \$argv might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: tests/Feature/catalog-provider-race-worker.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: mixed$#'
+			identifier: match.unhandled
+			count: 2
+			path: tests/Feature/musicbrainz-race-worker.php
+
+		-
+			message: '#^Variable \$argv might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: tests/Feature/musicbrainz-race-worker.php
+
+		-
+			message: '#^Unable to resolve the template type TCallbackReturnType in call to static method Illuminate\\Database\\Connection\:\:transaction\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/ExampleTest.php
