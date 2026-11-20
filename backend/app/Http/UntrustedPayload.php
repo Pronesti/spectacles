@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Integrations;
+namespace App\Http;
 
 use Spatie\LaravelData\Data;
 
 /**
- * Hydrates a decoded provider document, or Data being re-checked, into its payload Data class.
+ * Hydrates an untrusted document into its Data class: a provider response, a decrypted
+ * proof payload, request input, a stored value, or Data being re-checked.
  *
- * Provider documents are untrusted: a document that does not fit its class is
- * reported with the provider's own unavailable exception, never as a 422.
+ * A document that does not fit its class is reported with the caller's own exception.
  */
-final class UpstreamPayload
+final class UntrustedPayload
 {
     /**
      * @template TData of Data

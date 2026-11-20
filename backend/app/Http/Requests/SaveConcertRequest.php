@@ -9,7 +9,7 @@ use App\Http\Data\PendingCatalogData;
 use App\Http\Data\VenueDraftData;
 use App\Http\Data\VenueDraftSummaryData;
 use App\Http\Data\VenueImageInputData;
-use App\Http\Integrations\UpstreamPayload;
+use App\Http\UntrustedPayload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -110,7 +110,7 @@ class SaveConcertRequest extends FormRequest
             }
             if ($this->input('venue.image') !== null) {
                 try {
-                    CatalogProviderData::image(UpstreamPayload::parse(VenueImageInputData::class, $this->input('venue.image'), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable));
+                    CatalogProviderData::image(UntrustedPayload::parse(VenueImageInputData::class, $this->input('venue.image'), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable));
                 } catch (CatalogProviderUnavailable) {
                     $validator->errors()->add('venue.image', 'Choose valid attributed image metadata.');
                 }

@@ -8,7 +8,6 @@ use App\Http\Data\VenueImageInputData;
 use App\Http\Data\WikidataImageFileData;
 use App\Http\Integrations\MusicBrainz\Data\MusicBrainzRelationPayloadData;
 use App\Http\Integrations\ProviderConnector;
-use App\Http\Integrations\UpstreamPayload;
 use App\Http\Integrations\Wikimedia\CommonsConnector;
 use App\Http\Integrations\Wikimedia\Data\CommonsImageInfoResponsePayloadData;
 use App\Http\Integrations\Wikimedia\Data\WikidataClaimPayloadData;
@@ -103,6 +102,6 @@ class VenueImageClient
         }
         $body = ProviderConnector::boundedBody($response);
 
-        return UpstreamPayload::parse($payloadClass, $body === null ? null : json_decode($body, true), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
+        return UntrustedPayload::parse($payloadClass, $body === null ? null : json_decode($body, true), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
     }
 }

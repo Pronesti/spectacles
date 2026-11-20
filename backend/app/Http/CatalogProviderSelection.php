@@ -12,7 +12,6 @@ use App\Http\Data\ProviderProofData;
 use App\Http\Data\ProviderRefData;
 use App\Http\Data\ProviderTourData;
 use App\Http\Data\ProviderVenueData;
-use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Spatie\LaravelData\Data;
@@ -102,7 +101,7 @@ class CatalogProviderSelection
             'tour', 'venue' => ProviderEntityInputData::class,
             default => throw new \InvalidArgumentException('Unsupported provider selection kind.'),
         };
-        $input = $payload instanceof $class ? $payload : UpstreamPayload::parse($class, $payload, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
+        $input = $payload instanceof $class ? $payload : UntrustedPayload::parse($class, $payload, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
 
         return match ($kind) {
             'performance' => CatalogProviderData::performance($input),

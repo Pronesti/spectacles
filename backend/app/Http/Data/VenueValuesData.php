@@ -4,7 +4,7 @@ namespace App\Http\Data;
 
 use App\Http\CatalogProviderData;
 use App\Http\CatalogProviderUnavailable;
-use App\Http\Integrations\UpstreamPayload;
+use App\Http\UntrustedPayload;
 use App\Models\Venue;
 use Spatie\LaravelData\Data;
 
@@ -46,7 +46,7 @@ class VenueValuesData extends Data
             lat: $venue->lat === null ? null : (float) $venue->lat,
             lng: $venue->lng === null ? null : (float) $venue->lng,
             timezone: $venue->timezone,
-            image: $venue->image === null ? null : UpstreamPayload::parse(VenueImageInputData::class, $venue->image, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable),
+            image: $venue->image === null ? null : UntrustedPayload::parse(VenueImageInputData::class, $venue->image, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable),
         ));
     }
 }

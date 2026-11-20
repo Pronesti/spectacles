@@ -8,8 +8,8 @@ use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderLocatorInputData;
 use App\Http\Data\ProviderPerformanceInputData;
-use App\Http\Integrations\UpstreamPayload;
 use App\Http\MusicBrainzSelection;
+use App\Http\UntrustedPayload;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Tests\Support\ProviderHttp;
@@ -134,7 +134,7 @@ class CatalogProviderSelectionTest extends TestCase
         $variants[] = $v;
         foreach ($variants as $value) {
             try {
-                CatalogProviderData::performance(UpstreamPayload::parse(ProviderPerformanceInputData::class, $value, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable));
+                CatalogProviderData::performance(UntrustedPayload::parse(ProviderPerformanceInputData::class, $value, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable));
                 $this->fail('Malformed group accepted.');
             } catch (CatalogProviderUnavailable) {
                 $this->addToAssertionCount(1);

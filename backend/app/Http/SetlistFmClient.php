@@ -7,7 +7,6 @@ use App\Http\Integrations\ProviderConnector;
 use App\Http\Integrations\SetlistFm\Data\SetlistFmSearchPayloadData;
 use App\Http\Integrations\SetlistFm\Requests\GetSetlistFmApiResource;
 use App\Http\Integrations\SetlistFm\SetlistFmApiConnector;
-use App\Http\Integrations\UpstreamPayload;
 use Spatie\LaravelData\Data;
 
 class SetlistFmClient
@@ -52,7 +51,7 @@ class SetlistFmClient
                     throw new CatalogProviderUnavailable;
                 }
 
-                return UpstreamPayload::parse($payloadClass, $decoded, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
+                return UntrustedPayload::parse($payloadClass, $decoded, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
             });
         } catch (CatalogProviderUnavailable $failure) {
             throw $failure;

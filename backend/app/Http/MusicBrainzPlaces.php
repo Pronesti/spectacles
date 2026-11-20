@@ -11,7 +11,6 @@ use App\Http\Data\ProviderVenueData;
 use App\Http\Data\VenueSourceInputData;
 use App\Http\Integrations\MusicBrainz\Data\MusicBrainzEntityPayloadData;
 use App\Http\Integrations\MusicBrainz\Data\MusicBrainzSearchPayloadData;
-use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Support\Str;
 
 class MusicBrainzPlaces
@@ -33,7 +32,7 @@ class MusicBrainzPlaces
                 throw new MusicBrainzUnavailable;
             }
 
-            return array_map(fn (mixed $place): ProviderVenueData => $this->normalize(UpstreamPayload::parse(MusicBrainzEntityPayloadData::class, $place, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable)), array_slice($page->places, 0, 10));
+            return array_map(fn (mixed $place): ProviderVenueData => $this->normalize(UntrustedPayload::parse(MusicBrainzEntityPayloadData::class, $place, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable)), array_slice($page->places, 0, 10));
         });
 
         return ProviderPageData::of(array_map(fn (ProviderVenueData $row): ProviderVenueData => $this->discovery->attachVenue($row), $rows), null, true);

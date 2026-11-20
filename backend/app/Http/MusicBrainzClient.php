@@ -10,7 +10,6 @@ use App\Http\Integrations\MusicBrainz\Data\MusicBrainzSearchPayloadData;
 use App\Http\Integrations\MusicBrainz\MusicBrainzConnector;
 use App\Http\Integrations\MusicBrainz\Requests\GetMusicBrainzResource;
 use App\Http\Integrations\ProviderConnector;
-use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -161,7 +160,7 @@ class MusicBrainzClient
     private function searchResult(mixed $result): ?MusicBrainzEntityPayloadData
     {
         try {
-            return UpstreamPayload::parse(MusicBrainzEntityPayloadData::class, $result, fn (): MusicBrainzUnavailable => new MusicBrainzUnavailable);
+            return UntrustedPayload::parse(MusicBrainzEntityPayloadData::class, $result, fn (): MusicBrainzUnavailable => new MusicBrainzUnavailable);
         } catch (MusicBrainzUnavailable) {
             return null;
         }
@@ -236,7 +235,7 @@ class MusicBrainzClient
             if (! $response->successful() || $raw === null) {
                 throw new MusicBrainzUnavailable;
             }
-            $result = $normalize(UpstreamPayload::parse($payloadClass, json_decode($raw, true), fn (): MusicBrainzUnavailable => new MusicBrainzUnavailable));
+            $result = $normalize(UntrustedPayload::parse($payloadClass, json_decode($raw, true), fn (): MusicBrainzUnavailable => new MusicBrainzUnavailable));
             Cache::put($key, CachedData::toCache($result), 900);
 
             return $result;
