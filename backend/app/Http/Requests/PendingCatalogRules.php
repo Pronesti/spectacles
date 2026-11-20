@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Http\CatalogProviderSelection;
 use App\Http\Data\ConcertDraftData;
 use App\Http\Data\PendingCatalogData;
+use App\Http\Data\PendingSelectionData;
 use App\Http\MusicBrainzSelection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -48,14 +49,14 @@ class PendingCatalogRules
 
     public static function check(ConcertDraftData $concert, ?PendingCatalogData $pending, Validator $validator): void
     {
-        if ($pending === null) {
+        if (! $pending instanceof PendingCatalogData) {
             return;
         }
         $error = function (string $path) use ($validator): void {
             $validator->errors()->add('pendingCatalog.'.$path, 'Choose a valid, exclusively referenced catalog draft.');
         };
         foreach (['venue' => [$pending->venueSelection(), 'venue'], 'event' => [$pending->eventSelection(), 'performance']] as $singleton => [$binding, $kind]) {
-            if ($binding === null) {
+            if (! $binding instanceof PendingSelectionData) {
                 continue;
             }
             if ($concert->catalog->hasEvent()) {

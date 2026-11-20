@@ -30,9 +30,7 @@ class ProviderHttp
      */
     public static function fake(array|callable|null $stubs = null): void
     {
-        if ($stubs === null) {
-            $stubs = fn (): MockResponse => self::response();
-        }
+        $stubs ??= fn (): MockResponse => self::response();
         if (is_callable($stubs)) {
             self::$stubs[] = $stubs;
         } else {
@@ -42,7 +40,7 @@ class ProviderHttp
                     : null;
             }
         }
-        MockClient::global(['*' => fn (PendingRequest $pending): MockResponse => self::resolve($pending)]);
+        MockClient::global(['*' => self::resolve(...)]);
     }
 
     public static function fakeSequence(): ResponseSequence
@@ -104,7 +102,7 @@ class ProviderHttp
         $request = (new RecordedRequest($psr))->withData($query);
         foreach (self::$stubs as $stub) {
             $response = self::toResponse($stub($request));
-            if ($response !== null) {
+            if ($response instanceof MockResponse) {
                 self::$recorded[] = [$request, $response];
 
                 return $response;

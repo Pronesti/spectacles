@@ -20,7 +20,7 @@ class CatalogProviderConcurrencyTest extends TestCase
         if (DB::connection()->getDriverName() !== 'pgsql' || ! function_exists('proc_open')) {
             $this->markTestSkipped('Requires dedicated PostgreSQL spectacles_testing and process support.');
         }
-        $this->assertSame('spectacles_testing', DB::connection()->getDatabaseName());
+        expect(DB::connection()->getDatabaseName())->toBe('spectacles_testing');
         $this->race(false);
         $this->race(true);
     }
@@ -56,7 +56,9 @@ class CatalogProviderConcurrencyTest extends TestCase
             foreach (['a', 'b'] as $slot) {
                 $pipes = [];
                 $process = proc_open([PHP_BINARY, __DIR__.'/catalog-provider-race-worker.php', $directory, $slot], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, base_path(), $environment);
-                $this->assertIsResource($process);
+                if (! is_resource($process)) {
+                    $this->fail('Could not start the race worker.');
+                }
                 fclose($pipes[0]);
                 stream_set_timeout($pipes[1], 15);
                 stream_set_timeout($pipes[2], 15);
@@ -70,22 +72,22 @@ class CatalogProviderConcurrencyTest extends TestCase
                 fclose($pipes[2]);
                 $code = proc_close($process);
                 unset($processes[$index]);
-                $this->assertSame(0, $code, 'Isolated race worker failed: '.substr($error, 0, 200));
+                expect($code)->toBe(0);
             }
-            $this->assertFileExists($directory.'/a.ready');
-            $this->assertFileExists($directory.'/b.ready');
+            expect($directory.'/a.ready')->toBeFile()
+                ->and($directory.'/b.ready')->toBeFile();
             if ($conflict) {
-                $this->assertCount(1, array_filter($results, fn ($r) => $r === 'CONFLICT'));
-                $this->assertCount(1, array_filter($results, fn ($r) => Str::isUuid($r)));
+                expect(array_filter($results, fn ($r): bool => $r === 'CONFLICT'))->toHaveCount(1)
+                    ->and(array_filter($results, fn ($r) => Str::isUuid($r)))->toHaveCount(1);
             } else {
-                $this->assertTrue(Str::isUuid($results[0]));
-                $this->assertSame($results[0], $results[1]);
+                expect(Str::isUuid($results[0]))->toBeTrue()
+                    ->and($results[1])->toBe($results[0]);
             }
-            $this->assertSame(1, EventProviderReference::where('provider', 'setlist_fm')->where('resource_type', 'setlist')->where('provider_resource_id', $id)->count());
-            $this->assertSame(1, Event::where('venue_id', $venue->id)->count());
+            expect(EventProviderReference::where('provider', 'setlist_fm')->where('resource_type', 'setlist')->where('provider_resource_id', $id)->count())->toBe(1)
+                ->and(Event::where('venue_id', $venue->id)->count())->toBe(1);
             $event = Event::where('venue_id', $venue->id)->firstOrFail();
-            $this->assertSame(1, $event->artistLinks()->count());
-            $this->assertSame(1, $event->tourLinks()->count());
+            expect($event->artistLinks()->count())->toBe(1)
+                ->and($event->tourLinks()->count())->toBe(1);
         } finally {
             foreach ($processes as [$process, $pipes]) {
                 if (is_resource($process)) {
@@ -105,7 +107,9 @@ class CatalogProviderConcurrencyTest extends TestCase
             $tour->delete();
             $venue->delete();
             $files = glob($directory.'/*');
-            $this->assertNotFalse($files);
+            if ($files === false) {
+                $this->fail('Could not list the race directory.');
+            }
             foreach ($files as $file) {
                 unlink($file);
             } rmdir($directory);

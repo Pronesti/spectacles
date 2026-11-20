@@ -38,7 +38,7 @@ class SetlistFmUrl
             throw new CatalogProviderUnavailable;
         }
         parse_str($parts['query'] ?? '', $query);
-        if (array_diff(array_keys($query), ['artist', 'tour', 'venue', 'query', 'p', 'page', 'upcoming', 'setlist', 'year', 'country', 'date']) !== [] || count(array_filter($query, 'is_array')) > 0) {
+        if (array_diff(array_keys($query), ['artist', 'tour', 'venue', 'query', 'p', 'page', 'upcoming', 'setlist', 'year', 'country', 'date']) !== [] || count(array_filter($query, is_array(...))) > 0) {
             throw new CatalogProviderUnavailable;
         }
 

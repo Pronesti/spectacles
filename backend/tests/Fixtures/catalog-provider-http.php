@@ -39,7 +39,7 @@ config([
 ]);
 Config::preventStrayRequests();
 if (($state['upstream503'] ?? false) === true) {
-    ProviderHttp::fake(fn () => ProviderHttp::response(['message' => 'Fixture unavailable'], 503));
+    ProviderHttp::fake(fn (): MockResponse => ProviderHttp::response(['message' => 'Fixture unavailable'], 503));
 } else {
     $responses = require __DIR__.'/catalog-provider-http-responses.php';
     if (! is_array($responses)) {

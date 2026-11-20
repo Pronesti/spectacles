@@ -6,6 +6,7 @@ use App\Http\CatalogProviderData;
 use App\Http\CatalogProviderSelection;
 use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\CatalogVenueData;
+use App\Http\Data\PerformancePreviewData;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderPageData;
 use App\Http\Data\ProviderPerformanceSearchData;
@@ -37,34 +38,34 @@ class CatalogProviderController extends Controller
 
     public function tours(CatalogProviderRequest $request, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->tours(ProviderTourSearchData::from($request->validated())), true);
+        return $this->respond(fn (): ProviderPageData => $discovery->tours(ProviderTourSearchData::from($request->validated())), true);
     }
 
     public function performances(CatalogProviderRequest $request, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->performances(ProviderPerformanceSearchData::from($request->validated())), true);
+        return $this->respond(fn (): ProviderPageData => $discovery->performances(ProviderPerformanceSearchData::from($request->validated())), true);
     }
 
     public function preview(CatalogProviderRequest $request, string $id, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->preview($id, $request->safe()->string('locator')->value()));
+        return $this->respond(fn (): PerformancePreviewData => $discovery->preview($id, $request->safe()->string('locator')->value()));
     }
 
     public function venue(CatalogProviderRequest $request, string $id, SetlistFmDiscovery $discovery): JsonResponse
     {
         $venueUrl = $request->validated('venueUrl');
 
-        return $this->respond(fn () => $discovery->venue($id, is_string($venueUrl) ? $venueUrl : null));
+        return $this->respond(fn (): ProviderVenueData => $discovery->venue($id, is_string($venueUrl) ? $venueUrl : null));
     }
 
     public function places(CatalogProviderRequest $request, MusicBrainzPlaces $places): JsonResponse
     {
-        return $this->respond(fn () => $places->search($request->safe()->string('q')->value()), true);
+        return $this->respond(fn (): ProviderPageData => $places->search($request->safe()->string('q')->value()), true);
     }
 
     public function place(CatalogProviderRequest $request, string $mbid, MusicBrainzPlaces $places): JsonResponse
     {
-        return $this->respond(fn () => $places->detail($mbid));
+        return $this->respond(fn (): ProviderVenueData => $places->detail($mbid));
     }
 
     public function catalogVenue(CatalogProviderRequest $request, string $uuid): JsonResponse

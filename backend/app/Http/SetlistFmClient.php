@@ -57,7 +57,7 @@ class SetlistFmClient
             });
         } catch (CatalogProviderUnavailable $failure) {
             throw $failure;
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
             throw new CatalogProviderUnavailable;
         }
     }

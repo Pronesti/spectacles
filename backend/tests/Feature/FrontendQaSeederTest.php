@@ -25,19 +25,19 @@ class FrontendQaSeederTest extends TestCase
         $this->assertDatabaseCount('attendances', 12);
         $this->assertDatabaseCount('venues', 6);
         $this->assertDatabaseCount('setlist_entries', 30);
-        $this->assertSame(12, AttendanceMember::query()->where('user_id', $user->id)->count());
-        $this->assertSame(0, AttendanceMember::query()->where('user_id', $other->id)->count());
+        expect(AttendanceMember::query()->where('user_id', $user->id)->count())->toBe(12)
+            ->and(AttendanceMember::query()->where('user_id', $other->id)->count())->toBe(0);
         $attendance = Attendance::query()->firstOrFail();
         $attendance->update(['notes' => 'My edit']);
         $this->seed(FrontendQaSeeder::class);
         $this->assertDatabaseCount('attendances', 12);
         $this->assertDatabaseCount('setlist_entries', 30);
-        $this->assertSame('My edit', $this->present($attendance->fresh())->notes);
-        $this->assertSame($password, $this->present($user->fresh())->password);
-        $this->assertTrue(Event::query()->whereNull('year')->exists());
-        $this->assertTrue(Event::query()->whereNotNull('year')->whereNull('month')->exists());
-        $this->assertTrue(Venue::query()->whereNull('lat')->exists());
-        $this->assertSame(5, SetlistEntry::query()->where('is_tape', true)->count());
+        expect($this->present($attendance->fresh())->notes)->toBe('My edit')
+            ->and($this->present($user->fresh())->password)->toBe($password)
+            ->and(Event::query()->whereNull('year')->exists())->toBeTrue()
+            ->and(Event::query()->whereNotNull('year')->whereNull('month')->exists())->toBeTrue()
+            ->and(Venue::query()->whereNull('lat')->exists())->toBeTrue()
+            ->and(SetlistEntry::query()->where('is_tape', true)->count())->toBe(5);
         $this->actingAs($user)->getJson('/api/v1/collection')->assertOk()->assertJsonCount(12, 'data.concerts')->assertJsonCount(6, 'data.venues');
     }
 }

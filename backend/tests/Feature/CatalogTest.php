@@ -18,12 +18,12 @@ class CatalogTest extends TestCase
     {
         $artist = Artist::factory()->create(['name' => 'Björk', 'disambiguation' => null]);
         $other = Artist::factory()->create(['name' => 'Björk', 'disambiguation' => 'Another artist']);
-        $this->assertNotSame($artist->id, $other->id);
-        $this->assertSame('Björk', $this->present($artist->fresh())->name);
+        expect($other->id)->not->toBe($artist->id)
+            ->and($this->present($artist->fresh())->name)->toBe('Björk');
         $song = Song::factory()->create(['title' => 'Canción', 'disambiguation' => null]);
-        $this->assertSame('Canción', $this->present($song->fresh())->title);
-        $this->assertNull(Venue::factory()->create()->lat);
-        $this->assertNotEmpty(Tour::factory()->create()->external_id);
+        expect($this->present($song->fresh())->title)->toBe('Canción')
+            ->and(Venue::factory()->create()->lat)->toBeNull()
+            ->and(Tour::factory()->create()->external_id)->not->toBeEmpty();
     }
 
     public function test_sparse_dates_and_unknown_time_are_not_invented(): void
@@ -32,11 +32,11 @@ class CatalogTest extends TestCase
         $year = Event::factory()->create(['year' => 2024]);
         $month = Event::factory()->create(['year' => 2024, 'month' => 2]);
         $leap = Event::factory()->create(['year' => 2024, 'month' => 2, 'day' => 29, 'local_start_time' => '00:00:00']);
-        $this->assertNull($unknown->year);
-        $this->assertNull($year->month);
-        $this->assertNull($month->day);
-        $this->assertNull($year->local_start_time);
-        $this->assertSame('00:00:00', $this->present($leap->fresh())->local_start_time);
+        expect($unknown->year)->toBeNull()
+            ->and($year->month)->toBeNull()
+            ->and($month->day)->toBeNull()
+            ->and($year->local_start_time)->toBeNull()
+            ->and($this->present($leap->fresh())->local_start_time)->toBe('00:00:00');
     }
 
     public function test_venue_preserves_text_addresses_zero_coordinates_and_timezone(): void
@@ -46,11 +46,11 @@ class CatalogTest extends TestCase
             'country_code' => 'AR', 'lat' => 0, 'lng' => 0,
             'timezone' => 'America/Argentina/Buenos_Aires',
         ])->fresh());
-        $this->assertSame('26-35', $venue->house_number);
-        $this->assertSame('C1414BBC', $venue->postal_code);
-        $this->assertSame('0.0000000', $venue->lat);
+        expect($venue->house_number)->toBe('26-35')
+            ->and($venue->postal_code)->toBe('C1414BBC')
+            ->and($venue->lat)->toBe('0.0000000');
         $event = Event::factory()->create(['venue_id' => $venue->id]);
-        $this->assertNull($event->timezone);
-        $this->assertSame($venue->timezone, $this->present($event->venue)->timezone);
+        expect($event->timezone)->toBeNull()
+            ->and($this->present($event->venue)->timezone)->toBe($venue->timezone);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Data\ConcertDraftData;
 use App\Http\Data\PendingSelectionData;
 use App\Http\Data\ProviderPerformanceData;
 use App\Http\Data\ProviderRefData;
+use App\Http\Data\ProviderTourData;
 use App\Http\Data\TourChoiceDraftData;
 use App\Models\Artist;
 use App\Models\ArtistProviderId;
@@ -25,11 +26,11 @@ class EventDraftResolver
         if (is_string($concert->catalog->eventId)) {
             return Event::where('external_id', $concert->catalog->eventId)->firstOrFail();
         }
-        $value = $binding === null ? null : app(CatalogProviderSelection::class)->performance($binding->selection, 'pendingCatalog.event.selection');
+        $value = $binding instanceof PendingSelectionData ? app(CatalogProviderSelection::class)->performance($binding->selection, 'pendingCatalog.event.selection') : null;
         if ($value !== null) {
             $this->validateGroup($concert, $venue, $value);
             $existing = $this->existing($value->ref);
-            if ($existing !== null) {
+            if ($existing instanceof Event) {
                 return $this->compatible($existing, $concert, $venue);
             }
         }
@@ -63,7 +64,7 @@ class EventDraftResolver
             });
         } catch (UniqueConstraintViolationException $failure) {
             $winner = $value === null ? null : $this->existing($value->ref);
-            if ($winner === null) {
+            if (! $winner instanceof Event) {
                 throw $failure;
             }
 
@@ -83,7 +84,7 @@ class EventDraftResolver
         $artistId = $concert->catalog->artistIds[0] ?? null;
         $artist = $artistId === null ? null : Artist::where('external_id', $artistId)->first();
         $matches = $matches && $artist !== null && $artist->providerIds()->where($value->artist->ref->tuple())->exists();
-        if ($value->tour === null) {
+        if (! $value->tour instanceof ProviderTourData) {
             if ($value->namedTour() !== null) {
                 $matches = $matches && count($tours) === 1 && $tours[0]->catalogId === null && $tours[0]->name === $value->namedTour();
             } else {
@@ -94,7 +95,7 @@ class EventDraftResolver
         }
         $venueMatches = false;
         foreach ($value->venue->identities() as $ref) {
-            $venueMatches = $venueMatches || $venue !== null && $venue->providerIds()->where($ref->tuple())->exists();
+            $venueMatches = $venueMatches || $venue instanceof Venue && $venue->providerIds()->where($ref->tuple())->exists();
         }
         if (! $matches || ! $venueMatches) {
             throw ValidationException::withMessages(['pendingCatalog.event.selection' => 'The Artist, Tour, Venue or date changed. Reselect the performance or detach it for manual creation.']);

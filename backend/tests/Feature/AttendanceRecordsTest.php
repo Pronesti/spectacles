@@ -23,13 +23,13 @@ class AttendanceRecordsTest extends TestCase
         $event = Event::factory()->create();
         $owner = User::factory()->create();
         $attendance = Attendance::factory()->create(['event_id' => $event->id, 'owner_user_id' => $owner->id]);
-        $this->assertSame(1, Event::count());
-        $this->assertSame(1, User::count());
+        expect(Event::count())->toBe(1)
+            ->and(User::count())->toBe(1);
         $member = $attendance->members()->sole();
-        $this->assertTrue($this->present($member->user)->is($owner));
-        $this->assertSame($event->id, $member->event_id);
-        $this->assertFalse($member->interested);
-        $this->assertFalse($member->tickets_bought);
+        expect($this->present($member->user)->is($owner))->toBeTrue()
+            ->and($member->event_id)->toBe($event->id)
+            ->and($member->interested)->toBeFalse()
+            ->and($member->tickets_bought)->toBeFalse();
     }
 
     public function test_factory_preserves_existing_owner_membership(): void
@@ -39,10 +39,10 @@ class AttendanceRecordsTest extends TestCase
             ->has(AttendanceMember::factory()->for($owner, 'user')
                 ->state(['tickets_bought' => true, 'interested' => true]), 'members')->create();
         $member = $attendance->members()->sole();
-        $this->assertSame($owner->id, $member->user_id);
-        $this->assertSame($attendance->event_id, $member->event_id);
-        $this->assertTrue($member->tickets_bought);
-        $this->assertTrue($member->interested);
+        expect($member->user_id)->toBe($owner->id)
+            ->and($member->event_id)->toBe($attendance->event_id)
+            ->and($member->tickets_bought)->toBeTrue()
+            ->and($member->interested)->toBeTrue();
     }
 
     public function test_membership_foreign_key_and_event_uniqueness_are_database_rules(): void
@@ -66,12 +66,12 @@ class AttendanceRecordsTest extends TestCase
         $guest = AttendanceMember::factory()->create(['attendance_id' => $a->id, 'interested' => true]);
         AttendanceMemberSeat::factory()->count(2)->create(['attendance_member_id' => $guest->id]);
         $owner->update(['tickets_bought' => true]);
-        $this->assertFalse($this->present($owner->fresh())->interested);
-        $this->assertFalse($this->present($guest->fresh())->tickets_bought);
-        $this->assertSame(2, $guest->seats()->count());
+        expect($this->present($owner->fresh())->interested)->toBeFalse()
+            ->and($this->present($guest->fresh())->tickets_bought)->toBeFalse()
+            ->and($guest->seats()->count())->toBe(2);
         $before = $a->members()->count();
         $invite = AttendanceInvitation::factory()->create(['attendance_id' => $a->id]);
-        $this->assertSame($before, $a->members()->count());
+        expect($a->members()->count())->toBe($before);
         $row = $invite->getAttributes();
         unset($row['id']);
         $row['external_id'] = (string) Str::uuid7();
@@ -80,7 +80,7 @@ class AttendanceRecordsTest extends TestCase
         AttendanceInvitation::factory()->create([
             'attendance_id' => $a->id, 'recipient_user_id' => $invite->recipient_user_id,
         ]);
-        $this->assertSame('other', AttendanceLink::factory()->create(['attendance_id' => $a->id])->type);
+        expect(AttendanceLink::factory()->create(['attendance_id' => $a->id])->type)->toBe('other');
     }
 
     public function test_failed_owner_membership_rolls_back_attendance_factory(): void
@@ -91,6 +91,6 @@ class AttendanceRecordsTest extends TestCase
         $this->assertDatabaseRejects(fn () => Attendance::factory()->create([
             'event_id' => $event->id, 'owner_user_id' => $owner->id,
         ]));
-        $this->assertSame(1, Attendance::count());
+        expect(Attendance::count())->toBe(1);
     }
 }

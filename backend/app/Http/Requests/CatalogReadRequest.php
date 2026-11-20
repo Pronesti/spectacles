@@ -10,12 +10,12 @@ use Illuminate\Validation\Validator;
 
 class CatalogReadRequest extends FormRequest
 {
-    private const DEFAULT_INCLUDES = [
+    private const array DEFAULT_INCLUDES = [
         'events' => ['venue', 'artistLinks.artist'],
         'tours' => ['artistLinks.artist'],
     ];
 
-    private const ALLOWED_INCLUDES = [
+    private const array ALLOWED_INCLUDES = [
         'events' => ['venue', 'artistLinks', 'artistLinks.artist', 'tourLinks', 'tourLinks.tour', 'tourLinks.tour.artistLinks', 'tourLinks.tour.artistLinks.artist'],
         'tours' => ['artistLinks', 'artistLinks.artist'],
     ];

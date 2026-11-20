@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class MusicBrainzPlaces
 {
-    public function __construct(private MusicBrainzClient $client, private SetlistFmDiscovery $discovery, private VenueImageClient $images) {}
+    public function __construct(private readonly MusicBrainzClient $client, private readonly SetlistFmDiscovery $discovery, private readonly VenueImageClient $images) {}
 
     public function search(string $q): ProviderPageData
     {
@@ -38,7 +38,7 @@ class MusicBrainzPlaces
             return array_map(fn (mixed $place): ProviderVenueData => $this->normalize(UntrustedPayload::parse(MusicBrainzEntityPayloadData::class, $place, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable)), array_slice($page->places, 0, 10));
         });
 
-        return ProviderPageData::of(array_map(fn (ProviderVenueData $row): ProviderVenueData => $this->discovery->attachVenue($row), $rows), null, true);
+        return ProviderPageData::of(array_map($this->discovery->attachVenue(...), $rows), null, true);
     }
 
     public function detail(string $mbid): ProviderVenueData

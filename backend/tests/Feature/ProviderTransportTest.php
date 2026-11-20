@@ -47,9 +47,9 @@ class ProviderTransportTest extends TestCase
         $connector->send($request);
         $sent = $this->present($sent);
 
-        $this->assertSame($url, (string) $sent->getUri());
-        $this->assertSame('Agent/1.0', $sent->headers()->get('User-Agent'));
-        $this->assertEquals([RequestOptions::CONNECT_TIMEOUT => 2, RequestOptions::TIMEOUT => 5, RequestOptions::ALLOW_REDIRECTS => false, RequestOptions::STREAM => true], $sent->config()->all());
+        expect((string) $sent->getUri())->toBe($url)
+            ->and($sent->headers()->get('User-Agent'))->toBe('Agent/1.0')
+            ->and($sent->config()->all())->toEqual([RequestOptions::CONNECT_TIMEOUT => 2, RequestOptions::TIMEOUT => 5, RequestOptions::ALLOW_REDIRECTS => false, RequestOptions::STREAM => true]);
     }
 
     public function test_streamed_bodies_are_accepted_up_to_the_cap_and_rejected_beyond_it(): void
@@ -60,7 +60,7 @@ class ProviderTransportTest extends TestCase
             MockResponse::make(str_repeat('a', ProviderConnector::MAX_BODY_BYTES + 1)),
         ]));
 
-        $this->assertSame(ProviderConnector::MAX_BODY_BYTES, strlen($this->present(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))))));
-        $this->assertNull(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))));
+        expect($this->present(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData)))))->toHaveLength(ProviderConnector::MAX_BODY_BYTES)
+            ->and(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))))->toBeNull();
     }
 }

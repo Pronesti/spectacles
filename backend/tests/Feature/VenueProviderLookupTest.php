@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Http\CatalogProviderSelection;
 use App\Http\Data\ProviderEntityInputData;
-use App\Http\Data\ProviderVenueData;
 use App\Models\User;
 use App\Models\Venue;
 use App\Models\VenueProviderId;
@@ -34,8 +33,9 @@ class VenueProviderLookupTest extends TestCase
     {
         $responses = [];
         foreach ($this->arrayAt(require base_path('tests/Fixtures/catalog-provider-http-responses.php')) as $pattern => $response) {
-            $this->assertIsString($pattern);
-            $this->assertInstanceOf(MockResponse::class, $response);
+            if (! is_string($pattern) || ! $response instanceof MockResponse) {
+                $this->fail('Provider fixtures must map URL patterns to mock responses.');
+            }
             $responses[$pattern] = $response;
         }
 
@@ -54,13 +54,12 @@ class VenueProviderLookupTest extends TestCase
         ProviderHttp::reset();
         $mbid = '50573105-4880-4a66-b668-0356374918f0';
         $urls = ['https://www.setlist.fm/venue/allstate-arena-rosemont-il-usa-73d6ca11.html', 'https://www.setlist.fm/venue/rosemont-horizon-rosemont-il-usa-63d626d3.html'];
-        ProviderHttp::fake(['https://musicbrainz.org/ws/2/place/*' => ProviderHttp::response(['id' => $mbid, 'name' => 'Allstate Arena', 'relations' => array_map(fn ($url) => ['type' => 'setlistfm', 'target-type' => 'url', 'url' => ['resource' => $url]], $urls)])]);
+        ProviderHttp::fake(['https://musicbrainz.org/ws/2/place/*' => ProviderHttp::response(['id' => $mbid, 'name' => 'Allstate Arena', 'relations' => array_map(fn (string $url): array => ['type' => 'setlistfm', 'target-type' => 'url', 'url' => ['resource' => $url]], $urls)])]);
         $value = $this->get('/api/v1/musicbrainz/places/'.$mbid)->assertOk()->assertJsonCount(2, 'data.0.venueSources')->assertJsonMissingPath('data.0.venueUrl')->json('data.0');
-        $this->assertIsArray($value);
-        $this->assertSame($urls, array_column($this->arrayAt($value, 'venueSources'), 'url'));
+        expect($value)->toBeArray()
+            ->and(array_column($this->arrayAt($value, 'venueSources'), 'url'))->toBe($urls);
         $decoded = app(CatalogProviderSelection::class)->read($this->stringAt($value, 'selection'), 'venue', 'selection');
-        $this->assertInstanceOf(ProviderVenueData::class, $decoded);
-        $this->assertSame(['73d6ca11' => $urls[0], '63d626d3' => $urls[1]], $decoded->sourceUrls());
+        expect($decoded->sourceUrls())->toBe(['73d6ca11' => $urls[0], '63d626d3' => $urls[1]]);
         ProviderHttp::assertSentCount(1);
     }
 
@@ -75,10 +74,9 @@ class VenueProviderLookupTest extends TestCase
     {
         config(['services.venue_images.enabled' => true, 'services.venue_images.wikidata_daily_limit' => 10, 'services.venue_images.commons_daily_limit' => 10]);
         $image = $this->get('/api/v1/musicbrainz/places/50573105-4880-4a66-b668-0356374918f0')->assertOk()->json('data.0.values.image');
-        $this->assertIsArray($image);
-        $this->assertSame('BugWarp', $image['credit']);
-        $this->assertSame('CC BY-SA 4.0', $image['license']);
-        $this->assertStringStartsWith('https://thumb.wikimedia.org/', $this->stringAt($image, 'thumbnailUrl'));
+        expect($image)->toBeArray()
+            ->toMatchArray(['credit' => 'BugWarp', 'license' => 'CC BY-SA 4.0'])
+            ->and($this->stringAt($image, 'thumbnailUrl'))->toStartWith('https://thumb.wikimedia.org/');
         ProviderHttp::assertSentCount(3);
     }
 

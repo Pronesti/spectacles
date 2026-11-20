@@ -55,7 +55,7 @@ class CollectionEndpointsTest extends TestCase
             ->assertJsonPath('data.concerts.0.time', '00:00:07')->assertJsonPath('data.concerts.0.timezone', null)
             ->assertJsonPath('data.concerts.0.interested', false)->assertJsonPath('data.concerts.0.notes', 'My notes')
             ->json('data.concerts.0'));
-        $this->assertNotSame($this->stringAt($saved, 'catalog.artistIds.0'), $this->stringAt($saved, 'catalog.artistIds.1'));
+        expect($this->stringAt($saved, 'catalog.artistIds.1'))->not->toBe($this->stringAt($saved, 'catalog.artistIds.0'));
         $this->actingAs($other)->getJson('/api/v1/collection')->assertJsonPath('data.concerts', []);
         $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertNotFound();
         $this->deleteJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'))->assertNotFound();
@@ -69,11 +69,11 @@ class CollectionEndpointsTest extends TestCase
         $draft = $this->draft();
         $draft['concert']['venueId'] = $venue->external_id;
         $saved = $this->postJson('/api/v1/attendances?except=concerts', $draft)->assertStatus(200)->assertHeader('Cache-Control', 'no-store, private');
-        $this->assertSame(['data'], array_keys($this->arrayAt($saved->json())));
-        $this->assertSame(['version', 'concerts', 'venues'], array_keys($this->arrayAt($saved->json('data'))));
-        $this->assertSame(['id', 'title', 'eventType', 'artists', 'venueId', 'date', 'time', 'timezone', 'interested', 'ticketsBought', 'notes', 'catalog', 'setlist'], array_keys($this->arrayAt($saved->json('data.concerts.0'))));
-        $this->assertSame(['eventId', 'artistIds', 'tours'], array_keys($this->arrayAt($saved->json('data.concerts.0.catalog'))));
-        $this->assertSame(['id', 'catalogId', 'address', 'aliases', 'image', 'region', 'countryCode', 'name', 'city', 'neighborhood', 'lat', 'lng', 'timezone'], array_keys($this->arrayAt($saved->json('data.venues.0'))));
+        expect(array_keys($this->arrayAt($saved->json())))->toBe(['data'])
+            ->and(array_keys($this->arrayAt($saved->json('data'))))->toBe(['version', 'concerts', 'venues'])
+            ->and(array_keys($this->arrayAt($saved->json('data.concerts.0'))))->toBe(['id', 'title', 'eventType', 'artists', 'venueId', 'date', 'time', 'timezone', 'interested', 'ticketsBought', 'notes', 'catalog', 'setlist'])
+            ->and(array_keys($this->arrayAt($saved->json('data.concerts.0.catalog'))))->toBe(['eventId', 'artistIds', 'tours'])
+            ->and(array_keys($this->arrayAt($saved->json('data.venues.0'))))->toBe(['id', 'catalogId', 'address', 'aliases', 'image', 'region', 'countryCode', 'name', 'city', 'neighborhood', 'lat', 'lng', 'timezone']);
         $this->getJson('/api/v1/collection?only=version&include=concerts')->assertOk()->assertHeader('Cache-Control', 'no-store, private')->assertExactJson($this->arrayAt($saved->json()));
     }
 
@@ -82,8 +82,8 @@ class CollectionEndpointsTest extends TestCase
         $this->actingAs(User::factory()->create());
         [$song, $note] = $this->arraysAt($this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0.setlist'));
 
-        $this->assertSame(['id', 'type', 'title', 'artist', 'tape', 'artistCatalogId'], array_keys($song));
-        $this->assertSame(['id', 'type', 'title', 'artist', 'tape'], array_keys($note));
+        expect(array_keys($song))->toBe(['id', 'type', 'title', 'artist', 'tape', 'artistCatalogId'])
+            ->and(array_keys($note))->toBe(['id', 'type', 'title', 'artist', 'tape']);
     }
 
     public function test_setlist_reorder_and_delete_are_atomic_and_undo_can_restore_public_entry_ids(): void
@@ -111,7 +111,7 @@ class CollectionEndpointsTest extends TestCase
         $saved = $this->arrayAt($this->postJson('/api/v1/attendances', $draft)->assertOk()->assertJsonPath('data.concerts.0.title', 'Shared Event')->json('data.concerts.0'));
         $saved['notes'] = 'Updated';
         $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.notes', 'Updated');
-        $this->assertSame('Shared Event', $this->present($event->fresh())->title);
+        expect($this->present($event->fresh())->title)->toBe('Shared Event');
         $this->postJson('/api/v1/attendances', $draft)->assertConflict();
     }
 
@@ -127,9 +127,9 @@ class CollectionEndpointsTest extends TestCase
         $saved['catalog'] = $catalog;
         $saved['title'] = 'Edited';
         $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.title', 'Edited');
-        $this->assertSame('Noche Ñ', Event::query()->where('external_id', $oldEvent)->firstOrFail()->title);
+        expect(Event::query()->where('external_id', $oldEvent)->firstOrFail()->title)->toBe('Noche Ñ');
         $this->assertDatabaseHas('attendance_member_seats', ['external_id' => $seat->external_id, 'label' => 'Keep this seat']);
-        $this->assertSame(1, Attendance::query()->count());
+        expect(Attendance::query()->count())->toBe(1);
     }
 
     public function test_invalid_partial_dates_and_note_identity_or_tape_are_rejected_without_writes(): void
@@ -152,7 +152,9 @@ class CollectionEndpointsTest extends TestCase
         $attendance = Attendance::query()->firstOrFail();
         $attendance->members()->create(['event_id' => $attendance->event_id, 'user_id' => $guest->id, 'interested' => true, 'tickets_bought' => false]);
         $guestConcert = $this->actingAs($guest)->getJson('/api/v1/collection')->assertOk()->assertJsonPath('data.concerts.0.ticketsBought', false)->json('data.concerts.0');
-        $this->assertIsArray($guestConcert);
+        if (! is_array($guestConcert)) {
+            $this->fail('The guest concert must be an object.');
+        }
         $guestConcert['notes'] = 'Shared notes';
         $guestConcert['interested'] = false;
         $this->patchJson('/api/v1/attendances/'.$id, ['concert' => $guestConcert])->assertOk();

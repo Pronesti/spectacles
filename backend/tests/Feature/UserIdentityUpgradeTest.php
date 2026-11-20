@@ -20,26 +20,27 @@ class UserIdentityUpgradeTest extends TestCase
         DB::setDefaultConnection('identity_upgrade');
         try {
             $installer = require database_path('migrations/0001_01_01_000000_create_users_table.php');
-            $this->assertInstanceOf(Migration::class, $installer);
-            $this->assertTrue(method_exists($installer, 'up'));
+            if (! $installer instanceof Migration || ! method_exists($installer, 'up')) {
+                $this->fail('The users migration must define up().');
+            }
             $installer->up();
             DB::table('users')->insert([
                 'name' => 'Existing User', 'email' => 'existing@example.com',
                 'password' => 'retained-hash',
             ]);
             $upgrade = require database_path('migrations/2026_10_22_000001_add_public_identity_to_users.php');
-            $this->assertInstanceOf(Migration::class, $upgrade);
-            $this->assertTrue(method_exists($upgrade, 'up'));
-            $this->assertTrue(method_exists($upgrade, 'down'));
+            if (! $upgrade instanceof Migration || ! method_exists($upgrade, 'up') || ! method_exists($upgrade, 'down')) {
+                $this->fail('The identity migration must define up() and down().');
+            }
             $upgrade->up();
             $row = $this->present(DB::table('users')->first());
-            $this->assertSame('retained-hash', $row->password);
-            $this->assertSame('existing@example.com', $row->email);
-            $this->assertTrue(Str::isUuid($row->external_id));
-            $this->assertNull($row->locale);
+            expect($row->password)->toBe('retained-hash')
+                ->and($row->email)->toBe('existing@example.com')
+                ->and(Str::isUuid($row->external_id))->toBeTrue()
+                ->and($row->locale)->toBeNull();
             $upgrade->down();
-            $this->assertFalse(Schema::hasColumn('users', 'external_id'));
-            $this->assertSame(1, DB::table('users')->count());
+            expect(Schema::hasColumn('users', 'external_id'))->toBeFalse()
+                ->and(DB::table('users')->count())->toBe(1);
         } finally {
             DB::purge('identity_upgrade');
             DB::setDefaultConnection($original);

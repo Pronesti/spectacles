@@ -30,11 +30,6 @@ class MusicBrainzSaveTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /**
      * @return DraftBody
      */
@@ -73,8 +68,8 @@ class MusicBrainzSaveTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $this->pending())->assertOk()->json('data.concerts.0');
-        $this->assertSame($this->stringAt($saved, 'catalog.artistIds.0'), data_get($saved, 'setlist.0.artistCatalogId'));
-        $this->assertNotEmpty(data_get($saved, 'setlist.0.songCatalogId'));
+        expect(data_get($saved, 'setlist.0.artistCatalogId'))->toBe($this->stringAt($saved, 'catalog.artistIds.0'))
+            ->and(data_get($saved, 'setlist.0.songCatalogId'))->not->toBeEmpty();
         $this->actingAs(User::factory()->create())->postJson('/api/v1/attendances', $this->pending())->assertOk();
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('songs', 1);
@@ -140,10 +135,10 @@ class MusicBrainzSaveTest extends TestCase
         $body['concert']['setlist'][] = $row;
         $body['pendingCatalog']['entries'][$row['id']] = $body['pendingCatalog']['entries'][$body['concert']['setlist'][0]['id']];
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertCount(2, $this->arrayAt($saved, 'setlist'));
-        $this->assertSame($this->stringAt($saved, 'setlist.0.songCatalogId'), data_get($saved, 'setlist.1.songCatalogId'));
-        $this->assertSame('Saved name', $this->present($artist->fresh())->name);
-        $this->assertSame('Keep', $this->present($artist->fresh())->disambiguation);
+        expect($this->arrayAt($saved, 'setlist'))->toHaveCount(2)
+            ->and(data_get($saved, 'setlist.1.songCatalogId'))->toBe($this->stringAt($saved, 'setlist.0.songCatalogId'))
+            ->and($this->present($artist->fresh())->name)->toBe('Saved name')
+            ->and($this->present($artist->fresh())->disambiguation)->toBe('Keep');
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('songs', 1);
     }
@@ -178,9 +173,9 @@ class MusicBrainzSaveTest extends TestCase
         $body['concert']['setlist'][0]['artist'] = '';
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertSame($this->arrayAt($original, 'artists'), data_get($saved, 'artists'));
-        $this->assertSame($this->stringAt($original, 'catalog.eventId'), data_get($saved, 'catalog.eventId'));
-        $this->assertNotEmpty(data_get($saved, 'setlist.0.songCatalogId'));
+        expect(data_get($saved, 'artists'))->toBe($this->arrayAt($original, 'artists'))
+            ->and(data_get($saved, 'catalog.eventId'))->toBe($this->stringAt($original, 'catalog.eventId'))
+            ->and(data_get($saved, 'setlist.0.songCatalogId'))->not->toBeEmpty();
         $this->assertDatabaseCount('events', 1);
     }
 
@@ -208,12 +203,12 @@ class MusicBrainzSaveTest extends TestCase
         $saved = $this->postJson('/api/v1/attendances', $this->withTour())
             ->assertOk()->json('data.concerts.0');
         $tour = Tour::query()->where('external_id', $this->stringAt($saved, 'catalog.tours.0.catalogId'))->firstOrFail();
-        $this->assertNotSame('23aa9d94-ffc6-4160-a7f3-31cfba1ea646', $tour->external_id);
+        expect($tour->external_id)->not->toBe('23aa9d94-ffc6-4160-a7f3-31cfba1ea646');
         $tour->update(['name' => 'Locally reviewed name']);
         $second = $this->actingAs(User::factory()->create())
             ->postJson('/api/v1/attendances', $this->withTour())->assertOk()->json('data.concerts.0');
-        $this->assertSame($tour->external_id, data_get($second, 'catalog.tours.0.catalogId'));
-        $this->assertSame('Locally reviewed name', data_get($second, 'catalog.tours.0.name'));
+        expect(data_get($second, 'catalog.tours.0.catalogId'))->toBe($tour->external_id)
+            ->and(data_get($second, 'catalog.tours.0.name'))->toBe('Locally reviewed name');
         $this->assertDatabaseCount('tours', 1);
         $this->assertDatabaseCount('tour_provider_ids', 1);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'musicbrainz',
@@ -309,7 +304,7 @@ class MusicBrainzSaveTest extends TestCase
         $body['pendingCatalog']['tourChoices'][1] = $second;
         $body['concert']['catalog']['tours'][] = ['name' => 'The Eras Tour', 'catalogId' => null];
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertNotSame($this->stringAt($saved, 'catalog.tours.0.catalogId'), $this->stringAt($saved, 'catalog.tours.1.catalogId'));
+        expect($this->stringAt($saved, 'catalog.tours.1.catalogId'))->not->toBe($this->stringAt($saved, 'catalog.tours.0.catalogId'));
         $this->assertDatabaseCount('tour_provider_ids', 2);
         $manual = $this->withTour();
         $key = array_key_first($manual['pendingCatalog']['tours']);

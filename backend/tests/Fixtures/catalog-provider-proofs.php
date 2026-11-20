@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Decrypted payloads of v2 provider proofs, exactly as issued before the Data refactor.
  */

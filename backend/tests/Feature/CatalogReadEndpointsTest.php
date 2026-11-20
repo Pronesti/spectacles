@@ -72,7 +72,7 @@ class CatalogReadEndpointsTest extends TestCase
         ArtistProviderId::factory()->create(['artist_id' => $b->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
         $this->read('tours', ['filter' => ['artist_uuids' => [$a->external_id], 'q' => 'Tour']])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tours[0]);
         $union = $this->read('tours', ['filter' => ['artist_uuids' => [$a->external_id], 'artist_mbids' => [$mbid]]])->assertOk()->assertJsonCount(2, 'data');
-        $this->assertEqualsCanonicalizing(array_slice($tours, 0, 2), array_column($this->arrayAt($union->json('data')), 'id'));
+        expect(array_column($this->arrayAt($union->json('data')), 'id'))->toEqualCanonicalizing(array_slice($tours, 0, 2));
         $this->read('tours', ['filter' => ['artist_uuid' => $a->external_id]])->assertOk()->assertJsonCount(1, 'data');
         $this->read('tours', ['filter' => ['artist_mbids' => [(string) Str::uuid()]]])->assertOk()->assertJsonCount(0, 'data');
         $this->read('tours', ['filter' => ['artist_mbids' => ['bad']]])->assertUnprocessable();
@@ -111,13 +111,13 @@ class CatalogReadEndpointsTest extends TestCase
     {
         $tour = Tour::factory()->create(['name' => 'México lindo y querido']);
         $migration = require database_path('migrations/2026_10_26_022251_add_search_name_to_tours_table.php');
-        $this->assertInstanceOf(Migration::class, $migration);
-        $this->assertTrue(method_exists($migration, 'down'));
-        $this->assertTrue(method_exists($migration, 'up'));
+        if (! $migration instanceof Migration || ! method_exists($migration, 'down') || ! method_exists($migration, 'up')) {
+            $this->fail('The migration must define up() and down().');
+        }
         $migration->down();
         $migration->up();
 
-        $this->assertSame('mexico lindo y querido', DB::table('tours')->where('id', $tour->id)->value('search_name'));
+        expect(DB::table('tours')->where('id', $tour->id)->value('search_name'))->toBe('mexico lindo y querido');
         $this->read('tours', ['filter' => ['q' => 'mexico lindo y querido']])
             ->assertOk()->assertJsonPath('data.0.id', $tour->external_id)->assertJsonPath('data.0.attributes.name', 'México lindo y querido');
     }
@@ -166,23 +166,19 @@ class CatalogReadEndpointsTest extends TestCase
             ->assertJsonPath('data.attributes.month', null)->assertJsonPath('data.attributes.day', null)
             ->assertJsonPath('data.attributes.local_start_time', '00:00:00')->assertJsonPath('data.attributes.timezone', null);
         $document = $this->arrayAt($response->json());
-        $this->assertSame([$first->external_id, $second->external_id, $last->external_id], array_column($this->arrayAt($document, 'data.relationships.artistLinks.data'), 'id'));
+        expect(array_column($this->arrayAt($document, 'data.relationships.artistLinks.data'), 'id'))->toBe([$first->external_id, $second->external_id, $last->external_id]);
         $included = collect($this->arrayAt($document, 'included'));
         $publicVenue = $this->arrayAt($included->firstWhere('type', 'venues'));
-        $this->assertSame($venue->external_id, $publicVenue['id']);
+        expect($publicVenue['id'])->toBe($venue->external_id);
         $venueAttributes = $this->arrayAt($publicVenue, 'attributes');
-        $this->assertArrayHasKey('street', $venueAttributes);
-        $this->assertNull($venueAttributes['street']);
-        $this->assertSame('26-35', $venueAttributes['house_number']);
-        $this->assertSame('0.0000000', $venueAttributes['lat']);
-        $this->assertSame($tour->external_id, $this->arrayAt($included->firstWhere('type', 'tours'))['id']);
-        $this->assertTrue($included->contains('id', $this->present($roster->artist)->external_id));
+        expect($venueAttributes)->toHaveKey('street')
+            ->and($venueAttributes['street'])->toBeNull()
+            ->and($venueAttributes)->toMatchArray(['house_number' => '26-35', 'lat' => '0.0000000'])
+            ->and($this->arrayAt($included->firstWhere('type', 'tours'))['id'])->toBe($tour->external_id)
+            ->and($included->contains('id', $this->present($roster->artist)->external_id))->toBeTrue();
         $this->assertSharedOnly($document);
         $content = $response->getContent();
-        $this->assertIsString($content);
-        $this->assertStringNotContainsString('private-attendance-marker', $content);
-        $this->assertStringNotContainsString('private-setlist-marker', $content);
-        $this->assertStringNotContainsString('private-own-marker', $content);
+        expect($content)->toBeString()->not->toContain('private-attendance-marker')->not->toContain('private-setlist-marker')->not->toContain('private-own-marker');
         $unknown = Event::factory()->create(['venue_id' => null]);
         $this->read('events/'.$unknown->external_id)->assertOk()->assertJsonPath('data.relationships.venue.data', null)
             ->assertJsonPath('data.relationships.artistLinks.data', [])->assertJsonPath('data.attributes.year', null);
@@ -236,13 +232,13 @@ class CatalogReadEndpointsTest extends TestCase
         Song::factory()->create(['title' => 'De música ligera', 'disambiguation' => 'Different work']);
         SongLink::factory()->create(['song_id' => $song->id]);
         $response = $this->read('songs', ['filter' => ['q' => 'música', 'disambiguation' => 'Cerati']])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $song->external_id);
-        $this->assertArrayNotHasKey('relationships', $this->arrayAt($response->json('data.0')));
-        $this->assertArrayNotHasKey('included', $this->arrayAt($response->json()));
+        expect($this->arrayAt($response->json('data.0')))->not->toHaveKey('relationships')
+            ->and($this->arrayAt($response->json()))->not->toHaveKey('included');
         $tour = Tour::factory()->create(['name' => 'Gira continental']);
         TourArtist::factory()->create(['tour_id' => $tour->id, 'artist_id' => $artist->id]);
         Tour::factory()->create(['name' => 'Gira continental']);
         $response = $this->read('tours', ['filter' => ['q' => 'continental', 'artist_uuid' => $artist->external_id]])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tour->external_id);
-        $this->assertTrue(collect($this->arrayAt($response->json('included')))->contains('id', $artist->external_id));
+        expect(collect($this->arrayAt($response->json('included')))->contains('id', $artist->external_id))->toBeTrue();
         $this->read('tours', ['filter' => ['artist_uuid' => (string) Str::uuid()]])->assertJsonPath('data', []);
     }
 
@@ -254,7 +250,7 @@ class CatalogReadEndpointsTest extends TestCase
         $a = Artist::factory()->create(['name' => 'Sigur Rós']);
         $b = Artist::factory()->create(['name' => 'Sigur Rós']);
         $response = $this->read('artists', ['filter' => ['q' => 'Sigur Rós']])->assertJsonCount(2, 'data');
-        $this->assertEqualsCanonicalizing([$a->external_id, $b->external_id], array_column($this->arrayAt($response->json('data')), 'id'));
+        expect(array_column($this->arrayAt($response->json('data')), 'id'))->toEqualCanonicalizing([$a->external_id, $b->external_id]);
         $this->read('artists', ['filter' => ['q' => "' OR 1=1 --"]])->assertOk()->assertJsonPath('data', []);
     }
 
@@ -264,7 +260,7 @@ class CatalogReadEndpointsTest extends TestCase
         ArtistProviderId::factory()->create(['artist_id' => $artist->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => 'known-artist']);
         $tuple = ['provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => 'known-artist'];
         $response = $this->read('artists', ['filter' => $tuple])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $artist->external_id);
-        $this->assertArrayNotHasKey('relationships', $this->arrayAt($response->json('data.0')));
+        expect($this->arrayAt($response->json('data.0')))->not->toHaveKey('relationships');
         $this->read('artists', ['filter' => ['provider' => 'musicbrainz']])->assertUnprocessable();
         $this->read('artists', ['filter' => [...$tuple, 'resource_type' => 'work']])->assertOk()->assertJsonPath('data', []);
         $events = Event::factory()->count(2)->create();
@@ -293,12 +289,14 @@ class CatalogReadEndpointsTest extends TestCase
         $expected = $items->sortBy('external_id')->pluck('external_id')->all();
         $first = $this->read($catalog, ['filter' => ['q' => 'Repeated'], 'per_page' => 2])->assertOk()->assertJsonCount(2, 'data')->assertJsonPath('meta.total', 3);
         $second = $this->read($catalog, ['filter' => ['q' => 'Repeated'], 'per_page' => 2, 'page' => 2])->assertOk()->assertJsonCount(1, 'data');
-        $this->assertSame($expected, [...array_column($this->arrayAt($first->json('data')), 'id'), ...array_column($this->arrayAt($second->json('data')), 'id')]);
+        expect([...array_column($this->arrayAt($first->json('data')), 'id'), ...array_column($this->arrayAt($second->json('data')), 'id')])->toBe($expected);
         $nextQuery = parse_url($this->stringAt($first->json(), 'links.next'), PHP_URL_QUERY);
-        $this->assertIsString($nextQuery);
+        if (! is_string($nextQuery)) {
+            $this->fail('The next page link has no query string.');
+        }
         parse_str($nextQuery, $next);
-        $this->assertSame('Repeated', data_get($next, 'filter.q'));
-        $this->assertSame('2', $next['page']);
+        expect(data_get($next, 'filter.q'))->toBe('Repeated')
+            ->and($next['page'])->toBe('2');
         $this->read($catalog, ['page' => 99])->assertOk()->assertJsonPath('data', []);
         $this->read($catalog, ['per_page' => 101])->assertUnprocessable();
         $this->read($catalog, ['page' => 0])->assertUnprocessable();
@@ -386,7 +384,7 @@ class CatalogReadEndpointsTest extends TestCase
         for ($index = 0; $index < 20; $index++) {
             $this->eventGraph();
         }
-        $this->assertLessThanOrEqual($single + 1, $count());
+        expect($count())->toBeLessThanOrEqual($single + 1);
     }
 
     public function test_empty_text_and_safe_includes_preserve_default_relationships(): void
@@ -398,7 +396,7 @@ class CatalogReadEndpointsTest extends TestCase
             $response = $this->read('events', ['filter' => ['q' => '   '], 'include' => $include])->assertOk();
             $response->assertJsonPath('data.0.relationships.venue.data', null)
                 ->assertJsonPath('data.0.relationships.artistLinks.data', []);
-            $this->assertArrayNotHasKey('tourLinks', $this->arrayAt($response->json('data.0.relationships')));
+            expect($this->arrayAt($response->json('data.0.relationships')))->not->toHaveKey('tourLinks');
             $this->assertSharedOnly($this->arrayAt($response->json()));
         }
         foreach (['tourLinks', 'tourLinks.tour', 'tourLinks.tour.artistLinks', 'tourLinks.tour.artistLinks.artist'] as $include) {
@@ -448,13 +446,13 @@ class CatalogReadEndpointsTest extends TestCase
     {
         $data = data_get($document, 'data.id') !== null ? [$this->arrayAt($document, 'data')] : $this->arrayAt($document, 'data');
         foreach ($this->arraysAt([...$data, ...$this->arrayAt($document['included'] ?? [])]) as $object) {
-            $this->assertContains($object['type'], ['events', 'artists', 'venues', 'songs', 'tours', 'event_artists', 'event_tours', 'tour_artists']);
-            $this->assertTrue(Str::isUuid($object['id']));
+            expect(['events', 'artists', 'venues', 'songs', 'tours', 'event_artists', 'event_tours', 'tour_artists'])->toContain($object['type'])
+                ->and(Str::isUuid($object['id']))->toBeTrue();
             foreach (array_keys($this->arrayAt($object['attributes'] ?? [])) as $key) {
-                $this->assertFalse(in_array($key, ['id', 'external_id', 'notes', 'email', 'password'], true) || (is_string($key) && str_ends_with($key, '_id')));
+                expect(in_array($key, ['id', 'external_id', 'notes', 'email', 'password'], true) || (is_string($key) && str_ends_with($key, '_id')))->toBeFalse();
             }
             foreach (array_keys($this->arrayAt($object['relationships'] ?? [])) as $name) {
-                $this->assertContains($name, ['venue', 'artistLinks', 'artist', 'tourLinks', 'tour']);
+                expect(['venue', 'artistLinks', 'artist', 'tourLinks', 'tour'])->toContain($name);
             }
         }
     }

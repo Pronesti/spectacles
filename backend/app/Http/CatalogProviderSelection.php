@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Data\ManualPerformanceData;
+use App\Http\Data\ManualPerformanceInputData;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderLocatorData;
 use App\Http\Data\ProviderLocatorInputData;
@@ -51,7 +52,7 @@ class CatalogProviderSelection
             }
 
             return $this->payload($kind, $value->payload);
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
             throw ValidationException::withMessages([$path => 'Select these provider details again or use manual creation.']);
         }
     }
@@ -78,7 +79,7 @@ class CatalogProviderSelection
     {
         try {
             $value = ProviderProofData::from(json_decode(Crypt::decryptString($proof), true, 32, JSON_THROW_ON_ERROR));
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
             throw ValidationException::withMessages([$path => 'Select this Tour again or use manual creation.']);
         }
         if ($value->v === 1) {
@@ -133,7 +134,7 @@ class CatalogProviderSelection
             throw new CatalogProviderUnavailable;
         }
         $manual = new Optional;
-        if ($payload->manual !== null) {
+        if ($payload->manual instanceof ManualPerformanceInputData) {
             $details = $payload->manual;
             $normalized = CatalogProviderData::performance(new ProviderPerformanceInputData(ref: $payload->ref, url: $url, date: $details->date, artist: $details->artist, venue: $details->venue));
             $manual = new ManualPerformanceData($normalized->artist, $normalized->venue, $normalized->date, CatalogProviderData::text($details->tourName, 255, true), null, null);

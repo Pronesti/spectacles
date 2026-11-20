@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $mbid = '55441123-89a2-49ab-ae3f-df7a3e86835a';
 $tour = ['ref' => ['provider' => 'setlist_fm', 'resourceType' => 'tour',
     'externalId' => '2bde703a'], 'values' => ['name' => 'Drama y luz'],
@@ -24,4 +26,4 @@ $performance = ['ref' => ['provider' => 'setlist_fm', 'resourceType' => 'setlist
     'venue' => $venue, 'time' => null, 'timezone' => null, 'selection' => '',
     'localEvent' => null];
 
-return compact('mbid', 'artist', 'tour', 'venue', 'performance');
+return ['mbid' => $mbid, 'artist' => $artist, 'tour' => $tour, 'venue' => $venue, 'performance' => $performance];

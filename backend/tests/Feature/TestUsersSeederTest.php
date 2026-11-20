@@ -24,8 +24,8 @@ class TestUsersSeederTest extends TestCase
             $this->assertDatabaseHas('users', $user);
         }
         $personal = User::query()->where('email', 'me@example.org')->firstOrFail();
-        $this->assertSame('Me Myself', $personal->name);
-        $this->assertTrue(Hash::check('secret-pass', $personal->password));
+        expect($personal->name)->toBe('Me Myself')
+            ->and(Hash::check('secret-pass', $personal->password))->toBeTrue();
     }
 
     public function test_personal_user_is_skipped_without_configured_email(): void
@@ -46,7 +46,7 @@ class TestUsersSeederTest extends TestCase
         $this->seed(TestUsersSeeder::class);
 
         $this->assertDatabaseCount('users', count(TestUsersSeeder::ARTIFICIAL_USERS) + 1);
-        $this->assertSame('Edited Name', $this->present($existing->fresh())->name);
-        $this->assertSame($existing->password, $this->present($existing->fresh())->password);
+        expect($this->present($existing->fresh())->name)->toBe('Edited Name')
+            ->and($this->present($existing->fresh())->password)->toBe($existing->password);
     }
 }

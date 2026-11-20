@@ -7,7 +7,6 @@ use App\Http\CatalogProviderSelection;
 use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderLocatorInputData;
-use App\Http\Data\ProviderPerformanceData;
 use App\Http\Data\ProviderPerformanceInputData;
 use App\Http\MusicBrainzSelection;
 use App\Http\UntrustedPayload;
@@ -24,15 +23,13 @@ class CatalogProviderSelectionTest extends TestCase
         $service = app(CatalogProviderSelection::class);
         $proof = $service->issue('performance', ProviderPerformanceInputData::from($this->arrayAt($f, 'performance')));
         $value = $service->read($proof, 'performance', 'pendingCatalog.event.selection');
-        $this->assertInstanceOf(ProviderPerformanceData::class, $value);
-        $this->assertSame('b4cc196', $value->ref->externalId);
-        $this->assertSame($this->arrayAt($f, 'performance.date'), $value->date->toArray());
-        $this->assertArrayNotHasKey('localEvent', $value->toArray());
-        $this->assertArrayNotHasKey('selection', $value->artist->toArray());
+        expect($value->ref->externalId)->toBe('b4cc196')
+            ->and($value->date->toArray())->toBe($this->arrayAt($f, 'performance.date'))
+            ->and($value->toArray())->not->toHaveKey('localEvent')
+            ->and($value->artist->toArray())->not->toHaveKey('selection');
         ProviderHttp::assertNothingSent();
         $this->travel(24)->hours();
-        $this->expectException(ValidationException::class);
-        $service->read($proof, 'performance', 'pendingCatalog.event.selection');
+        expect(fn () => $service->read($proof, 'performance', 'pendingCatalog.event.selection'))->toThrow(ValidationException::class);
     }
 
     public function test_absent_and_null_tour_names_survive_issue_and_read(): void
@@ -41,10 +38,10 @@ class CatalogProviderSelectionTest extends TestCase
         $service = app(CatalogProviderSelection::class);
         $absent = $service->read($service->issue('performance', ProviderPerformanceInputData::from($this->arrayAt($f, 'performance'))), 'performance', 'selection');
         $named = $service->read($service->issue('performance', ProviderPerformanceInputData::from([...$this->arrayAt($f, 'performance'), 'tourName' => null])), 'performance', 'selection');
-        $this->assertArrayNotHasKey('tourName', $this->arrayAt(json_decode(Crypt::decryptString($service->issue('performance', $absent)), true), 'payload'));
+        expect($this->arrayAt(json_decode(Crypt::decryptString($service->issue('performance', $absent)), true), 'payload'))->not->toHaveKey('tourName');
         $reissued = $this->arrayAt(json_decode(Crypt::decryptString($service->issue('performance', $named)), true), 'payload');
-        $this->assertArrayHasKey('tourName', $reissued);
-        $this->assertNull($reissued['tourName']);
+        expect($reissued)->toHaveKey('tourName')
+            ->and($reissued['tourName'])->toBeNull();
     }
 
     public function test_misshapen_proof_envelopes_are_field_errors(): void
@@ -60,7 +57,7 @@ class CatalogProviderSelectionTest extends TestCase
                 $read();
                 $this->fail('Misshapen proof accepted.');
             } catch (ValidationException $error) {
-                $this->assertSame(['selection'], array_keys($error->errors()));
+                expect(array_keys($error->errors()))->toBe(['selection']);
             }
         }
     }
@@ -74,7 +71,7 @@ class CatalogProviderSelectionTest extends TestCase
                 $service->read($proof, 'performance', 'pendingCatalog.event.selection');
                 $this->fail('Invalid proof accepted.');
             } catch (ValidationException $error) {
-                $this->assertArrayHasKey('pendingCatalog.event.selection', $error->errors());
+                expect($error->errors())->toHaveKey('pendingCatalog.event.selection');
             }
         }
     }
@@ -91,16 +88,16 @@ class CatalogProviderSelectionTest extends TestCase
             'locator' => ['ref' => $this->arrayAt($f, 'performance.ref'), 'url' => $this->stringAt($f, 'performance.url'), 'period' => 'past', 'source' => 'api', 'manual' => ['artist' => $this->arrayAt($f, 'artist'), 'venue' => $this->arrayAt($f, 'venue'), 'date' => $this->arrayAt($f, 'performance.date'), 'tourName' => 'Drama y luz']],
         ];
         foreach ($this->arrayAt($proofs) as $kind => $payload) {
-            $this->assertIsString($kind);
+            expect($kind)->toBeString();
             $stored = json_decode(Crypt::decryptString($service->issue($kind, match ($kind) {
                 'performance' => ProviderPerformanceInputData::from($issued[$kind]),
                 'locator' => ProviderLocatorInputData::from($issued[$kind]),
                 default => ProviderEntityInputData::from($issued[$kind]),
             })), true);
-            $this->assertSame($payload, $this->arrayAt($stored, 'payload'), $kind);
+            expect($this->arrayAt($stored, 'payload'))->toBe($payload);
             $handMade = Crypt::encryptString(json_encode(['v' => 2, 'kind' => $kind, 'payload' => $payload, 'expiresAt' => now()->addHour()->timestamp], JSON_THROW_ON_ERROR));
             $read = $service->read($handMade, $kind, 'selection');
-            $this->assertSame($payload, $read->toArray(), $kind);
+            expect($read->toArray())->toBe($payload);
         }
     }
 
@@ -108,9 +105,8 @@ class CatalogProviderSelectionTest extends TestCase
     {
         $id = fake()->uuid();
         $service = app(CatalogProviderSelection::class);
-        $this->assertSame($id, $service->tour(app(MusicBrainzSelection::class)->issue('series', $id), 'tour')->externalId);
-        $this->expectException(ValidationException::class);
-        $service->tour(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'series', 'mbid' => $id], JSON_THROW_ON_ERROR)), 'tour');
+        expect($service->tour(app(MusicBrainzSelection::class)->issue('series', $id), 'tour')->externalId)->toBe($id)
+            ->and(fn () => $service->tour(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'series', 'mbid' => $id], JSON_THROW_ON_ERROR)), 'tour'))->toThrow(ValidationException::class);
     }
 
     public function test_normalization_rejects_wrong_ids_dates_hosts_and_duplicate_refs(): void

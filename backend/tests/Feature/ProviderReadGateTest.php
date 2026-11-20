@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Http\CatalogProviderUnavailable;
@@ -27,12 +29,11 @@ class ProviderReadGateTest extends TestCase
             return new WikidataImageFileData('Public.jpg');
         };
         $public = $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch);
-        $this->assertInstanceOf(WikidataImageFileData::class, $public);
-        $this->assertSame('Public.jpg', $public->file);
-        $this->assertEquals(new WikidataImageFileData('Public.jpg'), $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch));
+        expect($public->file)->toBe('Public.jpg')
+            ->and($gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch))->toEqual(new WikidataImageFileData('Public.jpg'));
         config(['services.venue_images.commons_daily_limit' => 2]);
         $gate->run('commons', 'search', WikidataImageFileData::class, $fetch);
-        $this->assertSame(2, $calls);
+        expect($calls)->toBe(2);
     }
 
     public function test_pacing_and_quota_return_recoverable_429_without_fetch(): void
@@ -49,7 +50,7 @@ class ProviderReadGateTest extends TestCase
             $gate->run('wikidata', 'two', WikidataImageFileData::class, $fetch);
             $this->fail('Pacing ignored.');
         } catch (CatalogProviderUnavailable $e) {
-            $this->assertSame(429, $e->status);
+            expect($e->status)->toBe(429);
         }
         $this->travel(2)->seconds();
         $gate->run('wikidata', 'two', WikidataImageFileData::class, $fetch);
@@ -58,30 +59,29 @@ class ProviderReadGateTest extends TestCase
             $gate->run('wikidata', 'three', WikidataImageFileData::class, $fetch);
             $this->fail('Quota ignored.');
         } catch (CatalogProviderUnavailable $e) {
-            $this->assertSame(429, $e->status);
-            $this->assertGreaterThan(1, $e->retryAfter);
+            expect($e->status)->toBe(429)
+                ->and($e->retryAfter)->toBeGreaterThan(1);
         }
-        $this->assertSame(2, $calls);
+        expect($calls)->toBe(2);
     }
 
     public function test_failures_are_not_cached_and_lock_contention_never_fetches(): void
     {
         $gate = app(ProviderReadGate::class);
         try {
-            $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => throw new CatalogProviderUnavailable);
+            $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn (): never => throw new CatalogProviderUnavailable);
         } catch (CatalogProviderUnavailable) {
             $this->addToAssertionCount(1);
         }
         $this->travel(2)->seconds();
-        $fresh = $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => new WikidataImageFileData('Fresh.jpg'));
-        $this->assertInstanceOf(WikidataImageFileData::class, $fresh);
-        $this->assertSame('Fresh.jpg', $fresh->file);
+        $fresh = $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn (): WikidataImageFileData => new WikidataImageFileData('Fresh.jpg'));
+        expect($fresh->file)->toBe('Fresh.jpg');
         $lock = Cache::lock('catalog-provider:gate:wikidata', 10);
-        $this->assertTrue($lock->get());
+        expect($lock->get())->toBeTrue();
         try {
-            $gate->run('wikidata', 'blocked', WikidataImageFileData::class, fn () => $this->fail('Contended channel fetched.'));
+            $gate->run('wikidata', 'blocked', WikidataImageFileData::class, fn (): never => $this->fail('Contended channel fetched.'));
         } catch (CatalogProviderUnavailable $e) {
-            $this->assertSame(429, $e->status);
+            expect($e->status)->toBe(429);
         } finally {
             $lock->release();
         }
@@ -103,15 +103,14 @@ class ProviderReadGateTest extends TestCase
             $gate->run('wikidata', 'third', WikidataImageFileData::class, $fetch, true);
             $this->fail('Quota ignored by chained reads.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
+            expect($failure->status)->toBe(429);
         }
-        $this->assertSame(2, $calls);
+        expect($calls)->toBe(2);
     }
 
     public function test_zero_quota_is_unavailable_and_errors_are_not_cached(): void
     {
         config(['services.venue_images.wikidata_daily_limit' => 0]);
-        $this->expectException(CatalogProviderUnavailable::class);
-        app(ProviderReadGate::class)->run('wikidata', 'none', WikidataImageFileData::class, fn () => $this->fail('Unconfigured provider called.'));
+        expect(fn () => app(ProviderReadGate::class)->run('wikidata', 'none', WikidataImageFileData::class, fn (): never => $this->fail('Unconfigured provider called.')))->toThrow(CatalogProviderUnavailable::class);
     }
 }

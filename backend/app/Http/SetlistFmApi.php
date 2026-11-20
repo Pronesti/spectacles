@@ -11,13 +11,15 @@ use App\Http\Data\ProviderRefInputData;
 use App\Http\Data\ProviderVenueData;
 use App\Http\Data\SetlistFmSearchQueryData;
 use App\Http\Data\SetlistFmSearchResultData;
+use App\Http\Integrations\SetlistFm\Data\SetlistFmArtistPayloadData;
 use App\Http\Integrations\SetlistFm\Data\SetlistFmSearchPayloadData;
 use App\Http\Integrations\SetlistFm\Data\SetlistFmSetlistPayloadData;
+use App\Http\Integrations\SetlistFm\Data\SetlistFmTourPayloadData;
 use App\Http\Integrations\SetlistFm\Data\SetlistFmVenuePayloadData;
 
 class SetlistFmApi
 {
-    public function __construct(private SetlistFmClient $client, private ProviderReadGate $gate) {}
+    public function __construct(private readonly SetlistFmClient $client, private readonly ProviderReadGate $gate) {}
 
     public function search(SetlistFmSearchQueryData $query): SetlistFmSearchResultData
     {
@@ -85,7 +87,7 @@ class SetlistFmApi
      */
     private function performance(SetlistFmSetlistPayloadData $setlist): ProviderPerformanceData
     {
-        if ($setlist->artist === null || $setlist->venue === null || $setlist->eventDate === null || ! preg_match('/^(\d{2})-(\d{2})-(\d{4})$/D', $setlist->eventDate, $parts)) {
+        if (! $setlist->artist instanceof SetlistFmArtistPayloadData || ! $setlist->venue instanceof SetlistFmVenuePayloadData || $setlist->eventDate === null || ! preg_match('/^(\d{2})-(\d{2})-(\d{4})$/D', $setlist->eventDate, $parts)) {
             throw new CatalogProviderUnavailable;
         }
         $artist = $setlist->artist;
@@ -100,7 +102,7 @@ class SetlistFmApi
                 values: new ProviderEntityValuesInputData(name: $artist->name, disambiguation: ($artist->disambiguation ?? '') === '' ? null : $artist->disambiguation),
             ),
             venue: $this->venueInput($setlist->venue),
-            tourName: $setlist->tour === null ? null : CatalogProviderData::text($setlist->tour->name),
+            tourName: $setlist->tour instanceof SetlistFmTourPayloadData ? CatalogProviderData::text($setlist->tour->name) : null,
         ));
     }
 }

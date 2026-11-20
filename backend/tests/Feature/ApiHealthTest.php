@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use Tests\TestCase;
@@ -71,6 +73,6 @@ class ApiHealthTest extends TestCase
             ->assertHeader('Access-Control-Allow-Origin', 'https://spectacles.test')
             ->assertHeader('Access-Control-Allow-Credentials', 'true');
         $response = $this->withHeader('Origin', 'https://untrusted.example')->options('/api/v1/me');
-        $this->assertNotSame('https://untrusted.example', $response->headers->get('Access-Control-Allow-Origin'));
+        expect($response->headers->get('Access-Control-Allow-Origin'))->not->toBe('https://untrusted.example');
     }
 }

@@ -61,32 +61,30 @@ class JsonApiResourcesTest extends TestCase
         DB::disableQueryLog();
         $document = $response->getData(true);
 
-        $this->assertSame('App\\Http\\Resources\\'.class_basename($modelClass).'Resource', $resource::class);
-        $this->assertSame('application/vnd.api+json', $response->headers->get('Content-Type'));
-        $this->assertSame($model->getAttribute('external_id'), data_get($document, 'data.id'));
-        $this->assertSame($model->getTable(), data_get($document, 'data.type'));
-        $this->assertSame([], $queries);
-        $this->assertArrayNotHasKey('relationships', $this->arrayAt($document, 'data'));
-        $this->assertArrayNotHasKey('included', $this->arrayAt($document));
+        expect($resource::class)->toBe('App\\Http\\Resources\\'.class_basename($modelClass).'Resource')
+            ->and($response->headers->get('Content-Type'))->toBe('application/vnd.api+json')
+            ->and(data_get($document, 'data.id'))->toBe($model->getAttribute('external_id'))
+            ->and(data_get($document, 'data.type'))->toBe($model->getTable())
+            ->and($queries)->toBeEmpty()
+            ->and($this->arrayAt($document, 'data'))->not->toHaveKey('relationships')
+            ->and($this->arrayAt($document))->not->toHaveKey('included');
         $attributes = $this->arrayAt(data_get($document, 'data.attributes', []));
-        $this->assertArrayNotHasKey('private_extra', $attributes);
-        $this->assertArrayNotHasKey('external_id', $attributes);
-        $this->assertArrayNotHasKey('password', $attributes);
-        $this->assertArrayNotHasKey('remember_token', $attributes);
-        $this->assertArrayNotHasKey('email', $attributes);
+        expect($attributes)->not->toHaveKey('private_extra')->not->toHaveKey('external_id')->not->toHaveKey('password')->not->toHaveKey('remember_token')->not->toHaveKey('email');
         foreach (array_keys($model->getAttributes()) as $key) {
             if ($key === 'id' || (str_ends_with($key, '_id') && ! in_array($key, ['provider_resource_id', 'external_provider_id'], true))) {
-                $this->assertArrayNotHasKey($key, $attributes);
+                expect($attributes)->not->toHaveKey($key);
             }
         }
         $createdAt = $model->getAttribute('created_at');
-        $this->assertInstanceOf(CarbonInterface::class, $createdAt);
-        $this->assertSame($createdAt->toJSON(), $attributes['created_at']);
+        if (! $createdAt instanceof CarbonInterface) {
+            $this->fail('The model must have a created_at timestamp.');
+        }
+        expect($attributes['created_at'])->toBe($createdAt->toJSON());
         if ($model->getAttribute('external_provider_id') !== null) {
-            $this->assertSame($model->getAttribute('external_provider_id'), $attributes['external_provider_id']);
+            expect($attributes['external_provider_id'])->toBe($model->getAttribute('external_provider_id'));
         }
         if ($model->getAttribute('provider_resource_id') !== null) {
-            $this->assertSame($model->getAttribute('provider_resource_id'), $attributes['provider_resource_id']);
+            expect($attributes['provider_resource_id'])->toBe($model->getAttribute('provider_resource_id'));
         }
     }
 
@@ -98,26 +96,30 @@ class JsonApiResourcesTest extends TestCase
     {
         $model = Factory::factoryForModel($modelClass)->createOne();
         $resource = $model->toResource();
-        $this->assertInstanceOf(PublicJsonApiResource::class, $resource);
+        if (! $resource instanceof PublicJsonApiResource) {
+            $this->fail('The model must use a public JSON:API resource.');
+        }
         $relations = array_keys($resource->relationships);
         $model->load($relations);
         $request = Request::create('/resources', 'GET', ['include' => implode(',', $relations)]);
         $document = $resource->toResponse($request)->getData(true);
 
         foreach ($relations as $relation) {
-            $this->assertArrayHasKey($relation, $this->arrayAt($document, 'data.relationships'));
+            expect($this->arrayAt($document, 'data.relationships'))->toHaveKey($relation);
             $related = $model->getRelation($relation);
             $relationship = $this->arrayAt($document, 'data.relationships.'.$relation);
-            $this->assertArrayHasKey('data', $relationship);
+            expect($relationship)->toHaveKey('data');
             $linkage = $relationship['data'];
             if ($related instanceof Model) {
-                $this->assertSame($related->getAttribute('external_id'), data_get($linkage, 'id'));
-                $this->assertSame($related->getTable(), data_get($linkage, 'type'));
+                expect(data_get($linkage, 'id'))->toBe($related->getAttribute('external_id'))
+                    ->and(data_get($linkage, 'type'))->toBe($related->getTable());
             } elseif ($related === null) {
-                $this->assertNull($linkage);
+                expect($linkage)->toBeNull();
             } else {
-                $this->assertInstanceOf(Collection::class, $related);
-                $this->assertSame($related->pluck('external_id')->all(), array_column($this->arrayAt($linkage), 'id'));
+                if (! $related instanceof Collection) {
+                    $this->fail('A to-many relationship must load a collection.');
+                }
+                expect(array_column($this->arrayAt($linkage), 'id'))->toBe($related->pluck('external_id')->all());
             }
         }
         $this->assertPublicResourceObjects($this->arrayAt($document));
@@ -130,13 +132,13 @@ class JsonApiResourcesTest extends TestCase
         $document = (new SetlistEntryResource($entry))->toResponse($request)->getData(true);
         $attendance = $this->present($entry->attendance);
 
-        $this->assertTrue(data_get($document, 'data.attributes.is_tape'));
-        $this->assertSame(3, data_get($document, 'data.attributes.position'));
-        $this->assertSame($attendance->external_id, data_get($document, 'data.relationships.attendance.data.id'));
+        expect(data_get($document, 'data.attributes.is_tape'))->toBeTrue()
+            ->and(data_get($document, 'data.attributes.position'))->toBe(3)
+            ->and(data_get($document, 'data.relationships.attendance.data.id'))->toBe($attendance->external_id);
         $included = collect($this->arraysAt($document, 'included'));
         $owner = $this->arrayAt($included->firstWhere('type', 'users'));
-        $this->assertSame($this->present($attendance->owner)->external_id, $owner['id']);
-        $this->assertSame($this->present($entry->song)->external_id, $this->arrayAt($included->firstWhere('type', 'songs'))['id']);
+        expect($owner['id'])->toBe($this->present($attendance->owner)->external_id)
+            ->and($this->arrayAt($included->firstWhere('type', 'songs'))['id'])->toBe($this->present($entry->song)->external_id);
         $this->assertPublicResourceObjects($this->arrayAt($document));
     }
 
@@ -151,10 +153,9 @@ class JsonApiResourcesTest extends TestCase
         ]);
         $document = EventResource::collection(collect([$event]))->toResponse($request)->getData(true);
 
-        $this->assertSame($event->external_id, data_get($document, 'data.0.id'));
-        $this->assertSame(['title' => $event->title], data_get($document, 'data.0.attributes'));
-        $this->assertSame([$first->external_id, $second->external_id],
-            array_column($this->arrayAt($document, 'data.0.relationships.artistLinks.data'), 'id'));
+        expect(data_get($document, 'data.0.id'))->toBe($event->external_id)
+            ->and(data_get($document, 'data.0.attributes'))->toBe(['title' => $event->title])
+            ->and(array_column($this->arrayAt($document, 'data.0.relationships.artistLinks.data'), 'id'))->toBe([$first->external_id, $second->external_id]);
         $this->assertPublicResourceObjects($this->arrayAt($document));
     }
 
@@ -164,9 +165,9 @@ class JsonApiResourcesTest extends TestCase
         $request = Request::create('/resources', 'GET', ['include' => 'venue,artistLinks']);
         $document = (new EventResource($event))->toResponse($request)->getData(true);
         $venue = $this->arrayAt($document, 'data.relationships.venue');
-        $this->assertArrayHasKey('data', $venue);
-        $this->assertNull($venue['data']);
-        $this->assertSame([], data_get($document, 'data.relationships.artistLinks.data'));
+        expect($venue)->toHaveKey('data')
+            ->and($venue['data'])->toBeNull()
+            ->and(data_get($document, 'data.relationships.artistLinks.data'))->toBe([]);
     }
 
     public function test_preloaded_relationship_constraints_are_preserved_without_queries(): void
@@ -183,13 +184,12 @@ class JsonApiResourcesTest extends TestCase
         DB::enableQueryLog();
         try {
             $document = $attendance->toResource()->toResponse($request)->getData(true);
-            $this->assertSame([], DB::getQueryLog());
+            expect(DB::getQueryLog())->toBeEmpty();
         } finally {
             DB::disableQueryLog();
         }
 
-        $this->assertSame([$second->external_id, $first->external_id],
-            array_column($this->arrayAt($document, 'data.relationships.entries.data'), 'id'));
+        expect(array_column($this->arrayAt($document, 'data.relationships.entries.data'), 'id'))->toBe([$second->external_id, $first->external_id]);
         $this->assertPublicResourceObjects($this->arrayAt($document));
     }
 
@@ -200,9 +200,9 @@ class JsonApiResourcesTest extends TestCase
         $document = $resourceClass::collection(Attendance::query()->orderBy('id')->paginate(2))
             ->toResponse(Request::create('/resources'))->getData(true);
 
-        $this->assertCount(2, $this->arrayAt($document, 'data'));
-        $this->assertSame(3, data_get($document, 'meta.total'));
-        $this->assertArrayHasKey('next', $this->arrayAt($document, 'links'));
+        expect($this->arrayAt($document, 'data'))->toHaveCount(2)
+            ->and(data_get($document, 'meta.total'))->toBe(3)
+            ->and($this->arrayAt($document, 'links'))->toHaveKey('next');
         $this->assertPublicResourceObjects($this->arrayAt($document));
     }
 
@@ -214,17 +214,16 @@ class JsonApiResourcesTest extends TestCase
         $data = $this->arrayAt($document, 'data');
         $objects = isset($data['id']) ? [$data] : $this->arraysAt($data);
         foreach ([...$objects, ...$this->arraysAt($document['included'] ?? [])] as $object) {
-            $this->assertTrue(Str::isUuid($object['id']));
+            expect(Str::isUuid($object['id']))->toBeTrue();
             foreach (array_keys($this->arrayAt($object['attributes'] ?? [])) as $key) {
-                $this->assertIsString($key);
-                $this->assertFalse($key === 'id' || $key === 'external_id'
-                    || (str_ends_with($key, '_id') && ! in_array($key, ['provider_resource_id', 'external_provider_id'], true)), $key);
+                expect($key)->toBeString()
+                    ->and($key === 'id' || $key === 'external_id' || str_ends_with($key, '_id') && ! in_array($key, ['provider_resource_id', 'external_provider_id'], true))->toBeFalse();
             }
             foreach ($this->arraysAt($object['relationships'] ?? []) as $relationship) {
                 $linkage = $relationship['data'] ?? [];
                 $identifiers = is_array($linkage) && isset($linkage['id']) ? [$linkage] : $this->arraysAt($linkage);
                 foreach ($identifiers as $identifier) {
-                    $this->assertTrue(Str::isUuid($identifier['id']));
+                    expect(Str::isUuid($identifier['id']))->toBeTrue();
                 }
             }
         }

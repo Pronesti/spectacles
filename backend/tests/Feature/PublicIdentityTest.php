@@ -16,21 +16,20 @@ class PublicIdentityTest extends TestCase
     {
         $user = User::factory()->create(['locale' => 'es-AR']);
         $uuid = $user->external_id;
-        $this->assertIsInt($user->getKey());
-        $this->assertTrue(Str::isUuid($uuid));
-        $this->assertTrue($user->getIncrementing());
-        $this->assertSame('external_id', $user->getRouteKeyName());
-        $this->assertTrue($this->present($user->resolveRouteBinding($uuid))->is($user));
+        expect($user->getKey())->toBeInt()
+            ->and(Str::isUuid($uuid))->toBeTrue()
+            ->and($user->getIncrementing())->toBeTrue()
+            ->and($user->getRouteKeyName())->toBe('external_id')
+            ->and($this->present($user->resolveRouteBinding($uuid))->is($user))->toBeTrue();
         $user->update(['name' => 'Updated', 'locale' => 'en']);
-        $this->assertSame($uuid, $this->present($user->fresh())->external_id);
+        expect($this->present($user->fresh())->external_id)->toBe($uuid);
     }
 
     public function test_public_uuid_cannot_be_changed_on_an_existing_model(): void
     {
         $user = User::factory()->create();
         $user->external_id = (string) Str::uuid7();
-        $this->expectException(ValidationException::class);
-        $user->save();
+        expect(fn () => $user->save())->toThrow(ValidationException::class);
     }
 
     public function test_replicating_a_user_generates_a_new_public_uuid(): void
@@ -39,6 +38,6 @@ class PublicIdentityTest extends TestCase
         $copy = $user->replicate();
         $copy->email = 'copy@example.com';
         $copy->save();
-        $this->assertNotSame($user->external_id, $copy->external_id);
+        expect($copy->external_id)->not->toBe($user->external_id);
     }
 }

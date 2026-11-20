@@ -26,7 +26,7 @@ class MusicBrainzClient
     {
         try {
             return $this->cachedSearch($kind, $query);
-        } catch (QueryException $failure) {
+        } catch (QueryException) {
             throw new MusicBrainzUnavailable;
         }
     }
@@ -76,7 +76,7 @@ class MusicBrainzClient
                 }
                 $sets = [...$sets, ...$cached];
             }
-        } catch (QueryException $failure) {
+        } catch (QueryException) {
             throw new MusicBrainzUnavailable;
         }
         $rows = [];
@@ -119,7 +119,7 @@ class MusicBrainzClient
             $rows = [];
             foreach ($results as $result) {
                 $entity = $this->searchResult($result);
-                if ($entity === null || $entity->id === null || ! Str::isUuid($entity->id)) {
+                if (! $entity instanceof MusicBrainzEntityPayloadData || $entity->id === null || ! Str::isUuid($entity->id)) {
                     continue;
                 }
                 if ($kind === 'series' && ($entity->type === null || strcasecmp(trim($entity->type), 'Tour') !== 0)) {
@@ -186,7 +186,7 @@ class MusicBrainzClient
     {
         try {
             return $this->cachedResponse($key, $path, $parameters, $payloadClass, fn (array $cached): Data => CachedData::fromCache($dataClass, $cached), $normalize);
-        } catch (QueryException $failure) {
+        } catch (QueryException) {
             throw new MusicBrainzUnavailable;
         }
     }
@@ -206,7 +206,7 @@ class MusicBrainzClient
     {
         try {
             return $this->cachedResponse($key, $path, $parameters, $payloadClass, fn (array $cached): array => CachedData::listFromCache($dataClass, $cached), $normalize);
-        } catch (QueryException $failure) {
+        } catch (QueryException) {
             throw new MusicBrainzUnavailable;
         }
     }
@@ -248,7 +248,7 @@ class MusicBrainzClient
             Cache::put('musicbrainz:v1:next-start-ms', $now + 1100, now()->addSeconds(10));
             try {
                 $response = (new MusicBrainzConnector($userAgent))->send(new GetMusicBrainzResource($path, $parameters));
-            } catch (FatalRequestException $failure) {
+            } catch (FatalRequestException) {
                 throw new MusicBrainzUnavailable;
             }
             if ($response->status() === 429) {

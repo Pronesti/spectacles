@@ -55,7 +55,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function present(mixed $value): mixed
     {
-        $this->assertNotNull($value);
+        if ($value === null) {
+            $this->fail('Expected a value, got null.');
+        }
 
         return $value;
     }
@@ -68,7 +70,9 @@ abstract class TestCase extends BaseTestCase
     protected function arrayAt(mixed $document, string|int|null $path = null): array
     {
         $value = $path === null ? $document : data_get($document, $path);
-        $this->assertIsArray($value, 'Expected an array at ['.($path ?? '').'].');
+        if (! is_array($value)) {
+            $this->fail('Expected an array at ['.($path ?? '').'].');
+        }
 
         return $value;
     }
@@ -89,7 +93,9 @@ abstract class TestCase extends BaseTestCase
     protected function stringAt(mixed $document, string|int $path): string
     {
         $value = data_get($document, $path);
-        $this->assertIsString($value, 'Expected a string at ['.$path.'].');
+        if (! is_string($value)) {
+            $this->fail('Expected a string at ['.$path.'].');
+        }
 
         return $value;
     }
@@ -100,7 +106,9 @@ abstract class TestCase extends BaseTestCase
     protected function intAt(mixed $document, string|int $path): int
     {
         $value = data_get($document, $path);
-        $this->assertIsInt($value, 'Expected an integer at ['.$path.'].');
+        if (! is_int($value)) {
+            $this->fail('Expected an integer at ['.$path.'].');
+        }
 
         return $value;
     }
@@ -116,7 +124,9 @@ abstract class TestCase extends BaseTestCase
         } catch (QueryException $exception) {
             $error = $exception;
         }
-        $this->assertNotNull($error, 'The database accepted an invalid write.');
-        $this->assertContains((string) $error->getCode(), ['23000', '23001', '23502', '23503', '23505', '23514'], $error->getMessage());
+        if (! $error instanceof QueryException) {
+            $this->fail('The database accepted an invalid write.');
+        }
+        expect(['23000', '23001', '23502', '23503', '23505', '23514'])->toContain($error->getCode());
     }
 }

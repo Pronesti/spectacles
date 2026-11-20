@@ -65,6 +65,6 @@ try {
     }
     fwrite(STDOUT, 'CONFLICT');
 } catch (Throwable $e) {
-    fwrite(STDERR, get_class($e).': '.substr($e->getMessage(), 0, 200));
+    fwrite(STDERR, $e::class.': '.substr($e->getMessage(), 0, 200));
     exit(1);
 }

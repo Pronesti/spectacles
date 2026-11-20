@@ -36,7 +36,7 @@ use Spatie\LaravelData\Optional;
 
 class SetlistFmDiscovery
 {
-    public function __construct(private SetlistFmClient $client, private CatalogProviderSelection $proofs) {}
+    public function __construct(private readonly SetlistFmClient $client, private readonly CatalogProviderSelection $proofs) {}
 
     public function artistMbid(ProviderTourSearchData|ProviderPerformanceSearchData $search): ?string
     {
@@ -134,7 +134,7 @@ class SetlistFmDiscovery
             if ($parts === false) {
                 throw new \InvalidArgumentException('The query is not valid UTF-8.');
             }
-            if (array_any($parts, fn ($part) => ! str_contains($haystack, $part))) {
+            if (array_any($parts, fn ($part): bool => ! str_contains($haystack, $part))) {
                 continue;
             }
             $manual = new ManualPerformanceData($row->artist, $row->venue, $row->date, $row->namedTour(), null, null);
@@ -157,11 +157,11 @@ class SetlistFmDiscovery
         }
         $manual = $bound->manual instanceof ManualPerformanceData ? $bound->manual : null;
         $known = EventProviderReference::query()->where('provider', 'setlist_fm')->where('resource_type', 'setlist')->where('provider_resource_id', $id)->first()?->event;
-        if ($known !== null && $manual !== null) {
+        if ($known !== null && $manual instanceof ManualPerformanceData) {
             $value = new ProviderPerformanceData($bound->ref, $bound->url, $manual->date, $manual->artist, null, $manual->venue, $manual->time, $manual->timezone, $manual->tourName);
         } else {
             $value = app(SetlistFmApi::class)->detail($id);
-            if ($manual !== null && ! $value->artist->ref->is($manual->artist->ref)) {
+            if ($manual instanceof ManualPerformanceData && ! $value->artist->ref->is($manual->artist->ref)) {
                 throw new CatalogProviderUnavailable;
             }
         }
@@ -300,7 +300,7 @@ class SetlistFmDiscovery
             }
 
             return new ProviderCursorData($token->page, $token->offset, $token->scanned);
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
             throw ValidationException::withMessages(['cursor' => 'This search has expired. Search again.']);
         }
     }

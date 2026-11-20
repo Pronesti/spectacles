@@ -39,10 +39,10 @@ class ProviderReferencesTest extends TestCase
         $two = VenueProviderId::factory()->create([
             'venue_id' => $one->venue_id, 'provider_resource_id' => str_repeat('a', 512),
         ]);
-        $this->assertSame('0000123', $this->present($one->fresh())->provider_resource_id);
-        $this->assertSame(str_repeat('a', 512), $this->present($two->fresh())->provider_resource_id);
-        $this->assertSame(2, $this->present($one->venue)->providerIds()->count());
-        $this->assertNotSame($one->external_id, $one->provider_resource_id);
+        expect($this->present($one->fresh())->provider_resource_id)->toBe('0000123')
+            ->and($this->present($two->fresh())->provider_resource_id)->toBe(str_repeat('a', 512))
+            ->and($this->present($one->venue)->providerIds()->count())->toBe(2)
+            ->and($one->provider_resource_id)->not->toBe($one->external_id);
     }
 
     public function test_single_performance_reference_cannot_be_reused_on_another_event(): void
@@ -65,7 +65,7 @@ class ProviderReferencesTest extends TestCase
         $link = SongLink::factory()->create();
         SongLink::factory()->create(['song_id' => $link->song_id]);
         SongLink::factory()->create(['provider_resource_id' => $link->provider_resource_id]);
-        $this->assertSame(2, $this->present($link->song)->links()->count());
+        expect($this->present($link->song)->links()->count())->toBe(2);
         $row = $link->getAttributes();
         unset($row['id']);
         $row['external_id'] = (string) Str::uuid7();
@@ -74,8 +74,8 @@ class ProviderReferencesTest extends TestCase
 
     public function test_openstreetmap_resource_type_is_part_of_identity(): void
     {
-        $one = VenueProviderId::factory()->create(['provider' => 'openstreetmap', 'resource_type' => 'node', 'provider_resource_id' => '123']);
+        VenueProviderId::factory()->create(['provider' => 'openstreetmap', 'resource_type' => 'node', 'provider_resource_id' => '123']);
         VenueProviderId::factory()->create(['provider' => 'openstreetmap', 'resource_type' => 'way', 'provider_resource_id' => '123']);
-        $this->assertSame(2, VenueProviderId::where('provider', 'openstreetmap')->count());
+        expect(VenueProviderId::where('provider', 'openstreetmap')->count())->toBe(2);
     }
 }

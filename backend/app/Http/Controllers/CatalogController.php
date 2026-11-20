@@ -78,8 +78,8 @@ class CatalogController extends Controller
         if ($request->catalog() === 'tours' && $filter->scopesToArtistLists()) {
             $matchArtist = function (Builder $artist) use ($filter): void {
                 $artist->where(function (Builder $scope) use ($filter): void {
-                    $scope->whereIn('external_id', array_map('strtolower', $filter->artistUuids ?? []))
-                        ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map('strtolower', $filter->artistMbids ?? [])));
+                    $scope->whereIn('external_id', array_map(strtolower(...), $filter->artistUuids ?? []))
+                        ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map(strtolower(...), $filter->artistMbids ?? [])));
                 });
             };
             $this->scopeToursToArtist($query, $matchArtist);

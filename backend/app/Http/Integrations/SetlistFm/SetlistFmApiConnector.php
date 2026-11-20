@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Integrations\SetlistFm;
 
 use App\Http\Integrations\ProviderConnector;

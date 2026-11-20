@@ -74,7 +74,7 @@ class ProviderReadGate
     {
         try {
             return $this->read($channel, $cacheKey, $dataClass, $fetch, $waitForSpacing);
-        } catch (QueryException $failure) {
+        } catch (QueryException) {
             throw new CatalogProviderUnavailable;
         }
     }

@@ -64,7 +64,7 @@ class CollectionController extends Controller
         DB::transaction(function () use ($request, $viewer, $attendance): void {
             User::query()->whereKey($viewer->id)->lockForUpdate()->firstOrFail();
             $data = $request->concert();
-            if ($attendance !== null) {
+            if ($attendance instanceof Attendance) {
                 $attendance = Attendance::query()->lockForUpdate()->findOrFail($attendance->id);
                 abort_if($attendance->getAttribute('deleted_at') !== null, 404);
                 abort_unless($attendance->members()->where('user_id', $viewer->id)->exists(), 404);

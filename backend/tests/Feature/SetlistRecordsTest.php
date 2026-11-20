@@ -24,10 +24,10 @@ class SetlistRecordsTest extends TestCase
         SetlistEntry::factory()->note('Encore')->create(['attendance_id' => $a->id, 'position' => 5]);
         SetlistEntry::factory()->unidentified('Unknown instrumental')->create(['attendance_id' => $a->id, 'position' => 8]);
         SetlistEntryArtist::factory()->count(2)->create(['setlist_entry_id' => $live->id]);
-        $this->assertSame([1, 2, 5, 8], $a->entries()->pluck('position')->all());
-        $this->assertSame(2, $live->artistLinks()->count());
-        $this->assertSame(1, $song->entries()->where('type', 'song')->where('is_tape', false)->count());
-        $this->assertSame(2, $song->entries()->count());
+        expect($a->entries()->pluck('position')->all())->toBe([1, 2, 5, 8])
+            ->and($live->artistLinks()->count())->toBe(2)
+            ->and($song->entries()->where('type', 'song')->where('is_tape', false)->count())->toBe(1)
+            ->and($song->entries()->count())->toBe(2);
     }
 
     public function test_song_queries_find_covers_across_events_by_identity(): void
@@ -40,7 +40,7 @@ class SetlistRecordsTest extends TestCase
         $events = DB::table('setlist_entries')->join('attendances', 'attendances.id', '=', 'setlist_entries.attendance_id')
             ->where('setlist_entries.song_id', $song->id)->where('is_tape', false)
             ->distinct()->count('attendances.event_id');
-        $this->assertSame(2, $events);
+        expect($events)->toBe(2);
     }
 
     public function test_position_and_performer_pairs_have_database_uniqueness(): void

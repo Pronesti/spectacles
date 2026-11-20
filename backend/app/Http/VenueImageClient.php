@@ -21,7 +21,7 @@ use Spatie\LaravelData\Data;
 
 class VenueImageClient
 {
-    public function __construct(private ProviderReadGate $gate) {}
+    public function __construct(private readonly ProviderReadGate $gate) {}
 
     /**
      * @param  array<MusicBrainzRelationPayloadData>  $relations
@@ -79,7 +79,7 @@ class VenueImageClient
             });
 
             return $result->image;
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
             return null;
         }
     }

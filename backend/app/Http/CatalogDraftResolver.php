@@ -23,7 +23,7 @@ class CatalogDraftResolver
 {
     public function resolve(ConcertDraftData $concert, ?PendingCatalogData $pending): ConcertDraftData
     {
-        if ($pending === null) {
+        if (! $pending instanceof PendingCatalogData) {
             return $concert;
         }
         $jobs = [];
@@ -74,7 +74,7 @@ class CatalogDraftResolver
             'work' => [Song::class, SongProviderId::class, 'song_id'],
             'series' => [Tour::class, TourProviderId::class, 'tour_id'],
         };
-        if ($ref === null) {
+        if (! $ref instanceof ProviderRefData) {
             return $model::query()->create($draft->attributes());
         }
         $tuple = $ref->tuple($kind === 'series' ? 'external_provider_id' : 'provider_resource_id');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Tests\Support\ProviderHttp;
 
 $f = require __DIR__.'/catalog-provider-inputs.php';

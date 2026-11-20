@@ -21,7 +21,7 @@ class MusicBrainzSelection
             if ($value->v === 1 && in_array($kind, ['artist', 'work', 'series'], true) && $value->kind === $kind && is_string($value->mbid) && Str::isUuid($value->mbid) && is_int($value->expiresAt) && $value->expiresAt > now()->timestamp) {
                 return strtolower($value->mbid);
             }
-        } catch (\Throwable $failure) {
+        } catch (\Throwable) {
         }
         throw ValidationException::withMessages([$path => 'Select this MusicBrainz result again or use manual creation.']);
     }

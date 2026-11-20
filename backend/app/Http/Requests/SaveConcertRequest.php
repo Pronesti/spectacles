@@ -6,6 +6,7 @@ use App\Http\CatalogProviderData;
 use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\ConcertDraftData;
 use App\Http\Data\PendingCatalogData;
+use App\Http\Data\PendingSelectionData;
 use App\Http\Data\VenueDraftData;
 use App\Http\Data\VenueDraftSummaryData;
 use App\Http\Data\VenueImageInputData;
@@ -111,7 +112,7 @@ class SaveConcertRequest extends FormRequest
             $pending = $this->has('pendingCatalog') ? PendingCatalogData::from($this->input('pendingCatalog')) : null;
             $venue = $this->has('venue') ? VenueDraftSummaryData::from($this->input('venue')) : null;
             PendingCatalogRules::check($concert, $pending, $validator);
-            if ($pending?->venueSelection() !== null && $venue?->isSaved()) {
+            if ($pending?->venueSelection() instanceof PendingSelectionData && $venue?->isSaved()) {
                 $validator->errors()->add('pendingCatalog.venue', 'Choose one Venue identity.');
             }
             if ($this->input('venue.image') !== null) {

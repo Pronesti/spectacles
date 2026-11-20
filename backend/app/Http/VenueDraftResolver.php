@@ -16,8 +16,8 @@ class VenueDraftResolver
 {
     public function resolve(ConcertDraftData $concert, ?VenueDraftData $venue, ?PendingSelectionData $binding): ?Venue
     {
-        if ($binding === null) {
-            if ($venue === null) {
+        if (! $binding instanceof PendingSelectionData) {
+            if (! $venue instanceof VenueDraftData) {
                 return $concert->venueId === null ? null : Venue::where('external_id', $concert->venueId)->firstOrFail();
             }
             if (is_string($venue->catalogId)) {
@@ -26,7 +26,7 @@ class VenueDraftResolver
 
             return Venue::query()->create($venue->attributes());
         }
-        if ($venue === null || $venue->isSaved() || $concert->catalog->hasEvent()) {
+        if (! $venue instanceof VenueDraftData || $venue->isSaved() || $concert->catalog->hasEvent()) {
             throw ValidationException::withMessages(['pendingCatalog.venue' => 'Choose either a saved Venue or a provider Venue.']);
         }
         $value = app(CatalogProviderSelection::class)->venue($binding->selection, 'pendingCatalog.venue.selection');
@@ -34,7 +34,7 @@ class VenueDraftResolver
         $sources = $value->sourceUrls();
         usort($refs, fn (ProviderRefData $a, ProviderRefData $b): int => strcmp($a->key(), $b->key()));
         $known = $this->known($refs, $sources);
-        if ($known !== null) {
+        if ($known instanceof Venue) {
             return $known;
         }
         try {
@@ -48,7 +48,7 @@ class VenueDraftResolver
             });
         } catch (UniqueConstraintViolationException $failure) {
             $winner = $this->known($refs, $sources);
-            if ($winner === null) {
+            if (! $winner instanceof Venue) {
                 throw $failure;
             }
 

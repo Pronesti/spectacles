@@ -157,7 +157,7 @@ class CatalogProviderData
         if (! array_is_list($aliases) || count($aliases) > 100) {
             throw new CatalogProviderUnavailable;
         }
-        $aliases = array_map(fn ($alias) => self::text($alias), $aliases);
+        $aliases = array_map(fn ($alias): string => self::text($alias), $aliases);
         if (count(array_unique($aliases)) !== count($aliases)) {
             throw new CatalogProviderUnavailable;
         }
@@ -186,7 +186,7 @@ class CatalogProviderData
 
     public static function image(?VenueImageInputData $value): ?VenueImageData
     {
-        if ($value === null) {
+        if (! $value instanceof VenueImageInputData) {
             return null;
         }
         $attribution = function (?string $text, int $max): string {
@@ -231,7 +231,7 @@ class CatalogProviderData
         }
         $artist = self::entity($value->artist);
         $venue = self::entity($value->venue);
-        $tour = $value->tour === null ? null : self::entity($value->tour);
+        $tour = $value->tour instanceof ProviderEntityInputData ? self::entity($value->tour) : null;
         if (! $artist instanceof ProviderArtistData || $artist->ref->provider !== 'musicbrainz' || ! $venue instanceof ProviderVenueData || $tour !== null && ! $tour instanceof ProviderTourData) {
             throw new CatalogProviderUnavailable;
         }

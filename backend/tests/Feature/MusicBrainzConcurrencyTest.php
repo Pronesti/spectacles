@@ -20,7 +20,7 @@ class MusicBrainzConcurrencyTest extends TestCase
         if (DB::connection()->getDriverName() !== 'pgsql' || ! function_exists('proc_open')) {
             $this->markTestSkipped('Requires dedicated PostgreSQL and process support.');
         }
-        $this->assertSame('spectacles_testing', DB::connection()->getDatabaseName());
+        expect(DB::connection()->getDatabaseName())->toBe('spectacles_testing');
         foreach (['artist', 'work', 'series'] as $kind) {
             $this->race($kind);
         }
@@ -66,7 +66,9 @@ class MusicBrainzConcurrencyTest extends TestCase
             foreach (['a', 'b'] as $slot) {
                 $pipes = [];
                 $process = proc_open([PHP_BINARY, __DIR__.'/musicbrainz-race-worker.php', $directory, $slot], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, base_path(), $environment);
-                $this->assertIsResource($process);
+                if (! is_resource($process)) {
+                    $this->fail('Could not start the race worker.');
+                }
                 fclose($pipes[0]);
                 stream_set_timeout($pipes[1], 10);
                 stream_set_timeout($pipes[2], 10);
@@ -80,14 +82,14 @@ class MusicBrainzConcurrencyTest extends TestCase
                 fclose($pipes[2]);
                 $code = proc_close($process);
                 unset($processes[$index]);
-                $this->assertSame(0, $code, 'Race worker failed; inspect isolated test environment.');
+                expect($code)->toBe(0);
             }
-            $this->assertFileExists($directory.'/a.ready');
-            $this->assertFileExists($directory.'/b.ready');
-            $this->assertTrue(Str::isUuid($ids[0]));
-            $this->assertSame($ids[0], $ids[1]);
-            $this->assertSame(1, $parent::query()->where($field, $label)->count());
-            $this->assertSame(1, $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->count());
+            expect($directory.'/a.ready')->toBeFile()
+                ->and($directory.'/b.ready')->toBeFile()
+                ->and(Str::isUuid($ids[0]))->toBeTrue()
+                ->and($ids[1])->toBe($ids[0])
+                ->and($parent::query()->where($field, $label)->count())->toBe(1)
+                ->and($reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->count())->toBe(1);
         } finally {
             foreach ($processes as [$process, $pipes]) {
                 if (is_resource($process)) {
@@ -103,7 +105,9 @@ class MusicBrainzConcurrencyTest extends TestCase
             $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->delete();
             $parent::query()->where($field, $label)->delete();
             $files = glob($directory.'/*');
-            $this->assertIsArray($files);
+            if ($files === false) {
+                $this->fail('Could not list the race directory.');
+            }
             foreach ($files as $file) {
                 unlink($file);
             } rmdir($directory);

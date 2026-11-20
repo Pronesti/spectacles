@@ -21,7 +21,7 @@ class CatalogRelationshipsTest extends TestCase
     public function test_multiple_artists_and_optional_multiple_tours(): void
     {
         $event = Event::factory()->create();
-        $this->assertSame(0, $event->tourLinks()->count());
+        expect($event->tourLinks()->count())->toBe(0);
         $artist = Artist::factory()->create();
         EventArtist::factory()->create(['event_id' => $event->id, 'artist_id' => $artist->id]);
         EventArtist::factory()->create(['event_id' => $event->id]);
@@ -29,10 +29,10 @@ class CatalogRelationshipsTest extends TestCase
         TourArtist::factory()->create(['tour_id' => $tour->id, 'artist_id' => $artist->id]);
         EventTour::factory()->create(['event_id' => $event->id, 'tour_id' => $tour->id]);
         EventTour::factory()->create(['event_id' => $event->id]);
-        $this->assertSame(2, $event->artistLinks()->count());
-        $this->assertSame(2, $event->tourLinks()->count());
-        $this->assertSame(1, $tour->artistLinks()->count());
-        $this->assertTrue($this->present($this->present($event->artistLinks()->first())->artist)->is($artist));
+        expect($event->artistLinks()->count())->toBe(2)
+            ->and($event->tourLinks()->count())->toBe(2)
+            ->and($tour->artistLinks()->count())->toBe(1)
+            ->and($this->present($this->present($event->artistLinks()->first())->artist)->is($artist))->toBeTrue();
     }
 
     public function test_lineup_orders_positions_with_nulls_last_and_stable_ties(): void
@@ -42,8 +42,8 @@ class CatalogRelationshipsTest extends TestCase
             fn (?int $position): int => EventArtist::factory()->create(['event_id' => $event->id, 'position' => $position])->id
         )->all();
         $expected = [$ids[2], $ids[1], $ids[3], $ids[0], $ids[4]];
-        $this->assertSame($expected, $event->artistLinks()->pluck('id')->all());
-        $this->assertSame($expected, $this->present($event->fresh())->load('artistLinks')->artistLinks->modelKeys());
+        expect($event->artistLinks()->pluck('id')->all())->toBe($expected)
+            ->and($this->present($event->fresh())->load('artistLinks')->artistLinks->modelKeys())->toBe($expected);
     }
 
     public function test_relationship_pairs_are_unique(): void

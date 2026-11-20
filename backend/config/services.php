@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $musicBrainzContact = trim((string) env('MUSICBRAINZ_CONTACT', ''));
 $musicBrainzUserAgent = trim((string) env('MUSICBRAINZ_USER_AGENT', ''));
 

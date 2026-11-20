@@ -62,11 +62,11 @@ class SetlistFmApiDiscoveryTest extends TestCase
     {
         $this->fakeSearch([SetlistFmApiTest::performance()]);
         $row = $this->arrayAt($this->get($this->searchUrl())->assertOk()->json('data.0'));
-        $this->assertStringNotContainsString('test-server-secret', json_encode($row, JSON_THROW_ON_ERROR));
+        expect(json_encode($row, JSON_THROW_ON_ERROR))->not->toContain('test-server-secret');
         $this->get($this->previewUrl($row))
             ->assertOk()->assertJsonPath('data.0.artist.values.name', 'The Beatles')->assertJsonPath('data.0.venue.values.name', 'Hollywood Bowl')->assertJsonPath('data.0.date.year', 1964);
         ProviderHttp::assertSentCount(2);
-        ProviderHttp::assertNotSent(fn (RecordedRequest $r) => parse_url($r->url(), PHP_URL_HOST) !== 'api.setlist.fm');
+        ProviderHttp::assertNotSent(fn (RecordedRequest $r): bool => parse_url($r->url(), PHP_URL_HOST) !== 'api.setlist.fm');
         $this->assertDatabaseCount('events', 0);
         $this->assertDatabaseCount('tours', 0);
     }
@@ -75,12 +75,12 @@ class SetlistFmApiDiscoveryTest extends TestCase
     {
         $this->fakeSearch([SetlistFmApiTest::performance()]);
         $row = $this->arrayAt($this->get($this->searchUrl())->assertOk()->json('data.0'));
-        $this->assertSame(['ref', 'url', 'date', 'artistName', 'venueName', 'city', 'localEventId', 'locator'], array_keys($row));
+        expect(array_keys($row))->toBe(['ref', 'url', 'date', 'artistName', 'venueName', 'city', 'localEventId', 'locator']);
         $preview = $this->arrayAt($this->get($this->previewUrl($row))->assertOk()->json('data.0'));
-        $this->assertSame(['ref', 'url', 'date', 'artistName', 'venueName', 'city', 'localEventId', 'locator', 'artist', 'tour', 'tourName', 'venue', 'time', 'timezone', 'selection', 'localEvent'], array_keys($preview));
-        $this->assertSame(['ref', 'values', 'url', 'selection', 'localId'], array_keys($this->arrayAt($preview, 'artist')));
-        $this->assertSame(['ref', 'values', 'url', 'linkedRefs', 'venueUrl', 'venueSources', 'localId', 'selection'], array_keys($this->arrayAt($preview, 'venue')));
-        $this->assertSame('{"provider":"setlist_fm","resourceType":"setlist","externalId":"63de4613"}', ProviderRefData::from($preview['ref'])->key());
+        expect(array_keys($preview))->toBe(['ref', 'url', 'date', 'artistName', 'venueName', 'city', 'localEventId', 'locator', 'artist', 'tour', 'tourName', 'venue', 'time', 'timezone', 'selection', 'localEvent'])
+            ->and(array_keys($this->arrayAt($preview, 'artist')))->toBe(['ref', 'values', 'url', 'selection', 'localId'])
+            ->and(array_keys($this->arrayAt($preview, 'venue')))->toBe(['ref', 'values', 'url', 'linkedRefs', 'venueUrl', 'venueSources', 'localId', 'selection'])
+            ->and(ProviderRefData::from($preview['ref'])->key())->toBe('{"provider":"setlist_fm","resourceType":"setlist","externalId":"63de4613"}');
     }
 
     public function test_upcoming_only_offers_api_rows_with_future_dates(): void
@@ -95,7 +95,7 @@ class SetlistFmApiDiscoveryTest extends TestCase
     {
         $this->fakeSearch([SetlistFmApiTest::performance()]);
         $this->get($this->searchUrl(['date' => '1964-08-23', 'year' => 1964, 'countryCode' => 'US', 'venueId' => '6bd6ca6e']))->assertOk()->assertJsonCount(1, 'data');
-        ProviderHttp::assertSent(fn (RecordedRequest $r) => $r['date'] === '23-08-1964' && $r['year'] == 1964 && $r['countryCode'] === 'US' && $r['venueId'] === '6bd6ca6e');
+        ProviderHttp::assertSent(fn (RecordedRequest $r): bool => $r['date'] === '23-08-1964' && $r['year'] == 1964 && $r['countryCode'] === 'US' && $r['venueId'] === '6bd6ca6e');
     }
 
     public function test_search_drops_rows_outside_the_requested_year(): void
@@ -108,7 +108,7 @@ class SetlistFmApiDiscoveryTest extends TestCase
     {
         $this->fakeSearch([SetlistFmApiTest::performance()], 40);
         $cursor = $this->get($this->searchUrl())->assertOk()->json('meta.next_cursor');
-        $this->assertNotNull($cursor);
+        expect($cursor)->not->toBeNull();
         $this->get($this->searchUrl(['cursor' => $cursor, 'period' => 'upcoming']))->assertUnprocessable();
         ProviderHttp::assertSentCount(1);
     }
@@ -150,7 +150,7 @@ class SetlistFmApiDiscoveryTest extends TestCase
     {
         $this->fakeSearch([SetlistFmApiTest::performance()]);
         $this->get($this->searchUrl(['tourName' => 'North American Tour 1964']))->assertOk()->assertJsonCount(1, 'data');
-        ProviderHttp::assertSent(fn (RecordedRequest $r) => $r['tourName'] === 'North American Tour 1964' && ! isset($r['tourId']));
+        ProviderHttp::assertSent(fn (RecordedRequest $r): bool => $r['tourName'] === 'North American Tour 1964' && ! isset($r['tourId']));
         $this->get($this->searchUrl(['tourName' => 'North American Tour 1964', 'tourId' => 'old-website-tour']))->assertUnprocessable();
         ProviderHttp::assertSentCount(1);
     }
@@ -160,7 +160,7 @@ class SetlistFmApiDiscoveryTest extends TestCase
         $this->fakeSearch([SetlistFmApiTest::performance()]);
         $row = $this->arrayAt($this->get($this->searchUrl())->assertOk()->json('data.0'));
         $preview = $this->arrayAt($this->get($this->previewUrl($row))->assertOk()->json('data.0'));
-        $this->assertSame('North American Tour 1964', $preview['tourName']);
+        expect($preview['tourName'])->toBe('North American Tour 1964');
         $artistKey = (string) Str::uuid();
         $venueKey = (string) Str::uuid();
         $body = [

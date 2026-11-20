@@ -42,9 +42,9 @@ class AuthSessionTest extends TestCase
         ])->assertCreated()->assertJsonPath('data.type', 'users')
             ->assertJsonPath('data.attributes.email', 'jamie@example.com');
         $user = User::sole();
-        $this->assertSame($user->external_id, $response->json('data.id'));
-        $this->assertNotSame('client-owned-id', $user->external_id);
-        $this->assertTrue(Hash::check('concert-password', $user->password));
+        expect($response->json('data.id'))->toBe($user->external_id)
+            ->and($user->external_id)->not->toBe('client-owned-id')
+            ->and(Hash::check('concert-password', $user->password))->toBeTrue();
         $this->carryCookies($response);
         $this->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.id', $user->external_id);
         $logout = $this->postJson('/api/v1/auth/logout')->assertNoContent();
@@ -61,7 +61,7 @@ class AuthSessionTest extends TestCase
         $response = $this->postJson('/api/v1/auth/login', [
             'email' => 'JAMIE@example.com', 'password' => 'password',
         ])->assertOk()->assertJsonPath('data.id', $user->external_id);
-        $this->assertNotSame($oldId, session()->getId());
+        expect(session()->getId())->not->toBe($oldId);
         $this->carryCookies($response);
         $this->getJson('/api/v1/me')->assertOk();
     }
@@ -100,7 +100,7 @@ class AuthSessionTest extends TestCase
         $missing = $this->postJson('/api/v1/auth/login', ['email' => 'missing@example.com', 'password' => 'wrong'])->assertUnprocessable();
         for ($attempt = 0; $attempt < 5; $attempt++) {
             $response = $this->postJson('/api/v1/auth/login', ['email' => 'jamie@example.com', 'password' => 'wrong'])->assertUnprocessable();
-            $this->assertSame($missing->json('errors'), $response->json('errors'));
+            expect($response->json('errors'))->toBe($missing->json('errors'));
         }
         $this->postJson('/api/v1/auth/login', ['email' => 'jamie@example.com', 'password' => 'wrong'])->assertTooManyRequests();
     }

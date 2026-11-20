@@ -46,7 +46,7 @@ class MusicBrainzController extends Controller
             $scopeAvailable = true;
             if ($kind === 'series') {
                 $localMbids = ArtistProviderId::query()->where('provider', 'musicbrainz')->where('resource_type', 'artist')
-                    ->whereHas('artist', fn ($artist) => $artist->whereIn('external_id', array_map('strtolower', $search->artistUuids)))
+                    ->whereHas('artist', fn ($artist) => $artist->whereIn('external_id', array_map(strtolower(...), $search->artistUuids)))
                     ->get(['provider_resource_id'])->map(fn (ArtistProviderId $id): string => $id->provider_resource_id)->all();
                 $scope = MusicBrainzTourScopeData::normalized($search->q, [...$localMbids, ...$search->artistMbids]);
                 $scopeAvailable = $scope->artistMbids !== [];

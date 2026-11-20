@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Client\Request as RecordedRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Sleep;
+use Saloon\Http\Faking\MockResponse;
 use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
@@ -49,19 +50,19 @@ class SetlistFmApiTest extends TestCase
     {
         ProviderHttp::fake(['https://api.setlist.fm/rest/1.0/search/setlists*' => ProviderHttp::response(['setlist' => [self::performance()], 'total' => 1, 'page' => 1, 'itemsPerPage' => 20])]);
         $result = app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1, artistMbid: self::ARTIST_MBID));
-        $this->assertSame('63de4613', $result->items[0]->ref->externalId);
-        $this->assertSame('North American Tour 1964', $result->items[0]->tourName);
-        $this->assertNull($result->items[0]->tour);
-        $this->assertNull($result->items[0]->venue->values->lat);
-        $this->assertArrayNotHasKey('sets', $result->items[0]->toArray());
-        ProviderHttp::assertSent(fn (RecordedRequest $r) => $r->hasHeader('x-api-key', 'test-server-secret') && $r->hasHeader('Accept', 'application/json') && ! str_contains($r->url(), 'test-server-secret'));
+        expect($result->items[0]->ref->externalId)->toBe('63de4613')
+            ->and($result->items[0]->tourName)->toBe('North American Tour 1964')
+            ->and($result->items[0]->tour)->toBeNull()
+            ->and($result->items[0]->venue->values->lat)->toBeNull()
+            ->and($result->items[0]->toArray())->not->toHaveKey('sets');
+        ProviderHttp::assertSent(fn (RecordedRequest $r): bool => $r->hasHeader('x-api-key', 'test-server-secret') && $r->hasHeader('Accept', 'application/json') && ! str_contains($r->url(), 'test-server-secret'));
         ProviderHttp::assertSentCount(1);
     }
 
     public function test_empty_search_404_is_a_legitimate_empty_result(): void
     {
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response('', 404)]);
-        $this->assertSame(['items' => [], 'more' => false], app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1))->toArray());
+        expect(app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1))->toArray())->toBe(['items' => [], 'more' => false]);
     }
 
     public function test_rate_limit_remains_actionable_without_retry_or_website_fallback(): void
@@ -71,8 +72,8 @@ class SetlistFmApiTest extends TestCase
             app(SetlistFmApi::class)->detail('63de4613');
             $this->fail('Expected rate limit');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
-            $this->assertSame(7, $failure->retryAfter);
+            expect($failure->status)->toBe(429)
+                ->and($failure->retryAfter)->toBe(7);
         }
         ProviderHttp::assertSentCount(1);
     }
@@ -95,30 +96,27 @@ class SetlistFmApiTest extends TestCase
             app(SetlistFmApi::class)->detail('63de4613');
             $this->fail('Expected authentication error');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame('setlistfm_api_auth', $failure->reason);
-            $this->assertStringNotContainsString('test-server-secret', $failure->getMessage());
+            expect($failure->reason)->toBe('setlistfm_api_auth')
+                ->and($failure->getMessage())->not->toContain('test-server-secret');
         }
     }
 
     public function test_mismatched_detail_identity_is_rejected(): void
     {
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response(self::performance())]);
-        $this->expectException(CatalogProviderUnavailable::class);
-        app(SetlistFmApi::class)->detail('different');
+        expect(fn () => app(SetlistFmApi::class)->detail('different'))->toThrow(CatalogProviderUnavailable::class);
     }
 
     public function test_another_artist_in_search_is_rejected(): void
     {
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response(['setlist' => [self::performance()], 'total' => 1, 'page' => 1, 'itemsPerPage' => 20])]);
-        $this->expectException(CatalogProviderUnavailable::class);
-        app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1, artistMbid: '55441123-89a2-49ab-ae3f-df7a3e86835a'));
+        expect(fn () => app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1, artistMbid: '55441123-89a2-49ab-ae3f-df7a3e86835a')))->toThrow(CatalogProviderUnavailable::class);
     }
 
     public function test_challenge_html_is_rejected(): void
     {
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response('<html>Challenge</html>')]);
-        $this->expectException(CatalogProviderUnavailable::class);
-        app(SetlistFmApi::class)->detail('63de4613');
+        expect(fn () => app(SetlistFmApi::class)->detail('63de4613'))->toThrow(CatalogProviderUnavailable::class);
     }
 
     protected function tearDown(): void
@@ -133,7 +131,7 @@ class SetlistFmApiTest extends TestCase
         Sleep::fake(syncWithCarbon: true);
         config(['services.setlistfm.api_interval_ms' => 0, 'services.setlistfm.api_daily_limit' => 999999]);
         $starts = [];
-        ProviderHttp::fake(function () use (&$starts) {
+        ProviderHttp::fake(function () use (&$starts): MockResponse {
             $starts[] = now()->getTimestampMs();
 
             return ProviderHttp::response(['ok' => true]);
@@ -142,9 +140,9 @@ class SetlistFmApiTest extends TestCase
         $client->api('search/setlists', SetlistFmSearchPayloadData::class);
         $client->api('setlist/63de4613', SetlistFmSetlistPayloadData::class);
         $client->api('venue/6bd6ca6e', SetlistFmVenuePayloadData::class);
-        $this->assertGreaterThanOrEqual(500, $starts[1] - $starts[0]);
-        $this->assertGreaterThanOrEqual(500, $starts[2] - $starts[1]);
-        $this->assertGreaterThanOrEqual(1000, $starts[2] - $starts[0]);
+        expect($starts[1] - $starts[0])->toBeGreaterThanOrEqual(500)
+            ->and($starts[2] - $starts[1])->toBeGreaterThanOrEqual(500)
+            ->and($starts[2] - $starts[0])->toBeGreaterThanOrEqual(1000);
         ProviderHttp::assertSentCount(3);
     }
 
@@ -156,13 +154,13 @@ class SetlistFmApiTest extends TestCase
         Cache::put($key, 1438, now('UTC')->addDay()->startOfDay());
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response(['ok' => true])]);
         app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
-        $this->assertSame(1439, Cache::get($key));
+        expect(Cache::get($key))->toBe(1439);
         try {
             app(SetlistFmClient::class)->api('venue/6bd6ca6e', SetlistFmVenuePayloadData::class);
             $this->fail('The 1440th daily request must not leave the app.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
-            $this->assertGreaterThan(1, $failure->retryAfter);
+            expect($failure->status)->toBe(429)
+                ->and($failure->retryAfter)->toBeGreaterThan(1);
         }
         ProviderHttp::assertSentCount(1);
     }
@@ -175,13 +173,13 @@ class SetlistFmApiTest extends TestCase
             app(SetlistFmClient::class)->api('setlist/63de4613', SetlistFmSetlistPayloadData::class);
             $this->fail('Expected provider failure.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(503, $failure->status);
+            expect($failure->status)->toBe(503);
         }
         try {
             app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
             $this->fail('A failed request must still consume quota.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
+            expect($failure->status)->toBe(429);
         }
         ProviderHttp::assertSentCount(1);
     }
@@ -192,20 +190,20 @@ class SetlistFmApiTest extends TestCase
         ProviderHttp::fake(['https://api.setlist.fm/*' => ProviderHttp::response(['setlist' => [self::performance()], 'total' => 1, 'page' => 1, 'itemsPerPage' => 20])]);
         $api = app(SetlistFmApi::class);
         $first = $api->search(new SetlistFmSearchQueryData(p: 1));
-        $this->assertSame($first->toArray(), $api->search(new SetlistFmSearchQueryData(p: 1))->toArray());
-        $this->assertSame(1, Cache::get('catalog-provider:quota:setlist_api:'.now('UTC')->format('Y-m-d')));
+        expect($api->search(new SetlistFmSearchQueryData(p: 1))->toArray())->toBe($first->toArray())
+            ->and(Cache::get('catalog-provider:quota:setlist_api:'.now('UTC')->format('Y-m-d')))->toBe(1);
         ProviderHttp::assertSentCount(1);
     }
 
     public function test_shared_api_lock_rejects_a_competing_worker_before_http(): void
     {
         $lock = Cache::lock('catalog-provider:gate:setlist_api', 30);
-        $this->assertTrue($lock->get());
+        expect($lock->get())->toBeTrue();
         try {
             app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
             $this->fail('A competing worker must not make a request.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
+            expect($failure->status)->toBe(429);
         } finally {
             $lock->release();
         }
@@ -222,12 +220,12 @@ class SetlistFmApiTest extends TestCase
             app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
             $this->fail('Exhausted day must be blocked.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(429, $failure->status);
-            $this->assertSame(1, $failure->retryAfter);
+            expect($failure->status)->toBe(429)
+                ->and($failure->retryAfter)->toBe(1);
         }
         $this->travel(1)->seconds();
         app(SetlistFmClient::class)->api('venue/6bd6ca6e', SetlistFmVenuePayloadData::class);
-        $this->assertSame(1, Cache::get('catalog-provider:quota:setlist_api:2026-11-03'));
+        expect(Cache::get('catalog-provider:quota:setlist_api:2026-11-03'))->toBe(1);
         ProviderHttp::assertSentCount(1);
     }
 
@@ -237,7 +235,7 @@ class SetlistFmApiTest extends TestCase
         config(['services.setlistfm.api_interval_ms' => -100]);
         $starts = [];
         $overlapped = [];
-        ProviderHttp::fake(function () use (&$starts, &$overlapped) {
+        ProviderHttp::fake(function () use (&$starts, &$overlapped): MockResponse {
             $starts[] = now()->getTimestampMs();
             $competing = Cache::lock('catalog-provider:gate:setlist_api', 30);
             $acquired = $competing->get();
@@ -251,10 +249,10 @@ class SetlistFmApiTest extends TestCase
         });
         app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
         app(SetlistFmClient::class)->api('venue/6bd6ca6e', SetlistFmVenuePayloadData::class);
-        $this->assertSame([false, false], $overlapped);
-        $this->assertGreaterThanOrEqual(3500, $starts[1] - $starts[0]);
+        expect($overlapped)->toBe([false, false])
+            ->and($starts[1] - $starts[0])->toBeGreaterThanOrEqual(3500);
         $lock = Cache::lock('catalog-provider:gate:setlist_api', 30);
-        $this->assertTrue($lock->get());
+        expect($lock->get())->toBeTrue();
         $lock->release();
     }
 
@@ -279,7 +277,7 @@ class SetlistFmApiTest extends TestCase
             app(SetlistFmClient::class)->api('search/setlists', SetlistFmSearchPayloadData::class);
             $this->fail('Unrecorded requests must not be sent.');
         } catch (CatalogProviderUnavailable $failure) {
-            $this->assertSame(503, $failure->status);
+            expect($failure->status)->toBe(503);
         }
         ProviderHttp::assertNothingSent();
     }

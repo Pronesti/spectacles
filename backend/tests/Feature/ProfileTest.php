@@ -32,13 +32,13 @@ class ProfileTest extends TestCase
             ->assertJsonPath('data.attributes.email', 'after@example.com')
             ->assertJsonMissingPath('data.attributes.password')->assertJsonMissingPath('data.attributes.city');
         $user->refresh();
-        $this->assertSame('Jamie Updated', $user->name);
-        $this->assertSame('en', $user->locale);
-        $this->assertSame($password, $user->password);
-        $this->assertNull($user->email_verified_at);
-        $this->assertSame($other->getOriginal('name'), $this->present($other->fresh())->name);
+        expect($user->name)->toBe('Jamie Updated')
+            ->and($user->locale)->toBe('en')
+            ->and($user->password)->toBe($password)
+            ->and($user->email_verified_at)->toBeNull()
+            ->and($this->present($other->fresh())->name)->toBe($other->getOriginal('name'));
         $public = (new UserResource($user))->toResponse(Request::create('/resource'))->getData(true);
-        $this->assertArrayNotHasKey('email', $this->arrayAt($public, 'data.attributes'));
+        expect($this->arrayAt($public, 'data.attributes'))->not->toHaveKey('email');
     }
 
     public function test_unchanged_email_keeps_verification_and_absent_fields_are_preserved(): void
@@ -46,8 +46,8 @@ class ProfileTest extends TestCase
         $user = User::factory()->create(['email' => 'jamie@example.com', 'locale' => 'en']);
         $this->actingAs($user, 'web')->patchJson('/api/v1/me', ['name' => 'New Name'])
             ->assertOk()->assertJsonPath('data.attributes.email', 'jamie@example.com');
-        $this->assertNotNull($this->present($user->fresh())->email_verified_at);
-        $this->assertSame('en', $this->present($user->fresh())->locale);
+        expect($this->present($user->fresh())->email_verified_at)->not->toBeNull()
+            ->and($this->present($user->fresh())->locale)->toBe('en');
         $this->patchJson('/api/v1/me', ['locale' => null])->assertOk()->assertJsonPath('data.attributes.locale', null);
     }
 
@@ -60,7 +60,7 @@ class ProfileTest extends TestCase
             ['email' => strtoupper($other->email)], ['locale' => 'unsupported'], ['locale' => ['en']]] as $invalid) {
             $this->patchJson('/api/v1/me', $invalid)->assertUnprocessable();
         }
-        $this->assertSame('Original', $this->present($user->fresh())->name);
+        expect($this->present($user->fresh())->name)->toBe('Original');
     }
 
     public function test_current_user_response_has_no_shared_graph_or_internal_identifiers(): void
@@ -69,7 +69,7 @@ class ProfileTest extends TestCase
         $response = $this->actingAs($user, 'web')->getJson('/api/v1/me?include=attendanceMemberships,ownedAttendances')
             ->assertOk()->assertJsonMissingPath('included')->assertJsonMissingPath('data.relationships')
             ->assertJsonMissingPath('data.attributes.id')->assertJsonMissingPath('data.attributes.remember_token');
-        $this->assertSame(['name', 'email', 'locale'], array_keys($this->arrayAt($response->json('data.attributes'))));
+        expect(array_keys($this->arrayAt($response->json('data.attributes'))))->toBe(['name', 'email', 'locale']);
     }
 
     public function test_guest_cannot_update_profile(): void

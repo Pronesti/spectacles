@@ -48,14 +48,14 @@ class DomainGraphTest extends TestCase
         ];
         foreach ($parents as $table => $column) {
             $indexes = collect(Schema::getIndexes($table));
-            $this->assertFalse($indexes->contains(fn ($index) => $index['columns'] === [$column]), $table);
-            $this->assertTrue($indexes->contains(fn ($index) => $index['unique']
-                && $index['columns'][0] === $column), $table);
+            expect($indexes->contains(fn ($index): bool => $index['columns'] === [$column]))->toBeFalse()
+                ->and($indexes->contains(fn ($index): bool => $index['unique']
+                && $index['columns'][0] === $column))->toBeTrue();
         }
         foreach (['event_artists' => 'artist_id', 'attendance_invitations' => 'attendance_id'] as $table => $column) {
-            $this->assertTrue(collect(Schema::getIndexes($table))->contains(
-                fn ($index) => ! $index['unique'] && $index['columns'] === [$column]
-            ), $table);
+            expect(collect(Schema::getIndexes($table))->contains(
+                fn ($index): bool => ! $index['unique'] && $index['columns'] === [$column]
+            ))->toBeTrue();
         }
     }
 
@@ -66,21 +66,21 @@ class DomainGraphTest extends TestCase
     public function test_every_model_factory_has_independent_immutable_public_identity(string $class): void
     {
         $row = Factory::factoryForModel($class)->createOne();
-        $this->assertIsInt($row->getAttribute('id'));
-        $this->assertTrue(Str::isUuid($row->getAttribute('external_id')));
-        $this->assertSame('external_id', $row->getRouteKeyName());
-        $this->assertTrue($this->present($row->resolveRouteBinding($row->getAttribute('external_id')))->is($row));
+        expect($row->getAttribute('id'))->toBeInt()
+            ->and(Str::isUuid($row->getAttribute('external_id')))->toBeTrue()
+            ->and($row->getRouteKeyName())->toBe('external_id')
+            ->and($this->present($row->resolveRouteBinding($row->getAttribute('external_id')))->is($row))->toBeTrue();
         $uuid = $row->getAttribute('external_id');
         $row->save();
-        $this->assertSame($uuid, $this->present($row->fresh())->getAttribute('external_id'));
-        $this->assertNull($row->replicate()->getAttribute('external_id'));
+        expect($this->present($row->fresh())->getAttribute('external_id'))->toBe($uuid)
+            ->and($row->replicate()->getAttribute('external_id'))->toBeNull();
         $this->assertDatabaseRejects(fn () => Factory::factoryForModel($class)->create(['external_id' => $uuid]));
         $row->setAttribute('external_id', (string) Str::uuid7());
         try {
             $row->save();
             $this->fail('Changing public identity was accepted.');
         } catch (ValidationException $exception) {
-            $this->assertArrayHasKey('external_id', $exception->errors());
+            expect($exception->errors())->toHaveKey('external_id');
         }
     }
 
@@ -163,7 +163,9 @@ class DomainGraphTest extends TestCase
         ] as [$class, $relation]) {
             $reference = Factory::factoryForModel($class)->createOne();
             $parent = $reference->getRelationValue($relation);
-            $this->assertInstanceOf(Model::class, $parent);
+            if (! $parent instanceof Model) {
+                $this->fail('The reference must belong to a parent model.');
+            }
             $parent->delete();
             $this->assertDatabaseMissing($reference->getTable(), ['id' => $reference->id]);
         }
@@ -188,7 +190,7 @@ class DomainGraphTest extends TestCase
         $guest->delete();
         $this->assertDatabaseMissing('attendance_member_seats', ['id' => $seat->id]);
         $this->assertDatabaseHas('setlist_entries', ['id' => $entry->id]);
-        $this->assertSame(1, $a->members()->count());
+        expect($a->members()->count())->toBe(1);
     }
 
     public function test_declared_foreign_keys_are_real_database_constraints(): void
@@ -212,7 +214,7 @@ class DomainGraphTest extends TestCase
         foreach ($expected as $table => $columnSets) {
             $actual = array_column(Schema::getForeignKeys($table), 'columns');
             foreach ($columnSets as $columns) {
-                $this->assertContains($columns, $actual, $table);
+                expect($actual)->toContain($columns);
             }
         }
         $this->assertDatabaseRejects(fn () => SongProviderId::factory()->create(['song_id' => 2147483647]));
@@ -221,11 +223,11 @@ class DomainGraphTest extends TestCase
     public function test_optional_seeder_creates_a_connected_graph(): void
     {
         $this->seed(LiveEventSeeder::class);
-        $this->assertSame(1, Attendance::count());
+        expect(Attendance::count())->toBe(1);
         $a = Attendance::sole();
-        $this->assertSame(2, $a->members()->count());
-        $this->assertSame(3, $a->entries()->count());
-        $this->assertSame(1, $a->entries()->where('is_tape', true)->count());
-        $this->assertSame(1, $this->present($a->event)->providerReferences()->count());
+        expect($a->members()->count())->toBe(2)
+            ->and($a->entries()->count())->toBe(3)
+            ->and($a->entries()->where('is_tape', true)->count())->toBe(1)
+            ->and($this->present($a->event)->providerReferences()->count())->toBe(1);
     }
 }

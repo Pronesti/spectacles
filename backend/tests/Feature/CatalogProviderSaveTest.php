@@ -63,7 +63,7 @@ class CatalogProviderSaveTest extends TestCase
             ->postJson('/api/v1/attendances', $this->requestBody())->assertOk()->json('data.concerts.0');
         $second = $this->actingAs(User::factory()->create())
             ->postJson('/api/v1/attendances', $this->requestBody())->assertOk()->json('data.concerts.0');
-        $this->assertSame($this->arrayAt($first, 'catalog')['eventId'], $this->arrayAt($second, 'catalog')['eventId']);
+        expect($this->arrayAt($second, 'catalog')['eventId'])->toBe($this->arrayAt($first, 'catalog')['eventId']);
         $this->assertDatabaseCount('events', 1);
         $this->assertDatabaseCount('attendances', 2);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'setlist_fm',
@@ -82,7 +82,7 @@ class CatalogProviderSaveTest extends TestCase
         $this->assertDatabaseCount('venues', 1);
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('tours', 1);
-        $this->assertSame('Saved authoritative title', Event::firstOrFail()->title);
+        expect(Event::firstOrFail()->title)->toBe('Saved authoritative title');
         ProviderHttp::assertNothingSent();
     }
 
@@ -174,9 +174,9 @@ class CatalogProviderSaveTest extends TestCase
         unset($body['pendingCatalog']['event']);
         $this->postJson('/api/v1/attendances', $body)->assertOk();
         $this->assertDatabaseCount('venues', 1);
-        $this->assertSame('Saved authoritative Arena', $this->present($venue->fresh())->name);
-        $this->assertSame('Saved city', $this->present($venue->fresh())->city);
-        $this->assertSame('https://www.setlist.fm/venue/allstate-arena-rosemont-il-usa-73d6ca11.html', $this->present($ref->fresh())->source_url);
+        expect($this->present($venue->fresh())->name)->toBe('Saved authoritative Arena')
+            ->and($this->present($venue->fresh())->city)->toBe('Saved city')
+            ->and($this->present($ref->fresh())->source_url)->toBe('https://www.setlist.fm/venue/allstate-arena-rosemont-il-usa-73d6ca11.html');
         ProviderHttp::assertNothingSent();
     }
 
