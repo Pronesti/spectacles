@@ -108,5 +108,5 @@
 .concert-creation .event-date-input:focus-within { outline: 2px solid var(--creation-focus); outline-offset: 2px; }
 .concert-creation .event-date-input [data-type] { border-radius: 3px; outline: none; }
 .concert-creation .event-date-input [data-focused] { background: var(--lime); color: var(--ink); }
-.concert-creation .event-date-input [data-placeholder] { color: var(--creation-muted); }
+.concert-creation .event-date-input [data-placeholder] { color: var(--ink); font-weight: 400; }
 .concert-creation .event-date-input [data-disabled] { opacity: .6; }
