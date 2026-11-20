@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http;
 
-use App\Http\CatalogDraftResolver;
-use App\Http\Data\CollectionData;
 use App\Http\Data\SetlistEntryDraftData;
-use App\Http\EventDraftResolver;
 use App\Http\Requests\SaveConcertRequest;
-use App\Http\VenueDraftResolver;
 use App\Models\Artist;
 use App\Models\Attendance;
 use App\Models\AttendanceMember;
@@ -15,50 +11,14 @@ use App\Models\SetlistEntry;
 use App\Models\Song;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CollectionController extends Controller
+class AttendanceWriter
 {
-    public function index(Request $request): JsonResponse
-    {
-        $viewer = $request->user() ?? throw new AuthenticationException;
-        $attendances = Attendance::query()->whereNull('deleted_at')->whereHas('members', fn ($query) => $query->where('user_id', $viewer->id))
-            ->with(['event.venue', 'event.artistLinks.artist', 'event.tourLinks.tour', 'members' => fn ($query) => $query->where('user_id', $viewer->id), 'entries.song', 'entries.artistLinks.artist'])
-            ->orderBy('id')->get();
-
-        return response()->json(['data' => CollectionData::fromAttendances($attendances, $viewer)])->header('Cache-Control', 'private, no-store');
-    }
-
-    public function store(SaveConcertRequest $request): JsonResponse
-    {
-        $this->persist($request, null);
-
-        return $this->index($request);
-    }
-
-    public function update(SaveConcertRequest $request, Attendance $attendance): JsonResponse
-    {
-        $this->persist($request, $attendance);
-
-        return $this->index($request);
-    }
-
-    public function destroy(Request $request, Attendance $attendance): JsonResponse
-    {
-        $viewer = $request->user() ?? throw new AuthenticationException;
-        DB::transaction(function () use ($viewer, $attendance): void {
-            User::query()->whereKey($viewer->id)->lockForUpdate()->firstOrFail();
-            $locked = Attendance::query()->lockForUpdate()->findOrFail($attendance->id);
-            abort_unless($locked->owner_user_id === $viewer->id, 404);
-            $locked->forceFill(['deleted_at' => now()])->save();
-        });
-
-        return $this->index($request);
-    }
-
-    private function persist(SaveConcertRequest $request, ?Attendance $attendance): void
+    /**
+     * Creates or updates the viewer's Attendance, its Event and its setlist from the saved concert.
+     */
+    public function save(SaveConcertRequest $request, ?Attendance $attendance): void
     {
         $viewer = $request->user() ?? throw new AuthenticationException;
         DB::transaction(function () use ($request, $viewer, $attendance): void {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CurrentUserResource;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
@@ -10,14 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class ProfileController extends Controller
+class UpdateProfileController extends Controller
 {
-    public function show(Request $request): JsonResponse
-    {
-        return (new CurrentUserResource($request->user()))->response()->header('Cache-Control', 'no-store');
-    }
-
-    public function update(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         if (is_string($email = $request->input('email'))) {
             $request->merge(['email' => strtolower($email)]);

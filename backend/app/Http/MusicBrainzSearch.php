@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http;
 
 use App\Http\Data\MusicBrainzLocalMatchData;
 use App\Http\Data\MusicBrainzSearchData;
 use App\Http\Data\MusicBrainzSearchResultData;
 use App\Http\Data\MusicBrainzSearchRowData;
 use App\Http\Data\MusicBrainzTourScopeData;
-use App\Http\MusicBrainzClient;
-use App\Http\MusicBrainzSelection;
-use App\Http\MusicBrainzUnavailable;
 use App\Http\Requests\MusicBrainzSearchRequest;
 use App\Models\ArtistProviderId;
 use App\Models\SongProviderId;
@@ -19,27 +16,14 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
-class MusicBrainzController extends Controller
+class MusicBrainzSearch
 {
-    public function artists(MusicBrainzSearchRequest $request): JsonResponse
-    {
-        return $this->search($request, 'artist');
-    }
-
-    public function works(MusicBrainzSearchRequest $request): JsonResponse
-    {
-        return $this->search($request, 'work');
-    }
-
-    public function tours(MusicBrainzSearchRequest $request): JsonResponse
-    {
-        return $this->search($request, 'series');
-    }
-
     /**
+     * Searches MusicBrainz for one kind of entity and marks the results already saved locally.
+     *
      * @param  'artist'|'work'|'series'  $kind
      */
-    private function search(MusicBrainzSearchRequest $request, string $kind): JsonResponse
+    public function respond(MusicBrainzSearchRequest $request, string $kind): JsonResponse
     {
         $search = MusicBrainzSearchData::from($request->validated());
         try {
