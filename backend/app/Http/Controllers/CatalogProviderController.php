@@ -29,7 +29,7 @@ class CatalogProviderController extends Controller
 
             return response()->json($body)->header('Cache-Control', 'private, no-store');
         } catch (CatalogProviderUnavailable|MusicBrainzUnavailable $failure) {
-            $response = response()->json(['message' => $failure->getMessage(), ...($failure instanceof CatalogProviderUnavailable && $failure->manual !== null ? ['manual' => $failure->manual] : []), ...($failure instanceof CatalogProviderUnavailable && $failure->reason !== null ? ['reason' => $failure->reason] : [])], $failure->status)->header('Cache-Control', 'private, no-store');
+            $response = response()->json(['message' => $failure->getMessage(), ...($failure instanceof CatalogProviderUnavailable && $failure->reason !== null ? ['reason' => $failure->reason] : [])], $failure->status)->header('Cache-Control', 'private, no-store');
 
             return $failure->status === 429 ? $response->header('Retry-After', (string) $failure->retryAfter) : $response;
         }
