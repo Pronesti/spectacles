@@ -125,6 +125,17 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/saloonphp/laravel-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/saloonphp/saloon" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/spatie/laravel-data" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/spatie/laravel-package-tools" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/spatie/php-structure-discoverer" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/webmozart/assert" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
