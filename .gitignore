@@ -8,3 +8,5 @@
 .lerd.yaml
 .php-version
 .node-version
+
+.idea/
