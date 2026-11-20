@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Menu, MenuItem, MenuTrigger, Popover, RootMenuTriggerStateContext } from 'react-aria-components'
 import type { AccountUser, AuthMode } from '../accountApi'
 import { Avatar } from './Avatar'
@@ -18,11 +18,28 @@ export function AccountMenu({ user, busy, onProfile, onAuth, onSignOut }: {
   user: AccountUser | null; busy: boolean; onProfile: () => void; onAuth: (mode: AuthMode) => void; onSignOut: () => void
 }) {
   const [open, setOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLElement>(null)
   const name = user?.name ?? 'Guest'
-  return <div className="account-menu">
+  /**
+   * The popover stays non-modal so outside clicks still reach their target, which means it must close itself on them.
+   * A press on the trigger is swallowed so React Aria does not reopen the menu it just closed on blur.
+   */
+  useEffect(() => {
+    if (!open) { return }
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (panelRef.current?.contains(target)) { return }
+      if (menuRef.current?.contains(target)) { event.stopPropagation() }
+      setOpen(false)
+    }
+    document.addEventListener('pointerdown', closeOnOutsidePointer, true)
+    return () => document.removeEventListener('pointerdown', closeOnOutsidePointer, true)
+  }, [open])
+  return <div className="account-menu" ref={menuRef}>
     <MenuTrigger isOpen={open} onOpenChange={setOpen}>
       <AccountTrigger name={name} busy={busy} open={open} />
-      <Popover className="account-menu-panel" placement="bottom end" offset={12} isNonModal>
+      <Popover className="account-menu-panel" placement="bottom end" offset={12} isNonModal ref={panelRef}>
         <div className="account-menu-identity"><Avatar name={name} /><div><strong>{name}</strong>{user && <span>{user.email}</span>}<small>{user ? 'Signed in' : 'Session expired'}</small></div></div>
         {/* Prevent page scrolling from dismissing the popover while Menu handles Home/End focus. */}
         <div onKeyDownCapture={event => { if (event.key === 'Home' || event.key === 'End') event.preventDefault() }}><RootMenuTriggerStateContext.Consumer>{state => <Menu className="account-menu-items" aria-label="Account" aria-labelledby="" autoFocus={state?.focusStrategy ?? 'first'} shouldFocusWrap>
