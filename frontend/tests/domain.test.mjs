@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { createDemoWorkspace, dateKey, daysUntil, decodeWorkspace, filteredConcerts, formatDate, fromKey, groupByDay, moveEntry, relation, sortConcerts, todayKey, uniqueVenues, validDate } from '../src/domain.ts'
+import { createDemoWorkspace, dateKey, daysUntil, decodeWorkspace, filteredConcerts, formatDate, formatDateText, fromKey, groupByDay, moveEntry, relation, sortConcerts, todayKey, uniqueVenues, validDate } from '../src/domain.ts'
 
 const today = '2026-10-22'
 
@@ -89,4 +89,12 @@ test('unreadable saves and broken venue references are rejected without partial 
   workspace.concerts[0].venueId = null
   workspace.venues[0].lat = null
   assert.equal(decodeWorkspace(JSON.stringify(workspace)), null)
+})
+
+test('draft date text reads as words at its own precision and falls back to the typed text', () => {
+  assert.equal(formatDateText('2027-10-23'), 'October 23, 2027')
+  assert.equal(formatDateText('2027-10'), 'October 2027 · day to confirm')
+  assert.equal(formatDateText('2027'), '2027 · date to confirm')
+  assert.equal(formatDateText(''), 'Date to confirm')
+  assert.equal(formatDateText('2027-02-30'), '2027-02-30')
 })

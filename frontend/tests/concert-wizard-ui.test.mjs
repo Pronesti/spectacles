@@ -49,6 +49,30 @@ test('combined autocomplete and explicit entity fields expose accessible non-sub
   }
 })
 
+test('setlist rows are named by their title, the review date is spoken, and an empty setlist renders no list', () => {
+  const state = createWizard()
+  state.draft.dateText = '2027-10-23'
+  const props = { state, venues: [], catalog, musicbrainz, onChange: () => {}, onEditingChange: () => {} }
+  const empty = render(WizardSetlistStep, props)
+  assert.doesNotMatch(empty, /<ol/); assert.match(empty, /<aside class="hint" aria-label="Review">/); assert.match(empty, /October 23, 2027/); assert.doesNotMatch(empty, /2027-10-23/)
+  state.draft.concert.setlist = [{ id: 'row-1', type: 'song', title: 'Danza Kuduro', artist: '', tape: false }]
+  const filled = render(WizardSetlistStep, props)
+  assert.match(filled, /<ol aria-label="Setlist">/); assert.match(filled, /aria-label="Edit 1, Danza Kuduro"[^>]*>Edit 1</); assert.match(filled, /aria-label="Remove 1, Danza Kuduro"[^>]*>Remove 1</)
+})
+test('song and performer lookups name their search and create buttons apart, and the results list is not named twice', () => {
+  const song = render(EntityAutocomplete, { kind: 'songs', label: 'Find a Song', catalog, musicbrainz, onPick: () => {} })
+  const performer = render(EntityAutocomplete, { kind: 'artists', subject: 'performer', label: 'Find a performer', catalog, musicbrainz, onPick: () => {} })
+  assert.match(song, /aria-label="Search MusicBrainz for songs"[^>]*>Search MusicBrainz</); assert.match(song, /aria-label="Create manually, new song"[^>]*>Create manually</)
+  assert.match(performer, /aria-label="Search MusicBrainz for performers"[^>]*>Search MusicBrainz</); assert.match(performer, /aria-label="Create manually, new performer"[^>]*>Create manually</)
+  assert.doesNotMatch(song + performer, / results"/)
+})
+test('a selection describes its Change button with what was chosen', () => {
+  const state = createWizard()
+  state.draft.artists = [{ name: 'Don Omar', catalogId: '00000000-0000-4000-8000-000000000001' }]
+  const html = render(WizardArtistStep, { state, venues: [], catalog, musicbrainz, onChange: () => {}, onEditingChange: () => {}, continueAction: { current: null } })
+  const summaryId = html.match(/<section tabindex="-1" class="creation-selection" aria-label="Selected Artist"><div id="([^"]+)">/)?.[1]
+  assert.ok(summaryId); assert.match(html, new RegExp(`<button[^>]*aria-describedby="${summaryId}"[^>]*>Change <span class="sr-only">Artist</span>`))
+})
 test('manual Event emphasizes its date and omits technical fields; Setlist remains skippable', () => {
   const props = {state:createWizard(), venues:[], catalog, musicbrainz, onChange:()=>{}, onEditingChange:()=>{}}
   const html = render(WizardEventStep, props)

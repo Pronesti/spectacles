@@ -49,6 +49,14 @@ export function formatDate(date: EventDate, long = false): string {
   return `${month} ${String(date.day).padStart(2, '0')}, ${date.year}`
 }
 
+/** Formats a draft's `YYYY`, `YYYY-MM` or `YYYY-MM-DD` text the way people say it, so it is not read digit by digit. */
+export function formatDateText(dateText: string): string {
+  if (!dateText.trim()) return 'Date to confirm'
+  const [year, month, day] = dateText.split('-').map(Number)
+  const date = { year: year || null, month: month || null, day: day || null }
+  return validDate(date) ? formatDate(date, true) : dateText
+}
+
 export function relation(date: EventDate, today: string): DateRelation {
   const key = dateKey(date)
   if (!key) return 'unconfirmed'
