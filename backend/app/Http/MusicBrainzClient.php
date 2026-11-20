@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Saloon\Exceptions\Request\FatalRequestException;
-use Saloon\Http\Response;
 use Spatie\LaravelData\Data;
 
 class MusicBrainzClient
@@ -248,11 +247,12 @@ class MusicBrainzClient
             }
             Cache::put('musicbrainz:v1:next-start-ms', $now + 1100, now()->addSeconds(10));
             try {
-                $response = (new MusicBrainzConnector($userAgent))->send(new GetMusicBrainzResource($path, $parameters));
+                $connector = new MusicBrainzConnector($userAgent);
+                $response = $connector->send(new GetMusicBrainzResource($path, $parameters));
             } catch (FatalRequestException) {
                 throw new MusicBrainzUnavailable;
             }
-            if ($this->isRateLimited($response)) {
+            if ($connector->isRateLimited($response)) {
                 throw new MusicBrainzUnavailable(429, ProviderConnector::retryAfter($response, 60));
             }
             if (ProviderConnector::declaresOversizedBody($response)) {
@@ -282,16 +282,6 @@ class MusicBrainzClient
         $cached = Cache::get($key);
 
         return is_array($cached) ? $fromCache($cached) : null;
-    }
-
-    /**
-     * MusicBrainz answers its rate limiters with 503 and a Retry-After header, so that is a
-     * retryable rejection like 429. A 503 without Retry-After stays an outage.
-     */
-    private function isRateLimited(Response $response): bool
-    {
-        return $response->status() === 429
-            || ($response->status() === 503 && $response->getPsrResponse()->hasHeader('Retry-After'));
     }
 
     private function text(mixed $value): ?string
