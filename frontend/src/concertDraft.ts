@@ -1,8 +1,9 @@
 import { dateKey, validDate } from './domain.ts'
 import type { CatalogChoice, Concert, EventDate, SetlistEntry, Venue } from './domain.ts'
 import type { CatalogEvent, CatalogVenue } from './catalog.ts'
+import type { WizardTourChoice } from './concertWizard.ts'
 export type Precision = 'exact' | 'month' | 'year' | 'unknown'
-export type ConcertDraft = { concert: Concert; artists: CatalogChoice[]; tours: CatalogChoice[]; eventId?: string; precision: Precision; dateText: string; timezoneText: string; pendingVenue?: Venue; venueName: string; city: string; lat: string; lng: string }
+export type ConcertDraft = { concert: Concert; artists: CatalogChoice[]; tours: WizardTourChoice[]; eventId?: string; precision: Precision; dateText: string; timezoneText: string; pendingVenue?: Venue; venueName: string; city: string; lat: string; lng: string }
 function dateInput(date: EventDate): { precision: Precision; dateText: string } {
   if (date.year === null) return { precision: 'unknown', dateText: '' }
   const year = String(date.year).padStart(4, '0')
@@ -41,7 +42,7 @@ export function finishConcertDraft(draft: ConcertDraft): { concert: Concert; ven
     if ((draft.lat === '') !== (draft.lng === '') || draft.lat !== '' && (!Number.isFinite(Number(draft.lat)) || !Number.isFinite(Number(draft.lng)) || Math.abs(Number(draft.lat)) > 90 || Math.abs(Number(draft.lng)) > 180)) throw new Error('Supply both valid coordinates or leave both empty.')
     venue = { id: crypto.randomUUID(), name: draft.venueName.trim(), city: draft.city.trim(), neighborhood: '', lat: draft.lat === '' ? null : Number(draft.lat), lng: draft.lng === '' ? null : Number(draft.lng) }
   }
-  return { concert: { ...draft.concert, title, artists, venueId: venue?.id ?? draft.concert.venueId, date, timezone, notes: draft.concert.notes.trim(), catalog: { ...(draft.eventId ? { eventId: draft.eventId } : {}), artistIds: draft.artists.map(a => a.catalogId), tours: draft.tours.map(t => ({ ...t })) } }, venue }
+  return { concert: { ...draft.concert, title, artists, venueId: venue?.id ?? draft.concert.venueId, date, timezone, notes: draft.concert.notes.trim(), catalog: { ...(draft.eventId ? { eventId: draft.eventId } : {}), artistIds: draft.artists.map(a => a.catalogId), tours: draft.tours.map(t => ({ name: t.name, catalogId: t.catalogId })) } }, venue }
 }
 
 export function changeSetlistEntry(entry: SetlistEntry, patch: Partial<SetlistEntry>): SetlistEntry {

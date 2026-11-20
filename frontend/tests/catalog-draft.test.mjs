@@ -4,6 +4,7 @@ import { createDemoWorkspace, decodeWorkspace } from '../src/domain.ts'
 import { createConcertDraft, adoptCatalogEvent, adoptCatalogVenue, finishConcertDraft, changeSetlistEntry } from '../src/concertDraft.ts'
 import { decodeCatalogEvent } from '../src/catalog.ts'
 import { catalogFixture, id } from './catalog-fixtures.mjs'
+import { pendingTourCatalog } from '../src/concertWizard.ts'
 test('legacy workspaces and new references round-trip without changing local identities', () => {
   const workspace = createDemoWorkspace('2026-10-23')
   assert.deepEqual(decodeWorkspace(JSON.stringify(workspace)), { ...workspace, venues: workspace.venues.map(v => ({ address: null, aliases: [], image: null, ...v })) })
@@ -76,4 +77,16 @@ test('new concert starts with unknown timezone and existing timezone is preserve
   assert.equal(finishConcertDraft(fresh).concert.timezone, null)
   const existing = { ...fresh.concert, timezone: 'America/Los_Angeles' }
   assert.equal(createConcertDraft(existing).timezoneText, 'America/Los_Angeles')
+})
+
+test('Edit form tour drafts save as pending catalog tours without leaking draft payloads', () => {
+  const draftTour = { name: 'Eras Tour', catalogId: null, draft: { key: id(90), input: { name: 'Eras Tour', selection: 'proof' } } }
+  const catalogTour = { name: 'Local Tour', catalogId: id(91) }
+  const draft = { ...createConcertDraft(undefined, '2026-12-01'), tours: [catalogTour, draftTour] }
+  draft.concert.title = 'Show'
+  const result = finishConcertDraft(draft)
+  assert.deepEqual(result.concert.catalog.tours, [{ name: 'Local Tour', catalogId: id(91) }, { name: 'Eras Tour', catalogId: null }])
+  assert.deepEqual(pendingTourCatalog(draft.tours, undefined), { artists: {}, songs: {}, lineup: {}, entries: {}, tours: { [id(90)]: { name: 'Eras Tour', selection: 'proof' } }, tourChoices: { '1': id(90) } })
+  assert.equal(pendingTourCatalog([catalogTour], undefined), undefined)
+  assert.throws(() => pendingTourCatalog([draftTour], id(92)), /Choose one Tour identity/)
 })

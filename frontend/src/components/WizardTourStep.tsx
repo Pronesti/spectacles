@@ -11,7 +11,7 @@ import { providerArtistScopes } from '../providerDraft'
 import { useRecoveryField } from './ConcertRecovery'
 import { CreationSearch } from './CreationSearch'
 import { CreationSelection } from './CreationSelection'
-export function WizardTourStep({ state, onChange, onEditingChange, catalog, musicbrainz, providers, continueAction }: WizardStepProps) {
+export function WizardTourStep({ state, onChange, onEditingChange, catalog, musicbrainz, providers, continueAction, inForm = false }: WizardStepProps & { inForm?: boolean }) {
   const [query, setQuery] = useRecoveryField('tourQuery', '')
   const [sourceQuery, setSourceQuery] = useRecoveryField('tourProviderQuery', '')
   const search = discoveryQuery(query, sourceQuery)
@@ -47,7 +47,7 @@ export function WizardTourStep({ state, onChange, onEditingChange, catalog, musi
     {state.draft.tours.map((tour, index) => <CreationSelection key={index} label="Previous Tour" name={tour.name} detail={state.draft.lineupReview?.tour?.artists.map(artist => artist.name).join(' · ')} />)}
     <div role="alert" className="creation-conflict"><p>This Tour was selected for the previous Artist. Clear it to choose a Tour for the new Artist, or keep the previous Artist and Tour.</p><Button type="button" onPress={() => onChange(resolveWizardTour(state, false))}>Clear previous Tour</Button><Button type="button" onPress={() => onChange(resolveWizardTour(state, true))}>Keep previous Artist and Tour</Button></div>
   </div>
-  return <div className="creation-step"><p className="creation-intro">Optional. Find a Tour for {state.draft.artists[0]?.name || 'your Artist'}, or continue without one.</p>
+  return <div className="creation-step"><p className="creation-intro">Optional. Find a Tour for {state.draft.artists[0]?.name || 'your Artist'}{inForm ? '.' : ', or continue without one.'}</p>
     {tours.length > 1 && <div role="alert" className="creation-conflict"><p>This draft has several Tours. Keep one or remove them before continuing.</p>{tours.map((t, i) => <div key={t.catalogId ?? t.draft?.key ?? i}><strong>{t.name}</strong><Button type="button" onPress={() => add(t)}>Keep only {t.name}</Button><Button type="button" onPress={() => modify({ remove: i })}>Remove {t.name}</Button></div>)}</div>}
     {tours.length === 1 && !editing && <CreationSelection label="Tour" name={tours[0].name} detail={state.draft.artists[0]?.name} onChange={() => setChanging(true)} onRemove={() => modify({ remove: 0 })} />}
     {!editing && (!tours.length || changing) && <><CreationSearch kind="tours" label="Tour" query={search.value} onQuery={setQuery} catalog={catalog} musicbrainz={musicbrainz} providers={providers} filters={tourArtistScope(state.draft.artists)} artist={state.draft.artists.length === 1 ? providerArtistScopes(state)[0]?.scope : undefined} onPick={pick} onCreate={() => { setFieldsOpen(false); setEditing({ input: { name: query, selection: null } }) }} /><RecoveredSearch value={search.alternative} onUse={() => { setQuery(sourceQuery); setSourceQuery('') }} /></>}
@@ -57,7 +57,7 @@ export function WizardTourStep({ state, onChange, onEditingChange, catalog, musi
       {showFields && <label>Tour name<input ref={nameInput} maxLength={255} value={editing.input.name} onChange={e => { const input = changeTourInput(editing.input, { name: e.target.value }); setEditing(input.selection ? { ...editing, input } : { input }) }} /></label>}
     </div>}
 
-    {!tours.length && !editing && <p className="hint">No Tour? Skip this step with Continue.</p>}
+    {!inForm && !tours.length && !editing && <p className="hint">No Tour? Skip this step with Continue.</p>}
 
   </div>
 }

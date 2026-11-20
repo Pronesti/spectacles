@@ -1,28 +1,45 @@
 import { SelectField } from './SelectField'
 import { InteractionFieldset } from './InteractionFieldset'
 import { Button } from 'react-aria-components'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Concert, Venue } from '../domain'
 import { adoptCatalogEvent, adoptCatalogVenue, createConcertDraft, finishConcertDraft } from '../concertDraft'
 import type { ConcertDraft, Precision } from '../concertDraft'
+import { pendingTourCatalog } from '../concertWizard'
+import type { PendingCatalog, WizardState } from '../concertWizard'
 import { Dialog } from './Dialog'
 import { Icon } from './Icon'
 import { CatalogPicker } from './CatalogPicker'
 import type { CatalogAccess } from './CatalogPicker'
 import { CatalogChoices } from './CatalogChoices'
 import { EventCatalogPicker } from './EventCatalogPicker'
-export function ConcertForm({ concert, venues, initialDate, catalog, disabled = false, busy = false, onSignIn, onClose, onSave }: { concert?: Concert; venues: Venue[]; initialDate?: string; catalog: CatalogAccess; disabled?: boolean; busy?: boolean; onSignIn?: () => void; onClose: () => void; onSave: (concert: Concert, venue?: Venue) => void | Promise<void> }) {
+import { WizardTourStep } from './WizardTourStep'
+import type { MusicBrainzAccess } from './EntityAutocomplete'
+import type { CatalogProvidersAccess } from '../catalogProvidersApi'
+export function ConcertForm({ concert, venues, initialDate, catalog, musicbrainz, providers, disabled = false, busy = false, onSignIn, onClose, onSave }: { concert?: Concert; venues: Venue[]; initialDate?: string; catalog: CatalogAccess; musicbrainz: MusicBrainzAccess; providers?: CatalogProvidersAccess; disabled?: boolean; busy?: boolean; onSignIn?: () => void; onClose: () => void; onSave: (concert: Concert, venue?: Venue, pendingCatalog?: PendingCatalog) => void | Promise<void> }) {
   const [draft, setDraft] = useState(() => createConcertDraft(concert, initialDate))
   const [error, setError] = useState('')
+  const [tourEditing, setTourEditing] = useState(false)
+  const tourContinue = useRef<(() => WizardState | null) | null>(null)
   const shared = (patch: Partial<ConcertDraft>) => setDraft(current => ({ ...current, ...patch, eventId: undefined }))
   const field = <K extends keyof Concert,>(key: K, value: Concert[K], detach = true) => setDraft(current => ({ ...current, concert: { ...current.concert, [key]: value }, eventId: detach ? undefined : current.eventId }))
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (disabled || busy) return
-    try { const result = finishConcertDraft(draft); await onSave(result.concert, result.venue) }
+    try {
+      let current = draft
+      if (tourEditing) {
+        const confirmed = tourContinue.current?.()
+        if (!confirmed) throw new Error('Finish the Tour or remove it before saving.')
+        current = { ...current, tours: confirmed.draft.tours, eventId: undefined }
+      }
+      const result = finishConcertDraft(current)
+      await onSave(result.concert, result.venue, pendingTourCatalog(current.tours, current.eventId))
+    }
     catch (failure) { setError(failure instanceof Error ? failure.message : 'Check the draft fields.') }
   }
+  const tourState: WizardState = { step: 'tour', draft }
   const pending = draft.pendingVenue
   const stagedVenues = pending ? venues.some(venue => venue.id === pending.id) ? venues.map(venue => venue.id === pending.id ? pending : venue) : [...venues, pending] : venues
   return <Dialog title={concert ? 'Edit concert' : 'Add a concert'} onClose={onClose} drawer><form onSubmit={submit} noValidate className="concert-form"><InteractionFieldset disabled={busy} style={{ display: 'contents' }}><div className="form-body"><p className="muted">Choose shared details or enter your own.</p>
@@ -33,7 +50,7 @@ export function ConcertForm({ concert, venues, initialDate, catalog, disabled = 
     <CatalogPicker catalog={catalog} kind="venues" label="Search shared Venues" onPick={venue => setDraft(current => adoptCatalogVenue(current, venue, venues))} />
     <SelectField label="Venue" className="form-select" value={(draft.concert.venueId ?? '') === '' ? 'confirm' : draft.concert.venueId === 'new' ? 'new' : `venue:${draft.concert.venueId}`} onChange={value => { shared({ pendingVenue: undefined, lat: '', lng: '' }); field('venueId', value === 'confirm' ? null : value === 'new' ? 'new' : value.slice('venue:'.length)) }} options={[{ id: 'confirm', label: 'Venue to confirm' }, ...stagedVenues.map(venue => ({ id: `venue:${venue.id}`, label: `${venue.name} · ${venue.city || 'City to confirm'}` })), { id: 'new', label: '+ Add a venue…' }]} />
     {draft.concert.venueId === 'new' && <div className="new-venue-fields"><label>Venue name<input maxLength={150} value={draft.venueName} onChange={event => shared({ venueName: event.target.value })} /></label><label>City<input maxLength={100} value={draft.city} onChange={event => shared({ city: event.target.value })} /></label><details><summary>Map location <span className="optional">optional</span></summary><p className="hint">Leave unknown coordinates empty.</p><div className="form-columns"><label>Latitude<input type="number" step="any" min="-90" max="90" value={draft.lat} onChange={event => shared({ lat: event.target.value })} /></label><label>Longitude<input type="number" step="any" min="-180" max="180" value={draft.lng} onChange={event => shared({ lng: event.target.value })} /></label></div></details></div>}
-    <CatalogChoices kind="tours" label="Tours (optional)" choices={draft.tours} onChange={tours => shared({ tours })} catalog={catalog} />
+    <section className="form-tour-step" aria-label="Tours (optional)"><h3>Tours <span className="optional">optional</span></h3><WizardTourStep inForm state={tourState} onChange={next => setDraft(current => ({ ...current, tours: next.draft.tours, eventId: undefined }))} onEditingChange={setTourEditing} catalog={catalog} musicbrainz={musicbrainz} providers={providers} venues={venues} continueAction={tourContinue} /></section>
     <SelectField label="Date precision" className="form-select" value={draft.precision} onChange={value => { const precision = value as Precision; setDraft(current => ({ ...current, precision, eventId: undefined, dateText: precision === 'year' ? current.dateText.slice(0, 4) : precision === 'month' && current.precision === 'exact' ? current.dateText.slice(0, 7) : precision === current.precision ? current.dateText : '' })); setError('') }} options={[{ id: 'exact', label: 'Exact date' }, { id: 'month', label: 'Month only' }, { id: 'year', label: 'Year only' }, { id: 'unknown', label: 'Date to confirm' }]} />
     <div className="form-columns">{draft.precision !== 'unknown' && <label>{draft.precision === 'exact' ? 'Date' : draft.precision === 'month' ? 'Month' : 'Year'}<input type={draft.precision === 'exact' ? 'date' : draft.precision === 'month' ? 'month' : 'number'} min={draft.precision === 'year' ? '1' : draft.precision === 'month' ? '0001-01' : '0001-01-01'} max={draft.precision === 'year' ? '9999' : draft.precision === 'month' ? '9999-12' : '9999-12-31'} value={draft.dateText} onChange={event => shared({ dateText: event.target.value })} /></label>}<label>Local time <span className="optional">optional</span><input type="time" step={1} value={draft.concert.time} onChange={event => field('time', event.target.value)} /></label></div>
     <label>Timezone <span className="optional">optional</span><input value={draft.timezoneText} onChange={event => shared({ timezoneText: event.target.value })} placeholder="Unknown, or an IANA timezone" /><small>Leave unknown values empty. Shared Event timezones are kept as returned.</small></label>

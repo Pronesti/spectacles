@@ -7,6 +7,7 @@ import react from '@vitejs/plugin-react'
 import { createServer } from 'vite'
 let server, ConcertForm, SetlistEditor, CatalogChoices, CalendarView, ConcertList
 const catalog = { enabled: false, sessionKey: 'guest', client: { search: async () => { throw new Error('No SSR request') }, event: async () => { throw new Error('No SSR request') } }, onUnauthorized: () => {} }
+const musicbrainz = { enabled: false, sessionKey: 'guest', client: catalog.client, onUnauthorized: () => {} }
 const noop = () => {}
 const render = (component, props) => renderToStaticMarkup(createElement(component, props))
 before(async () => {
@@ -19,7 +20,7 @@ before(async () => {
 })
 after(async () => { await server?.close() })
 test('guest concert editor offers optional catalog search while manual save remains available', () => {
-  const html = render(ConcertForm, { catalog, venues: [], onClose: noop, onSave: noop })
+  const html = render(ConcertForm, { catalog, musicbrainz, venues: [], onClose: noop, onSave: noop })
   for (const label of ['Find an existing Event', 'Search shared Venues', 'Artists', 'Tours (optional)', 'Enter a name manually', 'Save concert']) assert.ok(html.includes(label))
   assert.match(html, /Sign in to search the shared catalog/)
   assert.match(html, /Saved to your account in the database/)
@@ -36,7 +37,7 @@ test('duplicate named choices keep separate remove controls and notes have no co
 })
 
 test('a pending concert save disables the editable fields and actions together', () => {
-  const html = render(ConcertForm, { catalog, busy: true, venues: [], onClose: noop, onSave: noop })
+  const html = render(ConcertForm, { catalog, musicbrainz, busy: true, venues: [], onClose: noop, onSave: noop })
   assert.match(html, /<fieldset disabled=""/)
   assert.match(html, /Concert title/)
   assert.match(html, /Save concert/)

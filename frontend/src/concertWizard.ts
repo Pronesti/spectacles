@@ -109,6 +109,25 @@ export function moveWizard(state: WizardState, step: WizardStep): WizardState {
   if (error) throw new Error(error)
   return { ...state, step }
 }
+export function registerTourDrafts(tours: WizardTourChoice[], eventId: string | undefined, pending: PendingCatalog) {
+  tours.forEach((choice, index) => {
+    const draft = choice.draft
+    if (!draft) return
+    if (choice.catalogId || eventId || choice.name !== draft.input.name) throw new Error('Choose one Tour identity.')
+    if (!catalogUuid(draft.key) || !draft.input.name.trim() || draft.input.name.length > 255 || draft.input.selection !== null && (typeof draft.input.selection !== 'string' || !draft.input.selection.trim() || draft.input.selection.length > 32768)) throw new Error('Check new Tour fields.')
+    if (pending.artists[draft.key] || pending.songs[draft.key]) throw new Error('Draft identities must be distinct.')
+    pending.tours ??= {}; pending.tourChoices ??= {}
+    const previous = pending.tours[draft.key]
+    if (previous && JSON.stringify(previous) !== JSON.stringify(draft.input)) throw new Error('Check catalog draft identity.')
+    pending.tours[draft.key] = { name: draft.input.name, selection: draft.input.selection }
+    pending.tourChoices[String(index)] = draft.key
+  })
+}
+export function pendingTourCatalog(tours: WizardTourChoice[], eventId?: string): PendingCatalog | undefined {
+  const pending: PendingCatalog = { artists: {}, songs: {}, lineup: {}, entries: {} }
+  registerTourDrafts(tours, eventId, pending)
+  return pending.tours ? pending : undefined
+}
 export function finishWizard(state: WizardState): WizardSubmission {
   for (const step of wizardSteps) { const error = wizardStepError(state, step); if (error) throw new Error(error) }
   const pending: PendingCatalog = { artists: {}, songs: {}, lineup: {}, entries: {} }
@@ -131,18 +150,7 @@ export function finishWizard(state: WizardState): WizardSubmission {
     return saved
   })
   for (const key of Object.keys(pending.artists)) if (pending.songs[key]) throw new Error('Draft identities must be distinct.')
-  state.draft.tours.forEach((choice, index) => {
-    const draft = choice.draft
-    if (!draft) return
-    if (choice.catalogId || state.draft.eventId || choice.name !== draft.input.name) throw new Error('Choose one Tour identity.')
-    if (!catalogUuid(draft.key) || !draft.input.name.trim() || draft.input.name.length > 255 || draft.input.selection !== null && (typeof draft.input.selection !== 'string' || !draft.input.selection.trim() || draft.input.selection.length > 32768)) throw new Error('Check new Tour fields.')
-    if (pending.artists[draft.key] || pending.songs[draft.key]) throw new Error('Draft identities must be distinct.')
-    pending.tours ??= {}; pending.tourChoices ??= {}
-    const previous = pending.tours[draft.key]
-    if (previous && JSON.stringify(previous) !== JSON.stringify(draft.input)) throw new Error('Check catalog draft identity.')
-    pending.tours[draft.key] = { name: draft.input.name, selection: draft.input.selection }
-    pending.tourChoices[String(index)] = draft.key
-  })
+  registerTourDrafts(state.draft.tours, state.draft.eventId, pending)
   if (state.draft.providerEvent) pending.event = { selection: state.draft.providerEvent.selection }
   if (state.draft.providerVenue) pending.venue = { selection: state.draft.providerVenue.selection }
   const result = finishConcertDraft(state.draft)
