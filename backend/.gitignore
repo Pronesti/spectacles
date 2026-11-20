@@ -27,3 +27,4 @@ Homestead.yaml
 Thumbs.db
 /tests/Browser/Screenshots
 .env.lerd_override
+.env.before_lerd
