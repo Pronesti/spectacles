@@ -1,6 +1,6 @@
 import { InteractionDisabledContext } from './InteractionDisabledContext'
 import { useContext, useId, useState } from 'react'
-import { ComboBox, Label, ListBox, ListBoxItem } from 'react-aria-components'
+import { ComboBox, Label, ListBox, ListBoxItem, Text } from 'react-aria-components'
 import { InlineComboboxInput, InlineComboboxResults } from './InlineCombobox'
 import type { ReactNode } from 'react'
 import { describeCreationMatch } from '../creationSearch'
@@ -17,6 +17,20 @@ type Props = {
   onPick: (key: string) => void
   onOpenChange: (open: boolean) => void
   onComposing: (composing: boolean) => void
+}
+
+type ResultItem = { key: string; label: string; detail: string; source: string }
+
+/** Result rows are named by their label and described by their detail, so tools can find each option by role and name. */
+export function CreationResults({ label, items, loading, statusId }: { label: string; items: ResultItem[]; loading: boolean; statusId?: string }) {
+  return <ListBox items={items} aria-label={`${label} results`} aria-busy={loading} className="creation-aria-options">
+    {item => <ListBoxItem id={item.key} textValue={item.label} className={item.key === 'status' ? 'creation-status creation-placeholder' : item.key === 'create' ? 'creation-manual' : ''}>
+    {item.key === 'status' ? <span id={statusId} role="status" aria-live="polite">{item.label}</span> : item.key === 'create' ? item.label : <>
+      <span><Text slot="label" elementType="strong">{item.label}</Text>{item.detail && <Text slot="description" elementType="small">{item.detail}</Text>}</span>
+      <small className="creation-source">{item.source}</small>
+    </>}
+    </ListBoxItem>}
+  </ListBox>
 }
 
 export function CreationSearchCombobox({ label, query, rows, status, loading, actions, onQuery, onPick, onOpenChange, onComposing }: Props) {
@@ -41,14 +55,7 @@ export function CreationSearchCombobox({ label, query, rows, status, loading, ac
       <InlineComboboxInput statusId={statusId} placeholder={`Search ${label.toLowerCase()}…`} onComposing={onComposing} />
       <InlineComboboxResults>
         <div className="creation-results creation-aria-results">
-          <ListBox items={items} aria-label={`${label} results`} aria-busy={loading} className="creation-aria-options">
-            {item => <ListBoxItem id={item.key} textValue={item.label} className={item.key === 'status' ? 'creation-status creation-placeholder' : item.key === 'create' ? 'creation-manual' : ''}>
-              {item.key === 'status' ? <span id={statusId} role="status" aria-live="polite">{item.label}</span> : item.key === 'create' ? item.label : <>
-                <span><strong>{item.label}</strong>{item.detail && <small>{item.detail}</small>}</span>
-                <small className="creation-source">{item.source}</small>
-              </>}
-            </ListBoxItem>}
-          </ListBox>
+          <CreationResults label={label} items={items} loading={loading} statusId={statusId} />
         </div>
         {actions}
       </InlineComboboxResults>

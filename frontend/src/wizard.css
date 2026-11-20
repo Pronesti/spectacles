@@ -15,6 +15,9 @@
 
 /* Concert creation: ivory/ink/lime design reference, flat selections and one search. */
 .dialog.drawer:has(.concert-creation) { width: min(680px, 100vw); }
+/* Fill the drawer below the header so the footer stays put when inline results collapse mid-click. */
+.dialog.drawer[open]:has(.concert-creation) { display: flex; flex-direction: column; }
+.dialog.drawer:has(.concert-creation) > .concert-creation { flex: 1 0 auto; min-height: 0; }
 .dialog:has(.concert-creation) .dialog-header { padding: 28px 32px 18px; border-bottom: 0; }
 .dialog:has(.concert-creation) .eyebrow { display: none; }
 .concert-creation { --creation-muted: #596250; --creation-focus: #58752e; font-size: 16px; }

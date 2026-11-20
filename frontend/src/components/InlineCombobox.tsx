@@ -1,12 +1,34 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import type { ReactNode, Ref } from 'react'
 import { ComboBoxStateContext, Input, PopoverContext, useContextProps } from 'react-aria-components'
+
+/**
+ * React Aria's ComboBox treats its open list as a floating popover and sets
+ * aria-hidden on everything outside the input and list. These results sit in
+ * document flow, so the surrounding form (headings, Back/Continue, Close)
+ * must stay in the accessibility tree while the list is open. Elements that
+ * were already aria-hidden when the list opened (decorative icons) keep it.
+ */
+function useKeepSurroundingsExposed(isOpen: boolean) {
+  useEffect(() => {
+    if (!isOpen || typeof MutationObserver === 'undefined') return
+    const authored = new Set(document.querySelectorAll('[aria-hidden="true"]'))
+    const observer = new MutationObserver(records => {
+      for (const { target } of records) {
+        if (target instanceof Element && !authored.has(target) && target.getAttribute('aria-hidden') === 'true') target.removeAttribute('aria-hidden')
+      }
+    })
+    observer.observe(document.body, { attributes: true, attributeFilter: ['aria-hidden'], subtree: true })
+    return () => observer.disconnect()
+  }, [isOpen])
+}
 
 // This menu stays in document flow. Connect its ref to React Aria's combobox
 // rather than using floating-popover positioning/dismiss-on-scroll behavior.
 export function InlineComboboxResults({ children, persistent, onDismiss, className = "creation-search" }: { children: ReactNode; persistent?: ReactNode; onDismiss?: () => void; className?: string }) {
   const state = useContext(ComboBoxStateContext)
   const [, ref] = useContextProps({}, null, PopoverContext)
+  useKeepSurroundingsExposed(!!state?.isOpen)
   // The hidden collection pass needs the ListBox even before state exists.
   if (!state) return <>{children}</>
   return state.isOpen || persistent ? <section ref={ref} className={className} onKeyDownCapture={event => {

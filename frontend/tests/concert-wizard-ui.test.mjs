@@ -5,11 +5,12 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import react from '@vitejs/plugin-react'
 import { createServer } from 'vite'
-let server, WizardArtistStep, WizardTourStep, ConcertWizard, EntityAutocomplete, ArtistDraftFields, SongDraftFields, WizardEventStep, WizardSetlistStep, createWizard
+let server, CreationResults, WizardArtistStep, WizardTourStep, ConcertWizard, EntityAutocomplete, ArtistDraftFields, SongDraftFields, WizardEventStep, WizardSetlistStep, createWizard
 const catalog = { enabled: false, sessionKey: 'guest', client: { search: async () => { throw new Error('No SSR fetch') }, event: async () => { throw new Error('No SSR fetch') } }, onUnauthorized: () => {} }
 before(async () => {
   server = await createServer({ root: fileURLToPath(new URL('..', import.meta.url)), configFile: false, cacheDir: fileURLToPath(new URL('../node_modules/.cache/wizard-ui-tests', import.meta.url)), plugins: [react()], server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom' })
   ;({ createWizard } = await server.ssrLoadModule('/src/concertWizard.ts'))
+  ;({ CreationResults } = await server.ssrLoadModule('/src/components/CreationSearchCombobox.tsx'))
   ;({ WizardArtistStep } = await server.ssrLoadModule('/src/components/WizardArtistStep.tsx'))
   ;({ WizardTourStep } = await server.ssrLoadModule('/src/components/WizardTourStep.tsx'))
   ;({ WizardEventStep } = await server.ssrLoadModule('/src/components/WizardEventStep.tsx'))
@@ -30,6 +31,15 @@ test('wizard starts with four named steps, one form, Continue and no early Save'
   const footer = html.slice(html.indexOf('class="form-footer"'))
   assert.match(footer, /^[^]*?<button[^>]*class="button secondary"[^>]*>Discard<\/button><button[^>]*class="button primary"[^>]*>Continue</)
   assert.doesNotMatch(footer.match(/<button[^>]*>Discard</)[0], /disabled/)
+})
+test('creation results are named by their label and described by their detail', () => {
+  const items = [{ key: 'local:artists:a1', label: 'Don Omar', detail: 'Puerto Rican reggaeton', source: 'Your catalog' }, { key: 'create', label: '+ Create manually: Don Omar', detail: '', source: '' }]
+  const html = render(CreationResults, { label: 'Artist', items, loading: false })
+  const [result] = html.match(/<div[^>]*role="option"[^>]*>/g)
+  const idOf = attribute => result.match(new RegExp(`${attribute}="([^"]+)"`))?.[1]
+  assert.match(html, new RegExp(`<strong[^>]*id="${idOf('aria-labelledby')}"[^>]*>Don Omar</strong>`))
+  assert.match(html, new RegExp(`<small[^>]*id="${idOf('aria-describedby')}"[^>]*>Puerto Rican reggaeton</small>`))
+  assert.match(html, /class="creation-source">Your catalog</)
 })
 test('combined autocomplete and explicit entity fields expose accessible non-submit actions', () => {
   const html = render(EntityAutocomplete, { kind: 'artists', label: 'Find Artist', catalog, musicbrainz, onPick: () => {} })
