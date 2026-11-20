@@ -197,6 +197,23 @@ class MusicBrainzSaveTest extends TestCase
         return $body;
     }
 
+    public function test_selected_tour_can_be_added_when_updating_an_existing_concert(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $draft = $this->draft();
+        $saved = $this->postJson('/api/v1/attendances', $draft)->assertOk()->json('data.concerts.0');
+        $this->assertDatabaseCount('tours', 0);
+        $body = $this->withTour($draft);
+        $body['concert']['id'] = $this->stringAt($saved, 'id');
+        $updated = $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), $body)
+            ->assertOk()->json('data.concerts.0');
+        $tour = Tour::query()->where('external_id', $this->stringAt($updated, 'catalog.tours.0.catalogId'))->firstOrFail();
+        expect($tour->name)->toBe('The Eras Tour');
+        $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'musicbrainz',
+            'resource_type' => 'series', 'external_provider_id' => '23aa9d94-ffc6-4160-a7f3-31cfba1ea646']);
+        ProviderHttp::assertNothingSent();
+    }
+
     public function test_selected_tour_reuses_one_provider_identity_across_accounts_and_preserves_saved_facts(): void
     {
         $this->actingAs(User::factory()->create());
