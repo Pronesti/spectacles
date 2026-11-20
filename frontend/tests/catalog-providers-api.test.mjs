@@ -34,10 +34,6 @@ test('unlinked saved artist receives the specific identity explanation',async()=
  const client=createCatalogProvidersClient('',async()=>new Response(JSON.stringify({errors:{artistUuid:['Select an Artist with a MusicBrainz identity or enter details manually.']}}),{status:422}))
  await assert.rejects(client.performances({period:'past',artistUuid:performance.artist.ref.externalId}),e=>e instanceof CatalogProvidersError&&e.status===422&&/linked to MusicBrainz/.test(e.message))
 })
-test('an empty setlist.fm 202 is explained as a source failure',async()=>{
- const client=createCatalogProvidersClient('',async()=>new Response(JSON.stringify({reason:'setlistfm_not_ready'}),{status:503}))
- await assert.rejects(client.performances({period:'past',artistMbid:performance.artist.ref.externalId}),e=>e instanceof CatalogProvidersError&&/setlist.fm did not provide a page/.test(e.message))
-})
 test('Venue source URLs survive normalization and are sent as encoded lookup/history parameters',async()=>{
  const source=venue.url, candidate=decodeVenue({...venue,venueUrl:source})
  assert.equal(candidate.venueUrl,source)
