@@ -67,6 +67,7 @@ class PendingCatalogData extends Data
     }
 
     /**
+     * @param  'artists'|'songs'|'tours'  $map
      * @return array<int|string, PendingArtistData|PendingSongData|PendingTourData>
      */
     public function drafts(string $map): array
@@ -80,6 +81,8 @@ class PendingCatalogData extends Data
 
     /**
      * Whether a draft in a map checked earlier already uses this key.
+     *
+     * @param  'artists'|'songs'|'tours'  $map
      */
     public function claimsKeyBefore(string $map, int|string $key): bool
     {
@@ -97,6 +100,8 @@ class PendingCatalogData extends Data
 
     /**
      * Whether the lineup, the tour choices or a setlist entry refers to this draft.
+     *
+     * @param  'artists'|'songs'|'tours'  $map
      */
     public function refersTo(string $map, int|string $key): bool
     {

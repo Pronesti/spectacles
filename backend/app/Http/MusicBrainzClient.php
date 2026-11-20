@@ -12,6 +12,7 @@ use App\Http\Integrations\MusicBrainz\Requests\GetMusicBrainzResource;
 use App\Http\Integrations\ProviderConnector;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Spatie\LaravelData\Data;
@@ -35,7 +36,7 @@ class MusicBrainzClient
      */
     public function tours(MusicBrainzTourScopeData $scope): array
     {
-        if ($scope->artistMbids !== [] && (! config('services.musicbrainz.enabled') || trim((string) config('services.musicbrainz.user_agent')) === '')) {
+        if ($scope->artistMbids !== [] && (! config('services.musicbrainz.enabled') || trim(Config::string('services.musicbrainz.user_agent', '')) === '')) {
             throw new MusicBrainzUnavailable;
         }
         $sets = [];
@@ -43,13 +44,13 @@ class MusicBrainzClient
         try {
             foreach ($scope->artistMbids as $artistId) {
                 $key = 'musicbrainz:v2:artist-tours:'.$artistId;
-                $cached = $this->cached($key, MusicBrainzSearchRowData::class);
+                $cached = $this->cached($key, fn (array $cached): array => CachedData::listFromCache(MusicBrainzSearchRowData::class, $cached));
                 if ($cached === null) {
                     if ($fetched) {
                         throw new MusicBrainzUnavailable(429, 2);
                     }
                     $fetched = true;
-                    $cached = $this->cachedResponse($key, 'artist/'.$artistId, MusicBrainzQueryData::lookup('series-rels'), MusicBrainzEntityPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzEntityPayloadData $artist) use ($artistId): array {
+                    $cached = $this->cachedResponse($key, 'artist/'.$artistId, MusicBrainzQueryData::lookup('series-rels'), MusicBrainzEntityPayloadData::class, fn (array $cached): array => CachedData::listFromCache(MusicBrainzSearchRowData::class, $cached), function (MusicBrainzEntityPayloadData $artist) use ($artistId): array {
                         if ($artist->id === null || strtolower($artist->id) !== $artistId || $artist->relations === null || ! array_is_list($artist->relations) || count($artist->relations) > 10000) {
                             throw new MusicBrainzUnavailable;
                         }
@@ -59,14 +60,15 @@ class MusicBrainzClient
                                 continue;
                             }
                             $series = $relation->series;
-                            if ($relation->targetType !== 'series' || $series === null || $series->id === null || ! Str::isUuid($series->id) || $this->text($series->name) === null || $series->type === null) {
+                            $label = $this->text($series?->name);
+                            if ($relation->targetType !== 'series' || $series === null || $series->id === null || ! Str::isUuid($series->id) || $label === null || $series->type === null) {
                                 throw new MusicBrainzUnavailable;
                             }
                             if (strcasecmp(trim($series->type), 'Tour') !== 0) {
                                 continue;
                             }
                             $id = strtolower($series->id);
-                            $rows[$id] = new MusicBrainzSearchRowData($id, 'series', $series->name, null, $this->text($series->disambiguation), null, null, []);
+                            $rows[$id] = new MusicBrainzSearchRowData($id, 'series', $label, null, $this->text($series->disambiguation), null, null, []);
                         }
 
                         return array_values($rows);
@@ -79,6 +81,9 @@ class MusicBrainzClient
         }
         $rows = [];
         $terms = preg_split('/\s+/u', mb_strtolower(trim($scope->query)), -1, PREG_SPLIT_NO_EMPTY);
+        if ($terms === false) {
+            throw new \InvalidArgumentException('The query is not valid UTF-8.');
+        }
         foreach ($sets as $row) {
             foreach ($terms as $term) {
                 if (! str_contains(mb_strtolower($row->label), $term)) {
@@ -102,7 +107,7 @@ class MusicBrainzClient
         }
         $key = 'musicbrainz:v1:'.$kind.':'.hash('sha256', trim($query));
 
-        return $this->cachedResponse($key, $kind, MusicBrainzQueryData::search($this->query($kind, $query)), MusicBrainzSearchPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzSearchPayloadData $page) use ($kind): array {
+        return $this->cachedResponse($key, $kind, MusicBrainzQueryData::search($this->query($kind, $query)), MusicBrainzSearchPayloadData::class, fn (array $cached): array => CachedData::listFromCache(MusicBrainzSearchRowData::class, $cached), function (MusicBrainzSearchPayloadData $page) use ($kind): array {
             $results = match ($kind) {
                 'artist' => $page->artists,
                 'work' => $page->works,
@@ -167,20 +172,40 @@ class MusicBrainzClient
     }
 
     /**
-     * Reads a public MusicBrainz resource and caches what `$normalize` makes of it.
+     * Reads a public MusicBrainz resource and caches the Data object `$normalize` makes of it.
      *
      * @template TPayload of Data
      * @template TData of Data
      *
      * @param  class-string<TPayload>  $payloadClass
      * @param  class-string<TData>  $dataClass
-     * @param  callable(TPayload): (TData|list<TData>)  $normalize
-     * @return TData|list<TData>
+     * @param  callable(TPayload): TData  $normalize
+     * @return TData
      */
-    public function publicRead(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
+    public function publicRead(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): Data
     {
         try {
-            return $this->cachedResponse($key, $path, $parameters, $payloadClass, $dataClass, $normalize);
+            return $this->cachedResponse($key, $path, $parameters, $payloadClass, fn (array $cached): Data => CachedData::fromCache($dataClass, $cached), $normalize);
+        } catch (QueryException $failure) {
+            throw new MusicBrainzUnavailable;
+        }
+    }
+
+    /**
+     * Reads a public MusicBrainz resource and caches the list of Data objects `$normalize` makes of it.
+     *
+     * @template TPayload of Data
+     * @template TData of Data
+     *
+     * @param  class-string<TPayload>  $payloadClass
+     * @param  class-string<TData>  $dataClass
+     * @param  callable(TPayload): list<TData>  $normalize
+     * @return list<TData>
+     */
+    public function publicReadList(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): array
+    {
+        try {
+            return $this->cachedResponse($key, $path, $parameters, $payloadClass, fn (array $cached): array => CachedData::listFromCache($dataClass, $cached), $normalize);
         } catch (QueryException $failure) {
             throw new MusicBrainzUnavailable;
         }
@@ -188,20 +213,20 @@ class MusicBrainzClient
 
     /**
      * @template TPayload of Data
-     * @template TData of Data
+     * @template TResult of Data|list<Data>
      *
      * @param  class-string<TPayload>  $payloadClass
-     * @param  class-string<TData>  $dataClass
-     * @param  callable(TPayload): (TData|list<TData>)  $normalize
-     * @return TData|list<TData>
+     * @param  callable(array<mixed>): TResult  $fromCache
+     * @param  callable(TPayload): TResult  $normalize
+     * @return TResult
      */
-    private function cachedResponse(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
+    private function cachedResponse(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, callable $fromCache, callable $normalize): Data|array
     {
-        $userAgent = trim((string) config('services.musicbrainz.user_agent'));
+        $userAgent = trim(Config::string('services.musicbrainz.user_agent', ''));
         if (! config('services.musicbrainz.enabled') || $userAgent === '') {
             throw new MusicBrainzUnavailable;
         }
-        $cached = $this->cached($key, $dataClass);
+        $cached = $this->cached($key, $fromCache);
         if ($cached !== null) {
             return $cached;
         }
@@ -210,12 +235,13 @@ class MusicBrainzClient
             throw new MusicBrainzUnavailable(429, 2);
         }
         try {
-            $cached = $this->cached($key, $dataClass);
+            $cached = $this->cached($key, $fromCache);
             if ($cached !== null) {
                 return $cached;
             }
             $now = now()->getTimestampMs();
-            $next = (int) Cache::get('musicbrainz:v1:next-start-ms', 0);
+            $next = Cache::get('musicbrainz:v1:next-start-ms', 0);
+            $next = is_numeric($next) ? (int) $next : 0;
             if ($next > $now) {
                 throw new MusicBrainzUnavailable(429, max(1, (int) ceil(($next - $now) / 1000)));
             }
@@ -245,16 +271,16 @@ class MusicBrainzClient
     }
 
     /**
-     * @template TData of Data
+     * @template TResult of Data|list<Data>
      *
-     * @param  class-string<TData>  $dataClass
-     * @return TData|list<TData>|null
+     * @param  callable(array<mixed>): TResult  $fromCache
+     * @return TResult|null
      */
-    private function cached(string $key, string $dataClass): Data|array|null
+    private function cached(string $key, callable $fromCache): Data|array|null
     {
         $cached = Cache::get($key);
 
-        return is_array($cached) ? CachedData::fromCache($dataClass, $cached) : null;
+        return is_array($cached) ? $fromCache($cached) : null;
     }
 
     private function text(mixed $value): ?string
@@ -265,6 +291,9 @@ class MusicBrainzClient
     private function query(string $kind, string $query): string
     {
         $terms = preg_split('/\s+/u', trim($query), -1, PREG_SPLIT_NO_EMPTY);
+        if ($terms === false) {
+            throw new \InvalidArgumentException('The query is not valid UTF-8.');
+        }
         $escaped = array_map(function (string $term): string {
             foreach (str_split('\\+-!(){}[]^"~*?:/&|') as $character) {
                 $term = str_replace($character, '\\'.$character, $term);

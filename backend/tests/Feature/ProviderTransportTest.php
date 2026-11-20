@@ -45,6 +45,7 @@ class ProviderTransportTest extends TestCase
             return MockResponse::make();
         }]));
         $connector->send($request);
+        $sent = $this->present($sent);
 
         $this->assertSame($url, (string) $sent->getUri());
         $this->assertSame('Agent/1.0', $sent->headers()->get('User-Agent'));
@@ -59,7 +60,7 @@ class ProviderTransportTest extends TestCase
             MockResponse::make(str_repeat('a', ProviderConnector::MAX_BODY_BYTES + 1)),
         ]));
 
-        $this->assertSame(ProviderConnector::MAX_BODY_BYTES, strlen(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData)))));
+        $this->assertSame(ProviderConnector::MAX_BODY_BYTES, strlen($this->present(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))))));
         $this->assertNull(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))));
     }
 }

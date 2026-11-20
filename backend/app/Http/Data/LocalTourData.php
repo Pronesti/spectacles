@@ -20,6 +20,6 @@ class LocalTourData extends Data
 
     public static function fromTour(Tour $tour): self
     {
-        return new self($tour->external_id, $tour->name, $tour->artistLinks->map(fn ($link): LocalArtistData => LocalArtistData::fromArtist($link->artist))->all());
+        return new self($tour->external_id, $tour->name, array_values($tour->artistLinks->map(fn ($link): LocalArtistData => LocalArtistData::fromArtist($link->artist))->all()));
     }
 }

@@ -9,9 +9,11 @@ use App\Models\Tour;
 use App\Models\TourProviderId;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request as RecordedRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Http\PendingRequest;
 use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
@@ -54,7 +56,7 @@ class MusicBrainzLookupTest extends TestCase
         $this->actingAs(User::factory()->create())->withHeader('Accept', 'application/json');
         ProviderHttp::fake(['musicbrainz.org/*' => ProviderHttp::response(['works' => [['id' => '8b21973e-836a-441b-9e4d-4e67e7114d75', 'title' => 'Eres', 'relations' => [['type' => 'composer', 'artist' => ['name' => 'Writer']], ['type' => 'performer', 'artist' => ['name' => 'Not a writer']]]]]])]);
         $this->get('/api/v1/musicbrainz/works?q=AC%2FDC')->assertOk()->assertJsonPath('data.0.writers', ['Writer']);
-        ProviderHttp::assertSent(fn ($request) => $request['query'] === 'work:(AC\\/DC*)');
+        ProviderHttp::assertSent(fn (RecordedRequest $request): bool => $request['query'] === 'work:(AC\\/DC*)');
     }
 
     public function test_cached_hits_attach_current_local_matches_and_refresh_proofs(): void
@@ -66,15 +68,15 @@ class MusicBrainzLookupTest extends TestCase
         $artist = Artist::factory()->create(['name' => 'Saved local label']);
         ArtistProviderId::factory()->create(['artist_id' => $artist->id, 'provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
         $second = $this->get('/api/v1/musicbrainz/artists?q=Soda')->assertOk()->json('data.0');
-        $this->assertSame($artist->external_id, $second['local']['id']);
-        $this->assertSame('Saved local label', $second['local']['label']);
-        $this->assertNotSame($first['selection'], $second['selection']);
+        $this->assertSame($artist->external_id, data_get($second, 'local.id'));
+        $this->assertSame('Saved local label', data_get($second, 'local.label'));
+        $this->assertNotSame($this->stringAt($first, 'selection'), $this->stringAt($second, 'selection'));
         ProviderHttp::assertSentCount(1);
     }
 
     public function test_connection_failures_are_reported_as_unavailable(): void
     {
-        ProviderHttp::fake(['musicbrainz.org/*' => ProviderHttp::response()->throw(fn ($pending) => new FatalRequestException(new \RuntimeException('Connection refused'), $pending))]);
+        ProviderHttp::fake(['musicbrainz.org/*' => ProviderHttp::response()->throw(fn (PendingRequest $pending): FatalRequestException => new FatalRequestException(new \RuntimeException('Connection refused'), $pending))]);
 
         $this->actingAs(User::factory()->create())->withHeader('Accept', 'application/json');
 
@@ -89,7 +91,9 @@ class MusicBrainzLookupTest extends TestCase
         foreach ([503, 200, 429] as $status) {
             Cache::flush();
             $result = $this->get('/api/v1/musicbrainz/artists?q=Fail')->assertStatus($status === 429 ? 429 : 503);
-            $this->assertStringNotContainsString('private debug', $result->getContent());
+            $content = $result->getContent();
+            $this->assertIsString($content);
+            $this->assertStringNotContainsString('private debug', $content);
             if ($status === 429) {
                 $result->assertHeader('Retry-After', '60');
             }
@@ -144,10 +148,14 @@ class MusicBrainzLookupTest extends TestCase
             $status = mb_strlen($query) < 2 ? 422 : 200;
             $this->get('/api/v1/musicbrainz/artists?q='.rawurlencode($query))->assertStatus($status);
         }
-        ProviderHttp::assertSent(fn ($request) => str_contains($request['query'], 'WOS* AND OR* AND \\*\\:\\**'));
-        ProviderHttp::assertSent(fn ($request) => $request['query'] === 'artist:(Zoé*)');
+        ProviderHttp::assertSent(fn (RecordedRequest $request): bool => is_string($query = $request['query']) && str_contains($query, 'WOS* AND OR* AND \\*\\:\\**'));
+        ProviderHttp::assertSent(fn (RecordedRequest $request): bool => $request['query'] === 'artist:(Zoé*)');
     }
 
+    /**
+     * @param  list<array{id: string, name: string, type: string}>  $series
+     * @return array{id: string, relations: list<array{target-type: string, type-id: string, series: array{id: string, name: string, type: string}}>}
+     */
     private function tourRelations(string $artist, array $series): array
     {
         return ['id' => $artist, 'relations' => array_map(fn (array $row): array => ['target-type' => 'series', 'type-id' => 'f03d59f3-97db-424b-885e-e8be69d65225', 'series' => $row], $series)];
@@ -169,8 +177,8 @@ class MusicBrainzLookupTest extends TestCase
         ProviderHttp::assertNothingSent();
         $result = $this->get('/api/v1/musicbrainz/tours?'.http_build_query(['q' => 'Eras', 'artist_mbids' => [$artist]]))
             ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tour);
-        ProviderHttp::assertSent(fn ($request) => str_contains($request->url(), '/ws/2/artist/'.$artist) && $request['inc'] === 'series-rels' && ! isset($request['query']));
-        $this->assertSame($tour, app(MusicBrainzSelection::class)->read($result->json('data.0.selection'), 'series', 'selection'));
+        ProviderHttp::assertSent(fn (RecordedRequest $request): bool => str_contains($request->url(), '/ws/2/artist/'.$artist) && $request['inc'] === 'series-rels' && ! isset($request['query']));
+        $this->assertSame($tour, app(MusicBrainzSelection::class)->read($this->stringAt($result->json(), 'data.0.selection'), 'series', 'selection'));
         $this->assertDatabaseCount('tours', 0);
         $this->assertDatabaseCount('tour_artists', 0);
     }
@@ -228,7 +236,9 @@ class MusicBrainzLookupTest extends TestCase
         foreach ([503, 503, 503, 429, 200] as $status) {
             Cache::flush();
             $response = $this->get($url)->assertStatus($status);
-            $this->assertStringNotContainsString('private debug', $response->getContent());
+            $content = $response->getContent();
+            $this->assertIsString($content);
+            $this->assertStringNotContainsString('private debug', $content);
             if ($status !== 200) {
                 $this->assertNull(Cache::get('musicbrainz:v2:artist-tours:'.$a));
             }

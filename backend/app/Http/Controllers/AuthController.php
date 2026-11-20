@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -17,11 +18,11 @@ class AuthController extends Controller
     {
         abort_unless($request->hasSession(), 403);
         $this->normalizeEmail($request);
-        $data = $request->validate([
+        $data = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:80'],
             'email' => ['required', 'string', 'email', 'max:254', Rule::unique(User::class)],
             'password' => ['required', 'string', 'min:12', 'confirmed', 'regex:/\A[^\x00]{1,72}\z/sD'],
-        ], ['password.regex' => __('The password must contain no null bytes and must not exceed 72 bytes.')]);
+        ], ['password.regex' => __('The password must contain no null bytes and must not exceed 72 bytes.')])->safe(['name', 'email', 'password']);
         $user = User::create($data);
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
@@ -33,10 +34,10 @@ class AuthController extends Controller
     {
         abort_unless($request->hasSession(), 403);
         $this->normalizeEmail($request);
-        $credentials = $request->validate([
+        $credentials = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:254'],
             'password' => ['required', 'string', 'regex:/\A[^\x00]{1,72}\z/sD'],
-        ]);
+        ])->safe(['email', 'password']);
         if (! Auth::guard('web')->attempt($credentials)) {
             throw ValidationException::withMessages(['email' => __('auth.failed')]);
         }

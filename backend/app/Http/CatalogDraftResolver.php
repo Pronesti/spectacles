@@ -64,12 +64,15 @@ class CatalogDraftResolver
         return $concert->copyWith(catalog: $concert->catalog->copyWith(artistIds: $artistIds, tours: $tours), setlist: $setlist);
     }
 
+    /**
+     * @param  'artist'|'work'|'series'  $kind
+     */
     private function identity(string $kind, PendingArtistData|PendingSongData|PendingTourData $draft, ?ProviderRefData $ref): Artist|Song|Tour
     {
-        [$model, $reference, $foreignKey, $relation] = match ($kind) {
-            'artist' => [Artist::class, ArtistProviderId::class, 'artist_id', 'artist'],
-            'work' => [Song::class, SongProviderId::class, 'song_id', 'song'],
-            'series' => [Tour::class, TourProviderId::class, 'tour_id', 'tour'],
+        [$model, $reference, $foreignKey] = match ($kind) {
+            'artist' => [Artist::class, ArtistProviderId::class, 'artist_id'],
+            'work' => [Song::class, SongProviderId::class, 'song_id'],
+            'series' => [Tour::class, TourProviderId::class, 'tour_id'],
         };
         if ($ref === null) {
             return $model::query()->create($draft->attributes());
@@ -77,7 +80,7 @@ class CatalogDraftResolver
         $tuple = $ref->tuple($kind === 'series' ? 'external_provider_id' : 'provider_resource_id');
         $existing = $reference::query()->where($tuple)->first();
         if ($existing !== null) {
-            return $existing->{$relation};
+            return $this->parent($existing);
         }
         try {
             return DB::transaction(function () use ($model, $reference, $foreignKey, $tuple, $draft): Artist|Song|Tour {
@@ -92,7 +95,19 @@ class CatalogDraftResolver
                 throw $failure;
             }
 
-            return $winner->{$relation};
+            return $this->parent($winner);
         }
+    }
+
+    /**
+     * The catalog record a provider identity belongs to.
+     */
+    private function parent(ArtistProviderId|SongProviderId|TourProviderId $reference): Artist|Song|Tour
+    {
+        if ($reference instanceof ArtistProviderId) {
+            return $reference->artist;
+        }
+
+        return $reference instanceof SongProviderId ? $reference->song : $reference->tour;
     }
 }

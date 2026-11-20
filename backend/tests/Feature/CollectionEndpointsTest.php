@@ -15,6 +15,15 @@ class CollectionEndpointsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @return array{concert: array{
+     *     id: string, title: string, artists: list<string>, venueId: string|null,
+     *     date: array{year: int, month: int|null, day: int|null}, time: string, timezone: string|null,
+     *     interested: bool, ticketsBought: bool, notes: string,
+     *     catalog: array{artistIds: list<string|null>, tours: list<array<string, mixed>>, eventId?: string},
+     *     setlist: list<array{id: string, type: string, title: string, artist: string, tape: bool}>
+     * }}
+     */
     private function draft(): array
     {
         return ['concert' => [
@@ -40,16 +49,16 @@ class CollectionEndpointsTest extends TestCase
         $owner = User::factory()->create();
         $other = User::factory()->create();
         $draft = $this->draft();
-        $saved = $this->actingAs($owner)->postJson('/api/v1/attendances', $draft)->assertOk()
+        $saved = $this->arrayAt($this->actingAs($owner)->postJson('/api/v1/attendances', $draft)->assertOk()
             ->assertJsonPath('data.concerts.0.id', $draft['concert']['id'])
             ->assertJsonPath('data.concerts.0.artists', ['Björk, guest', 'Björk, guest'])
             ->assertJsonPath('data.concerts.0.time', '00:00:07')->assertJsonPath('data.concerts.0.timezone', null)
             ->assertJsonPath('data.concerts.0.interested', false)->assertJsonPath('data.concerts.0.notes', 'My notes')
-            ->json('data.concerts.0');
-        $this->assertNotSame($saved['catalog']['artistIds'][0], $saved['catalog']['artistIds'][1]);
+            ->json('data.concerts.0'));
+        $this->assertNotSame($this->stringAt($saved, 'catalog.artistIds.0'), $this->stringAt($saved, 'catalog.artistIds.1'));
         $this->actingAs($other)->getJson('/api/v1/collection')->assertJsonPath('data.concerts', []);
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertNotFound();
-        $this->deleteJson('/api/v1/attendances/'.$saved['id'])->assertNotFound();
+        $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertNotFound();
+        $this->deleteJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'))->assertNotFound();
         $this->actingAs($owner)->getJson('/api/v1/collection')->assertJsonPath('data.concerts.0', $saved);
     }
 
@@ -60,18 +69,18 @@ class CollectionEndpointsTest extends TestCase
         $draft = $this->draft();
         $draft['concert']['venueId'] = $venue->external_id;
         $saved = $this->postJson('/api/v1/attendances?except=concerts', $draft)->assertStatus(200)->assertHeader('Cache-Control', 'no-store, private');
-        $this->assertSame(['data'], array_keys($saved->json()));
-        $this->assertSame(['version', 'concerts', 'venues'], array_keys($saved->json('data')));
-        $this->assertSame(['id', 'title', 'eventType', 'artists', 'venueId', 'date', 'time', 'timezone', 'interested', 'ticketsBought', 'notes', 'catalog', 'setlist'], array_keys($saved->json('data.concerts.0')));
-        $this->assertSame(['eventId', 'artistIds', 'tours'], array_keys($saved->json('data.concerts.0.catalog')));
-        $this->assertSame(['id', 'catalogId', 'address', 'aliases', 'image', 'region', 'countryCode', 'name', 'city', 'neighborhood', 'lat', 'lng', 'timezone'], array_keys($saved->json('data.venues.0')));
-        $this->getJson('/api/v1/collection?only=version&include=concerts')->assertOk()->assertHeader('Cache-Control', 'no-store, private')->assertExactJson($saved->json());
+        $this->assertSame(['data'], array_keys($this->arrayAt($saved->json())));
+        $this->assertSame(['version', 'concerts', 'venues'], array_keys($this->arrayAt($saved->json('data'))));
+        $this->assertSame(['id', 'title', 'eventType', 'artists', 'venueId', 'date', 'time', 'timezone', 'interested', 'ticketsBought', 'notes', 'catalog', 'setlist'], array_keys($this->arrayAt($saved->json('data.concerts.0'))));
+        $this->assertSame(['eventId', 'artistIds', 'tours'], array_keys($this->arrayAt($saved->json('data.concerts.0.catalog'))));
+        $this->assertSame(['id', 'catalogId', 'address', 'aliases', 'image', 'region', 'countryCode', 'name', 'city', 'neighborhood', 'lat', 'lng', 'timezone'], array_keys($this->arrayAt($saved->json('data.venues.0'))));
+        $this->getJson('/api/v1/collection?only=version&include=concerts')->assertOk()->assertHeader('Cache-Control', 'no-store, private')->assertExactJson($this->arrayAt($saved->json()));
     }
 
     public function test_setlist_entries_omit_catalog_ids_they_do_not_have(): void
     {
         $this->actingAs(User::factory()->create());
-        [$song, $note] = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0.setlist');
+        [$song, $note] = $this->arraysAt($this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0.setlist'));
 
         $this->assertSame(['id', 'type', 'title', 'artist', 'tape', 'artistCatalogId'], array_keys($song));
         $this->assertSame(['id', 'type', 'title', 'artist', 'tape'], array_keys($note));
@@ -80,16 +89,17 @@ class CollectionEndpointsTest extends TestCase
     public function test_setlist_reorder_and_delete_are_atomic_and_undo_can_restore_public_entry_ids(): void
     {
         $this->actingAs(User::factory()->create());
-        $saved = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0');
-        $saved['setlist'] = array_reverse($saved['setlist']);
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.setlist.0.type', 'note');
+        $saved = $this->arrayAt($this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0'));
+        $id = $this->stringAt($saved, 'id');
+        $saved['setlist'] = array_reverse($this->arrayAt($saved, 'setlist'));
+        $this->patchJson('/api/v1/attendances/'.$id, ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.setlist.0.type', 'note');
         $original = $saved['setlist'];
         $saved['setlist'] = [$saved['setlist'][0]];
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertOk();
+        $this->patchJson('/api/v1/attendances/'.$id, ['concert' => $saved])->assertOk();
         $saved['setlist'] = $original;
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertOk()->assertJsonCount(2, 'data.concerts.0.setlist');
-        $this->deleteJson('/api/v1/attendances/'.$saved['id'])->assertOk()->assertJsonPath('data.concerts', []);
-        $this->postJson('/api/v1/attendances', ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.id', $saved['id']);
+        $this->patchJson('/api/v1/attendances/'.$id, ['concert' => $saved])->assertOk()->assertJsonCount(2, 'data.concerts.0.setlist');
+        $this->deleteJson('/api/v1/attendances/'.$id)->assertOk()->assertJsonPath('data.concerts', []);
+        $this->postJson('/api/v1/attendances', ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.id', $id);
     }
 
     public function test_catalog_event_reused_and_personal_updates_do_not_change_shared_facts(): void
@@ -98,23 +108,25 @@ class CollectionEndpointsTest extends TestCase
         $event = Event::factory()->create(['title' => 'Shared Event']);
         $draft = $this->draft();
         $draft['concert']['catalog']['eventId'] = $event->external_id;
-        $saved = $this->postJson('/api/v1/attendances', $draft)->assertOk()->assertJsonPath('data.concerts.0.title', 'Shared Event')->json('data.concerts.0');
+        $saved = $this->arrayAt($this->postJson('/api/v1/attendances', $draft)->assertOk()->assertJsonPath('data.concerts.0.title', 'Shared Event')->json('data.concerts.0'));
         $saved['notes'] = 'Updated';
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.notes', 'Updated');
-        $this->assertSame('Shared Event', $event->fresh()->title);
+        $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.notes', 'Updated');
+        $this->assertSame('Shared Event', $this->present($event->fresh())->title);
         $this->postJson('/api/v1/attendances', $draft)->assertConflict();
     }
 
     public function test_shared_fact_edit_preserves_seats_and_entries_without_modifying_the_original_event(): void
     {
         $this->actingAs(User::factory()->create());
-        $saved = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0');
-        $oldEvent = $saved['catalog']['eventId'];
+        $saved = $this->arrayAt($this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0'));
+        $oldEvent = $this->stringAt($saved, 'catalog.eventId');
         $member = AttendanceMember::query()->firstOrFail();
         $seat = $member->seats()->create(['label' => 'Keep this seat']);
-        unset($saved['catalog']['eventId']);
+        $catalog = $this->arrayAt($saved, 'catalog');
+        unset($catalog['eventId']);
+        $saved['catalog'] = $catalog;
         $saved['title'] = 'Edited';
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.title', 'Edited');
+        $this->patchJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'), ['concert' => $saved])->assertOk()->assertJsonPath('data.concerts.0.title', 'Edited');
         $this->assertSame('Noche Ñ', Event::query()->where('external_id', $oldEvent)->firstOrFail()->title);
         $this->assertDatabaseHas('attendance_member_seats', ['external_id' => $seat->external_id, 'label' => 'Keep this seat']);
         $this->assertSame(1, Attendance::query()->count());
@@ -136,14 +148,15 @@ class CollectionEndpointsTest extends TestCase
     {
         $owner = User::factory()->create();
         $guest = User::factory()->create();
-        $saved = $this->actingAs($owner)->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0');
+        $id = $this->stringAt($this->actingAs($owner)->postJson('/api/v1/attendances', $this->draft())->assertOk()->json(), 'data.concerts.0.id');
         $attendance = Attendance::query()->firstOrFail();
         $attendance->members()->create(['event_id' => $attendance->event_id, 'user_id' => $guest->id, 'interested' => true, 'tickets_bought' => false]);
         $guestConcert = $this->actingAs($guest)->getJson('/api/v1/collection')->assertOk()->assertJsonPath('data.concerts.0.ticketsBought', false)->json('data.concerts.0');
+        $this->assertIsArray($guestConcert);
         $guestConcert['notes'] = 'Shared notes';
         $guestConcert['interested'] = false;
-        $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $guestConcert])->assertOk();
-        $this->deleteJson('/api/v1/attendances/'.$saved['id'])->assertNotFound();
+        $this->patchJson('/api/v1/attendances/'.$id, ['concert' => $guestConcert])->assertOk();
+        $this->deleteJson('/api/v1/attendances/'.$id)->assertNotFound();
         $this->actingAs($owner)->getJson('/api/v1/collection')->assertJsonPath('data.concerts.0.ticketsBought', true)->assertJsonPath('data.concerts.0.notes', 'Shared notes');
     }
 
@@ -151,10 +164,10 @@ class CollectionEndpointsTest extends TestCase
     {
         $owner = User::factory()->create();
         $this->actingAs($owner);
-        $saved = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0');
+        $saved = $this->arrayAt($this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0'));
         $member = AttendanceMember::query()->firstOrFail();
         $seat = $member->seats()->create(['label' => 'Retained']);
-        $this->deleteJson('/api/v1/attendances/'.$saved['id'])->assertOk()->assertJsonPath('data.concerts', []);
+        $this->deleteJson('/api/v1/attendances/'.$this->stringAt($saved, 'id'))->assertOk()->assertJsonPath('data.concerts', []);
         $saved['id'] = (string) Str::uuid();
         $this->postJson('/api/v1/attendances', ['concert' => $saved])->assertOk()->assertJsonCount(1, 'data.concerts');
         $this->assertDatabaseHas('attendance_member_seats', ['external_id' => $seat->external_id]);

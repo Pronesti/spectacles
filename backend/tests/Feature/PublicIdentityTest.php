@@ -16,13 +16,13 @@ class PublicIdentityTest extends TestCase
     {
         $user = User::factory()->create(['locale' => 'es-AR']);
         $uuid = $user->external_id;
-        $this->assertIsInt($user->id);
+        $this->assertIsInt($user->getKey());
         $this->assertTrue(Str::isUuid($uuid));
         $this->assertTrue($user->getIncrementing());
         $this->assertSame('external_id', $user->getRouteKeyName());
-        $this->assertTrue($user->resolveRouteBinding($uuid)->is($user));
+        $this->assertTrue($this->present($user->resolveRouteBinding($uuid))->is($user));
         $user->update(['name' => 'Updated', 'locale' => 'en']);
-        $this->assertSame($uuid, $user->fresh()->external_id);
+        $this->assertSame($uuid, $this->present($user->fresh())->external_id);
     }
 
     public function test_public_uuid_cannot_be_changed_on_an_existing_model(): void

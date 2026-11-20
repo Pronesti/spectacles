@@ -28,7 +28,7 @@ class CatalogProviderSelection
     public function issue(string $kind, Data $payload): string
     {
         $payload = $this->payload($kind, $payload);
-        $proof = Crypt::encryptString(json_encode(new ProviderProofData(v: 2, kind: $kind, payload: $payload->toArray(), expiresAt: now()->addHours(24)->timestamp), JSON_THROW_ON_ERROR));
+        $proof = Crypt::encryptString(json_encode(new ProviderProofData(v: 2, kind: $kind, payload: $payload->toArray(), expiresAt: now()->addHours(24)->getTimestamp()), JSON_THROW_ON_ERROR));
         if (strlen($proof) > 32768) {
             throw new CatalogProviderUnavailable;
         }
@@ -36,6 +36,9 @@ class CatalogProviderSelection
         return $proof;
     }
 
+    /**
+     * @return ($kind is 'performance' ? ProviderPerformanceData : ($kind is 'locator' ? ProviderLocatorData : ($kind is 'tour' ? ProviderTourData : ProviderVenueData)))
+     */
     public function read(string $proof, string $kind, string $path): ProviderPerformanceData|ProviderLocatorData|ProviderTourData|ProviderVenueData
     {
         try {
@@ -91,30 +94,39 @@ class CatalogProviderSelection
      * A decrypted payload arrives as decoded JSON; one about to be signed arrives as Data
      * and is checked by the same rules.
      *
-     * @param  Data|array<string, mixed>  $payload
+     * @param  Data|array<mixed>  $payload
+     * @return ($kind is 'performance' ? ProviderPerformanceData : ($kind is 'locator' ? ProviderLocatorData : ($kind is 'tour' ? ProviderTourData : ProviderVenueData)))
      */
     private function payload(string $kind, Data|array $payload): ProviderPerformanceData|ProviderLocatorData|ProviderTourData|ProviderVenueData
     {
-        $class = match ($kind) {
-            'performance' => ProviderPerformanceInputData::class,
-            'locator' => ProviderLocatorInputData::class,
-            'tour', 'venue' => ProviderEntityInputData::class,
+        return match ($kind) {
+            'performance' => CatalogProviderData::performance($this->input(ProviderPerformanceInputData::class, $payload)),
+            'locator' => $this->locatorPayload($this->input(ProviderLocatorInputData::class, $payload)),
+            'tour' => CatalogProviderData::tour($this->input(ProviderEntityInputData::class, $payload)),
+            'venue' => CatalogProviderData::venue($this->input(ProviderEntityInputData::class, $payload)),
             default => throw new \InvalidArgumentException('Unsupported provider selection kind.'),
         };
-        $input = $payload instanceof $class ? $payload : UntrustedPayload::parse($class, $payload, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
+    }
 
-        return match ($kind) {
-            'performance' => CatalogProviderData::performance($input),
-            'locator' => $this->locatorPayload($input),
-            'tour' => CatalogProviderData::tour($input),
-            'venue' => CatalogProviderData::venue($input),
-        };
+    /**
+     * Uses a payload that is already the kind's input class as is, and hydrates anything else.
+     *
+     * @template TInput of Data
+     *
+     * @param  class-string<TInput>  $class
+     * @param  Data|array<mixed>  $payload
+     * @return TInput
+     */
+    private function input(string $class, Data|array $payload): Data
+    {
+        return $payload instanceof $class ? $payload : UntrustedPayload::parse($class, $payload, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
     }
 
     private function locatorPayload(ProviderLocatorInputData $payload): ProviderLocatorData
     {
         $ref = CatalogProviderData::ref($payload->ref);
-        if ($ref->provider !== 'setlist_fm' || $ref->resourceType !== 'setlist' || app(SetlistFmUrl::class)->id($payload->url ?? '', 'setlist') !== $ref->externalId || ! in_array($payload->period, ['past', 'upcoming'], true)) {
+        $url = $payload->url;
+        if ($url === null || $ref->provider !== 'setlist_fm' || $ref->resourceType !== 'setlist' || app(SetlistFmUrl::class)->id($url, 'setlist') !== $ref->externalId || ! in_array($payload->period, ['past', 'upcoming'], true)) {
             throw new CatalogProviderUnavailable;
         }
         if ($payload->source !== null && ! in_array($payload->source, ['api', 'html'], true)) {
@@ -123,10 +135,10 @@ class CatalogProviderSelection
         $manual = new Optional;
         if ($payload->manual !== null) {
             $details = $payload->manual;
-            $normalized = CatalogProviderData::performance(new ProviderPerformanceInputData(ref: $payload->ref, url: $payload->url, date: $details->date, artist: $details->artist, venue: $details->venue));
+            $normalized = CatalogProviderData::performance(new ProviderPerformanceInputData(ref: $payload->ref, url: $url, date: $details->date, artist: $details->artist, venue: $details->venue));
             $manual = new ManualPerformanceData($normalized->artist, $normalized->venue, $normalized->date, CatalogProviderData::text($details->tourName, 255, true), null, null);
         }
 
-        return new ProviderLocatorData($ref, $payload->url, $payload->period, $payload->source ?? new Optional, $manual);
+        return new ProviderLocatorData($ref, $url, $payload->period, $payload->source ?? new Optional, $manual);
     }
 }

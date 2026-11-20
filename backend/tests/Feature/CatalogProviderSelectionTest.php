@@ -7,6 +7,7 @@ use App\Http\CatalogProviderSelection;
 use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderLocatorInputData;
+use App\Http\Data\ProviderPerformanceData;
 use App\Http\Data\ProviderPerformanceInputData;
 use App\Http\MusicBrainzSelection;
 use App\Http\UntrustedPayload;
@@ -21,10 +22,11 @@ class CatalogProviderSelectionTest extends TestCase
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
         $service = app(CatalogProviderSelection::class);
-        $proof = $service->issue('performance', ProviderPerformanceInputData::from($f['performance']));
+        $proof = $service->issue('performance', ProviderPerformanceInputData::from($this->arrayAt($f, 'performance')));
         $value = $service->read($proof, 'performance', 'pendingCatalog.event.selection');
+        $this->assertInstanceOf(ProviderPerformanceData::class, $value);
         $this->assertSame('b4cc196', $value->ref->externalId);
-        $this->assertSame($f['performance']['date'], $value->date->toArray());
+        $this->assertSame($this->arrayAt($f, 'performance.date'), $value->date->toArray());
         $this->assertArrayNotHasKey('localEvent', $value->toArray());
         $this->assertArrayNotHasKey('selection', $value->artist->toArray());
         ProviderHttp::assertNothingSent();
@@ -37,10 +39,10 @@ class CatalogProviderSelectionTest extends TestCase
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
         $service = app(CatalogProviderSelection::class);
-        $absent = $service->read($service->issue('performance', ProviderPerformanceInputData::from($f['performance'])), 'performance', 'selection');
-        $named = $service->read($service->issue('performance', ProviderPerformanceInputData::from([...$f['performance'], 'tourName' => null])), 'performance', 'selection');
-        $this->assertArrayNotHasKey('tourName', json_decode(Crypt::decryptString($service->issue('performance', $absent)), true)['payload']);
-        $reissued = json_decode(Crypt::decryptString($service->issue('performance', $named)), true)['payload'];
+        $absent = $service->read($service->issue('performance', ProviderPerformanceInputData::from($this->arrayAt($f, 'performance'))), 'performance', 'selection');
+        $named = $service->read($service->issue('performance', ProviderPerformanceInputData::from([...$this->arrayAt($f, 'performance'), 'tourName' => null])), 'performance', 'selection');
+        $this->assertArrayNotHasKey('tourName', $this->arrayAt(json_decode(Crypt::decryptString($service->issue('performance', $absent)), true), 'payload'));
+        $reissued = $this->arrayAt(json_decode(Crypt::decryptString($service->issue('performance', $named)), true), 'payload');
         $this->assertArrayHasKey('tourName', $reissued);
         $this->assertNull($reissued['tourName']);
     }
@@ -49,9 +51,9 @@ class CatalogProviderSelectionTest extends TestCase
     {
         $expiresAt = now()->addHour()->timestamp;
         $reads = [
-            fn () => app(MusicBrainzSelection::class)->read(Crypt::encryptString(json_encode(['v' => 1, 'kind' => 'artist', 'mbid' => ['not' => 'a string'], 'expiresAt' => $expiresAt])), 'artist', 'selection'),
-            fn () => app(CatalogProviderSelection::class)->read(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'venue', 'payload' => 'not an object', 'expiresAt' => $expiresAt])), 'venue', 'selection'),
-            fn () => app(CatalogProviderSelection::class)->tour(Crypt::encryptString(json_encode(['v' => ['not' => 'a version'], 'kind' => 'tour'])), 'selection'),
+            fn () => app(MusicBrainzSelection::class)->read(Crypt::encryptString(json_encode(['v' => 1, 'kind' => 'artist', 'mbid' => ['not' => 'a string'], 'expiresAt' => $expiresAt], JSON_THROW_ON_ERROR)), 'artist', 'selection'),
+            fn () => app(CatalogProviderSelection::class)->read(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'venue', 'payload' => 'not an object', 'expiresAt' => $expiresAt], JSON_THROW_ON_ERROR)), 'venue', 'selection'),
+            fn () => app(CatalogProviderSelection::class)->tour(Crypt::encryptString(json_encode(['v' => ['not' => 'a version'], 'kind' => 'tour'], JSON_THROW_ON_ERROR)), 'selection'),
         ];
         foreach ($reads as $read) {
             try {
@@ -67,7 +69,7 @@ class CatalogProviderSelectionTest extends TestCase
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
         $service = app(CatalogProviderSelection::class);
-        foreach (['corrupt', str_repeat('a', 32769), $service->issue('locator', ProviderLocatorInputData::from(['ref' => $f['performance']['ref'], 'url' => $f['performance']['url'], 'period' => 'upcoming']))] as $proof) {
+        foreach (['corrupt', str_repeat('a', 32769), $service->issue('locator', ProviderLocatorInputData::from(['ref' => $this->arrayAt($f, 'performance.ref'), 'url' => $this->stringAt($f, 'performance.url'), 'period' => 'upcoming']))] as $proof) {
             try {
                 $service->read($proof, 'performance', 'pendingCatalog.event.selection');
                 $this->fail('Invalid proof accepted.');
@@ -83,19 +85,20 @@ class CatalogProviderSelectionTest extends TestCase
         $proofs = require base_path('tests/Fixtures/catalog-provider-proofs.php');
         $service = app(CatalogProviderSelection::class);
         $issued = [
-            'performance' => [...$f['performance'], 'tourName' => 'Drama y luz'],
-            'venue' => $f['venue'],
-            'tour' => $f['tour'],
-            'locator' => ['ref' => $f['performance']['ref'], 'url' => $f['performance']['url'], 'period' => 'past', 'source' => 'api', 'manual' => ['artist' => $f['artist'], 'venue' => $f['venue'], 'date' => $f['performance']['date'], 'tourName' => 'Drama y luz']],
+            'performance' => [...$this->arrayAt($f, 'performance'), 'tourName' => 'Drama y luz'],
+            'venue' => $this->arrayAt($f, 'venue'),
+            'tour' => $this->arrayAt($f, 'tour'),
+            'locator' => ['ref' => $this->arrayAt($f, 'performance.ref'), 'url' => $this->stringAt($f, 'performance.url'), 'period' => 'past', 'source' => 'api', 'manual' => ['artist' => $this->arrayAt($f, 'artist'), 'venue' => $this->arrayAt($f, 'venue'), 'date' => $this->arrayAt($f, 'performance.date'), 'tourName' => 'Drama y luz']],
         ];
-        foreach ($proofs as $kind => $payload) {
+        foreach ($this->arrayAt($proofs) as $kind => $payload) {
+            $this->assertIsString($kind);
             $stored = json_decode(Crypt::decryptString($service->issue($kind, match ($kind) {
                 'performance' => ProviderPerformanceInputData::from($issued[$kind]),
                 'locator' => ProviderLocatorInputData::from($issued[$kind]),
                 default => ProviderEntityInputData::from($issued[$kind]),
             })), true);
-            $this->assertSame($payload, $stored['payload'], $kind);
-            $handMade = Crypt::encryptString(json_encode(['v' => 2, 'kind' => $kind, 'payload' => $payload, 'expiresAt' => now()->addHour()->timestamp]));
+            $this->assertSame($payload, $this->arrayAt($stored, 'payload'), $kind);
+            $handMade = Crypt::encryptString(json_encode(['v' => 2, 'kind' => $kind, 'payload' => $payload, 'expiresAt' => now()->addHour()->timestamp], JSON_THROW_ON_ERROR));
             $read = $service->read($handMade, $kind, 'selection');
             $this->assertSame($payload, $read->toArray(), $kind);
         }
@@ -107,30 +110,31 @@ class CatalogProviderSelectionTest extends TestCase
         $service = app(CatalogProviderSelection::class);
         $this->assertSame($id, $service->tour(app(MusicBrainzSelection::class)->issue('series', $id), 'tour')->externalId);
         $this->expectException(ValidationException::class);
-        $service->tour(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'series', 'mbid' => $id])), 'tour');
+        $service->tour(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'series', 'mbid' => $id], JSON_THROW_ON_ERROR)), 'tour');
     }
 
     public function test_normalization_rejects_wrong_ids_dates_hosts_and_duplicate_refs(): void
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
+        $performance = $this->arrayAt($f, 'performance');
         $variants = [];
-        $v = $f['performance'];
-        $v['ref']['externalId'] = 'another';
+        $v = $performance;
+        data_set($v, 'ref.externalId', 'another');
         $variants[] = $v;
-        $v = $f['performance'];
-        $v['date']['day'] = 32;
+        $v = $performance;
+        data_set($v, 'date.day', 32);
         $variants[] = $v;
-        $v = $f['performance'];
-        $v['venue']['url'] = 'https://evil.example/venue/wd-73d6ca11.html';
+        $v = $performance;
+        data_set($v, 'venue.url', 'https://evil.example/venue/wd-73d6ca11.html');
         $variants[] = $v;
-        $v = $f['performance'];
-        $v['venue']['linkedRefs'] = [$v['venue']['ref']];
+        $v = $performance;
+        data_set($v, 'venue.linkedRefs', [$this->arrayAt($v, 'venue.ref')]);
         $variants[] = $v;
-        $v = $f['performance'];
-        $v['venue']['values']['lat'] = 1;
+        $v = $performance;
+        data_set($v, 'venue.values.lat', 1);
         $variants[] = $v;
-        $v = $f['performance'];
-        $v['artist']['ref']['resourceType'] = 'place';
+        $v = $performance;
+        data_set($v, 'artist.ref.resourceType', 'place');
         $variants[] = $v;
         foreach ($variants as $value) {
             try {

@@ -24,6 +24,9 @@ use Spatie\LaravelData\Optional;
 
 class CatalogProviderData
 {
+    /**
+     * @return ($nullable is true ? string|null : string)
+     */
     public static function text(mixed $value, int $max = 255, bool $nullable = false): ?string
     {
         if ($nullable && $value === null) {
@@ -43,7 +46,7 @@ class CatalogProviderData
         $id = $value?->externalId;
         $valid = $provider === 'musicbrainz' ? in_array($kind, ['artist', 'work', 'series', 'place'], true) && is_string($id) && Str::isUuid($id)
             : $provider === 'setlist_fm' && in_array($kind, ['artist', 'tour', 'venue', 'setlist'], true) && is_string($id) && preg_match('/^[a-zA-Z0-9_-]{1,128}$/D', $id);
-        if (! $valid) {
+        if (! $valid || $provider === null) {
             throw new CatalogProviderUnavailable;
         }
 
@@ -56,14 +59,14 @@ class CatalogProviderData
     public static function entity(?ProviderEntityInputData $value): ProviderArtistData|ProviderTourData|ProviderVenueData
     {
         $ref = self::ref($value?->ref);
-        $values = $value?->values ?? new ProviderEntityValuesInputData;
+        $values = $value->values ?? new ProviderEntityValuesInputData;
         $values = match ($ref->resourceType) {
             'tour', 'series' => new TourValuesData(self::text($values->name)),
             'artist' => new ArtistValuesData(self::text($values->name), self::text($values->type, 255, true), self::text($values->disambiguation, 255, true)),
             'place', 'venue' => self::venueValues($values),
             default => throw new CatalogProviderUnavailable,
         };
-        $url = self::text($value->url, 2048);
+        $url = self::text($value?->url, 2048);
         if ($ref->provider === 'setlist_fm') {
             if (app(SetlistFmUrl::class)->id($url, $ref->resourceType) !== $ref->externalId) {
                 throw new CatalogProviderUnavailable;
@@ -125,7 +128,7 @@ class CatalogProviderData
             url: $url,
             linkedRefs: $linkedRefs,
             venueUrl: $venueUrl ?? new Optional,
-            venueSources: array_map(fn ($id, string $sourceUrl): VenueSourceData => new VenueSourceData((string) $id, $sourceUrl), array_keys($urls), array_values($urls)),
+            venueSources: array_map(fn (int|string $id): VenueSourceData => new VenueSourceData((string) $id, $urls[$id]), array_keys($urls)),
         );
     }
 
@@ -218,7 +221,8 @@ class CatalogProviderData
     public static function performance(ProviderPerformanceInputData $value): ProviderPerformanceData
     {
         $ref = self::ref($value->ref);
-        if ($ref->provider !== 'setlist_fm' || $ref->resourceType !== 'setlist' || app(SetlistFmUrl::class)->id($value->url ?? '', 'setlist') !== $ref->externalId) {
+        $url = $value->url;
+        if ($url === null || $ref->provider !== 'setlist_fm' || $ref->resourceType !== 'setlist' || app(SetlistFmUrl::class)->id($url, 'setlist') !== $ref->externalId) {
             throw new CatalogProviderUnavailable;
         }
         $date = $value->date;
@@ -239,7 +243,7 @@ class CatalogProviderData
 
         return new ProviderPerformanceData(
             ref: $ref,
-            url: $value->url,
+            url: $url,
             date: new CalendarDateData($date->year, $date->month, $date->day),
             artist: $artist,
             tour: $tour,

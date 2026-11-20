@@ -38,13 +38,23 @@ class TestUsersSeeder extends Seeder
 
         $personalEmail = config('app.personal_user.email');
 
-        if (filled($personalEmail)) {
+        if (is_string($personalEmail) && filled($personalEmail)) {
             $this->firstOrCreateUser(
                 $personalEmail,
-                config('app.personal_user.name') ?: 'Personal User',
-                config('app.personal_user.password') ?: 'password',
+                $this->configured('app.personal_user.name', 'Personal User'),
+                $this->configured('app.personal_user.password', 'password'),
             );
         }
+    }
+
+    /**
+     * A configured seed value, or the fallback when it is unset or empty.
+     */
+    private function configured(string $key, string $fallback): string
+    {
+        $value = config($key);
+
+        return is_string($value) && $value ? $value : $fallback;
     }
 
     private function firstOrCreateUser(string $email, string $name, ?string $password = null): User
@@ -55,6 +65,6 @@ class TestUsersSeeder extends Seeder
             $attributes['password'] = $password;
         }
 
-        return User::query()->firstOrCreate(['email' => $email], User::factory()->raw($attributes));
+        return User::query()->firstOrCreate(['email' => $email], array_filter(User::factory()->raw($attributes), is_string(...), ARRAY_FILTER_USE_KEY));
     }
 }

@@ -36,9 +36,9 @@ class ProfileTest extends TestCase
         $this->assertSame('en', $user->locale);
         $this->assertSame($password, $user->password);
         $this->assertNull($user->email_verified_at);
-        $this->assertSame($other->getOriginal('name'), $other->fresh()->name);
+        $this->assertSame($other->getOriginal('name'), $this->present($other->fresh())->name);
         $public = (new UserResource($user))->toResponse(Request::create('/resource'))->getData(true);
-        $this->assertArrayNotHasKey('email', $public['data']['attributes']);
+        $this->assertArrayNotHasKey('email', $this->arrayAt($public, 'data.attributes'));
     }
 
     public function test_unchanged_email_keeps_verification_and_absent_fields_are_preserved(): void
@@ -46,8 +46,8 @@ class ProfileTest extends TestCase
         $user = User::factory()->create(['email' => 'jamie@example.com', 'locale' => 'en']);
         $this->actingAs($user, 'web')->patchJson('/api/v1/me', ['name' => 'New Name'])
             ->assertOk()->assertJsonPath('data.attributes.email', 'jamie@example.com');
-        $this->assertNotNull($user->fresh()->email_verified_at);
-        $this->assertSame('en', $user->fresh()->locale);
+        $this->assertNotNull($this->present($user->fresh())->email_verified_at);
+        $this->assertSame('en', $this->present($user->fresh())->locale);
         $this->patchJson('/api/v1/me', ['locale' => null])->assertOk()->assertJsonPath('data.attributes.locale', null);
     }
 
@@ -60,7 +60,7 @@ class ProfileTest extends TestCase
             ['email' => strtoupper($other->email)], ['locale' => 'unsupported'], ['locale' => ['en']]] as $invalid) {
             $this->patchJson('/api/v1/me', $invalid)->assertUnprocessable();
         }
-        $this->assertSame('Original', $user->fresh()->name);
+        $this->assertSame('Original', $this->present($user->fresh())->name);
     }
 
     public function test_current_user_response_has_no_shared_graph_or_internal_identifiers(): void
@@ -69,7 +69,7 @@ class ProfileTest extends TestCase
         $response = $this->actingAs($user, 'web')->getJson('/api/v1/me?include=attendanceMemberships,ownedAttendances')
             ->assertOk()->assertJsonMissingPath('included')->assertJsonMissingPath('data.relationships')
             ->assertJsonMissingPath('data.attributes.id')->assertJsonMissingPath('data.attributes.remember_token');
-        $this->assertSame(['name', 'email', 'locale'], array_keys($response->json('data.attributes')));
+        $this->assertSame(['name', 'email', 'locale'], array_keys($this->arrayAt($response->json('data.attributes'))));
     }
 
     public function test_guest_cannot_update_profile(): void

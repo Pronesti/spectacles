@@ -26,7 +26,9 @@ class ProviderReadGateTest extends TestCase
 
             return new WikidataImageFileData('Public.jpg');
         };
-        $this->assertSame('Public.jpg', $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch)->file);
+        $public = $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch);
+        $this->assertInstanceOf(WikidataImageFileData::class, $public);
+        $this->assertSame('Public.jpg', $public->file);
         $this->assertEquals(new WikidataImageFileData('Public.jpg'), $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch));
         config(['services.venue_images.commons_daily_limit' => 2]);
         $gate->run('commons', 'search', WikidataImageFileData::class, $fetch);
@@ -71,7 +73,9 @@ class ProviderReadGateTest extends TestCase
             $this->addToAssertionCount(1);
         }
         $this->travel(2)->seconds();
-        $this->assertSame('Fresh.jpg', $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => new WikidataImageFileData('Fresh.jpg'))->file);
+        $fresh = $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => new WikidataImageFileData('Fresh.jpg'));
+        $this->assertInstanceOf(WikidataImageFileData::class, $fresh);
+        $this->assertSame('Fresh.jpg', $fresh->file);
         $lock = Cache::lock('catalog-provider:gate:wikidata', 10);
         $this->assertTrue($lock->get());
         try {

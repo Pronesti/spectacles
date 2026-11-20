@@ -46,7 +46,7 @@ class TestUsersSeederTest extends TestCase
         $this->seed(TestUsersSeeder::class);
 
         $this->assertDatabaseCount('users', count(TestUsersSeeder::ARTIFICIAL_USERS) + 1);
-        $this->assertSame('Edited Name', $existing->fresh()->name);
-        $this->assertSame($existing->password, $existing->fresh()->password);
+        $this->assertSame('Edited Name', $this->present($existing->fresh())->name);
+        $this->assertSame($existing->password, $this->present($existing->fresh())->password);
     }
 }

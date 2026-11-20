@@ -20,6 +20,9 @@ class MusicBrainzPlaces
     public function search(string $q): ProviderPageData
     {
         $terms = preg_split('/\s+/u', trim($q), -1, PREG_SPLIT_NO_EMPTY);
+        if ($terms === false) {
+            throw new \InvalidArgumentException('The query is not valid UTF-8.');
+        }
         $escaped = array_map(function (string $term): string {
             foreach (str_split('\\+-!(){}[]^"~*?:/&|') as $character) {
                 $term = str_replace($character, '\\'.$character, $term);
@@ -27,7 +30,7 @@ class MusicBrainzPlaces
 
             return $term.'*';
         }, $terms);
-        $rows = $this->client->publicRead('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', MusicBrainzQueryData::search('place:('.implode(' AND ', $escaped).')'), MusicBrainzSearchPayloadData::class, ProviderVenueData::class, function (MusicBrainzSearchPayloadData $page): array {
+        $rows = $this->client->publicReadList('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', MusicBrainzQueryData::search('place:('.implode(' AND ', $escaped).')'), MusicBrainzSearchPayloadData::class, ProviderVenueData::class, function (MusicBrainzSearchPayloadData $page): array {
             if ($page->places === null || ! array_is_list($page->places) || count($page->places) > 100) {
                 throw new MusicBrainzUnavailable;
             }
@@ -68,7 +71,7 @@ class MusicBrainzPlaces
         $venueUrls = [];
         foreach ($place->relations ?? [] as $relation) {
             if ($relation->targetType === 'url' && in_array($relation->type, ['setlistfm', 'setlist.fm'], true)) {
-                $url = $relation->url?->resource ?? '';
+                $url = $relation->url->resource ?? '';
                 $refs[] = new ProviderRefInputData('setlist_fm', 'venue', app(SetlistFmUrl::class)->id($url, 'venue'));
                 $venueUrls[$url] = true;
             }
@@ -85,7 +88,7 @@ class MusicBrainzPlaces
         return CatalogProviderData::venue(new ProviderEntityInputData(
             ref: new ProviderRefInputData('musicbrainz', 'place', strtolower($id)),
             url: 'https://musicbrainz.org/place/'.strtolower($id),
-            values: new ProviderEntityValuesInputData(name: $place->name, city: $place->area?->name ?? '', countryCode: $countryCode, address: $place->address ?: null, aliases: array_values(array_unique($aliases)), lat: $place->coordinates?->latitude, lng: $place->coordinates?->longitude),
+            values: new ProviderEntityValuesInputData(name: $place->name, city: $place->area->name ?? '', countryCode: $countryCode, address: $place->address ?: null, aliases: array_values(array_unique($aliases)), lat: $place->coordinates?->latitude, lng: $place->coordinates?->longitude),
             linkedRefs: $refs,
             venueUrl: count($venueUrls) === 1 ? array_key_first($venueUrls) : null,
             venueSources: array_map(fn (string $source): VenueSourceInputData => new VenueSourceInputData(app(SetlistFmUrl::class)->id($source, 'venue'), $source), array_keys($venueUrls)),

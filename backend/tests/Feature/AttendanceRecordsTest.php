@@ -26,7 +26,7 @@ class AttendanceRecordsTest extends TestCase
         $this->assertSame(1, Event::count());
         $this->assertSame(1, User::count());
         $member = $attendance->members()->sole();
-        $this->assertTrue($member->user->is($owner));
+        $this->assertTrue($this->present($member->user)->is($owner));
         $this->assertSame($event->id, $member->event_id);
         $this->assertFalse($member->interested);
         $this->assertFalse($member->tickets_bought);
@@ -66,8 +66,8 @@ class AttendanceRecordsTest extends TestCase
         $guest = AttendanceMember::factory()->create(['attendance_id' => $a->id, 'interested' => true]);
         AttendanceMemberSeat::factory()->count(2)->create(['attendance_member_id' => $guest->id]);
         $owner->update(['tickets_bought' => true]);
-        $this->assertFalse($owner->fresh()->interested);
-        $this->assertFalse($guest->fresh()->tickets_bought);
+        $this->assertFalse($this->present($owner->fresh())->interested);
+        $this->assertFalse($this->present($guest->fresh())->tickets_bought);
         $this->assertSame(2, $guest->seats()->count());
         $before = $a->members()->count();
         $invite = AttendanceInvitation::factory()->create(['attendance_id' => $a->id]);

@@ -21,6 +21,9 @@ class SaveConcertRequest extends FormRequest
         return $this->user() !== null;
     }
 
+    /**
+     * @return array<string, list<mixed>>
+     */
     public function rules(): array
     {
         return [
@@ -95,6 +98,9 @@ class SaveConcertRequest extends FormRequest
         return $this->has('pendingCatalog') ? PendingCatalogData::from($this->validated('pendingCatalog')) : null;
     }
 
+    /**
+     * @return list<\Closure(Validator): void>
+     */
     public function after(): array
     {
         return [function (Validator $validator): void {

@@ -14,6 +14,7 @@ use App\Models\AttendanceMember;
 use App\Models\SetlistEntry;
 use App\Models\Song;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,11 +23,12 @@ class CollectionController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $attendances = Attendance::query()->whereNull('deleted_at')->whereHas('members', fn ($query) => $query->where('user_id', $request->user()->id))
-            ->with(['event.venue', 'event.artistLinks.artist', 'event.tourLinks.tour', 'members' => fn ($query) => $query->where('user_id', $request->user()->id), 'entries.song', 'entries.artistLinks.artist'])
+        $viewer = $request->user() ?? throw new AuthenticationException;
+        $attendances = Attendance::query()->whereNull('deleted_at')->whereHas('members', fn ($query) => $query->where('user_id', $viewer->id))
+            ->with(['event.venue', 'event.artistLinks.artist', 'event.tourLinks.tour', 'members' => fn ($query) => $query->where('user_id', $viewer->id), 'entries.song', 'entries.artistLinks.artist'])
             ->orderBy('id')->get();
 
-        return response()->json(['data' => CollectionData::fromAttendances($attendances, $request->user())])->header('Cache-Control', 'private, no-store');
+        return response()->json(['data' => CollectionData::fromAttendances($attendances, $viewer)])->header('Cache-Control', 'private, no-store');
     }
 
     public function store(SaveConcertRequest $request): JsonResponse
@@ -45,10 +47,11 @@ class CollectionController extends Controller
 
     public function destroy(Request $request, Attendance $attendance): JsonResponse
     {
-        DB::transaction(function () use ($request, $attendance): void {
-            User::query()->whereKey($request->user()->id)->lockForUpdate()->firstOrFail();
+        $viewer = $request->user() ?? throw new AuthenticationException;
+        DB::transaction(function () use ($viewer, $attendance): void {
+            User::query()->whereKey($viewer->id)->lockForUpdate()->firstOrFail();
             $locked = Attendance::query()->lockForUpdate()->findOrFail($attendance->id);
-            abort_unless($locked->owner_user_id === $request->user()->id, 404);
+            abort_unless($locked->owner_user_id === $viewer->id, 404);
             $locked->forceFill(['deleted_at' => now()])->save();
         });
 
@@ -57,48 +60,50 @@ class CollectionController extends Controller
 
     private function persist(SaveConcertRequest $request, ?Attendance $attendance): void
     {
-        DB::transaction(function () use ($request, $attendance): void {
-            User::query()->whereKey($request->user()->id)->lockForUpdate()->firstOrFail();
+        $viewer = $request->user() ?? throw new AuthenticationException;
+        DB::transaction(function () use ($request, $viewer, $attendance): void {
+            User::query()->whereKey($viewer->id)->lockForUpdate()->firstOrFail();
             $data = $request->concert();
             if ($attendance !== null) {
                 $attendance = Attendance::query()->lockForUpdate()->findOrFail($attendance->id);
                 abort_if($attendance->getAttribute('deleted_at') !== null, 404);
-                abort_unless($attendance->members()->where('user_id', $request->user()->id)->exists(), 404);
+                abort_unless($attendance->members()->where('user_id', $viewer->id)->exists(), 404);
                 abort_unless($attendance->external_id === $data->id, 422);
             } else {
                 $existingAttendance = Attendance::query()->where('external_id', $data->id)->lockForUpdate()->first();
                 if ($existingAttendance !== null) {
-                    abort_unless($existingAttendance->getAttribute('deleted_at') !== null && $existingAttendance->owner_user_id === $request->user()->id, 409);
+                    abort_unless($existingAttendance->getAttribute('deleted_at') !== null && $existingAttendance->owner_user_id === $viewer->id, 409);
                     $existingAttendance->forceFill(['deleted_at' => null])->save();
                     $attendance = $existingAttendance;
                 }
             }
             $pending = $request->pendingCatalog();
             if (! $data->catalog->hasEvent()) {
-                abort_if($attendance !== null && ($attendance->owner_user_id !== $request->user()->id || $attendance->members()->count() > 1), 403, 'Shared Event changes are not available here.');
+                abort_if($attendance !== null && ($attendance->owner_user_id !== $viewer->id || $attendance->members()->count() > 1), 403, 'Shared Event changes are not available here.');
             }
             $data = app(CatalogDraftResolver::class)->resolve($data, $pending);
             $venue = $data->catalog->hasEvent() ? null : app(VenueDraftResolver::class)->resolve($data, $request->venue(), $pending?->venueSelection());
             $event = app(EventDraftResolver::class)->resolve($data, $venue, $pending?->eventSelection());
-            $duplicate = AttendanceMember::query()->where('user_id', $request->user()->id)->where('event_id', $event->id);
+            $duplicate = AttendanceMember::query()->where('user_id', $viewer->id)->where('event_id', $event->id);
             if ($attendance !== null) {
                 $duplicate->where('attendance_id', '!=', $attendance->id);
             }
             $duplicateMember = $duplicate->with('attendance')->first();
-            if ($attendance === null && $duplicateMember !== null && $duplicateMember->attendance->getAttribute('deleted_at') !== null && $duplicateMember->attendance->owner_user_id === $request->user()->id) {
-                $attendance = $duplicateMember->attendance;
+            $duplicateAttendance = $duplicateMember?->attendance;
+            if ($attendance === null && $duplicateAttendance !== null && $duplicateAttendance->getAttribute('deleted_at') !== null && $duplicateAttendance->owner_user_id === $viewer->id) {
+                $attendance = $duplicateAttendance;
                 $attendance->forceFill(['deleted_at' => null])->save();
             } else {
                 abort_if($duplicateMember !== null, 409, 'This Event is already in your collection.');
             }
             if ($attendance === null) {
-                $attendance = new Attendance(['event_id' => $event->id, 'owner_user_id' => $request->user()->id, 'notes' => $data->notes]);
+                $attendance = new Attendance(['event_id' => $event->id, 'owner_user_id' => $viewer->id, 'notes' => $data->notes]);
                 $attendance->external_id = $data->id;
                 $attendance->save();
-                $member = $attendance->members()->create(['event_id' => $event->id, 'user_id' => $request->user()->id]);
+                $member = $attendance->members()->create(['event_id' => $event->id, 'user_id' => $viewer->id]);
             } else {
                 if ($attendance->event_id !== $event->id) {
-                    abort_unless($attendance->owner_user_id === $request->user()->id && $attendance->members()->count() === 1, 403);
+                    abort_unless($attendance->owner_user_id === $viewer->id && $attendance->members()->count() === 1, 403);
                     $member = $attendance->members()->firstOrFail();
                     $seats = $member->seats()->get()->map->getAttributes()->all();
                     $attributes = $member->getAttributes();
@@ -110,14 +115,15 @@ class CollectionController extends Controller
                         DB::table('attendance_member_seats')->insert($seats);
                     }
                 }
-                $member = $attendance->members()->where('user_id', $request->user()->id)->firstOrFail();
+                $member = $attendance->members()->where('user_id', $viewer->id)->firstOrFail();
             }
             $attendance->update(['notes' => $data->notes]);
             $member->update(['interested' => $data->interested, 'tickets_bought' => $data->ticketsBought]);
             $existing = $attendance->entries()->with('artistLinks.artist')->get()->keyBy('external_id');
             $ids = array_map(fn (SetlistEntryDraftData $row): string => $row->id, $data->setlist);
             $attendance->entries()->whereNotIn('external_id', $ids)->delete();
-            $offset = ((int) $attendance->entries()->max('position')) + count($ids) + 1;
+            $lastPosition = $attendance->entries()->max('position');
+            $offset = (is_numeric($lastPosition) ? (int) $lastPosition : 0) + count($ids) + 1;
             $attendance->entries()->increment('position', $offset);
             foreach ($data->setlist as $index => $row) {
                 $entry = $existing->get($row->id);

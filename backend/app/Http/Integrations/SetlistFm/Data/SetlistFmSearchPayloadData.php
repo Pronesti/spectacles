@@ -11,7 +11,7 @@ use Spatie\LaravelData\Data;
 class SetlistFmSearchPayloadData extends Data
 {
     /**
-     * @param  list<SetlistFmSetlistPayloadData>|null  $setlist
+     * @param  array<SetlistFmSetlistPayloadData>|null  $setlist
      */
     public function __construct(
         #[DataCollectionOf(SetlistFmSetlistPayloadData::class)]

@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property-read Event $event
+ */
 #[Fillable(['event_id', 'provider', 'resource_type', 'provider_resource_id'])]
 class EventProviderReference extends Model
 {

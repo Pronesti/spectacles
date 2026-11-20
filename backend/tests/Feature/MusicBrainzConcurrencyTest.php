@@ -26,6 +26,9 @@ class MusicBrainzConcurrencyTest extends TestCase
         }
     }
 
+    /**
+     * @param  'artist'|'work'|'series'  $kind
+     */
     private function race(string $kind): void
     {
         $mbid = (string) Str::uuid();
@@ -57,8 +60,7 @@ class MusicBrainzConcurrencyTest extends TestCase
         $directory = sys_get_temp_dir().'/spectacles-mb-race-'.Str::uuid();
         mkdir($directory, 0700);
         file_put_contents($directory.'/input.json', json_encode(['kind' => $kind, 'label' => $label, 'concert' => $concert, 'pendingCatalog' => $pending], JSON_THROW_ON_ERROR));
-        $connection = config('database.connections.pgsql');
-        $environment = [...getenv(), 'APP_ENV' => 'testing', 'APP_KEY' => config('app.key'), 'DB_CONNECTION' => 'pgsql', 'DB_URL' => '', 'DB_DATABASE' => 'spectacles_testing', 'DB_HOST' => (string) $connection['host'], 'DB_PORT' => (string) $connection['port'], 'DB_USERNAME' => (string) $connection['username'], 'DB_PASSWORD' => (string) $connection['password']];
+        $environment = [...getenv(), 'APP_ENV' => 'testing', 'APP_KEY' => config('app.key'), 'DB_CONNECTION' => 'pgsql', 'DB_URL' => '', 'DB_DATABASE' => 'spectacles_testing', 'DB_HOST' => config()->string('database.connections.pgsql.host'), 'DB_PORT' => config()->string('database.connections.pgsql.port'), 'DB_USERNAME' => config()->string('database.connections.pgsql.username'), 'DB_PASSWORD' => config()->string('database.connections.pgsql.password')];
         $processes = [];
         try {
             foreach (['a', 'b'] as $slot) {
@@ -100,7 +102,9 @@ class MusicBrainzConcurrencyTest extends TestCase
             }
             $reference::query()->where('provider', 'musicbrainz')->where('resource_type', $kind)->where($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', $mbid)->delete();
             $parent::query()->where($field, $label)->delete();
-            foreach (glob($directory.'/*') as $file) {
+            $files = glob($directory.'/*');
+            $this->assertIsArray($files);
+            foreach ($files as $file) {
                 unlink($file);
             } rmdir($directory);
         }

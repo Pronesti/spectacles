@@ -3,6 +3,9 @@
 use Tests\Support\ProviderHttp;
 
 $f = require __DIR__.'/catalog-provider-inputs.php';
+if (! is_array($f) || ! is_string($f['mbid'] ?? null) || ! is_array($f['venue'] ?? null) || ! is_string($f['venue']['url'] ?? null)) {
+    throw new UnexpectedValueException('The catalog provider inputs fixture lacks the artist MBID or the venue URL.');
+}
 $place = ['id' => '50573105-4880-4a66-b668-0356374918f0', 'name' => 'Allstate Arena', 'address' => 'Fixture street 1', 'coordinates' => ['latitude' => '42.005', 'longitude' => '-87.887'], 'aliases' => [['name' => 'Arena Ñ']], 'relations' => [['type' => 'setlistfm', 'target-type' => 'url', 'url' => ['resource' => $f['venue']['url']]], ['type' => 'wikidata', 'target-type' => 'url', 'url' => ['resource' => 'https://www.wikidata.org/wiki/Q62005881']]]];
 $file = 'Movistar_Arena_junio_de_2025_-_BugWarp_04.jpg';
 $image = ['url' => 'https://upload.wikimedia.org/wikipedia/commons/e/e2/'.$file, 'thumburl' => 'https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/'.$file.'/960px-'.$file, 'descriptionurl' => 'https://commons.wikimedia.org/wiki/File:'.$file, 'extmetadata' => ['Artist' => ['value' => '<a>BugWarp</a>'], 'LicenseShortName' => ['value' => 'CC BY-SA 4.0'], 'LicenseUrl' => ['value' => 'https://creativecommons.org/licenses/by-sa/4.0/']]];

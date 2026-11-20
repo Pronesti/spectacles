@@ -12,6 +12,9 @@ use Illuminate\Validation\Validator;
 
 class PendingCatalogRules
 {
+    /**
+     * @return array<string, list<mixed>>
+     */
     public static function rules(bool $present): array
     {
         $rules = ['pendingCatalog' => ['sometimes', 'array:artists,songs,lineup,entries,tours,tourChoices,venue,event']];
@@ -61,7 +64,7 @@ class PendingCatalogRules
             try {
                 app(CatalogProviderSelection::class)->read($binding->selection, $kind, 'pendingCatalog.'.$singleton.'.selection');
             } catch (ValidationException $failure) {
-                foreach ($failure->errors() as $path => $messages) {
+                foreach ($failure->validator->errors()->messages() as $path => $messages) {
                     $validator->errors()->add($path, $messages[0]);
                 }
             }
@@ -82,7 +85,7 @@ class PendingCatalogRules
                             app(MusicBrainzSelection::class)->read($draft->selection, $kind, 'pendingCatalog.'.$map.'.'.$key.'.selection');
                         }
                     } catch (ValidationException $failure) {
-                        foreach ($failure->errors() as $path => $messages) {
+                        foreach ($failure->validator->errors()->messages() as $path => $messages) {
                             $validator->errors()->add($path, $messages[0]);
                         }
                     }

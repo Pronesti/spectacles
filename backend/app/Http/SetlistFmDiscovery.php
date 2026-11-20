@@ -44,7 +44,7 @@ class SetlistFmDiscovery
             return strtolower($search->artistMbid);
         }
         if (is_string($search->artistUuid)) {
-            $id = ArtistProviderId::query()->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereHas('artist', fn ($q) => $q->where('external_id', $search->artistUuid))->value('provider_resource_id');
+            $id = ArtistProviderId::query()->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereHas('artist', fn ($q) => $q->where('external_id', $search->artistUuid))->first()?->provider_resource_id;
             if ($id === null) {
                 throw ValidationException::withMessages(['artistUuid' => 'Select an Artist with a MusicBrainz identity or enter details manually.']);
             }
@@ -130,7 +130,11 @@ class SetlistFmDiscovery
                 continue;
             }
             $haystack = mb_strtolower(Str::ascii(implode(' ', [$row->artist->values->name, $row->venue->values->name, $row->venue->values->city, $row->namedTour() ?? '', $dateKey])));
-            if (array_any(preg_split('/\s+/u', $term, -1, PREG_SPLIT_NO_EMPTY), fn ($part) => ! str_contains($haystack, $part))) {
+            $parts = preg_split('/\s+/u', $term, -1, PREG_SPLIT_NO_EMPTY);
+            if ($parts === false) {
+                throw new \InvalidArgumentException('The query is not valid UTF-8.');
+            }
+            if (array_any($parts, fn ($part) => ! str_contains($haystack, $part))) {
                 continue;
             }
             $manual = new ManualPerformanceData($row->artist, $row->venue, $row->date, $row->namedTour(), null, null);
@@ -228,7 +232,7 @@ class SetlistFmDiscovery
      */
     public function attachTour(ProviderTourData $value): ProviderTourData
     {
-        $local = $this->savedRecord(TourProviderId::class, 'external_provider_id', 'tour', [$value->ref]);
+        $local = $this->savedRecord([$value->ref], fn (ProviderRefData $identity): ?Tour => TourProviderId::query()->where($identity->tuple('external_provider_id'))->first()?->tour);
         $attached = $value->copyWith(values: $local === null ? $value->values : new TourValuesData($local->name), localId: $local?->external_id);
 
         return $attached->copyWith(selection: $this->proofs->issue('tour', $attached));
@@ -239,23 +243,28 @@ class SetlistFmDiscovery
      */
     public function attachVenue(ProviderVenueData $value): ProviderVenueData
     {
-        $local = $this->savedRecord(VenueProviderId::class, 'provider_resource_id', 'venue', $value->identities());
+        $local = $this->savedRecord($value->identities(), fn (ProviderRefData $identity): ?Venue => VenueProviderId::query()->where($identity->tuple('provider_resource_id'))->first()?->venue);
         $attached = $value->copyWith(values: $local === null ? $value->values : VenueValuesData::fromVenue($local), localId: $local?->external_id);
 
         return $attached->copyWith(selection: $this->proofs->issue('venue', $attached));
     }
 
     /**
-     * @param  class-string<TourProviderId|VenueProviderId>  $class
+     * The one saved record these identities belong to, if any.
+     *
+     * @template TParent of Tour|Venue
+     *
      * @param  list<ProviderRefData>  $refs
+     * @param  \Closure(ProviderRefData): (TParent|null)  $parentOf  the saved record an identity belongs to
+     * @return TParent|null
      */
-    private function savedRecord(string $class, string $idColumn, string $relation, array $refs): Tour|Venue|null
+    private function savedRecord(array $refs, \Closure $parentOf): Tour|Venue|null
     {
         $parents = [];
         foreach ($refs as $identity) {
-            $record = $class::query()->where($identity->tuple($idColumn))->first();
-            if ($record !== null) {
-                $parents[$record->{$relation}->id] = $record->{$relation};
+            $parent = $parentOf($identity);
+            if ($parent !== null) {
+                $parents[$parent->id] = $parent;
             }
         }
         abort_if(count($parents) > 1, 409, 'These provider identities belong to different saved records.');
@@ -268,6 +277,9 @@ class SetlistFmDiscovery
         return LocalEventData::fromEvent($event);
     }
 
+    /**
+     * @param  list<mixed>  $items
+     */
     private function page(array $items, ?string $next, bool $partial): ProviderPageData
     {
         return ProviderPageData::of($items, $next, $partial);
@@ -295,6 +307,6 @@ class SetlistFmDiscovery
 
     private function next(string $operation, string $scope, ProviderCursorData $position): string
     {
-        return Crypt::encryptString(json_encode(new ProviderCursorTokenData($operation, $scope, $position->page, $position->offset, $position->scanned, now()->addMinutes(15)->timestamp)));
+        return Crypt::encryptString(json_encode(new ProviderCursorTokenData($operation, $scope, $position->page, $position->offset, $position->scanned, now()->addMinutes(15)->getTimestamp()), JSON_THROW_ON_ERROR));
     }
 }

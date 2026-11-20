@@ -8,6 +8,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\TestResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AuthSessionTest extends TestCase
@@ -21,10 +22,13 @@ class AuthSessionTest extends TestCase
         $this->withHeader('Origin', 'http://localhost:5173');
     }
 
+    /**
+     * @param  TestResponse<Response>  $response
+     */
     private function carryCookies(TestResponse $response): void
     {
         foreach ($response->headers->getCookies() as $cookie) {
-            $this->withUnencryptedCookie($cookie->getName(), $cookie->getValue());
+            $this->withUnencryptedCookie($cookie->getName(), $this->present($cookie->getValue()));
         }
         Auth::forgetGuards();
     }
@@ -127,7 +131,7 @@ class AuthSessionTest extends TestCase
             ])->assertStatus(419);
             $csrf = $this->get('/sanctum/csrf-cookie')->assertNoContent();
             $this->carryCookies($csrf);
-            $this->withHeader('X-XSRF-TOKEN', $csrf->getCookie('XSRF-TOKEN', false)->getValue())
+            $this->withHeader('X-XSRF-TOKEN', $this->present($this->present($csrf->getCookie('XSRF-TOKEN', false))->getValue()))
                 ->postJson('/api/v1/auth/register', [
                     'name' => 'Jamie', 'email' => 'jamie@example.com',
                     'password' => 'concert-password', 'password_confirmation' => 'concert-password',

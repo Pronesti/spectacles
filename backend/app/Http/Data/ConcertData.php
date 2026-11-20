@@ -36,13 +36,13 @@ class ConcertData extends Data
     public static function fromAttendance(Attendance $attendance, User $viewer): self
     {
         $event = $attendance->event;
-        $member = $attendance->members->firstWhere('user_id', $viewer->id);
+        $member = $attendance->members->firstOrFail('user_id', $viewer->id);
 
         return new self(
             id: $attendance->external_id,
             title: $event->title,
             eventType: $event->type,
-            artists: $event->artistLinks->map(fn ($link) => $link->artist->name)->all(),
+            artists: array_values($event->artistLinks->map(fn ($link) => $link->artist->name)->all()),
             venueId: $event->venue?->external_id,
             date: CalendarDateData::fromEvent($event),
             time: $event->local_start_time ?? '',
@@ -52,10 +52,10 @@ class ConcertData extends Data
             notes: $attendance->notes ?? '',
             catalog: new ConcertCatalogData(
                 eventId: $event->external_id,
-                artistIds: $event->artistLinks->map(fn ($link) => $link->artist->external_id)->all(),
-                tours: $event->tourLinks->map(fn ($link): CollectionTourData => new CollectionTourData($link->tour->name, $link->tour->external_id))->all(),
+                artistIds: array_values($event->artistLinks->map(fn ($link) => $link->artist->external_id)->all()),
+                tours: array_values($event->tourLinks->map(fn ($link): CollectionTourData => new CollectionTourData($link->tour->name, $link->tour->external_id))->all()),
             ),
-            setlist: $attendance->entries->map(fn ($entry): SetlistEntryData => SetlistEntryData::fromEntry($entry))->all(),
+            setlist: array_values($attendance->entries->map(fn ($entry): SetlistEntryData => SetlistEntryData::fromEntry($entry))->all()),
         );
     }
 }

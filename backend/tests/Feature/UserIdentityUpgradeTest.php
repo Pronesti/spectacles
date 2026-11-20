@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -19,14 +20,19 @@ class UserIdentityUpgradeTest extends TestCase
         DB::setDefaultConnection('identity_upgrade');
         try {
             $installer = require database_path('migrations/0001_01_01_000000_create_users_table.php');
+            $this->assertInstanceOf(Migration::class, $installer);
+            $this->assertTrue(method_exists($installer, 'up'));
             $installer->up();
             DB::table('users')->insert([
                 'name' => 'Existing User', 'email' => 'existing@example.com',
                 'password' => 'retained-hash',
             ]);
             $upgrade = require database_path('migrations/2026_10_22_000001_add_public_identity_to_users.php');
+            $this->assertInstanceOf(Migration::class, $upgrade);
+            $this->assertTrue(method_exists($upgrade, 'up'));
+            $this->assertTrue(method_exists($upgrade, 'down'));
             $upgrade->up();
-            $row = DB::table('users')->first();
+            $row = $this->present(DB::table('users')->first());
             $this->assertSame('retained-hash', $row->password);
             $this->assertSame('existing@example.com', $row->email);
             $this->assertTrue(Str::isUuid($row->external_id));

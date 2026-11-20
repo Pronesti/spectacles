@@ -44,9 +44,7 @@ abstract class ProviderConnector extends Connector
      */
     public static function declaresOversizedBody(Response $response): bool
     {
-        $length = $response->header('Content-Length');
-
-        return (int) (is_array($length) ? reset($length) : $length) > self::MAX_BODY_BYTES;
+        return (int) $response->getPsrResponse()->getHeaderLine('Content-Length') > self::MAX_BODY_BYTES;
     }
 
     /**
@@ -68,8 +66,6 @@ abstract class ProviderConnector extends Connector
      */
     public static function retryAfter(Response $response, int $maximum): int
     {
-        $value = $response->header('Retry-After');
-
-        return max(1, min($maximum, (int) (is_array($value) ? reset($value) : $value) ?: 2));
+        return max(1, min($maximum, (int) $response->getPsrResponse()->getHeaderLine('Retry-After') ?: 2));
     }
 }

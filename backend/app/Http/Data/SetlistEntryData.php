@@ -2,6 +2,7 @@
 
 namespace App\Http\Data;
 
+use App\Models\Artist;
 use App\Models\SetlistEntry;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
@@ -28,11 +29,11 @@ class SetlistEntryData extends Data
         return new self(
             id: $entry->external_id,
             type: $entry->type,
-            title: $entry->display_text ?? $entry->song?->title ?? 'Unidentified song',
-            artist: $artists->pluck('name')->join(' · '),
+            title: $entry->display_text ?? $entry->song->title ?? 'Unidentified song',
+            artist: $artists->map(fn (Artist $artist): string => $artist->name)->join(' · '),
             tape: $entry->is_tape,
-            songCatalogId: $entry->song?->external_id ?? Optional::create(),
-            artistCatalogId: $artists->count() === 1 ? $artists->first()->external_id : Optional::create(),
+            songCatalogId: $entry->song->external_id ?? Optional::create(),
+            artistCatalogId: $artists->count() === 1 ? $artists->sole()->external_id : Optional::create(),
         );
     }
 }

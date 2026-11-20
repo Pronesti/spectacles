@@ -14,6 +14,7 @@ use App\Models\Song;
 use App\Models\Tour;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
@@ -21,12 +22,12 @@ class CatalogController extends Controller
 {
     public function index(CatalogReadRequest $request): JsonResponse
     {
-        [$model, $resource, $display] = match ($request->catalog()) {
-            'events' => [Event::class, EventResource::class, 'title'],
-            'artists' => [Artist::class, ArtistResource::class, 'name'],
-            'venues' => [Venue::class, VenueResource::class, 'name'],
-            'songs' => [Song::class, SongResource::class, 'title'],
-            'tours' => [Tour::class, TourResource::class, 'name'],
+        [$model, $resource, $display, $displayColumn] = match ($request->catalog()) {
+            'events' => [Event::class, EventResource::class, 'title', 'events.title'],
+            'artists' => [Artist::class, ArtistResource::class, 'name', 'artists.name'],
+            'venues' => [Venue::class, VenueResource::class, 'name', 'venues.name'],
+            'songs' => [Song::class, SongResource::class, 'title', 'songs.title'],
+            'tours' => [Tour::class, TourResource::class, 'name', 'tours.name'],
         };
         $query = $model::query();
         $filter = $request->filter();
@@ -40,7 +41,7 @@ class CatalogController extends Controller
             } elseif ($request->catalog() === 'tours') {
                 $this->text($query, ['tours.search_name'], mb_strtolower(Str::ascii($term)));
             } else {
-                $columns = $request->catalog() === 'artists' ? ['artists.name', 'artists.disambiguation'] : [$query->getModel()->getTable().'.'.$display];
+                $columns = $request->catalog() === 'artists' ? ['artists.name', 'artists.disambiguation'] : [$displayColumn];
                 $this->text($query, $columns, $term);
             }
         }
@@ -97,7 +98,11 @@ class CatalogController extends Controller
         return $resource::collection($page)->toResponse($request)->header('Cache-Control', 'private, no-store');
     }
 
-    private function scopeToursToArtist(Builder $query, callable $matchArtist): void
+    /**
+     * @param  Builder<covariant Model>  $query
+     * @param  \Closure(Builder<Model>): mixed  $matchArtist
+     */
+    private function scopeToursToArtist(Builder $query, \Closure $matchArtist): void
     {
         $query->where(function (Builder $scope) use ($matchArtist): void {
             $scope->whereHas('artistLinks.artist', $matchArtist)
@@ -114,7 +119,11 @@ class CatalogController extends Controller
         return (new EventResource($event))->toResponse($request)->header('Cache-Control', 'private, no-store');
     }
 
-    /** @param list<string> $columns */
+    /**
+     * @param  Builder<covariant Model>  $query
+     * @param  list<literal-string>  $columns
+     * @return Builder<covariant Model>
+     */
     private function text(Builder $query, array $columns, string $term): Builder
     {
         $pattern = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term).'%';

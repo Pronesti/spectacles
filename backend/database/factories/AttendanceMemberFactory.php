@@ -17,7 +17,7 @@ class AttendanceMemberFactory extends Factory
     {
         return [
             'attendance_id' => Attendance::factory(),
-            'event_id' => fn (array $attributes): int => Attendance::findOrFail($attributes['attendance_id'])->event_id,
+            'event_id' => fn (array $attributes): int => Attendance::query()->whereKey($attributes['attendance_id'])->firstOrFail()->event_id,
             'user_id' => User::factory(),
             'interested' => false, 'tickets_bought' => false,
         ];

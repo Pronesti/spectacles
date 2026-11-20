@@ -33,24 +33,24 @@ class CatalogProviderConcurrencyTest extends TestCase
         $artist = Artist::factory()->create(['name' => 'Race Artist '.$suffix]);
         $tour = Tour::factory()->create(['name' => 'Race Tour '.$suffix]);
         $venue = Venue::factory()->create(['name' => 'Race Venue '.$suffix]);
-        $artist->providerIds()->create(['provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $f['mbid'] = Str::uuid()->toString()]);
+        $mbid = Str::uuid()->toString();
+        $artist->providerIds()->create(['provider' => 'musicbrainz', 'resource_type' => 'artist', 'provider_resource_id' => $mbid]);
         $tour->providerIds()->create(['provider' => 'setlist_fm', 'resource_type' => 'tour', 'external_provider_id' => $suffix]);
         $venue->providerIds()->create(['provider' => 'setlist_fm', 'resource_type' => 'venue', 'provider_resource_id' => $suffix]);
-        $group = $f['performance'];
-        $group['ref']['externalId'] = $id;
-        $group['url'] = 'https://www.setlist.fm/show/2026-10-30/race-'.$suffix.'.html?setlist='.$id;
-        $group['artist']['ref']['externalId'] = $f['mbid'];
-        $group['artist']['url'] = 'https://musicbrainz.org/artist/'.$f['mbid'];
-        $group['tour']['ref']['externalId'] = $suffix;
-        $group['tour']['url'] = 'https://www.setlist.fm/search?artist=4bd7afb6&tour='.$suffix;
-        $group['venue']['ref']['externalId'] = $suffix;
-        $group['venue']['url'] = 'https://www.setlist.fm/venue/race-'.$suffix.'.html';
-        $concert = ['id' => Str::uuid()->toString(), 'title' => 'Race Event '.$suffix, 'venueId' => null, 'interested' => false, 'ticketsBought' => true, 'notes' => null, 'setlist' => [], 'artists' => [$artist->name], 'catalog' => ['artistIds' => [$artist->external_id], 'tours' => [['name' => $tour->name, 'catalogId' => $tour->external_id]]], 'date' => $group['date'], 'time' => '', 'timezone' => null];
+        $group = $this->arrayAt($f, 'performance');
+        data_set($group, 'ref.externalId', $id);
+        data_set($group, 'url', 'https://www.setlist.fm/show/2026-10-30/race-'.$suffix.'.html?setlist='.$id);
+        data_set($group, 'artist.ref.externalId', $mbid);
+        data_set($group, 'artist.url', 'https://musicbrainz.org/artist/'.$mbid);
+        data_set($group, 'tour.ref.externalId', $suffix);
+        data_set($group, 'tour.url', 'https://www.setlist.fm/search?artist=4bd7afb6&tour='.$suffix);
+        data_set($group, 'venue.ref.externalId', $suffix);
+        data_set($group, 'venue.url', 'https://www.setlist.fm/venue/race-'.$suffix.'.html');
+        $concert = ['id' => Str::uuid()->toString(), 'title' => 'Race Event '.$suffix, 'venueId' => null, 'interested' => false, 'ticketsBought' => true, 'notes' => null, 'setlist' => [], 'artists' => [$artist->name], 'catalog' => ['artistIds' => [$artist->external_id], 'tours' => [['name' => $tour->name, 'catalogId' => $tour->external_id]]], 'date' => $this->arrayAt($group, 'date'), 'time' => '', 'timezone' => null];
         $directory = sys_get_temp_dir().'/spectacles-provider-race-'.$suffix;
         mkdir($directory, 0700);
         file_put_contents($directory.'/input.json', json_encode(['concert' => $concert, 'venueUuid' => $venue->external_id, 'binding' => ['selection' => app(CatalogProviderSelection::class)->issue('performance', ProviderPerformanceInputData::from($group))], 'conflict' => $conflict], JSON_THROW_ON_ERROR));
-        $connection = config('database.connections.pgsql');
-        $environment = [...getenv(), 'APP_ENV' => 'testing', 'APP_KEY' => config('app.key'), 'DB_CONNECTION' => 'pgsql', 'DB_URL' => '', 'DB_DATABASE' => 'spectacles_testing', 'DB_HOST' => (string) $connection['host'], 'DB_PORT' => (string) $connection['port'], 'DB_USERNAME' => (string) $connection['username'], 'DB_PASSWORD' => (string) $connection['password']];
+        $environment = [...getenv(), 'APP_ENV' => 'testing', 'APP_KEY' => config('app.key'), 'DB_CONNECTION' => 'pgsql', 'DB_URL' => '', 'DB_DATABASE' => 'spectacles_testing', 'DB_HOST' => config()->string('database.connections.pgsql.host'), 'DB_PORT' => config()->string('database.connections.pgsql.port'), 'DB_USERNAME' => config()->string('database.connections.pgsql.username'), 'DB_PASSWORD' => config()->string('database.connections.pgsql.password')];
         $processes = [];
         try {
             foreach (['a', 'b'] as $slot) {
@@ -104,7 +104,9 @@ class CatalogProviderConcurrencyTest extends TestCase
             $artist->delete();
             $tour->delete();
             $venue->delete();
-            foreach (glob($directory.'/*') as $file) {
+            $files = glob($directory.'/*');
+            $this->assertNotFalse($files);
+            foreach ($files as $file) {
                 unlink($file);
             } rmdir($directory);
         }

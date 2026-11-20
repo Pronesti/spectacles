@@ -13,6 +13,9 @@ class CatalogProviderRequest extends FormRequest
         return $this->user() !== null;
     }
 
+    /**
+     * @return array<string, list<mixed>>
+     */
     public function rules(): array
     {
         if ($this->is('api/v1/providers/venues/confirm')) {
@@ -39,6 +42,9 @@ class CatalogProviderRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * @return list<\Closure(Validator): void>
+     */
     public function after(): array
     {
         return [function (Validator $validator): void {

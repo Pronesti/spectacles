@@ -27,7 +27,15 @@ class SetlistFmSearchQueryData extends Data
      */
     public function parameters(): array
     {
-        $parameters = $this->toArray();
+        $parameters = array_filter([
+            'p' => $this->p,
+            'artistMbid' => $this->artistMbid,
+            'venueId' => $this->venueId,
+            'tourName' => $this->tourName,
+            'year' => $this->year,
+            'countryCode' => $this->countryCode,
+            'date' => $this->date,
+        ], fn (Optional|int|string $value): bool => ! $value instanceof Optional);
         ksort($parameters);
 
         return $parameters;

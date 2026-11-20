@@ -5,6 +5,7 @@ namespace App\Http\Integrations\MusicBrainz\Requests;
 use App\Http\Data\MusicBrainzQueryData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Spatie\LaravelData\Optional;
 
 class GetMusicBrainzResource extends Request
 {
@@ -22,6 +23,11 @@ class GetMusicBrainzResource extends Request
      */
     protected function defaultQuery(): array
     {
-        return $this->parameters->toArray();
+        $parameters = $this->parameters;
+
+        return array_filter(
+            ['query' => $parameters->query, 'inc' => $parameters->inc, 'fmt' => $parameters->fmt, 'limit' => $parameters->limit],
+            fn (Optional|int|string $value): bool => ! $value instanceof Optional,
+        );
     }
 }

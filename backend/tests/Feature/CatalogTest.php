@@ -19,11 +19,11 @@ class CatalogTest extends TestCase
         $artist = Artist::factory()->create(['name' => 'Björk', 'disambiguation' => null]);
         $other = Artist::factory()->create(['name' => 'Björk', 'disambiguation' => 'Another artist']);
         $this->assertNotSame($artist->id, $other->id);
-        $this->assertSame('Björk', $artist->fresh()->name);
+        $this->assertSame('Björk', $this->present($artist->fresh())->name);
         $song = Song::factory()->create(['title' => 'Canción', 'disambiguation' => null]);
-        $this->assertSame('Canción', $song->fresh()->title);
+        $this->assertSame('Canción', $this->present($song->fresh())->title);
         $this->assertNull(Venue::factory()->create()->lat);
-        $this->assertNotNull(Tour::factory()->create()->external_id);
+        $this->assertNotEmpty(Tour::factory()->create()->external_id);
     }
 
     public function test_sparse_dates_and_unknown_time_are_not_invented(): void
@@ -36,21 +36,21 @@ class CatalogTest extends TestCase
         $this->assertNull($year->month);
         $this->assertNull($month->day);
         $this->assertNull($year->local_start_time);
-        $this->assertSame('00:00:00', $leap->fresh()->local_start_time);
+        $this->assertSame('00:00:00', $this->present($leap->fresh())->local_start_time);
     }
 
     public function test_venue_preserves_text_addresses_zero_coordinates_and_timezone(): void
     {
-        $venue = Venue::factory()->create([
+        $venue = $this->present(Venue::factory()->create([
             'house_number' => '26-35', 'postal_code' => 'C1414BBC',
             'country_code' => 'AR', 'lat' => 0, 'lng' => 0,
             'timezone' => 'America/Argentina/Buenos_Aires',
-        ])->fresh();
+        ])->fresh());
         $this->assertSame('26-35', $venue->house_number);
         $this->assertSame('C1414BBC', $venue->postal_code);
         $this->assertSame('0.0000000', $venue->lat);
         $event = Event::factory()->create(['venue_id' => $venue->id]);
         $this->assertNull($event->timezone);
-        $this->assertSame($venue->timezone, $event->venue->timezone);
+        $this->assertSame($venue->timezone, $this->present($event->venue)->timezone);
     }
 }

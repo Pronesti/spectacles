@@ -8,6 +8,7 @@ use App\Models\EventArtist;
 use App\Models\EventTour;
 use App\Models\Tour;
 use App\Models\TourArtist;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -31,24 +32,24 @@ class CatalogRelationshipsTest extends TestCase
         $this->assertSame(2, $event->artistLinks()->count());
         $this->assertSame(2, $event->tourLinks()->count());
         $this->assertSame(1, $tour->artistLinks()->count());
-        $this->assertTrue($event->artistLinks()->first()->artist->is($artist));
+        $this->assertTrue($this->present($this->present($event->artistLinks()->first())->artist)->is($artist));
     }
 
     public function test_lineup_orders_positions_with_nulls_last_and_stable_ties(): void
     {
         $event = Event::factory()->create();
-        $links = collect([null, 2, 1, 2, null])->map(
-            fn ($position) => EventArtist::factory()->create(['event_id' => $event->id, 'position' => $position])
-        );
-        $expected = [$links[2]->id, $links[1]->id, $links[3]->id, $links[0]->id, $links[4]->id];
+        $ids = collect([null, 2, 1, 2, null])->map(
+            fn (?int $position): int => EventArtist::factory()->create(['event_id' => $event->id, 'position' => $position])->id
+        )->all();
+        $expected = [$ids[2], $ids[1], $ids[3], $ids[0], $ids[4]];
         $this->assertSame($expected, $event->artistLinks()->pluck('id')->all());
-        $this->assertSame($expected, $event->fresh()->load('artistLinks')->artistLinks->modelKeys());
+        $this->assertSame($expected, $this->present($event->fresh())->load('artistLinks')->artistLinks->modelKeys());
     }
 
     public function test_relationship_pairs_are_unique(): void
     {
         foreach ([EventArtist::class, TourArtist::class, EventTour::class] as $class) {
-            $row = $class::factory()->create();
+            $row = Factory::factoryForModel($class)->createOne();
             $copy = $row->getAttributes();
             unset($copy['id']);
             $copy['external_id'] = (string) Str::uuid7();

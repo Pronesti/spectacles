@@ -11,10 +11,10 @@ use Spatie\LaravelData\Data;
 class MusicBrainzSearchPayloadData extends Data
 {
     /**
-     * @param  list<mixed>|null  $artists
-     * @param  list<mixed>|null  $works
-     * @param  list<mixed>|null  $series
-     * @param  list<mixed>|null  $places
+     * @param  array<mixed>|null  $artists
+     * @param  array<mixed>|null  $works
+     * @param  array<mixed>|null  $series
+     * @param  array<mixed>|null  $places
      */
     public function __construct(
         public readonly ?array $artists = null,

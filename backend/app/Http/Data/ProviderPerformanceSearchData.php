@@ -38,6 +38,6 @@ class ProviderPerformanceSearchData extends Data
         }
         ksort($filters);
 
-        return hash('sha256', json_encode($filters));
+        return hash('sha256', json_encode($filters) ?: '');
     }
 }

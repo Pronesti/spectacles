@@ -14,6 +14,9 @@ use App\Http\Requests\MusicBrainzSearchRequest;
 use App\Models\ArtistProviderId;
 use App\Models\SongProviderId;
 use App\Models\TourProviderId;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
 class MusicBrainzController extends Controller
@@ -33,6 +36,9 @@ class MusicBrainzController extends Controller
         return $this->search($request, 'series');
     }
 
+    /**
+     * @param  'artist'|'work'|'series'  $kind
+     */
     private function search(MusicBrainzSearchRequest $request, string $kind): JsonResponse
     {
         $search = MusicBrainzSearchData::from($request->validated());
@@ -41,22 +47,27 @@ class MusicBrainzController extends Controller
             if ($kind === 'series') {
                 $localMbids = ArtistProviderId::query()->where('provider', 'musicbrainz')->where('resource_type', 'artist')
                     ->whereHas('artist', fn ($artist) => $artist->whereIn('external_id', array_map('strtolower', $search->artistUuids)))
-                    ->pluck('provider_resource_id')->all();
+                    ->get(['provider_resource_id'])->map(fn (ArtistProviderId $id): string => $id->provider_resource_id)->all();
                 $scope = MusicBrainzTourScopeData::normalized($search->q, [...$localMbids, ...$search->artistMbids]);
                 $scopeAvailable = $scope->artistMbids !== [];
                 $rows = app(MusicBrainzClient::class)->tours($scope);
             } else {
                 $rows = app(MusicBrainzClient::class)->search($kind, $search->q);
             }
-            [$reference, $relation] = match ($kind) {
-                'artist' => [ArtistProviderId::class, 'artist'],
-                'work' => [SongProviderId::class, 'song'],
-                'series' => [TourProviderId::class, 'tour'],
+            $ids = array_map(fn (MusicBrainzSearchRowData $row): string => $row->id, $rows);
+            $matches = match ($kind) {
+                'artist' => $this->localMatches(ArtistProviderId::query(), 'artist', $kind, 'provider_resource_id', $ids),
+                'work' => $this->localMatches(SongProviderId::query(), 'song', $kind, 'provider_resource_id', $ids),
+                'series' => $this->localMatches(TourProviderId::query(), 'tour', $kind, 'external_provider_id', $ids),
             };
-            $matches = $reference::query()->with($relation)->where('provider', 'musicbrainz')->where('resource_type', $kind)->whereIn($kind === 'series' ? 'external_provider_id' : 'provider_resource_id', array_map(fn (MusicBrainzSearchRowData $row): string => $row->id, $rows))->get()->keyBy($kind === 'series' ? 'external_provider_id' : 'provider_resource_id');
-            $results = array_map(function (MusicBrainzSearchRowData $row) use ($matches, $relation, $kind): MusicBrainzSearchResultData {
-                $model = $matches->get($row->id)?->{$relation};
-                $local = $model === null ? null : new MusicBrainzLocalMatchData($model->external_id, $kind === 'work' ? $model->title : $model->name, $kind === 'artist' ? $model->type : null, $kind === 'series' ? null : $model->disambiguation);
+            $results = array_map(function (MusicBrainzSearchRowData $row) use ($matches, $kind): MusicBrainzSearchResultData {
+                $match = $matches->get($row->id);
+                $local = match (true) {
+                    $match instanceof ArtistProviderId => new MusicBrainzLocalMatchData($match->artist->external_id, $match->artist->name, $match->artist->type, $match->artist->disambiguation),
+                    $match instanceof SongProviderId => new MusicBrainzLocalMatchData($match->song->external_id, $match->song->title, null, $match->song->disambiguation),
+                    $match instanceof TourProviderId => new MusicBrainzLocalMatchData($match->tour->external_id, $match->tour->name, null, null),
+                    default => null,
+                };
 
                 return MusicBrainzSearchResultData::fromRow($row, $local, app(MusicBrainzSelection::class)->issue($kind, $row->id));
             }, $rows);
@@ -67,5 +78,19 @@ class MusicBrainzController extends Controller
 
             return $failure->status === 429 ? $response->header('Retry-After', (string) $failure->retryAfter) : $response;
         }
+    }
+
+    /**
+     * The saved MusicBrainz identities among these ids, keyed by id, with their catalog record loaded.
+     *
+     * @template TReference of Model
+     *
+     * @param  Builder<TReference>  $references
+     * @param  list<string>  $ids
+     * @return Collection<array-key, TReference>
+     */
+    private function localMatches(Builder $references, string $relation, string $kind, string $column, array $ids): Collection
+    {
+        return $references->with($relation)->where('provider', 'musicbrainz')->where('resource_type', $kind)->whereIn($column, $ids)->get()->keyBy($column);
     }
 }

@@ -22,14 +22,30 @@ final class CachedData
     }
 
     /**
+     * Rehydrates one cached Data object.
+     *
      * @template TData of Data
      *
      * @param  class-string<TData>  $class
      * @param  array<mixed>  $cached
-     * @return TData|list<TData>
+     * @return TData
      */
-    public static function fromCache(string $class, array $cached): Data|array
+    public static function fromCache(string $class, array $cached): Data
     {
-        return array_is_list($cached) ? $class::collect($cached) : $class::from($cached);
+        return $class::from($cached);
+    }
+
+    /**
+     * Rehydrates a cached list of Data objects.
+     *
+     * @template TData of Data
+     *
+     * @param  class-string<TData>  $class
+     * @param  array<mixed>  $cached
+     * @return list<TData>
+     */
+    public static function listFromCache(string $class, array $cached): array
+    {
+        return array_values($class::collect($cached));
     }
 }

@@ -25,9 +25,19 @@ class CatalogReadRequest extends FormRequest
         return true;
     }
 
+    /**
+     * The catalog named by the `catalog.{catalog}.*` route serving this request.
+     *
+     * @return 'events'|'artists'|'venues'|'songs'|'tours'
+     */
     public function catalog(): string
     {
-        return explode('.', (string) $this->route()->getName())[1];
+        $catalog = explode('.', (string) $this->route()?->getName())[1] ?? null;
+
+        return match ($catalog) {
+            'events', 'artists', 'venues', 'songs', 'tours' => $catalog,
+            default => throw new \LogicException('CatalogReadRequest only serves the catalog.{catalog}.* routes.'),
+        };
     }
 
     protected function prepareForValidation(): void

@@ -10,6 +10,7 @@ use App\Http\Integrations\SetlistFm\Data\SetlistFmVenuePayloadData;
 use App\Http\SetlistFmApi;
 use App\Http\SetlistFmClient;
 use Carbon\Carbon;
+use Illuminate\Http\Client\Request as RecordedRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Sleep;
 use Tests\Support\ProviderHttp;
@@ -17,6 +18,8 @@ use Tests\TestCase;
 
 class SetlistFmApiTest extends TestCase
 {
+    public const string ARTIST_MBID = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,13 +28,17 @@ class SetlistFmApiTest extends TestCase
         config(['services.setlistfm.enabled' => true, 'services.setlistfm.api_key' => 'test-server-secret', 'services.setlistfm.api_interval_ms' => 0, 'services.setlistfm.api_daily_limit' => 100, 'services.setlistfm.cache_seconds' => 0]);
     }
 
+    /**
+     * @param  array<string, mixed>  $overrides
+     * @return array<array-key, mixed>
+     */
     public static function performance(array $overrides = []): array
     {
         return array_replace_recursive([
             'id' => '63de4613',
             'url' => 'https://www.setlist.fm/setlist/the-beatles/1964/hollywood-bowl-hollywood-ca-63de4613.html',
             'eventDate' => '23-08-1964',
-            'artist' => ['mbid' => 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d', 'name' => 'The Beatles', 'url' => 'https://www.setlist.fm/setlists/the-beatles-23d6a88b.html'],
+            'artist' => ['mbid' => self::ARTIST_MBID, 'name' => 'The Beatles', 'url' => 'https://www.setlist.fm/setlists/the-beatles-23d6a88b.html'],
             'venue' => ['id' => '6bd6ca6e', 'name' => 'Hollywood Bowl', 'url' => 'https://www.setlist.fm/venue/hollywood-bowl-hollywood-ca-usa-6bd6ca6e.html', 'city' => ['name' => 'Hollywood', 'country' => ['code' => 'US'], 'coords' => ['lat' => 34.1, 'long' => -118.3]]],
             'tour' => ['name' => 'North American Tour 1964'],
             'sets' => ['set' => [['song' => [['name' => 'Yesterday']]]]],
@@ -41,13 +48,13 @@ class SetlistFmApiTest extends TestCase
     public function test_api_sends_key_only_in_headers_and_normalizes_actual_identities(): void
     {
         ProviderHttp::fake(['https://api.setlist.fm/rest/1.0/search/setlists*' => ProviderHttp::response(['setlist' => [self::performance()], 'total' => 1, 'page' => 1, 'itemsPerPage' => 20])]);
-        $result = app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1, artistMbid: self::performance()['artist']['mbid']));
+        $result = app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: 1, artistMbid: self::ARTIST_MBID));
         $this->assertSame('63de4613', $result->items[0]->ref->externalId);
         $this->assertSame('North American Tour 1964', $result->items[0]->tourName);
         $this->assertNull($result->items[0]->tour);
         $this->assertNull($result->items[0]->venue->values->lat);
         $this->assertArrayNotHasKey('sets', $result->items[0]->toArray());
-        ProviderHttp::assertSent(fn ($r) => $r->hasHeader('x-api-key', 'test-server-secret') && $r->hasHeader('Accept', 'application/json') && ! str_contains($r->url(), 'test-server-secret'));
+        ProviderHttp::assertSent(fn (RecordedRequest $r) => $r->hasHeader('x-api-key', 'test-server-secret') && $r->hasHeader('Accept', 'application/json') && ! str_contains($r->url(), 'test-server-secret'));
         ProviderHttp::assertSentCount(1);
     }
 

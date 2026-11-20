@@ -19,6 +19,9 @@ class MusicBrainzSearchRequest extends FormRequest
         }
     }
 
+    /**
+     * @return array<string, list<mixed>>
+     */
     public function rules(): array
     {
         $rules = ['q' => ['required', 'string', 'min:2', 'max:200']];
@@ -33,6 +36,9 @@ class MusicBrainzSearchRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * @return list<\Closure(Validator): void>
+     */
     public function after(): array
     {
         return [function (Validator $validator): void {

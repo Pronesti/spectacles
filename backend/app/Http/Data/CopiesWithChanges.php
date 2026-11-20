@@ -17,6 +17,6 @@ trait CopiesWithChanges
             $arguments[$parameter->getName()] = $this->{$parameter->getName()};
         }
 
-        return new static(...[...$arguments, ...$changes]);
+        return (new \ReflectionClass(static::class))->newInstanceArgs([...$arguments, ...$changes]);
     }
 }

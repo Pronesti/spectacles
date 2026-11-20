@@ -16,6 +16,6 @@ class TourCursorScopeData extends Data
 
     public function fingerprint(): string
     {
-        return hash('sha256', json_encode($this));
+        return hash('sha256', json_encode($this) ?: '');
     }
 }

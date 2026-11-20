@@ -12,8 +12,8 @@ use Spatie\LaravelData\Data;
 class MusicBrainzEntityPayloadData extends Data
 {
     /**
-     * @param  list<MusicBrainzRelationPayloadData>|null  $relations
-     * @param  list<MusicBrainzAliasPayloadData>|null  $aliases
+     * @param  array<MusicBrainzRelationPayloadData>|null  $relations
+     * @param  array<MusicBrainzAliasPayloadData>|null  $aliases
      */
     public function __construct(
         public readonly ?string $id = null,

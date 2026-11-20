@@ -47,17 +47,19 @@ class CatalogProviderController extends Controller
 
     public function preview(CatalogProviderRequest $request, string $id, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->preview($id, $request->validated('locator')));
+        return $this->respond(fn () => $discovery->preview($id, $request->safe()->string('locator')->value()));
     }
 
     public function venue(CatalogProviderRequest $request, string $id, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->venue($id, $request->validated('venueUrl')));
+        $venueUrl = $request->validated('venueUrl');
+
+        return $this->respond(fn () => $discovery->venue($id, is_string($venueUrl) ? $venueUrl : null));
     }
 
     public function places(CatalogProviderRequest $request, MusicBrainzPlaces $places): JsonResponse
     {
-        return $this->respond(fn () => $places->search($request->validated('q')), true);
+        return $this->respond(fn () => $places->search($request->safe()->string('q')->value()), true);
     }
 
     public function place(CatalogProviderRequest $request, string $mbid, MusicBrainzPlaces $places): JsonResponse
@@ -75,7 +77,7 @@ class CatalogProviderController extends Controller
     public function confirmVenue(CatalogProviderRequest $request, CatalogProviderSelection $proofs, SetlistFmDiscovery $discovery): JsonResponse
     {
         return $this->respond(function () use ($request, $proofs, $discovery): ProviderVenueData {
-            $values = array_map(fn (string $proof): ProviderVenueData => $proofs->venue($proof, 'selections'), $request->validated('selections'));
+            $values = array_map(fn (string $proof): ProviderVenueData => $proofs->venue($proof, 'selections'), array_filter($request->safe()->array('selections'), is_string(...)));
             $refs = [];
             $sources = [];
             $urls = [];
@@ -93,7 +95,7 @@ class CatalogProviderController extends Controller
             $localIds = [];
             foreach ($refs as $ref) {
                 $id = VenueProviderId::where($ref->tuple())->value('venue_id');
-                if ($id !== null) {
+                if (is_int($id) || is_string($id)) {
                     $localIds[$id] = true;
                 }
             }

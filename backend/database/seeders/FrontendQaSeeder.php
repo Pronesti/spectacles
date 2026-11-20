@@ -96,8 +96,12 @@ class FrontendQaSeeder extends Seeder
         });
     }
 
-    /** @param class-string<Model> $class
+    /**
+     * @template TModel of Model
+     *
+     * @param  class-string<TModel>  $class
      * @param  array<string, mixed>  $attributes
+     * @return TModel
      */
     private function record(string $class, string $key, array $attributes): Model
     {
@@ -107,7 +111,7 @@ class FrontendQaSeeder extends Seeder
             return $existing;
         }
         $model = new $class($attributes);
-        $model->external_id = $uuid;
+        $model->setAttribute('external_id', $uuid);
         $model->save();
 
         return $model;

@@ -20,6 +20,13 @@ class CatalogProviderSaveTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @return array{
+     *     concert: array{id: string, title: string, artists: list<string>, venueId: string, date: array{year: int, month: int, day: int}, time: string, timezone: null, interested: bool, ticketsBought: bool, notes: string, catalog: array{artistIds: list<null>, tours: list<array{name: string, catalogId: null}>}, setlist: list<array<string, mixed>>},
+     *     venue: array{id: string, name: string, city: string, neighborhood: string, lat: null, lng: null, address: string|null, aliases: list<string>, image: array<string, mixed>|null},
+     *     pendingCatalog: array{artists: array<string, array{name: string, type: string, disambiguation: null, selection: string}>, songs: list<mixed>, lineup: list<string>, entries: list<mixed>, tours: array<string, array{name: string, selection: string}>, tourChoices: list<string>, venue: array{selection: string}, event: array{selection: string}}
+     * }
+     */
     private function requestBody(): array
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
@@ -31,7 +38,7 @@ class CatalogProviderSaveTest extends TestCase
         return [
             'concert' => ['id' => (string) Str::uuid(),
                 'title' => 'Maná', 'artists' => ['Maná'], 'venueId' => $venue,
-                'date' => $f['performance']['date'], 'time' => '', 'timezone' => null,
+                'date' => ['year' => $this->intAt($f, 'performance.date.year'), 'month' => $this->intAt($f, 'performance.date.month'), 'day' => $this->intAt($f, 'performance.date.day')], 'time' => '', 'timezone' => null,
                 'interested' => true, 'ticketsBought' => false, 'notes' => 'Keep my note',
                 'catalog' => ['artistIds' => [null],
                     'tours' => [['name' => 'Drama y luz', 'catalogId' => null]]],
@@ -41,12 +48,12 @@ class CatalogProviderSaveTest extends TestCase
                 'address' => null, 'aliases' => [], 'image' => null],
             'pendingCatalog' => ['artists' => [$artist => ['name' => 'Maná', 'type' => 'group',
                 'disambiguation' => null, 'selection' => app(MusicBrainzSelection::class)
-                    ->issue('artist', $f['mbid'])]], 'songs' => [], 'lineup' => ['0' => $artist],
+                    ->issue('artist', $this->stringAt($f, 'mbid'))]], 'songs' => [], 'lineup' => ['0' => $artist],
                 'entries' => [], 'tours' => [$tour => ['name' => 'Drama y luz',
-                    'selection' => $proofs->issue('tour', ProviderEntityInputData::from($f['tour']))]],
+                    'selection' => $proofs->issue('tour', ProviderEntityInputData::from($this->arrayAt($f, 'tour')))]],
                 'tourChoices' => ['0' => $tour],
-                'venue' => ['selection' => $proofs->issue('venue', ProviderEntityInputData::from($f['venue']))],
-                'event' => ['selection' => $proofs->issue('performance', ProviderPerformanceInputData::from($f['performance']))]],
+                'venue' => ['selection' => $proofs->issue('venue', ProviderEntityInputData::from($this->arrayAt($f, 'venue')))],
+                'event' => ['selection' => $proofs->issue('performance', ProviderPerformanceInputData::from($this->arrayAt($f, 'performance')))]],
         ];
     }
 
@@ -56,7 +63,7 @@ class CatalogProviderSaveTest extends TestCase
             ->postJson('/api/v1/attendances', $this->requestBody())->assertOk()->json('data.concerts.0');
         $second = $this->actingAs(User::factory()->create())
             ->postJson('/api/v1/attendances', $this->requestBody())->assertOk()->json('data.concerts.0');
-        $this->assertSame($first['catalog']['eventId'], $second['catalog']['eventId']);
+        $this->assertSame($this->arrayAt($first, 'catalog')['eventId'], $this->arrayAt($second, 'catalog')['eventId']);
         $this->assertDatabaseCount('events', 1);
         $this->assertDatabaseCount('attendances', 2);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'setlist_fm',
@@ -114,11 +121,11 @@ class CatalogProviderSaveTest extends TestCase
         $service = app(CatalogProviderSelection::class);
         $group = $service->read($second['pendingCatalog']['event']['selection'], 'performance', 'event')->toArray();
         $id = fake()->uuid();
-        $group['ref']['externalId'] = 'secondperformance';
-        $group['url'] = 'https://www.setlist.fm/show/2026-10-30/arena-2b893c8a.html?setlist=secondperformance';
-        $group['artist']['ref']['externalId'] = $id;
-        $group['artist']['url'] = 'https://www.setlist.fm/setlists/mana-otherartist.html';
-        $key = array_key_first($second['pendingCatalog']['artists']);
+        data_set($group, 'ref.externalId', 'secondperformance');
+        data_set($group, 'url', 'https://www.setlist.fm/show/2026-10-30/arena-2b893c8a.html?setlist=secondperformance');
+        data_set($group, 'artist.ref.externalId', $id);
+        data_set($group, 'artist.url', 'https://www.setlist.fm/setlists/mana-otherartist.html');
+        $key = $this->present(array_key_first($second['pendingCatalog']['artists']));
         $second['pendingCatalog']['artists'][$key]['selection'] = app(MusicBrainzSelection::class)->issue('artist', $id);
         $second['pendingCatalog']['event']['selection'] = $service->issue('performance', ProviderPerformanceInputData::from($group));
         $this->postJson('/api/v1/attendances', $second)->assertOk();
@@ -160,15 +167,16 @@ class CatalogProviderSaveTest extends TestCase
     public function test_confirmed_provider_save_backfills_source_url_without_overwriting_saved_venue_facts(): void
     {
         $ref = VenueProviderId::factory()->create(['provider' => 'setlist_fm', 'resource_type' => 'venue', 'provider_resource_id' => '73d6ca11', 'source_url' => null]);
-        $ref->venue->update(['name' => 'Saved authoritative Arena', 'city' => 'Saved city']);
+        $venue = $this->present($ref->venue);
+        $venue->update(['name' => 'Saved authoritative Arena', 'city' => 'Saved city']);
         $this->actingAs(User::factory()->create());
         $body = $this->requestBody();
         unset($body['pendingCatalog']['event']);
         $this->postJson('/api/v1/attendances', $body)->assertOk();
         $this->assertDatabaseCount('venues', 1);
-        $this->assertSame('Saved authoritative Arena', $ref->venue->fresh()->name);
-        $this->assertSame('Saved city', $ref->venue->fresh()->city);
-        $this->assertSame('https://www.setlist.fm/venue/allstate-arena-rosemont-il-usa-73d6ca11.html', $ref->fresh()->source_url);
+        $this->assertSame('Saved authoritative Arena', $this->present($venue->fresh())->name);
+        $this->assertSame('Saved city', $this->present($venue->fresh())->city);
+        $this->assertSame('https://www.setlist.fm/venue/allstate-arena-rosemont-il-usa-73d6ca11.html', $this->present($ref->fresh())->source_url);
         ProviderHttp::assertNothingSent();
     }
 
@@ -177,13 +185,14 @@ class CatalogProviderSaveTest extends TestCase
         $this->actingAs(User::factory()->create());
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');
         $otherUrl = 'https://www.setlist.fm/venue/rosemont-horizon-rosemont-il-usa-63d626d3.html';
-        $value = [...$f['venue'], 'linkedRefs' => [['provider' => 'setlist_fm', 'resourceType' => 'venue', 'externalId' => '63d626d3']], 'venueSources' => [['externalId' => '73d6ca11', 'url' => $f['venue']['url']], ['externalId' => '63d626d3', 'url' => $otherUrl]]];
+        $venueUrl = $this->stringAt($f, 'venue.url');
+        $value = [...$this->arrayAt($f, 'venue'), 'linkedRefs' => [['provider' => 'setlist_fm', 'resourceType' => 'venue', 'externalId' => '63d626d3']], 'venueSources' => [['externalId' => '73d6ca11', 'url' => $venueUrl], ['externalId' => '63d626d3', 'url' => $otherUrl]]];
         $body = $this->requestBody();
         unset($body['pendingCatalog']['event']);
         $body['pendingCatalog']['venue']['selection'] = app(CatalogProviderSelection::class)->issue('venue', ProviderEntityInputData::from($value));
         $this->postJson('/api/v1/attendances', $body)->assertOk();
         $this->assertDatabaseCount('venues', 1);
-        $this->assertDatabaseHas('venue_provider_ids', ['provider_resource_id' => '73d6ca11', 'source_url' => $f['venue']['url']]);
+        $this->assertDatabaseHas('venue_provider_ids', ['provider_resource_id' => '73d6ca11', 'source_url' => $venueUrl]);
         $this->assertDatabaseHas('venue_provider_ids', ['provider_resource_id' => '63d626d3', 'source_url' => $otherUrl]);
         ProviderHttp::assertNothingSent();
     }

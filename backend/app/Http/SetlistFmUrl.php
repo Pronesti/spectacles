@@ -49,7 +49,11 @@ class SetlistFmUrl
     {
         $url = $this->resolve($url);
         $path = parse_url($url, PHP_URL_PATH);
-        parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $query);
+        $queryString = parse_url($url, PHP_URL_QUERY);
+        if (! is_string($path) || $queryString === false) {
+            throw new CatalogProviderUnavailable;
+        }
+        parse_str($queryString ?? '', $query);
         $id = match ($kind) {
             'tour' => $query['tour'] ?? null,
             'artist' => preg_match('~^/setlists/[^/]+-([a-zA-Z0-9_-]{1,128})\.html$~', $path, $m) ? $m[1] : null,

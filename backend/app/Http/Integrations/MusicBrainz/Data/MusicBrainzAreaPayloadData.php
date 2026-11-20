@@ -8,7 +8,7 @@ use Spatie\LaravelData\Data;
 class MusicBrainzAreaPayloadData extends Data
 {
     /**
-     * @param  list<string>|null  $countryCodes
+     * @param  array<mixed>|null  $countryCodes
      */
     public function __construct(
         public readonly ?string $name = null,

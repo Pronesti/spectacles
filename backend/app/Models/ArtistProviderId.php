@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property-read Artist $artist
+ */
 #[Fillable(['artist_id', 'provider', 'resource_type', 'provider_resource_id'])]
 class ArtistProviderId extends Model
 {

@@ -15,6 +15,9 @@ return new class extends Migration
         });
         DB::table('tours')->select(['id', 'name'])->chunkById(500, function ($tours): void {
             foreach ($tours as $tour) {
+                if (! is_string($tour->name)) {
+                    throw new UnexpectedValueException('Tour names are non-null strings.');
+                }
                 DB::table('tours')->where('id', $tour->id)->update(['search_name' => mb_strtolower(Str::ascii($tour->name))]);
             }
         });

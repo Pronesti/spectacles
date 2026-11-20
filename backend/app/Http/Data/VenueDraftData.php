@@ -43,6 +43,6 @@ class VenueDraftData extends Data
     {
         $given = fn (mixed $value, mixed $default = null): mixed => $value instanceof Optional ? $default : $value;
 
-        return ['name' => $this->name, 'city' => $this->city, 'region' => $given($this->region), 'country_code' => $given($this->countryCode), 'address' => $given($this->address), 'aliases' => $given($this->aliases, []), 'image' => $given($this->image)?->toArray(), 'lat' => $this->lat, 'lng' => $this->lng, 'timezone' => $given($this->timezone)];
+        return ['name' => $this->name, 'city' => $this->city, 'region' => $given($this->region), 'country_code' => $given($this->countryCode), 'address' => $given($this->address), 'aliases' => $given($this->aliases, []), 'image' => $this->image instanceof VenueImageData ? $this->image->toArray() : null, 'lat' => $this->lat, 'lng' => $this->lng, 'timezone' => $given($this->timezone)];
     }
 }

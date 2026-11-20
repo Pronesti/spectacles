@@ -11,7 +11,7 @@ class MusicBrainzSelection
 {
     public function issue(string $kind, string $mbid): string
     {
-        return Crypt::encryptString(json_encode(new MusicBrainzProofData(v: 1, kind: $kind, mbid: $mbid, expiresAt: now()->addDay()->timestamp), JSON_THROW_ON_ERROR));
+        return Crypt::encryptString(json_encode(new MusicBrainzProofData(v: 1, kind: $kind, mbid: $mbid, expiresAt: now()->addDay()->getTimestamp()), JSON_THROW_ON_ERROR));
     }
 
     public function read(string $proof, string $kind, string $path): string

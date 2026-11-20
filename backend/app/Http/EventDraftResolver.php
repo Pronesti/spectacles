@@ -35,7 +35,7 @@ class EventDraftResolver
         }
         try {
             return DB::transaction(function () use ($concert, $venue, $value): Event {
-                $event = Event::query()->create(['title' => $concert->title, 'type' => $concert->resolvedEventType(), 'venue_id' => $venue?->id, ...$concert->date->toArray(), 'local_start_time' => $concert->time ?: null, 'timezone' => $concert->timezone]);
+                $event = Event::query()->create(['title' => $concert->title, 'type' => $concert->resolvedEventType(), 'venue_id' => $venue?->id, 'year' => $concert->date->year, 'month' => $concert->date->month, 'day' => $concert->date->day, 'local_start_time' => $concert->time ?: null, 'timezone' => $concert->timezone]);
                 $used = [];
                 foreach ($concert->artists as $position => $name) {
                     $uuid = $concert->catalog->artistIds[$position];

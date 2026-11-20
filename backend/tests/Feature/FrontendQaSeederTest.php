@@ -32,8 +32,8 @@ class FrontendQaSeederTest extends TestCase
         $this->seed(FrontendQaSeeder::class);
         $this->assertDatabaseCount('attendances', 12);
         $this->assertDatabaseCount('setlist_entries', 30);
-        $this->assertSame('My edit', $attendance->fresh()->notes);
-        $this->assertSame($password, $user->fresh()->password);
+        $this->assertSame('My edit', $this->present($attendance->fresh())->notes);
+        $this->assertSame($password, $this->present($user->fresh())->password);
         $this->assertTrue(Event::query()->whereNull('year')->exists());
         $this->assertTrue(Event::query()->whereNotNull('year')->whereNull('month')->exists());
         $this->assertTrue(Venue::query()->whereNull('lat')->exists());

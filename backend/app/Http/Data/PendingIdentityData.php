@@ -9,6 +9,10 @@ use Spatie\LaravelData\Data;
  */
 class PendingIdentityData extends Data
 {
+    /**
+     * @param  'artists'|'songs'|'tours'  $map
+     * @param  'artist'|'work'|'series'  $kind
+     */
     public function __construct(
         public readonly string $map,
         public readonly int|string $key,

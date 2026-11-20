@@ -76,7 +76,7 @@ class SetlistFmApi
         return new ProviderEntityInputData(
             ref: new ProviderRefInputData('setlist_fm', 'venue', $venue?->id),
             url: $venue?->url,
-            values: new ProviderEntityValuesInputData(name: $venue?->name, city: $venue?->city?->name ?? '', region: $venue?->city?->state, countryCode: $country === null ? null : strtoupper($country)),
+            values: new ProviderEntityValuesInputData(name: $venue?->name, city: $venue?->city->name ?? '', region: $venue?->city?->state, countryCode: $country === null ? null : strtoupper($country)),
         );
     }
 

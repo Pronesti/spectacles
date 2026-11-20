@@ -25,6 +25,8 @@ use App\Models\User;
 use App\Models\Venue;
 use App\Models\VenueProviderId;
 use Database\Seeders\LiveEventSeeder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -57,20 +59,23 @@ class DomainGraphTest extends TestCase
         }
     }
 
+    /**
+     * @param  class-string<Model>  $class
+     */
     #[DataProvider('models')]
     public function test_every_model_factory_has_independent_immutable_public_identity(string $class): void
     {
-        $row = $class::factory()->create();
-        $this->assertIsInt($row->id);
-        $this->assertTrue(Str::isUuid($row->external_id));
+        $row = Factory::factoryForModel($class)->createOne();
+        $this->assertIsInt($row->getAttribute('id'));
+        $this->assertTrue(Str::isUuid($row->getAttribute('external_id')));
         $this->assertSame('external_id', $row->getRouteKeyName());
-        $this->assertTrue($row->resolveRouteBinding($row->external_id)->is($row));
-        $uuid = $row->external_id;
+        $this->assertTrue($this->present($row->resolveRouteBinding($row->getAttribute('external_id')))->is($row));
+        $uuid = $row->getAttribute('external_id');
         $row->save();
-        $this->assertSame($uuid, $row->fresh()->external_id);
-        $this->assertNull($row->replicate()->external_id);
-        $this->assertDatabaseRejects(fn () => $class::factory()->create(['external_id' => $uuid]));
-        $row->external_id = (string) Str::uuid7();
+        $this->assertSame($uuid, $this->present($row->fresh())->getAttribute('external_id'));
+        $this->assertNull($row->replicate()->getAttribute('external_id'));
+        $this->assertDatabaseRejects(fn () => Factory::factoryForModel($class)->create(['external_id' => $uuid]));
+        $row->setAttribute('external_id', (string) Str::uuid7());
         try {
             $row->save();
             $this->fail('Changing public identity was accepted.');
@@ -79,6 +84,9 @@ class DomainGraphTest extends TestCase
         }
     }
 
+    /**
+     * @return array<string, array{class-string<Model>}>
+     */
     public static function models(): array
     {
         return [
@@ -117,9 +125,9 @@ class DomainGraphTest extends TestCase
         $link = AttendanceLink::factory()->create(['attendance_id' => $a->id]);
         $entry = SetlistEntry::factory()->create(['attendance_id' => $a->id]);
         $credit = SetlistEntryArtist::factory()->create(['setlist_entry_id' => $entry->id]);
-        $song = $entry->song;
-        $artist = $credit->artist;
-        $event = $a->event;
+        $song = $this->present($entry->song);
+        $artist = $this->present($credit->artist);
+        $event = $this->present($a->event);
         $a->delete();
         foreach ([$a, $member, $seat, $invite, $link, $entry, $credit] as $deleted) {
             $this->assertDatabaseMissing($deleted->getTable(), ['id' => $deleted->id]);
@@ -133,11 +141,11 @@ class DomainGraphTest extends TestCase
     {
         $venue = Venue::factory()->create();
         $a = Attendance::factory()->create();
-        $a->event->update(['venue_id' => $venue->id]);
+        $this->present($a->event)->update(['venue_id' => $venue->id]);
         $entry = SetlistEntry::factory()->create(['attendance_id' => $a->id]);
         $credit = SetlistEntryArtist::factory()->create(['setlist_entry_id' => $entry->id]);
         $tourLink = EventTour::factory()->create(['event_id' => $a->event_id]);
-        foreach ([$venue, $a->event, $entry->song, $credit->artist, $tourLink->tour, $a->owner] as $kept) {
+        foreach ([$venue, $this->present($a->event), $this->present($entry->song), $this->present($credit->artist), $this->present($tourLink->tour), $this->present($a->owner)] as $kept) {
             $this->assertDatabaseRejects(fn () => $kept->delete());
             $this->assertDatabaseHas($kept->getTable(), ['id' => $kept->id]);
         }
@@ -153,18 +161,20 @@ class DomainGraphTest extends TestCase
             [EventProviderReference::class, 'event'],
             [SongLink::class, 'song'],
         ] as [$class, $relation]) {
-            $reference = $class::factory()->create();
-            $reference->{$relation}->delete();
+            $reference = Factory::factoryForModel($class)->createOne();
+            $parent = $reference->getRelationValue($relation);
+            $this->assertInstanceOf(Model::class, $parent);
+            $parent->delete();
             $this->assertDatabaseMissing($reference->getTable(), ['id' => $reference->id]);
         }
         $eventArtist = EventArtist::factory()->create();
         $eventTour = EventTour::factory()->create(['event_id' => $eventArtist->event_id]);
-        $eventArtist->event->delete();
+        $this->present($eventArtist->event)->delete();
         $this->assertDatabaseMissing('event_artists', ['id' => $eventArtist->id]);
         $this->assertDatabaseMissing('event_tours', ['id' => $eventTour->id]);
         $this->assertDatabaseHas('artists', ['id' => $eventArtist->artist_id]);
         $tourArtist = TourArtist::factory()->create();
-        $tourArtist->tour->delete();
+        $this->present($tourArtist->tour)->delete();
         $this->assertDatabaseMissing('tour_artists', ['id' => $tourArtist->id]);
         $this->assertDatabaseHas('artists', ['id' => $tourArtist->artist_id]);
     }
@@ -216,6 +226,6 @@ class DomainGraphTest extends TestCase
         $this->assertSame(2, $a->members()->count());
         $this->assertSame(3, $a->entries()->count());
         $this->assertSame(1, $a->entries()->where('is_tape', true)->count());
-        $this->assertSame(1, $a->event->providerReferences()->count());
+        $this->assertSame(1, $this->present($a->event)->providerReferences()->count());
     }
 }

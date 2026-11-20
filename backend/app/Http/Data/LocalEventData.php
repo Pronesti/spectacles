@@ -41,8 +41,8 @@ class LocalEventData extends Data
             time: $event->local_start_time,
             timezone: $event->timezone,
             venue: $event->venue === null ? null : LocalVenueData::fromVenue($event->venue),
-            artists: $event->artistLinks->map(fn ($link): LocalArtistData => LocalArtistData::fromArtist($link->artist))->all(),
-            tours: $event->tourLinks->map(fn ($link): LocalTourData => LocalTourData::fromTour($link->tour))->all(),
+            artists: array_values($event->artistLinks->map(fn ($link): LocalArtistData => LocalArtistData::fromArtist($link->artist))->all()),
+            tours: array_values($event->tourLinks->map(fn ($link): LocalTourData => LocalTourData::fromTour($link->tour))->all()),
         );
     }
 }

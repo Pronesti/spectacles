@@ -17,7 +17,7 @@ class AttendanceInvitationFactory extends Factory
     {
         return [
             'attendance_id' => Attendance::factory(),
-            'inviter_user_id' => fn (array $attributes): int => Attendance::findOrFail($attributes['attendance_id'])->owner_user_id,
+            'inviter_user_id' => fn (array $attributes): int => Attendance::query()->whereKey($attributes['attendance_id'])->firstOrFail()->owner_user_id,
             'recipient_user_id' => User::factory(), 'status' => 'pending',
         ];
     }

@@ -41,6 +41,9 @@ class CatalogFilterData extends Data
         public readonly ?string $providerResourceId = null,
     ) {}
 
+    /**
+     * @phpstan-assert-if-true non-empty-string $value
+     */
     public function hasText(?string $value): bool
     {
         return $value !== null && $value !== '';

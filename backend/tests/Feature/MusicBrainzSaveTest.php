@@ -13,6 +13,19 @@ use Illuminate\Support\Str;
 use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
+/**
+ * @phpstan-type SetlistRow array{id: string, type: string, title: string, artist: string, tape: bool}
+ * @phpstan-type TourChoice array{name: string, catalogId: string|null}
+ * @phpstan-type ConcertCatalog array{artistIds: list<string|null>, tours: list<TourChoice>}
+ * @phpstan-type Concert array{id: string, title: string, artists: list<string>, venueId: null, date: array{year: int, month: null, day: null}, time: string, timezone: null, interested: bool, ticketsBought: bool, notes: string, catalog: ConcertCatalog, setlist: list<SetlistRow>}
+ * @phpstan-type PendingArtist array{name: string, type: string, disambiguation: null, selection: string|null}
+ * @phpstan-type PendingSong array{title: string, disambiguation: null, selection: string|null}
+ * @phpstan-type PendingTour array{name: string, selection: string|null}
+ * @phpstan-type PendingCatalog array{artists: array<string, PendingArtist>, songs: array<string, PendingSong>, lineup: array<array-key, string>, entries: array<string, array{song: string, artist?: string}>, tours?: array<string, PendingTour>, tourChoices?: array<array-key, string>}
+ * @phpstan-type TourCatalog array{artists: array<string, PendingArtist>, songs: array<string, PendingSong>, lineup: array<array-key, string>, entries: array<string, array{song: string, artist?: string}>, tours: array<string, PendingTour>, tourChoices: array<array-key, string>}
+ * @phpstan-type DraftBody array{concert: Concert}
+ * @phpstan-type PendingBody array{concert: Concert, pendingCatalog: PendingCatalog}
+ */
 class MusicBrainzSaveTest extends TestCase
 {
     use RefreshDatabase;
@@ -22,6 +35,9 @@ class MusicBrainzSaveTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @return DraftBody
+     */
     private function draft(): array
     {
         return ['concert' => [
@@ -36,6 +52,9 @@ class MusicBrainzSaveTest extends TestCase
         ]];
     }
 
+    /**
+     * @return PendingBody
+     */
     private function pending(): array
     {
         $body = $this->draft();
@@ -54,8 +73,8 @@ class MusicBrainzSaveTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $this->pending())->assertOk()->json('data.concerts.0');
-        $this->assertSame($saved['catalog']['artistIds'][0], $saved['setlist'][0]['artistCatalogId']);
-        $this->assertNotEmpty($saved['setlist'][0]['songCatalogId']);
+        $this->assertSame($this->stringAt($saved, 'catalog.artistIds.0'), data_get($saved, 'setlist.0.artistCatalogId'));
+        $this->assertNotEmpty(data_get($saved, 'setlist.0.songCatalogId'));
         $this->actingAs(User::factory()->create())->postJson('/api/v1/attendances', $this->pending())->assertOk();
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('songs', 1);
@@ -121,10 +140,10 @@ class MusicBrainzSaveTest extends TestCase
         $body['concert']['setlist'][] = $row;
         $body['pendingCatalog']['entries'][$row['id']] = $body['pendingCatalog']['entries'][$body['concert']['setlist'][0]['id']];
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertCount(2, $saved['setlist']);
-        $this->assertSame($saved['setlist'][0]['songCatalogId'], $saved['setlist'][1]['songCatalogId']);
-        $this->assertSame('Saved name', $artist->fresh()->name);
-        $this->assertSame('Keep', $artist->fresh()->disambiguation);
+        $this->assertCount(2, $this->arrayAt($saved, 'setlist'));
+        $this->assertSame($this->stringAt($saved, 'setlist.0.songCatalogId'), data_get($saved, 'setlist.1.songCatalogId'));
+        $this->assertSame('Saved name', $this->present($artist->fresh())->name);
+        $this->assertSame('Keep', $this->present($artist->fresh())->disambiguation);
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('songs', 1);
     }
@@ -148,9 +167,9 @@ class MusicBrainzSaveTest extends TestCase
         $this->actingAs(User::factory()->create());
         $original = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0');
         $body = $this->pending();
-        $body['concert']['catalog']['eventId'] = $original['catalog']['eventId'];
-        $body['concert']['artists'] = $original['artists'];
-        $body['concert']['catalog']['artistIds'] = $original['catalog']['artistIds'];
+        $body['concert']['catalog']['eventId'] = $this->stringAt($original, 'catalog.eventId');
+        $body['concert']['artists'] = $this->arrayAt($original, 'artists');
+        $body['concert']['catalog']['artistIds'] = $this->arrayAt($original, 'catalog.artistIds');
         $this->postJson('/api/v1/attendances', $body)->assertUnprocessable();
         $body['pendingCatalog']['lineup'] = [];
         $body['pendingCatalog']['artists'] = [];
@@ -159,12 +178,16 @@ class MusicBrainzSaveTest extends TestCase
         $body['concert']['setlist'][0]['artist'] = '';
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertSame($original['artists'], $saved['artists']);
-        $this->assertSame($original['catalog']['eventId'], $saved['catalog']['eventId']);
-        $this->assertNotEmpty($saved['setlist'][0]['songCatalogId']);
+        $this->assertSame($this->arrayAt($original, 'artists'), data_get($saved, 'artists'));
+        $this->assertSame($this->stringAt($original, 'catalog.eventId'), data_get($saved, 'catalog.eventId'));
+        $this->assertNotEmpty(data_get($saved, 'setlist.0.songCatalogId'));
         $this->assertDatabaseCount('events', 1);
     }
 
+    /**
+     * @param  array{concert: Concert, pendingCatalog?: PendingCatalog}|null  $body
+     * @return array{concert: Concert, pendingCatalog: TourCatalog}
+     */
     private function withTour(?array $body = null): array
     {
         $body ??= $this->draft();
@@ -184,13 +207,13 @@ class MusicBrainzSaveTest extends TestCase
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $this->withTour())
             ->assertOk()->json('data.concerts.0');
-        $tour = Tour::query()->where('external_id', $saved['catalog']['tours'][0]['catalogId'])->firstOrFail();
+        $tour = Tour::query()->where('external_id', $this->stringAt($saved, 'catalog.tours.0.catalogId'))->firstOrFail();
         $this->assertNotSame('23aa9d94-ffc6-4160-a7f3-31cfba1ea646', $tour->external_id);
         $tour->update(['name' => 'Locally reviewed name']);
         $second = $this->actingAs(User::factory()->create())
             ->postJson('/api/v1/attendances', $this->withTour())->assertOk()->json('data.concerts.0');
-        $this->assertSame($tour->external_id, $second['catalog']['tours'][0]['catalogId']);
-        $this->assertSame('Locally reviewed name', $second['catalog']['tours'][0]['name']);
+        $this->assertSame($tour->external_id, data_get($second, 'catalog.tours.0.catalogId'));
+        $this->assertSame('Locally reviewed name', data_get($second, 'catalog.tours.0.name'));
         $this->assertDatabaseCount('tours', 1);
         $this->assertDatabaseCount('tour_provider_ids', 1);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'musicbrainz',
@@ -286,7 +309,7 @@ class MusicBrainzSaveTest extends TestCase
         $body['pendingCatalog']['tourChoices'][1] = $second;
         $body['concert']['catalog']['tours'][] = ['name' => 'The Eras Tour', 'catalogId' => null];
         $saved = $this->postJson('/api/v1/attendances', $body)->assertOk()->json('data.concerts.0');
-        $this->assertNotSame($saved['catalog']['tours'][0]['catalogId'], $saved['catalog']['tours'][1]['catalogId']);
+        $this->assertNotSame($this->stringAt($saved, 'catalog.tours.0.catalogId'), $this->stringAt($saved, 'catalog.tours.1.catalogId'));
         $this->assertDatabaseCount('tour_provider_ids', 2);
         $manual = $this->withTour();
         $key = array_key_first($manual['pendingCatalog']['tours']);

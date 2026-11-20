@@ -12,7 +12,7 @@ use Spatie\LaravelData\Data;
 class ProviderProofData extends Data
 {
     /**
-     * @param  array<string, mixed>|null  $payload
+     * @param  array<mixed>|null  $payload
      */
     public function __construct(
         public readonly ?int $v = null,

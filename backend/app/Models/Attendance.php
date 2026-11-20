@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property-read Event $event
+ */
 #[Fillable(['event_id', 'owner_user_id', 'notes'])]
 class Attendance extends Model
 {

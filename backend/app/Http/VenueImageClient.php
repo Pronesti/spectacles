@@ -15,6 +15,7 @@ use App\Http\Integrations\Wikimedia\Data\WikidataEntitiesPayloadData;
 use App\Http\Integrations\Wikimedia\Requests\GetCommonsImageInfo;
 use App\Http\Integrations\Wikimedia\Requests\GetWikidataEntity;
 use App\Http\Integrations\Wikimedia\WikidataConnector;
+use Illuminate\Support\Facades\Config;
 use Saloon\Http\Request;
 use Spatie\LaravelData\Data;
 
@@ -23,7 +24,7 @@ class VenueImageClient
     public function __construct(private ProviderReadGate $gate) {}
 
     /**
-     * @param  list<MusicBrainzRelationPayloadData>  $relations
+     * @param  array<MusicBrainzRelationPayloadData>  $relations
      */
     public function find(array $relations): ?VenueImageData
     {
@@ -33,12 +34,12 @@ class VenueImageClient
         try {
             $file = null;
             foreach ($relations as $relation) {
-                $url = $relation->url?->resource ?? '';
+                $url = $relation->url->resource ?? '';
                 if ($relation->type === 'wikidata' && preg_match('~^https://www\.wikidata\.org/wiki/(Q[1-9][0-9]*)$~D', $url, $match)) {
                     $id = $match[1];
                     $data = $this->gate->run('wikidata', $id, WikidataImageFileData::class, function () use ($id): WikidataImageFileData {
                         $entities = $this->document(WikidataConnector::class, new GetWikidataEntity($id), WikidataEntitiesPayloadData::class);
-                        $claims = ($entities->entities[$id] ?? null)?->claims?->images ?? [];
+                        $claims = ($entities->entities[$id] ?? null)?->claims->images ?? [];
                         usort($claims, fn (WikidataClaimPayloadData $a, WikidataClaimPayloadData $b): int => ($b->rank === 'preferred') <=> ($a->rank === 'preferred'));
                         foreach ($claims as $claim) {
                             if ($claim->rank !== 'deprecated' && $claim->stringValue() !== null) {
@@ -60,7 +61,7 @@ class VenueImageClient
                 return null;
             }
             $result = $this->gate->run('commons', $file, CommonsImageData::class, function () use ($file): CommonsImageData {
-                $pages = $this->document(CommonsConnector::class, new GetCommonsImageInfo($file), CommonsImageInfoResponsePayloadData::class)->query?->pages ?? [];
+                $pages = $this->document(CommonsConnector::class, new GetCommonsImageInfo($file), CommonsImageInfoResponsePayloadData::class)->query->pages ?? [];
                 if (count($pages) !== 1) {
                     return new CommonsImageData(null);
                 }
@@ -71,8 +72,8 @@ class VenueImageClient
                     url: $info?->url,
                     thumbnailUrl: $info?->thumburl,
                     sourceUrl: $info?->descriptionurl,
-                    credit: trim(html_entity_decode(strip_tags($metadata?->artist?->value ?? ''), ENT_QUOTES | ENT_HTML5)),
-                    license: trim(strip_tags($metadata?->licenseShortName?->value ?? '')),
+                    credit: trim(html_entity_decode(strip_tags($metadata?->artist->value ?? ''), ENT_QUOTES | ENT_HTML5)),
+                    license: trim(strip_tags($metadata?->licenseShortName->value ?? '')),
                     licenseUrl: $metadata?->licenseUrl?->value,
                 )));
             });
@@ -92,7 +93,7 @@ class VenueImageClient
      */
     private function document(string $connector, Request $request, string $payloadClass): Data
     {
-        $agent = trim((string) config('services.musicbrainz.user_agent'));
+        $agent = trim(Config::string('services.musicbrainz.user_agent', ''));
         if ($agent === '') {
             throw new CatalogProviderUnavailable;
         }

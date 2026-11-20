@@ -9,6 +9,7 @@ use App\Models\SongLink;
 use App\Models\SongProviderId;
 use App\Models\TourProviderId;
 use App\Models\VenueProviderId;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -21,13 +22,13 @@ class ProviderReferencesTest extends TestCase
     public function test_identity_resources_cannot_claim_two_parents(): void
     {
         foreach ([ArtistProviderId::class, VenueProviderId::class, TourProviderId::class, SongProviderId::class] as $class) {
-            $one = $class::factory()->create();
-            $two = $class::factory()->make()->getAttributes();
+            $one = Factory::factoryForModel($class)->createOne();
+            $two = Factory::factoryForModel($class)->makeOne()->getAttributes();
             $two['external_id'] = (string) Str::uuid7();
             $two['provider'] = $one->provider;
             $two['resource_type'] = $one->resource_type;
             $column = $one instanceof TourProviderId ? 'external_provider_id' : 'provider_resource_id';
-            $two[$column] = $one->{$column};
+            $two[$column] = $one->getAttribute($column);
             $this->assertDatabaseRejects(fn () => DB::table($one->getTable())->insert($two));
         }
     }
@@ -38,9 +39,9 @@ class ProviderReferencesTest extends TestCase
         $two = VenueProviderId::factory()->create([
             'venue_id' => $one->venue_id, 'provider_resource_id' => str_repeat('a', 512),
         ]);
-        $this->assertSame('0000123', $one->fresh()->provider_resource_id);
-        $this->assertSame(str_repeat('a', 512), $two->fresh()->provider_resource_id);
-        $this->assertSame(2, $one->venue->providerIds()->count());
+        $this->assertSame('0000123', $this->present($one->fresh())->provider_resource_id);
+        $this->assertSame(str_repeat('a', 512), $this->present($two->fresh())->provider_resource_id);
+        $this->assertSame(2, $this->present($one->venue)->providerIds()->count());
         $this->assertNotSame($one->external_id, $one->provider_resource_id);
     }
 
@@ -64,7 +65,7 @@ class ProviderReferencesTest extends TestCase
         $link = SongLink::factory()->create();
         SongLink::factory()->create(['song_id' => $link->song_id]);
         SongLink::factory()->create(['provider_resource_id' => $link->provider_resource_id]);
-        $this->assertSame(2, $link->song->links()->count());
+        $this->assertSame(2, $this->present($link->song)->links()->count());
         $row = $link->getAttributes();
         unset($row['id']);
         $row['external_id'] = (string) Str::uuid7();

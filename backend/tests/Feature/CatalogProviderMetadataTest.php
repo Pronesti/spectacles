@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Resources\VenueResource;
 use App\Models\TourProviderId;
 use App\Models\Venue;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
@@ -18,15 +19,15 @@ class CatalogProviderMetadataTest extends TestCase
     public function test_metadata_and_both_tour_provider_kinds_round_trip(): void
     {
         $venue = Venue::factory()->create(['address' => 'Humboldt 450, C1414 CABA', 'aliases' => ['Arena Ñ'], 'image' => null]);
-        $this->assertSame(['Arena Ñ'], $venue->fresh()->aliases);
-        $this->assertSame([], Venue::factory()->create()->fresh()->aliases);
+        $this->assertSame(['Arena Ñ'], $this->present($venue->fresh())->aliases);
+        $this->assertSame([], $this->present(Venue::factory()->create()->fresh())->aliases);
         foreach ([['musicbrainz', 'series', fake()->uuid()], ['setlist_fm', 'tour', 'bdac5de']] as [$provider, $kind, $id]) {
             $ref = TourProviderId::factory()->create(['provider' => $provider, 'resource_type' => $kind, 'external_provider_id' => $id]);
-            $this->assertSame($id, $ref->fresh()->external_provider_id);
+            $this->assertSame($id, $this->present($ref->fresh())->external_provider_id);
         }
         $this->assertFalse(Schema::hasColumn('tour_provider_ids', 'provider_resource_id'));
         $legacy = Venue::factory()->create(['aliases' => null]);
-        $this->assertSame([], json_decode(json_encode((new VenueResource($legacy))->resolve()), true)['data']['attributes']['aliases']);
+        $this->assertSame([], $this->arrayAt(json_decode(json_encode((new VenueResource($legacy))->resolve(), JSON_THROW_ON_ERROR), true), 'data.attributes.aliases'));
         ProviderHttp::assertNothingSent();
     }
 
@@ -41,6 +42,8 @@ class CatalogProviderMetadataTest extends TestCase
     {
         $ref = TourProviderId::factory()->create();
         $migration = require database_path('migrations/2026_10_25_000001_extend_catalog_provider_metadata.php');
+        $this->assertInstanceOf(Migration::class, $migration);
+        $this->assertTrue(method_exists($migration, 'down') && method_exists($migration, 'up'));
         $migration->down();
         $this->assertDatabaseHas('tour_provider_ids', ['provider_resource_id' => $ref->external_provider_id]);
         $migration->up();

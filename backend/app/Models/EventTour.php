@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property-read Tour $tour
+ */
 #[Fillable(['event_id', 'tour_id'])]
 class EventTour extends Model
 {

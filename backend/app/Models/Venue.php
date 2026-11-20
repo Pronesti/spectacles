@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string|null $street
+ * @property string|null $house_number
+ * @property string|null $postal_code
+ * @property string|null $city
+ * @property string|null $region
+ * @property list<string>|null $aliases
+ * @property array<string, string>|null $image
+ */
 #[Fillable(['name', 'street', 'house_number', 'postal_code', 'city', 'region', 'country_code', 'lat', 'lng', 'timezone', 'address', 'aliases', 'image'])]
 class Venue extends Model
 {
