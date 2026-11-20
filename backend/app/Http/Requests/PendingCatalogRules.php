@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Http\CatalogProviderSelection;
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingCatalogData;
 use App\Http\MusicBrainzSelection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -41,23 +43,23 @@ class PendingCatalogRules
         return $rules;
     }
 
-    public static function check(array $concert, array $pending, Validator $validator): void
+    public static function check(ConcertDraftData $concert, ?PendingCatalogData $pending, Validator $validator): void
     {
-        if ($pending === []) {
+        if ($pending === null) {
             return;
         }
         $error = function (string $path) use ($validator): void {
             $validator->errors()->add('pendingCatalog.'.$path, 'Choose a valid, exclusively referenced catalog draft.');
         };
-        foreach (['venue' => 'venue', 'event' => 'performance'] as $singleton => $kind) {
-            if (! isset($pending[$singleton])) {
+        foreach (['venue' => [$pending->venueSelection(), 'venue'], 'event' => [$pending->eventSelection(), 'performance']] as $singleton => [$binding, $kind]) {
+            if ($binding === null) {
                 continue;
             }
-            if (isset($concert['catalog']['eventId'])) {
+            if ($concert->catalog->hasEvent()) {
                 $error($singleton);
             }
             try {
-                app(CatalogProviderSelection::class)->read($pending[$singleton]['selection'], $kind, 'pendingCatalog.'.$singleton.'.selection');
+                app(CatalogProviderSelection::class)->read($binding->selection, $kind, 'pendingCatalog.'.$singleton.'.selection');
             } catch (ValidationException $failure) {
                 foreach ($failure->errors() as $path => $messages) {
                     $validator->errors()->add($path, $messages[0]);
@@ -65,22 +67,23 @@ class PendingCatalogRules
             }
         }
         $used = ['artists' => [], 'songs' => [], 'tours' => []];
-        if (array_key_exists('tours', $pending) !== array_key_exists('tourChoices', $pending)) {
+        if (is_array($pending->tours) !== is_array($pending->tourChoices)) {
             $error('tours');
         }
+        $drafts = ['artists' => $pending->artists, 'songs' => $pending->songs, 'tours' => $pending->pendingTours()];
         $keys = [];
         foreach (['artists' => 'artist', 'songs' => 'work', 'tours' => 'series'] as $map => $kind) {
-            foreach ($pending[$map] ?? [] as $key => $input) {
+            foreach ($drafts[$map] as $key => $draft) {
                 if (! Str::isUuid((string) $key) || isset($keys[$key])) {
                     $error($map);
                 }
                 $keys[$key] = true;
-                if ($input['selection'] !== null) {
+                if ($draft->selection !== null) {
                     try {
                         if ($kind === 'series') {
-                            app(CatalogProviderSelection::class)->tour($input['selection'], 'pendingCatalog.'.$map.'.'.$key.'.selection');
+                            app(CatalogProviderSelection::class)->tour($draft->selection, 'pendingCatalog.'.$map.'.'.$key.'.selection');
                         } else {
-                            app(MusicBrainzSelection::class)->read($input['selection'], $kind, 'pendingCatalog.'.$map.'.'.$key.'.selection');
+                            app(MusicBrainzSelection::class)->read($draft->selection, $kind, 'pendingCatalog.'.$map.'.'.$key.'.selection');
                         }
                     } catch (ValidationException $failure) {
                         foreach ($failure->errors() as $path => $messages) {
@@ -90,39 +93,42 @@ class PendingCatalogRules
                 }
             }
         }
-        foreach ($pending['lineup'] as $position => $key) {
-            $input = $pending['artists'][$key] ?? null;
-            if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || ! array_key_exists($position, $concert['artists']) || $input === null || ($concert['catalog']['artistIds'][$position] ?? null) !== null || ($concert['artists'][$position] ?? null) !== ($input['name'] ?? null) || isset($concert['catalog']['eventId'])) {
+        foreach ($pending->lineup as $position => $key) {
+            $draft = $pending->artists[$key] ?? null;
+            if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || ! array_key_exists($position, $concert->artists) || $draft === null || ($concert->catalog->artistIds[$position] ?? null) !== null || $concert->artists[$position] !== $draft->name || $concert->catalog->hasEvent()) {
                 $error('lineup');
             }
             $used['artists'][$key] = true;
         }
-        foreach ($pending['tourChoices'] ?? [] as $position => $key) {
-            $input = $pending['tours'][$key] ?? null;
-            $choice = $concert['catalog']['tours'][$position] ?? null;
-            if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || $choice === null || $input === null || $choice['catalogId'] !== null || $choice['name'] !== $input['name'] || isset($concert['catalog']['eventId'])) {
+        foreach ($pending->pendingTourChoices() as $position => $key) {
+            $draft = $drafts['tours'][$key] ?? null;
+            $choice = $concert->catalog->tours[$position] ?? null;
+            if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || $choice === null || $draft === null || $choice->catalogId !== null || $choice->name !== $draft->name || $concert->catalog->hasEvent()) {
                 $error('tourChoices');
             }
             $used['tours'][$key] = true;
         }
-        $rows = array_column($concert['setlist'], null, 'id');
-        foreach ($pending['entries'] as $id => $refs) {
+        $rows = $concert->setlistById();
+        foreach ($pending->entries as $id => $refs) {
             $row = $rows[$id] ?? null;
-            if (! Str::isUuid((string) $id) || $row === null || $row['type'] !== 'song' || $refs === []) {
+            $named = array_filter(['song' => $refs->song, 'artist' => $refs->artist], 'is_string');
+            if (! Str::isUuid((string) $id) || $row === null || $row->type !== 'song' || $named === []) {
                 $error('entries');
             }
-            foreach ($refs as $kind => $key) {
+            foreach ($named as $kind => $key) {
                 $map = $kind === 'song' ? 'songs' : 'artists';
-                $label = $kind === 'song' ? 'title' : 'name';
-                $input = $pending[$map][$key] ?? null;
-                if ($input === null || isset($row[$kind === 'song' ? 'songCatalogId' : 'artistCatalogId']) || ($row[$kind === 'song' ? 'title' : 'artist'] ?? null) !== ($input[$label] ?? null)) {
+                $draft = $drafts[$map][$key] ?? null;
+                $catalogId = $kind === 'song' ? $row?->songCatalogId : $row?->artistCatalogId;
+                $label = $kind === 'song' ? $row?->title : $row?->artist;
+                $draftLabel = $draft === null ? null : ($kind === 'song' ? $draft->title : $draft->name);
+                if ($draft === null || is_string($catalogId) || $label !== $draftLabel) {
                     $error('entries');
                 }
                 $used[$map][$key] = true;
             }
         }
         foreach ($used as $map => $refs) {
-            foreach ($pending[$map] ?? [] as $key => $input) {
+            foreach ($drafts[$map] as $key => $draft) {
                 if (! isset($refs[$key])) {
                     $error($map);
                 }

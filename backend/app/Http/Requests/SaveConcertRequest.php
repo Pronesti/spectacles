@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use App\Http\CatalogProviderData;
 use App\Http\CatalogProviderUnavailable;
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingCatalogData;
+use App\Http\Data\VenueDraftData;
+use App\Http\Data\VenueImageInputData;
+use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -70,39 +75,56 @@ class SaveConcertRequest extends FormRequest
         ];
     }
 
+    /**
+     * The validated concert. The after-validation checks build it from input instead,
+     * because `validated()` cannot be called while validation is still running.
+     */
+    public function concert(): ConcertDraftData
+    {
+        return ConcertDraftData::from($this->validated('concert'));
+    }
+
+    public function venue(): ?VenueDraftData
+    {
+        return $this->has('venue') ? VenueDraftData::from($this->validated('venue')) : null;
+    }
+
+    public function pendingCatalog(): ?PendingCatalogData
+    {
+        return $this->has('pendingCatalog') ? PendingCatalogData::from($this->validated('pendingCatalog')) : null;
+    }
+
     public function after(): array
     {
         return [function (Validator $validator): void {
             if ($validator->errors()->isNotEmpty()) {
                 return;
             }
-            PendingCatalogRules::check($this->input('concert'), $this->input('pendingCatalog', []), $validator);
+            $concert = ConcertDraftData::from($this->input('concert'));
+            PendingCatalogRules::check($concert, $this->has('pendingCatalog') ? PendingCatalogData::from($this->input('pendingCatalog')) : null, $validator);
             if ($this->has('pendingCatalog.venue') && $this->has('venue.catalogId')) {
                 $validator->errors()->add('pendingCatalog.venue', 'Choose one Venue identity.');
             }
             if ($this->input('venue.image') !== null) {
                 try {
-                    CatalogProviderData::image($this->input('venue.image'));
+                    CatalogProviderData::image(UpstreamPayload::parse(VenueImageInputData::class, $this->input('venue.image'), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable));
                 } catch (CatalogProviderUnavailable) {
                     $validator->errors()->add('venue.image', 'Choose valid attributed image metadata.');
                 }
             }
-            $date = $this->input('concert.date', []);
-            $year = $date['year'] ?? null;
-            $month = $date['month'] ?? null;
-            $day = $date['day'] ?? null;
-            if (($month !== null && $year === null) || ($day !== null && $month === null)
-                || ($year && $month && $day && ! checkdate((int) $month, (int) $day, (int) $year))) {
+            $date = $concert->date;
+            if (($date->month !== null && $date->year === null) || ($date->day !== null && $date->month === null)
+                || ($date->year && $date->month && $date->day && ! checkdate($date->month, $date->day, $date->year))) {
                 $validator->errors()->add('concert.date', 'Enter a valid date at its known precision.');
             }
-            if (count($this->input('concert.artists', [])) !== count($this->input('concert.catalog.artistIds', []))) {
+            if (count($concert->artists) !== count($concert->catalog->artistIds)) {
                 $validator->errors()->add('concert.artists', 'Artist references must match the lineup.');
             }
             if (($this->input('venue.lat') === null) !== ($this->input('venue.lng') === null)) {
                 $validator->errors()->add('venue.lat', 'Supply both coordinates or neither.');
             }
-            foreach ($this->input('concert.setlist', []) as $index => $entry) {
-                if (($entry['type'] ?? '') === 'note' && (($entry['tape'] ?? false) || isset($entry['songCatalogId']) || isset($entry['artistCatalogId']))) {
+            foreach ($concert->setlist as $index => $entry) {
+                if ($entry->type === 'note' && ($entry->tape || is_string($entry->songCatalogId) || is_string($entry->artistCatalogId))) {
                     $validator->errors()->add("concert.setlist.$index", 'Notes cannot have song identities or tape status.');
                 }
             }

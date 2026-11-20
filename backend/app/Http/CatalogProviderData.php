@@ -2,7 +2,25 @@
 
 namespace App\Http;
 
+use App\Http\Data\ArtistValuesData;
+use App\Http\Data\CalendarDateData;
+use App\Http\Data\ProviderArtistData;
+use App\Http\Data\ProviderEntityInputData;
+use App\Http\Data\ProviderEntityValuesInputData;
+use App\Http\Data\ProviderPerformanceData;
+use App\Http\Data\ProviderPerformanceInputData;
+use App\Http\Data\ProviderRefData;
+use App\Http\Data\ProviderRefInputData;
+use App\Http\Data\ProviderTourData;
+use App\Http\Data\ProviderVenueData;
+use App\Http\Data\TourValuesData;
+use App\Http\Data\VenueImageData;
+use App\Http\Data\VenueImageInputData;
+use App\Http\Data\VenueSourceData;
+use App\Http\Data\VenueSourceInputData;
+use App\Http\Data\VenueValuesData;
 use Illuminate\Support\Str;
+use Spatie\LaravelData\Optional;
 
 class CatalogProviderData
 {
@@ -18,176 +36,217 @@ class CatalogProviderData
         return trim($value);
     }
 
-    public static function ref(array $value): array
+    public static function ref(?ProviderRefInputData $value): ProviderRefData
     {
-        $provider = $value['provider'] ?? null;
-        $kind = $value['resourceType'] ?? null;
-        $id = $value['externalId'] ?? null;
+        $provider = $value?->provider;
+        $kind = $value?->resourceType;
+        $id = $value?->externalId;
         $valid = $provider === 'musicbrainz' ? in_array($kind, ['artist', 'work', 'series', 'place'], true) && is_string($id) && Str::isUuid($id)
             : $provider === 'setlist_fm' && in_array($kind, ['artist', 'tour', 'venue', 'setlist'], true) && is_string($id) && preg_match('/^[a-zA-Z0-9_-]{1,128}$/D', $id);
         if (! $valid) {
             throw new CatalogProviderUnavailable;
         }
 
-        return ['provider' => $provider, 'resourceType' => $kind, 'externalId' => $provider === 'musicbrainz' ? strtolower($id) : $id];
+        return new ProviderRefData($provider, $kind, $provider === 'musicbrainz' ? strtolower($id) : $id);
     }
 
-    public static function entity(array $value): array
+    /**
+     * Validates an untrusted provider entity and returns the Data class for its kind.
+     */
+    public static function entity(?ProviderEntityInputData $value): ProviderArtistData|ProviderTourData|ProviderVenueData
     {
-        $ref = self::ref($value['ref'] ?? []);
-        $values = $value['values'] ?? [];
-        if (! is_array($values)) {
-            throw new CatalogProviderUnavailable;
-        }
-        $values = match ($ref['resourceType']) {
-            'tour', 'series' => ['name' => self::text($values['name'] ?? null)],
-            'artist' => ['name' => self::text($values['name'] ?? null), 'type' => self::text($values['type'] ?? null, 255, true), 'disambiguation' => self::text($values['disambiguation'] ?? null, 255, true)],
+        $ref = self::ref($value?->ref);
+        $values = $value?->values ?? new ProviderEntityValuesInputData;
+        $values = match ($ref->resourceType) {
+            'tour', 'series' => new TourValuesData(self::text($values->name)),
+            'artist' => new ArtistValuesData(self::text($values->name), self::text($values->type, 255, true), self::text($values->disambiguation, 255, true)),
             'place', 'venue' => self::venueValues($values),
             default => throw new CatalogProviderUnavailable,
         };
-        $url = self::text($value['url'] ?? null, 2048);
-        if ($ref['provider'] === 'setlist_fm') {
-            if (app(SetlistFmUrl::class)->id($url, $ref['resourceType']) !== $ref['externalId']) {
+        $url = self::text($value->url, 2048);
+        if ($ref->provider === 'setlist_fm') {
+            if (app(SetlistFmUrl::class)->id($url, $ref->resourceType) !== $ref->externalId) {
                 throw new CatalogProviderUnavailable;
             }
-        } elseif ($ref['resourceType'] === 'artist' && str_starts_with($url, 'https://www.setlist.fm/')) {
+        } elseif ($ref->resourceType === 'artist' && str_starts_with($url, 'https://www.setlist.fm/')) {
             app(SetlistFmUrl::class)->id($url, 'artist');
-        } elseif ($url !== 'https://musicbrainz.org/'.$ref['resourceType'].'/'.$ref['externalId']) {
+        } elseif ($url !== 'https://musicbrainz.org/'.$ref->resourceType.'/'.$ref->externalId) {
             throw new CatalogProviderUnavailable;
         }
-        $result = ['ref' => $ref, 'values' => $values, 'url' => $url];
-        if (in_array($ref['resourceType'], ['place', 'venue'], true)) {
-            $refs = $value['linkedRefs'] ?? [];
-            if (! is_array($refs) || ! array_is_list($refs) || count($refs) > 5) {
-                throw new CatalogProviderUnavailable;
-            }
-            $seen = [json_encode($ref) => true];
-            $result['linkedRefs'] = [];
-            foreach ($refs as $linked) {
-                $linked = self::ref($linked);
-                if (! in_array($linked['resourceType'], ['place', 'venue'], true) || isset($seen[json_encode($linked)])) {
-                    throw new CatalogProviderUnavailable;
-                }
-                $seen[json_encode($linked)] = true;
-                $result['linkedRefs'][] = $linked;
-            }
-            $venueUrl = $value['venueUrl'] ?? ($ref['provider'] === 'setlist_fm' ? $url : null);
-            if ($venueUrl !== null) {
-                $venueId = app(SetlistFmUrl::class)->id($venueUrl, 'venue');
-                if (parse_url($venueUrl, PHP_URL_QUERY) !== null || ! array_any([$ref, ...$result['linkedRefs']], fn ($identity) => $identity['provider'] === 'setlist_fm' && $identity['resourceType'] === 'venue' && $identity['externalId'] === $venueId)) {
-                    throw new CatalogProviderUnavailable;
-                }
-                $result['venueUrl'] = $venueUrl;
-            }
-            $sources = $value['venueSources'] ?? [];
-            if (! is_array($sources) || ! array_is_list($sources) || count($sources) > 6) {
-                throw new CatalogProviderUnavailable;
-            }
-            if ($venueUrl !== null) {
-                $sources[] = ['externalId' => app(SetlistFmUrl::class)->id($venueUrl, 'venue'), 'url' => $venueUrl];
-            }
-            $urls = [];
-            foreach ($sources as $source) {
-                if (! is_array($source)) {
-                    throw new CatalogProviderUnavailable;
-                }
-                $sourceUrl = self::text($source['url'] ?? null, 2048);
-                $sourceId = app(SetlistFmUrl::class)->id($sourceUrl, 'venue');
-                if (($source['externalId'] ?? null) !== $sourceId || parse_url($sourceUrl, PHP_URL_QUERY) !== null || ! array_any([$ref, ...$result['linkedRefs']], fn ($identity) => $identity['provider'] === 'setlist_fm' && $identity['resourceType'] === 'venue' && $identity['externalId'] === $sourceId) || isset($urls[$sourceId]) && $urls[$sourceId] !== $sourceUrl) {
-                    throw new CatalogProviderUnavailable;
-                }
-                $urls[$sourceId] = $sourceUrl;
-            }
-            $result['venueSources'] = array_map(fn ($id, $source) => ['externalId' => (string) $id, 'url' => $source], array_keys($urls), array_values($urls));
+        if ($values instanceof TourValuesData) {
+            return new ProviderTourData($ref, $values, $url);
+        }
+        if ($values instanceof ArtistValuesData) {
+            return new ProviderArtistData($ref, $values, $url);
         }
 
-        return $result;
+        $refs = $value->linkedRefs ?? [];
+        if (! array_is_list($refs) || count($refs) > 5) {
+            throw new CatalogProviderUnavailable;
+        }
+        $seen = [$ref->key() => true];
+        $linkedRefs = [];
+        foreach ($refs as $linked) {
+            $linked = self::ref($linked);
+            if (! in_array($linked->resourceType, ['place', 'venue'], true) || isset($seen[$linked->key()])) {
+                throw new CatalogProviderUnavailable;
+            }
+            $seen[$linked->key()] = true;
+            $linkedRefs[] = $linked;
+        }
+        $isKnownSetlistVenue = fn (string $venueId): bool => array_any([$ref, ...$linkedRefs], fn (ProviderRefData $identity): bool => $identity->provider === 'setlist_fm' && $identity->resourceType === 'venue' && $identity->externalId === $venueId);
+        $venueUrl = $value->venueUrl ?? ($ref->provider === 'setlist_fm' ? $url : null);
+        if ($venueUrl !== null) {
+            $venueId = app(SetlistFmUrl::class)->id($venueUrl, 'venue');
+            if (parse_url($venueUrl, PHP_URL_QUERY) !== null || ! $isKnownSetlistVenue($venueId)) {
+                throw new CatalogProviderUnavailable;
+            }
+        }
+        $sources = $value->venueSources ?? [];
+        if (! array_is_list($sources) || count($sources) > 6) {
+            throw new CatalogProviderUnavailable;
+        }
+        if ($venueUrl !== null) {
+            $sources[] = new VenueSourceInputData(app(SetlistFmUrl::class)->id($venueUrl, 'venue'), $venueUrl);
+        }
+        $urls = [];
+        foreach ($sources as $source) {
+            $sourceUrl = self::text($source->url, 2048);
+            $sourceId = app(SetlistFmUrl::class)->id($sourceUrl, 'venue');
+            if ($source->externalId !== $sourceId || parse_url($sourceUrl, PHP_URL_QUERY) !== null || ! $isKnownSetlistVenue($sourceId) || isset($urls[$sourceId]) && $urls[$sourceId] !== $sourceUrl) {
+                throw new CatalogProviderUnavailable;
+            }
+            $urls[$sourceId] = $sourceUrl;
+        }
+
+        return new ProviderVenueData(
+            ref: $ref,
+            values: $values,
+            url: $url,
+            linkedRefs: $linkedRefs,
+            venueUrl: $venueUrl ?? new Optional,
+            venueSources: array_map(fn ($id, string $sourceUrl): VenueSourceData => new VenueSourceData((string) $id, $sourceUrl), array_keys($urls), array_values($urls)),
+        );
     }
 
-    public static function venueValues(array $value): array
+    public static function venue(ProviderEntityInputData $value): ProviderVenueData
     {
-        $lat = $value['lat'] ?? null;
-        $lng = $value['lng'] ?? null;
+        $entity = self::entity($value);
+
+        return $entity instanceof ProviderVenueData ? $entity : throw new CatalogProviderUnavailable;
+    }
+
+    public static function tour(ProviderEntityInputData $value): ProviderTourData
+    {
+        $entity = self::entity($value);
+
+        return $entity instanceof ProviderTourData ? $entity : throw new CatalogProviderUnavailable;
+    }
+
+    public static function venueValues(ProviderEntityValuesInputData $value): VenueValuesData
+    {
+        $lat = $value->lat;
+        $lng = $value->lng;
         if (($lat === null) !== ($lng === null) || $lat !== null && (! is_numeric($lat) || ! is_numeric($lng) || ! is_finite((float) $lat) || ! is_finite((float) $lng) || abs((float) $lat) > 90 || abs((float) $lng) > 180)) {
             throw new CatalogProviderUnavailable;
         }
-        $aliases = $value['aliases'] ?? [];
-        if (! is_array($aliases) || ! array_is_list($aliases) || count($aliases) > 100) {
+        $aliases = $value->aliases ?? [];
+        if (! array_is_list($aliases) || count($aliases) > 100) {
             throw new CatalogProviderUnavailable;
         }
         $aliases = array_map(fn ($alias) => self::text($alias), $aliases);
         if (count(array_unique($aliases)) !== count($aliases)) {
             throw new CatalogProviderUnavailable;
         }
-        $country = self::text($value['countryCode'] ?? null, 2, true);
+        $country = self::text($value->countryCode, 2, true);
         if ($country !== null && ! preg_match('/^[A-Z]{2}$/D', $country)) {
             throw new CatalogProviderUnavailable;
         }
-        $zone = self::text($value['timezone'] ?? null, 255, true);
+        $zone = self::text($value->timezone, 255, true);
         if ($zone !== null && ! in_array($zone, \DateTimeZone::listIdentifiers(), true)) {
             throw new CatalogProviderUnavailable;
         }
 
-        return ['name' => self::text($value['name'] ?? null), 'city' => isset($value['city']) && $value['city'] !== '' ? self::text($value['city']) : '', 'region' => self::text($value['region'] ?? null, 255, true), 'countryCode' => $country, 'address' => self::text($value['address'] ?? null, 2000, true), 'aliases' => $aliases, 'lat' => $lat === null ? null : (float) $lat, 'lng' => $lng === null ? null : (float) $lng, 'timezone' => $zone, 'image' => self::image($value['image'] ?? null)];
+        return new VenueValuesData(
+            name: self::text($value->name),
+            city: $value->city !== null && $value->city !== '' ? self::text($value->city) : '',
+            region: self::text($value->region, 255, true),
+            countryCode: $country,
+            address: self::text($value->address, 2000, true),
+            aliases: $aliases,
+            lat: $lat === null ? null : (float) $lat,
+            lng: $lng === null ? null : (float) $lng,
+            timezone: $zone,
+            image: self::image($value->image),
+        );
     }
 
-    public static function image(mixed $value): ?array
+    public static function image(?VenueImageInputData $value): ?VenueImageData
     {
         if ($value === null) {
             return null;
         }
-        if (! is_array($value) || array_diff(array_keys($value), ['url', 'thumbnailUrl', 'sourceUrl', 'credit', 'license', 'licenseUrl']) !== []) {
-            throw new CatalogProviderUnavailable;
-        }
-        $result = [];
-        foreach (['url', 'thumbnailUrl', 'sourceUrl', 'credit', 'license', 'licenseUrl'] as $key) {
-            $result[$key] = self::text($value[$key] ?? null, $key === 'credit' ? 2000 : ($key === 'license' ? 255 : 2048));
-            if (str_contains($result[$key], '<') || str_contains($result[$key], '>')) {
+        $attribution = function (?string $text, int $max): string {
+            $text = self::text($text, $max);
+            if (str_contains($text, '<') || str_contains($text, '>')) {
                 throw new CatalogProviderUnavailable;
             }
-            if (in_array($key, ['url', 'thumbnailUrl', 'sourceUrl', 'licenseUrl'], true)) {
-                $parts = parse_url($result[$key]);
-                $hosts = match ($key) {
-                    'url', 'thumbnailUrl' => ['upload.wikimedia.org', 'thumb.wikimedia.org'],
-                    'sourceUrl' => ['commons.wikimedia.org'],
-                    default => ['creativecommons.org', 'commons.wikimedia.org'],
-                };
-                if (! is_array($parts) || ($parts['scheme'] ?? '') !== 'https' || ! in_array($parts['host'] ?? '', $hosts, true) || isset($parts['user']) || isset($parts['pass']) || isset($parts['port'])) {
-                    throw new CatalogProviderUnavailable;
-                }
-            }
-        }
 
-        return $result;
+            return $text;
+        };
+        $link = function (?string $url, array $hosts) use ($attribution): string {
+            $url = $attribution($url, 2048);
+            $parts = parse_url($url);
+            if (! is_array($parts) || ($parts['scheme'] ?? '') !== 'https' || ! in_array($parts['host'] ?? '', $hosts, true) || isset($parts['user']) || isset($parts['pass']) || isset($parts['port'])) {
+                throw new CatalogProviderUnavailable;
+            }
+
+            return $url;
+        };
+        $mediaHosts = ['upload.wikimedia.org', 'thumb.wikimedia.org'];
+
+        return new VenueImageData(
+            url: $link($value->url, $mediaHosts),
+            thumbnailUrl: $link($value->thumbnailUrl, $mediaHosts),
+            sourceUrl: $link($value->sourceUrl, ['commons.wikimedia.org']),
+            credit: $attribution($value->credit, 2000),
+            license: $attribution($value->license, 255),
+            licenseUrl: $link($value->licenseUrl, ['creativecommons.org', 'commons.wikimedia.org']),
+        );
     }
 
-    public static function performance(array $value): array
+    public static function performance(ProviderPerformanceInputData $value): ProviderPerformanceData
     {
-        $ref = self::ref($value['ref'] ?? []);
-        if ($ref['provider'] !== 'setlist_fm' || $ref['resourceType'] !== 'setlist' || app(SetlistFmUrl::class)->id($value['url'] ?? '', 'setlist') !== $ref['externalId']) {
+        $ref = self::ref($value->ref);
+        if ($ref->provider !== 'setlist_fm' || $ref->resourceType !== 'setlist' || app(SetlistFmUrl::class)->id($value->url ?? '', 'setlist') !== $ref->externalId) {
             throw new CatalogProviderUnavailable;
         }
-        $date = $value['date'] ?? [];
-        if (! is_array($date) || array_diff(array_keys($date), ['year', 'month', 'day']) !== [] || ! is_int($date['year'] ?? null) || ! is_int($date['month'] ?? null) || ! is_int($date['day'] ?? null) || ! checkdate($date['month'], $date['day'], $date['year']) || $date['year'] < 1 || $date['year'] > 9999) {
+        $date = $value->date;
+        if ($date?->year === null || $date->month === null || $date->day === null || ! checkdate($date->month, $date->day, $date->year) || $date->year < 1 || $date->year > 9999) {
             throw new CatalogProviderUnavailable;
         }
-        $artist = self::entity($value['artist'] ?? []);
-        $venue = self::entity($value['venue'] ?? []);
-        $tour = ($value['tour'] ?? null) === null ? null : self::entity($value['tour']);
-        if ($artist['ref']['provider'] !== 'musicbrainz' || $artist['ref']['resourceType'] !== 'artist' || ! in_array($venue['ref']['resourceType'], ['venue', 'place'], true) || $tour !== null && ! in_array($tour['ref']['resourceType'], ['tour', 'series'], true)) {
+        $artist = self::entity($value->artist);
+        $venue = self::entity($value->venue);
+        $tour = $value->tour === null ? null : self::entity($value->tour);
+        if (! $artist instanceof ProviderArtistData || $artist->ref->provider !== 'musicbrainz' || ! $venue instanceof ProviderVenueData || $tour !== null && ! $tour instanceof ProviderTourData) {
             throw new CatalogProviderUnavailable;
         }
-        $time = $value['time'] ?? null;
-        $zone = $value['timezone'] ?? null;
-        if ($time !== null && (! is_string($time) || ! preg_match('/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/D', $time)) || $zone !== null && ! in_array($zone, \DateTimeZone::listIdentifiers(), true)) {
+        $time = $value->time;
+        $zone = $value->timezone;
+        if ($time !== null && (! preg_match('/^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/D', $time)) || $zone !== null && ! in_array($zone, \DateTimeZone::listIdentifiers(), true)) {
             throw new CatalogProviderUnavailable;
         }
 
-        $result = ['ref' => $ref, 'url' => $value['url'], 'date' => $date, 'artist' => $artist, 'tour' => $tour, 'venue' => $venue, 'time' => $time, 'timezone' => $zone];
-        if (array_key_exists('tourName', $value)) {
-            $result['tourName'] = self::text($value['tourName'], 255, true);
-        }
-
-        return $result;
+        return new ProviderPerformanceData(
+            ref: $ref,
+            url: $value->url,
+            date: new CalendarDateData($date->year, $date->month, $date->day),
+            artist: $artist,
+            tour: $tour,
+            venue: $venue,
+            time: $time,
+            timezone: $zone,
+            tourName: $value->tourName instanceof Optional ? $value->tourName : self::text($value->tourName, 255, true),
+        );
     }
 }

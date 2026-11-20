@@ -7,8 +7,8 @@ use App\Models\TourProviderId;
 use App\Models\Venue;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
 class CatalogProviderMetadataTest extends TestCase
@@ -17,7 +17,6 @@ class CatalogProviderMetadataTest extends TestCase
 
     public function test_metadata_and_both_tour_provider_kinds_round_trip(): void
     {
-        Http::preventStrayRequests();
         $venue = Venue::factory()->create(['address' => 'Humboldt 450, C1414 CABA', 'aliases' => ['Arena Ñ'], 'image' => null]);
         $this->assertSame(['Arena Ñ'], $venue->fresh()->aliases);
         $this->assertSame([], Venue::factory()->create()->fresh()->aliases);
@@ -28,7 +27,7 @@ class CatalogProviderMetadataTest extends TestCase
         $this->assertFalse(Schema::hasColumn('tour_provider_ids', 'provider_resource_id'));
         $legacy = Venue::factory()->create(['aliases' => null]);
         $this->assertSame([], json_decode(json_encode((new VenueResource($legacy))->resolve()), true)['data']['attributes']['aliases']);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_duplicate_tour_identity_is_rejected(): void

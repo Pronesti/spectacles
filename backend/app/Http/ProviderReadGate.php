@@ -5,10 +5,19 @@ namespace App\Http;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Sleep;
+use Spatie\LaravelData\Data;
 
 class ProviderReadGate
 {
-    public function apiRequest(callable $fetch): array
+    /**
+     * Spends one setlist.fm API request from the shared quota and pacing.
+     *
+     * @template TPayload of Data
+     *
+     * @param  callable(): TPayload  $fetch
+     * @return TPayload
+     */
+    public function apiRequest(callable $fetch): Data
     {
         $settings = config('services.setlistfm', []);
         $dailyLimit = min(1439, (int) ($settings['api_daily_limit'] ?? 100));
@@ -52,20 +61,35 @@ class ProviderReadGate
         }
     }
 
-    public function run(string $channel, string $cacheKey, callable $fetch, bool $waitForSpacing = false): array
+    /**
+     * Reads through the channel's cache, quota and pacing, caching what `$fetch` returns.
+     *
+     * @template TData of Data
+     *
+     * @param  class-string<TData>  $dataClass
+     * @param  callable(): (TData|list<TData>)  $fetch
+     * @return TData|list<TData>
+     */
+    public function run(string $channel, string $cacheKey, string $dataClass, callable $fetch, bool $waitForSpacing = false): Data|array
     {
         try {
-            return $this->read($channel, $cacheKey, $fetch, $waitForSpacing);
+            return $this->read($channel, $cacheKey, $dataClass, $fetch, $waitForSpacing);
         } catch (QueryException $failure) {
             throw new CatalogProviderUnavailable;
         }
     }
 
-    private function read(string $channel, string $cacheKey, callable $fetch, bool $waitForSpacing = false): array
+    /**
+     * @template TData of Data
+     *
+     * @param  class-string<TData>  $dataClass
+     * @param  callable(): (TData|list<TData>)  $fetch
+     * @return TData|list<TData>
+     */
+    private function read(string $channel, string $cacheKey, string $dataClass, callable $fetch, bool $waitForSpacing = false): Data|array
     {
         [$group, $prefix] = match ($channel) {
             'setlist_api' => ['setlistfm', 'api'],
-            'setlist_html' => ['setlistfm', 'html'],
             'wikidata' => ['venue_images', 'wikidata'], 'commons' => ['venue_images', 'commons'],
             default => throw new \InvalidArgumentException('Unknown provider channel.'),
         };
@@ -76,7 +100,7 @@ class ProviderReadGate
         $key = 'catalog-provider:v2:'.$channel.':'.hash('sha256', $cacheKey);
         $seconds = max(0, min(900, (int) ($settings['cache_seconds'] ?? 0)));
         if ($seconds > 0 && is_array($cached = Cache::get($key))) {
-            return $cached;
+            return CachedData::fromCache($dataClass, $cached);
         }
         if ($channel === 'setlist_api') {
             return $this->fetchAndCache($key, $seconds, $fetch);
@@ -87,7 +111,7 @@ class ProviderReadGate
         }
         try {
             if ($seconds > 0 && is_array($cached = Cache::get($key))) {
-                return $cached;
+                return CachedData::fromCache($dataClass, $cached);
             }
             $now = now()->getTimestampMs();
             $nextKey = 'catalog-provider:next:'.$channel;
@@ -115,14 +139,20 @@ class ProviderReadGate
         return $this->fetchAndCache($key, $seconds, $fetch);
     }
 
-    private function fetchAndCache(string $key, int $seconds, callable $fetch): array
+    /**
+     * @template TData of Data
+     *
+     * @param  callable(): (TData|list<TData>)  $fetch
+     * @return TData|list<TData>
+     */
+    private function fetchAndCache(string $key, int $seconds, callable $fetch): Data|array
     {
         $result = $fetch();
-        if (! is_array($result)) {
+        if (! $result instanceof Data && ! is_array($result)) {
             throw new CatalogProviderUnavailable;
         }
         if ($seconds > 0) {
-            Cache::put($key, $result, $seconds);
+            Cache::put($key, CachedData::toCache($result), $seconds);
         }
 
         return $result;

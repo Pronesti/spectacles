@@ -2,13 +2,31 @@
 
 namespace App\Http;
 
-use Illuminate\Support\Facades\Http;
+use App\Http\Data\CommonsImageData;
+use App\Http\Data\VenueImageData;
+use App\Http\Data\VenueImageInputData;
+use App\Http\Data\WikidataImageFileData;
+use App\Http\Integrations\MusicBrainz\Data\MusicBrainzRelationPayloadData;
+use App\Http\Integrations\ProviderConnector;
+use App\Http\Integrations\UpstreamPayload;
+use App\Http\Integrations\Wikimedia\CommonsConnector;
+use App\Http\Integrations\Wikimedia\Data\CommonsImageInfoResponsePayloadData;
+use App\Http\Integrations\Wikimedia\Data\WikidataClaimPayloadData;
+use App\Http\Integrations\Wikimedia\Data\WikidataEntitiesPayloadData;
+use App\Http\Integrations\Wikimedia\Requests\GetCommonsImageInfo;
+use App\Http\Integrations\Wikimedia\Requests\GetWikidataEntity;
+use App\Http\Integrations\Wikimedia\WikidataConnector;
+use Saloon\Http\Request;
+use Spatie\LaravelData\Data;
 
 class VenueImageClient
 {
     public function __construct(private ProviderReadGate $gate) {}
 
-    public function find(array $relations): ?array
+    /**
+     * @param  list<MusicBrainzRelationPayloadData>  $relations
+     */
+    public function find(array $relations): ?VenueImageData
     {
         if (! config('services.venue_images.enabled')) {
             return null;
@@ -16,25 +34,25 @@ class VenueImageClient
         try {
             $file = null;
             foreach ($relations as $relation) {
-                $url = $relation['url']['resource'] ?? '';
-                if (($relation['type'] ?? null) === 'wikidata' && preg_match('~^https://www\.wikidata\.org/wiki/(Q[1-9][0-9]*)$~D', $url, $match)) {
+                $url = $relation->url?->resource ?? '';
+                if ($relation->type === 'wikidata' && preg_match('~^https://www\.wikidata\.org/wiki/(Q[1-9][0-9]*)$~D', $url, $match)) {
                     $id = $match[1];
-                    $data = $this->gate->run('wikidata', $id, function () use ($id): array {
-                        $body = $this->json('https://www.wikidata.org/wiki/Special:EntityData/'.$id.'.json');
-                        $claims = $body['entities'][$id]['claims']['P18'] ?? [];
-                        usort($claims, fn ($a, $b) => (($b['rank'] ?? '') === 'preferred') <=> (($a['rank'] ?? '') === 'preferred'));
+                    $data = $this->gate->run('wikidata', $id, WikidataImageFileData::class, function () use ($id): WikidataImageFileData {
+                        $entities = $this->document(WikidataConnector::class, new GetWikidataEntity($id), WikidataEntitiesPayloadData::class);
+                        $claims = ($entities->entities[$id] ?? null)?->claims?->images ?? [];
+                        usort($claims, fn (WikidataClaimPayloadData $a, WikidataClaimPayloadData $b): int => ($b->rank === 'preferred') <=> ($a->rank === 'preferred'));
                         foreach ($claims as $claim) {
-                            if (($claim['rank'] ?? '') !== 'deprecated' && is_string($claim['mainsnak']['datavalue']['value'] ?? null)) {
-                                return ['file' => CatalogProviderData::text($claim['mainsnak']['datavalue']['value'], 255)];
+                            if ($claim->rank !== 'deprecated' && $claim->stringValue() !== null) {
+                                return new WikidataImageFileData(CatalogProviderData::text($claim->stringValue(), 255));
                             }
                         }
 
-                        return ['file' => null];
+                        return new WikidataImageFileData(null);
                     });
-                    $file = $data['file'];
+                    $file = $data->file;
                     break;
                 }
-                if (($relation['type'] ?? null) === 'image' && preg_match('~^https://commons\.wikimedia\.org/wiki/File:([^?#]+)$~D', $url, $match)) {
+                if ($relation->type === 'image' && preg_match('~^https://commons\.wikimedia\.org/wiki/File:([^?#]+)$~D', $url, $match)) {
                     $file = rawurldecode($match[1]);
                     break;
                 }
@@ -42,48 +60,49 @@ class VenueImageClient
             if ($file === null || mb_strlen($file) > 255) {
                 return null;
             }
-            $result = $this->gate->run('commons', $file, function () use ($file): array {
-                $body = $this->json('https://commons.wikimedia.org/w/api.php', ['action' => 'query', 'prop' => 'imageinfo', 'iiprop' => 'url|extmetadata', 'iiurlwidth' => 800, 'titles' => 'File:'.$file, 'format' => 'json']);
-                $pages = $body['query']['pages'] ?? [];
+            $result = $this->gate->run('commons', $file, CommonsImageData::class, function () use ($file): CommonsImageData {
+                $pages = $this->document(CommonsConnector::class, new GetCommonsImageInfo($file), CommonsImageInfoResponsePayloadData::class)->query?->pages ?? [];
                 if (count($pages) !== 1) {
-                    return ['image' => null];
+                    return new CommonsImageData(null);
                 }
-                $raw = array_values($pages)[0]['imageinfo'][0] ?? [];
-                $metadata = $raw['extmetadata'] ?? [];
-                $value = ['url' => $raw['url'] ?? null, 'thumbnailUrl' => $raw['thumburl'] ?? null, 'sourceUrl' => $raw['descriptionurl'] ?? null, 'credit' => trim(html_entity_decode(strip_tags($metadata['Artist']['value'] ?? ''), ENT_QUOTES | ENT_HTML5)), 'license' => trim(strip_tags($metadata['LicenseShortName']['value'] ?? '')), 'licenseUrl' => $metadata['LicenseUrl']['value'] ?? null];
+                $info = array_values($pages)[0]->imageinfo[0] ?? null;
+                $metadata = $info?->extmetadata;
 
-                return ['image' => CatalogProviderData::image($value)];
+                return new CommonsImageData(CatalogProviderData::image(new VenueImageInputData(
+                    url: $info?->url,
+                    thumbnailUrl: $info?->thumburl,
+                    sourceUrl: $info?->descriptionurl,
+                    credit: trim(html_entity_decode(strip_tags($metadata?->artist?->value ?? ''), ENT_QUOTES | ENT_HTML5)),
+                    license: trim(strip_tags($metadata?->licenseShortName?->value ?? '')),
+                    licenseUrl: $metadata?->licenseUrl?->value,
+                )));
             });
 
-            return $result['image'];
+            return $result->image;
         } catch (\Throwable $failure) {
             return null;
         }
     }
 
-    private function json(string $url, array $query = []): array
+    /**
+     * @template TPayload of Data
+     *
+     * @param  class-string<ProviderConnector>  $connector
+     * @param  class-string<TPayload>  $payloadClass
+     * @return TPayload
+     */
+    private function document(string $connector, Request $request, string $payloadClass): Data
     {
         $agent = trim((string) config('services.musicbrainz.user_agent'));
         if ($agent === '') {
             throw new CatalogProviderUnavailable;
         }
-        $response = Http::acceptJson()->withUserAgent($agent)->connectTimeout(2)->timeout(5)->withoutRedirecting()->withOptions(['stream' => true])->get($url, $query);
-        if (! $response->successful() || (int) $response->header('Content-Length') > 2097152) {
+        $response = (new $connector($agent))->send($request);
+        if (! $response->successful() || ProviderConnector::declaresOversizedBody($response)) {
             throw new CatalogProviderUnavailable;
         }
-        $stream = $response->toPsrResponse()->getBody();
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
-        $body = '';
-        while (! $stream->eof() && strlen($body) <= 2097152) {
-            $body .= $stream->read(min(8192, 2097153 - strlen($body)));
-        }
-        $result = strlen($body) <= 2097152 ? json_decode($body, true) : null;
-        if (! is_array($result)) {
-            throw new CatalogProviderUnavailable;
-        }
+        $body = ProviderConnector::boundedBody($response);
 
-        return $result;
+        return UpstreamPayload::parse($payloadClass, $body === null ? null : json_decode($body, true), fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable);
     }
 }

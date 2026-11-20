@@ -2,6 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingCatalogData;
+use App\Http\Data\PendingIdentityData;
+use App\Http\Data\ProviderRefData;
+use App\Http\Data\SetlistEntryDraftData;
 use App\Models\Artist;
 use App\Models\ArtistProviderId;
 use App\Models\Song;
@@ -13,49 +18,53 @@ use Illuminate\Support\Facades\DB;
 
 class CatalogDraftResolver
 {
-    public function resolve(array $concert, array $pending): array
+    public function resolve(ConcertDraftData $concert, ?PendingCatalogData $pending): ConcertDraftData
     {
-        if ($pending === []) {
+        if ($pending === null) {
             return $concert;
         }
         $jobs = [];
-        foreach (['artists' => 'artist', 'songs' => 'work', 'tours' => 'series'] as $map => $kind) {
-            foreach ($pending[$map] ?? [] as $key => $input) {
+        foreach (['artists' => ['artist', $pending->artists], 'songs' => ['work', $pending->songs], 'tours' => ['series', $pending->pendingTours()]] as $map => [$kind, $drafts]) {
+            foreach ($drafts as $key => $draft) {
                 $path = 'pendingCatalog.'.$map.'.'.$key.'.selection';
-                $ref = $input['selection'] === null ? null : ($kind === 'series'
-                    ? app(CatalogProviderSelection::class)->tour($input['selection'], $path)['ref']
-                    : ['provider' => 'musicbrainz', 'resourceType' => $kind, 'externalId' => app(MusicBrainzSelection::class)->read($input['selection'], $kind, $path)]);
-                $mbid = $ref === null ? null : $ref['externalId'];
-                $fields = $input;
-                unset($fields['selection']);
-                $jobs[] = ['map' => $map, 'key' => $key, 'kind' => $kind, 'mbid' => $mbid, 'ref' => $ref, 'fields' => $fields];
+                $ref = $draft->selection === null ? null : ($kind === 'series'
+                    ? app(CatalogProviderSelection::class)->tour($draft->selection, $path)
+                    : new ProviderRefData('musicbrainz', $kind, app(MusicBrainzSelection::class)->read($draft->selection, $kind, $path)));
+                $jobs[] = new PendingIdentityData($map, $key, $kind, $ref, $draft);
             }
         }
-        usort($jobs, fn (array $a, array $b): int => strcmp(json_encode($a['ref'] ?? $a['key']), json_encode($b['ref'] ?? $b['key'])));
+        usort($jobs, fn (PendingIdentityData $a, PendingIdentityData $b): int => strcmp($a->sortKey(), $b->sortKey()));
         $resolved = [];
         foreach ($jobs as $job) {
-            $resolved[$job['map']][$job['key']] = $this->identity($job['kind'], $job['fields'], $job['ref'])->external_id;
+            $resolved[$job->map][$job->key] = $this->identity($job->kind, $job->draft->attributes(), $job->ref)->external_id;
         }
-        foreach ($pending['lineup'] as $position => $key) {
-            $concert['catalog']['artistIds'][$position] = $resolved['artists'][$key];
+        $artistIds = $concert->catalog->artistIds;
+        foreach ($pending->lineup as $position => $key) {
+            $artistIds[$position] = $resolved['artists'][$key];
         }
-        foreach ($pending['tourChoices'] ?? [] as $position => $key) {
-            $concert['catalog']['tours'][$position]['catalogId'] = $resolved['tours'][$key];
+        $tours = $concert->catalog->tours;
+        foreach ($pending->pendingTourChoices() as $position => $key) {
+            $tours[$position] = $tours[$position]->copyWith(catalogId: $resolved['tours'][$key]);
         }
-        foreach ($concert['setlist'] as &$row) {
-            $refs = $pending['entries'][$row['id']] ?? [];
-            if (isset($refs['song'])) {
-                $row['songCatalogId'] = $resolved['songs'][$refs['song']];
+        $setlist = array_map(function (SetlistEntryDraftData $row) use ($pending, $resolved): SetlistEntryDraftData {
+            $refs = $pending->entries[$row->id] ?? null;
+            if ($refs === null) {
+                return $row;
             }
-            if (isset($refs['artist'])) {
-                $row['artistCatalogId'] = $resolved['artists'][$refs['artist']];
-            }
-        }
 
-        return $concert;
+            return $row->copyWith(
+                songCatalogId: is_string($refs->song) ? $resolved['songs'][$refs->song] : $row->songCatalogId,
+                artistCatalogId: is_string($refs->artist) ? $resolved['artists'][$refs->artist] : $row->artistCatalogId,
+            );
+        }, $concert->setlist);
+
+        return $concert->copyWith(catalog: $concert->catalog->copyWith(artistIds: $artistIds, tours: $tours), setlist: $setlist);
     }
 
-    private function identity(string $kind, array $fields, ?array $ref): Artist|Song|Tour
+    /**
+     * @param  array<string, string|null>  $attributes
+     */
+    private function identity(string $kind, array $attributes, ?ProviderRefData $ref): Artist|Song|Tour
     {
         [$model, $reference, $foreignKey, $relation] = match ($kind) {
             'artist' => [Artist::class, ArtistProviderId::class, 'artist_id', 'artist'],
@@ -63,16 +72,16 @@ class CatalogDraftResolver
             'series' => [Tour::class, TourProviderId::class, 'tour_id', 'tour'],
         };
         if ($ref === null) {
-            return $model::query()->create($fields);
+            return $model::query()->create($attributes);
         }
-        $tuple = ['provider' => $ref['provider'], 'resource_type' => $ref['resourceType'], ($kind === 'series' ? 'external_provider_id' : 'provider_resource_id') => $ref['externalId']];
+        $tuple = $ref->tuple($kind === 'series' ? 'external_provider_id' : 'provider_resource_id');
         $existing = $reference::query()->where($tuple)->first();
         if ($existing !== null) {
             return $existing->{$relation};
         }
         try {
-            return DB::transaction(function () use ($model, $reference, $foreignKey, $tuple, $fields): Artist|Song|Tour {
-                $parent = $model::query()->create($fields);
+            return DB::transaction(function () use ($model, $reference, $foreignKey, $tuple, $attributes): Artist|Song|Tour {
+                $parent = $model::query()->create($attributes);
                 $reference::query()->create([$foreignKey => $parent->id, ...$tuple]);
 
                 return $parent;

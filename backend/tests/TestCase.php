@@ -6,9 +6,13 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
+use Saloon\Config;
+use Tests\Support\ProviderHttp;
 
 abstract class TestCase extends BaseTestCase
 {
+    private static bool $blocksStrayProviderRequests = false;
+
     public function createApplication(): Application
     {
         $app = parent::createApplication();
@@ -22,6 +26,22 @@ abstract class TestCase extends BaseTestCase
         }
 
         return $app;
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        ProviderHttp::reset();
+        if (! self::$blocksStrayProviderRequests) {
+            Config::preventStrayRequests();
+            self::$blocksStrayProviderRequests = true;
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        ProviderHttp::reset();
+        parent::tearDown();
     }
 
     protected function assertDatabaseRejects(\Closure $write): void

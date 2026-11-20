@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\CatalogProviderUnavailable;
+use App\Http\Data\WikidataImageFileData;
 use App\Http\ProviderReadGate;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -13,22 +14,22 @@ class ProviderReadGateTest extends TestCase
     {
         parent::setUp();
         Cache::flush();
-        config(['services.setlistfm.enabled' => true, 'services.setlistfm.html_daily_limit' => 2, 'services.setlistfm.html_interval_ms' => 1000, 'services.setlistfm.cache_seconds' => 10]);
+        config(['services.venue_images.enabled' => true, 'services.venue_images.wikidata_daily_limit' => 2, 'services.venue_images.wikidata_interval_ms' => 1000, 'services.venue_images.cache_seconds' => 10]);
     }
 
     public function test_cached_public_data_and_independent_channels(): void
     {
         $gate = app(ProviderReadGate::class);
         $calls = 0;
-        $fetch = function () use (&$calls): array {
+        $fetch = function () use (&$calls): WikidataImageFileData {
             $calls++;
 
-            return ['public' => true];
+            return new WikidataImageFileData('Public.jpg');
         };
-        $this->assertSame(['public' => true], $gate->run('setlist_html', 'search', $fetch));
-        $this->assertSame(['public' => true], $gate->run('setlist_html', 'search', $fetch));
-        config(['services.venue_images.enabled' => true, 'services.venue_images.wikidata_daily_limit' => 2]);
-        $gate->run('wikidata', 'search', $fetch);
+        $this->assertSame('Public.jpg', $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch)->file);
+        $this->assertEquals(new WikidataImageFileData('Public.jpg'), $gate->run('wikidata', 'search', WikidataImageFileData::class, $fetch));
+        config(['services.venue_images.commons_daily_limit' => 2]);
+        $gate->run('commons', 'search', WikidataImageFileData::class, $fetch);
         $this->assertSame(2, $calls);
     }
 
@@ -36,23 +37,23 @@ class ProviderReadGateTest extends TestCase
     {
         $gate = app(ProviderReadGate::class);
         $calls = 0;
-        $fetch = function () use (&$calls): array {
+        $fetch = function () use (&$calls): WikidataImageFileData {
             $calls++;
 
-            return [];
+            return new WikidataImageFileData(null);
         };
-        $gate->run('setlist_html', 'one', $fetch);
+        $gate->run('wikidata', 'one', WikidataImageFileData::class, $fetch);
         try {
-            $gate->run('setlist_html', 'two', $fetch);
+            $gate->run('wikidata', 'two', WikidataImageFileData::class, $fetch);
             $this->fail('Pacing ignored.');
         } catch (CatalogProviderUnavailable $e) {
             $this->assertSame(429, $e->status);
         }
         $this->travel(2)->seconds();
-        $gate->run('setlist_html', 'two', $fetch);
+        $gate->run('wikidata', 'two', WikidataImageFileData::class, $fetch);
         $this->travel(2)->seconds();
         try {
-            $gate->run('setlist_html', 'three', $fetch);
+            $gate->run('wikidata', 'three', WikidataImageFileData::class, $fetch);
             $this->fail('Quota ignored.');
         } catch (CatalogProviderUnavailable $e) {
             $this->assertSame(429, $e->status);
@@ -65,16 +66,16 @@ class ProviderReadGateTest extends TestCase
     {
         $gate = app(ProviderReadGate::class);
         try {
-            $gate->run('setlist_html', 'failed', fn () => throw new CatalogProviderUnavailable);
+            $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => throw new CatalogProviderUnavailable);
         } catch (CatalogProviderUnavailable) {
             $this->addToAssertionCount(1);
         }
         $this->travel(2)->seconds();
-        $this->assertSame(['fresh' => true], $gate->run('setlist_html', 'failed', fn () => ['fresh' => true]));
-        $lock = Cache::lock('catalog-provider:gate:setlist_html', 10);
+        $this->assertSame('Fresh.jpg', $gate->run('wikidata', 'failed', WikidataImageFileData::class, fn () => new WikidataImageFileData('Fresh.jpg'))->file);
+        $lock = Cache::lock('catalog-provider:gate:wikidata', 10);
         $this->assertTrue($lock->get());
         try {
-            $gate->run('setlist_html', 'blocked', fn () => $this->fail('Contended channel fetched.'));
+            $gate->run('wikidata', 'blocked', WikidataImageFileData::class, fn () => $this->fail('Contended channel fetched.'));
         } catch (CatalogProviderUnavailable $e) {
             $this->assertSame(429, $e->status);
         } finally {
@@ -82,20 +83,20 @@ class ProviderReadGateTest extends TestCase
         }
     }
 
-    public function test_chained_html_reads_may_wait_for_short_spacing_without_skipping_quota(): void
+    public function test_chained_reads_may_wait_for_short_spacing_without_skipping_quota(): void
     {
-        config(['services.setlistfm.html_interval_ms' => 20]);
+        config(['services.venue_images.wikidata_interval_ms' => 20]);
         $gate = app(ProviderReadGate::class);
         $calls = 0;
-        $fetch = function () use (&$calls): array {
+        $fetch = function () use (&$calls): WikidataImageFileData {
             $calls++;
 
-            return ['public' => true];
+            return new WikidataImageFileData('Public.jpg');
         };
-        $gate->run('setlist_html', 'first', $fetch, true);
-        $gate->run('setlist_html', 'second', $fetch, true);
+        $gate->run('wikidata', 'first', WikidataImageFileData::class, $fetch, true);
+        $gate->run('wikidata', 'second', WikidataImageFileData::class, $fetch, true);
         try {
-            $gate->run('setlist_html', 'third', $fetch, true);
+            $gate->run('wikidata', 'third', WikidataImageFileData::class, $fetch, true);
             $this->fail('Quota ignored by chained reads.');
         } catch (CatalogProviderUnavailable $failure) {
             $this->assertSame(429, $failure->status);
@@ -105,8 +106,8 @@ class ProviderReadGateTest extends TestCase
 
     public function test_zero_quota_is_unavailable_and_errors_are_not_cached(): void
     {
-        config(['services.setlistfm.html_daily_limit' => 0]);
+        config(['services.venue_images.wikidata_daily_limit' => 0]);
         $this->expectException(CatalogProviderUnavailable::class);
-        app(ProviderReadGate::class)->run('setlist_html', 'none', fn () => $this->fail('Unconfigured provider called.'));
+        app(ProviderReadGate::class)->run('wikidata', 'none', WikidataImageFileData::class, fn () => $this->fail('Unconfigured provider called.'));
     }
 }

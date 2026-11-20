@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Data\CatalogFilterData;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
@@ -105,17 +106,26 @@ class CatalogReadRequest extends FormRequest
             if ($validator->errors()->isNotEmpty() || $this->catalog() !== 'events') {
                 return;
             }
-            $filter = $this->input('filter', []);
-            if (isset($filter['month']) && ! isset($filter['year'])) {
+            $filter = CatalogFilterData::from($this->input('filter', []));
+            if ($filter->month !== null && $filter->year === null) {
                 $validator->errors()->add('filter.year', __('validation.required', ['attribute' => 'filter.year']));
             }
-            if (isset($filter['day']) && (! isset($filter['year']) || ! isset($filter['month']))) {
+            if ($filter->day !== null && ($filter->year === null || $filter->month === null)) {
                 $validator->errors()->add('filter.month', __('validation.required', ['attribute' => 'filter.month']));
             }
-            if (isset($filter['year'], $filter['month'], $filter['day']) && ! checkdate((int) $filter['month'], (int) $filter['day'], (int) $filter['year'])) {
+            if ($filter->year !== null && $filter->month !== null && $filter->day !== null && ! checkdate($filter->month, $filter->day, $filter->year)) {
                 $validator->errors()->add('filter.day', __('validation.date', ['attribute' => 'filter.day']));
             }
         });
+    }
+
+    /**
+     * The validated catalog filter. The after-validation checks build it from input instead,
+     * because `validated()` cannot be called while validation is still running.
+     */
+    public function filter(): CatalogFilterData
+    {
+        return CatalogFilterData::from($this->validated('filter', []));
     }
 
     /** @return list<string> */

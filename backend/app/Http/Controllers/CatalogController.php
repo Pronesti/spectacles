@@ -29,9 +29,9 @@ class CatalogController extends Controller
             'tours' => [Tour::class, TourResource::class, 'name'],
         };
         $query = $model::query();
-        $filter = $request->validated('filter', []);
-        $term = $filter['q'] ?? null;
-        if (is_string($term) && $term !== '') {
+        $filter = $request->filter();
+        $term = $filter->q;
+        if ($filter->hasText($term)) {
             if ($request->catalog() === 'events') {
                 $query->where(function (Builder $group) use ($term): void {
                     $this->text($group, ['events.title'], $term);
@@ -45,53 +45,49 @@ class CatalogController extends Controller
             }
         }
         if ($request->catalog() === 'events') {
-            foreach (['year', 'month', 'day'] as $component) {
-                if (isset($filter[$component])) {
-                    $query->where($component, (int) $filter[$component]);
+            foreach (['year' => $filter->year, 'month' => $filter->month, 'day' => $filter->day] as $component => $value) {
+                if ($value !== null) {
+                    $query->where($component, $value);
                 }
             }
-            if (isset($filter['venue_uuid'])) {
-                $query->whereHas('venue', fn (Builder $venue): Builder => $venue->where('external_id', $filter['venue_uuid']));
+            if ($filter->venueUuid !== null) {
+                $query->whereHas('venue', fn (Builder $venue): Builder => $venue->where('external_id', $filter->venueUuid));
             }
-            if (isset($filter['artist_uuid'])) {
-                $query->whereHas('artistLinks.artist', fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
+            if ($filter->artistUuid !== null) {
+                $query->whereHas('artistLinks.artist', fn (Builder $artist): Builder => $artist->where('external_id', $filter->artistUuid));
             }
-            if (isset($filter['artist_mbid'])) {
-                $query->whereHas('artistLinks.artist.providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->where('provider_resource_id', strtolower($filter['artist_mbid'])));
+            if ($filter->artistMbid !== null) {
+                $query->whereHas('artistLinks.artist.providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->where('provider_resource_id', strtolower($filter->artistMbid)));
             }
         }
-        if ($request->catalog() === 'artists' && isset($filter['type'])) {
-            $query->where('type', $filter['type']);
+        if ($request->catalog() === 'artists' && $filter->type !== null) {
+            $query->where('type', $filter->type);
         }
         if ($request->catalog() === 'venues') {
-            if (is_string($filter['city'] ?? null) && $filter['city'] !== '') {
-                $this->text($query, ['venues.city'], $filter['city']);
+            if ($filter->hasText($filter->city)) {
+                $this->text($query, ['venues.city'], $filter->city);
             }
-            if (isset($filter['country_code'])) {
-                $query->where('country_code', $filter['country_code']);
+            if ($filter->countryCode !== null) {
+                $query->where('country_code', $filter->countryCode);
             }
         }
-        if ($request->catalog() === 'songs' && is_string($filter['disambiguation'] ?? null) && $filter['disambiguation'] !== '') {
-            $this->text($query, ['songs.disambiguation'], $filter['disambiguation']);
+        if ($request->catalog() === 'songs' && $filter->hasText($filter->disambiguation)) {
+            $this->text($query, ['songs.disambiguation'], $filter->disambiguation);
         }
-        if ($request->catalog() === 'tours' && (array_key_exists('artist_uuids', $filter) || array_key_exists('artist_mbids', $filter))) {
+        if ($request->catalog() === 'tours' && $filter->scopesToArtistLists()) {
             $matchArtist = function (Builder $artist) use ($filter): void {
                 $artist->where(function (Builder $scope) use ($filter): void {
-                    $scope->whereIn('external_id', array_map('strtolower', $filter['artist_uuids'] ?? []))
-                        ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map('strtolower', $filter['artist_mbids'] ?? [])));
+                    $scope->whereIn('external_id', array_map('strtolower', $filter->artistUuids ?? []))
+                        ->orWhereHas('providerIds', fn (Builder $provider): Builder => $provider->where('provider', 'musicbrainz')->where('resource_type', 'artist')->whereIn('provider_resource_id', array_map('strtolower', $filter->artistMbids ?? [])));
                 });
             };
             $this->scopeToursToArtist($query, $matchArtist);
-        } elseif ($request->catalog() === 'tours' && isset($filter['artist_uuid'])) {
-            $this->scopeToursToArtist($query, fn (Builder $artist): Builder => $artist->where('external_id', $filter['artist_uuid']));
+        } elseif ($request->catalog() === 'tours' && $filter->artistUuid !== null) {
+            $this->scopeToursToArtist($query, fn (Builder $artist): Builder => $artist->where('external_id', $filter->artistUuid));
         }
-        if (in_array($request->catalog(), ['events', 'artists'], true) && isset($filter['provider'])) {
+        if (in_array($request->catalog(), ['events', 'artists'], true) && $filter->provider !== null) {
             $relation = $request->catalog() === 'events' ? 'providerReferences' : 'providerIds';
-            $query->whereHas($relation, function (Builder $reference) use ($filter): void {
-                foreach (['provider', 'resource_type', 'provider_resource_id'] as $component) {
-                    $reference->where($component, $filter[$component]);
-                }
-            });
+            $query->whereHas($relation, fn (Builder $reference): Builder => $reference->where('provider', $filter->provider)->where('resource_type', $filter->resourceType)->where('provider_resource_id', $filter->providerResourceId));
         }
         $page = $query->with($request->includePaths())
             ->orderBy($display)->orderBy('external_id')

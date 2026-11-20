@@ -18,10 +18,10 @@ use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
 class CatalogReadEndpointsTest extends TestCase
@@ -31,7 +31,6 @@ class CatalogReadEndpointsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Http::preventStrayRequests();
         $this->actingAs(User::factory()->create());
     }
 
@@ -52,7 +51,7 @@ class CatalogReadEndpointsTest extends TestCase
         EventArtist::factory()->create(['event_id' => $event->id, 'artist_id' => $other->id]);
         $this->read('tours', ['filter' => ['artist_uuid' => $artist->external_id]])->assertOk()->assertJsonCount(0, 'data');
         $this->read('tours', ['filter' => ['artist_uuid' => $other->external_id]])->assertOk()->assertJsonCount(0, 'data');
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_tour_union_scope_preserves_manual_artist_links_and_pending_provider_identity(): void
@@ -77,7 +76,7 @@ class CatalogReadEndpointsTest extends TestCase
         $this->read('tours', ['filter' => ['artist_uuids' => array_fill(0, 60, $a->external_id), 'artist_mbids' => array_fill(0, 41, $mbid)]])->assertUnprocessable();
         $this->assertDatabaseCount('tours', 3);
         $this->assertDatabaseCount('tour_artists', 3);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_tour_search_normalizes_accents_with_exact_scope_and_paginated_totals(): void
@@ -102,7 +101,7 @@ class CatalogReadEndpointsTest extends TestCase
         $wanted->update(['name' => 'Canción nueva']);
         $this->read('tours', ['filter' => ['q' => 'cancion nueva', 'artist_uuid' => $mana->external_id]])
             ->assertOk()->assertJsonPath('data.0.id', $wanted->external_id)->assertJsonPath('meta.total', 1);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_tour_search_migration_backfills_existing_names_without_changing_display(): void

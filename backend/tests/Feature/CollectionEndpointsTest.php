@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\AttendanceMember;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Venue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -50,6 +51,30 @@ class CollectionEndpointsTest extends TestCase
         $this->patchJson('/api/v1/attendances/'.$saved['id'], ['concert' => $saved])->assertNotFound();
         $this->deleteJson('/api/v1/attendances/'.$saved['id'])->assertNotFound();
         $this->actingAs($owner)->getJson('/api/v1/collection')->assertJsonPath('data.concerts.0', $saved);
+    }
+
+    public function test_collection_payload_shape_status_and_cache_header_are_stable(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $venue = Venue::factory()->create();
+        $draft = $this->draft();
+        $draft['concert']['venueId'] = $venue->external_id;
+        $saved = $this->postJson('/api/v1/attendances?except=concerts', $draft)->assertStatus(200)->assertHeader('Cache-Control', 'no-store, private');
+        $this->assertSame(['data'], array_keys($saved->json()));
+        $this->assertSame(['version', 'concerts', 'venues'], array_keys($saved->json('data')));
+        $this->assertSame(['id', 'title', 'eventType', 'artists', 'venueId', 'date', 'time', 'timezone', 'interested', 'ticketsBought', 'notes', 'catalog', 'setlist'], array_keys($saved->json('data.concerts.0')));
+        $this->assertSame(['eventId', 'artistIds', 'tours'], array_keys($saved->json('data.concerts.0.catalog')));
+        $this->assertSame(['id', 'catalogId', 'address', 'aliases', 'image', 'region', 'countryCode', 'name', 'city', 'neighborhood', 'lat', 'lng', 'timezone'], array_keys($saved->json('data.venues.0')));
+        $this->getJson('/api/v1/collection?only=version&include=concerts')->assertOk()->assertHeader('Cache-Control', 'no-store, private')->assertExactJson($saved->json());
+    }
+
+    public function test_setlist_entries_omit_catalog_ids_they_do_not_have(): void
+    {
+        $this->actingAs(User::factory()->create());
+        [$song, $note] = $this->postJson('/api/v1/attendances', $this->draft())->assertOk()->json('data.concerts.0.setlist');
+
+        $this->assertSame(['id', 'type', 'title', 'artist', 'tape', 'artistCatalogId'], array_keys($song));
+        $this->assertSame(['id', 'type', 'title', 'artist', 'tape'], array_keys($note));
     }
 
     public function test_setlist_reorder_and_delete_are_atomic_and_undo_can_restore_public_entry_ids(): void

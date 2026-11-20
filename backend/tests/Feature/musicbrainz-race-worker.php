@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\CatalogDraftResolver;
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingCatalogData;
 use App\Models\Artist;
 use App\Models\Song;
 use App\Models\Tour;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Saloon\Config;
 
 require __DIR__.'/../../vendor/autoload.php';
 $app = require __DIR__.'/../../bootstrap/app.php';
@@ -15,7 +17,7 @@ if (DB::connection()->getDriverName() !== 'pgsql'
     || DB::connection()->getDatabaseName() !== 'spectacles_testing') {
     exit(2);
 }
-Http::preventStrayRequests();
+Config::preventStrayRequests();
 [$script, $directory, $slot] = $argv;
 $input = json_decode(file_get_contents($directory.'/input.json'), true, 512, JSON_THROW_ON_ERROR);
 [$model, $labelField] = match ($input['kind']) {
@@ -34,8 +36,8 @@ $model::created(function (Artist|Song|Tour $parent) use ($directory, $slot, $inp
         usleep(10000);
     }
 });
-$saved = DB::transaction(fn (): array => app(CatalogDraftResolver::class)
-    ->resolve($input['concert'], $input['pendingCatalog']));
+$saved = DB::transaction(fn (): ConcertDraftData => app(CatalogDraftResolver::class)
+    ->resolve(ConcertDraftData::from($input['concert']), PendingCatalogData::from($input['pendingCatalog'])));
 fwrite(STDOUT, match ($input['kind']) {
-    'artist' => $saved['catalog']['artistIds'][0], 'work' => $saved['setlist'][0]['songCatalogId'], 'series' => $saved['catalog']['tours'][0]['catalogId']
+    'artist' => $saved->catalog->artistIds[0], 'work' => $saved->setlist[0]->songCatalogId, 'series' => $saved->catalog->tours[0]->catalogId
 });

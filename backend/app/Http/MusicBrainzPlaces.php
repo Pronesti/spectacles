@@ -2,13 +2,22 @@
 
 namespace App\Http;
 
+use App\Http\Data\ProviderEntityInputData;
+use App\Http\Data\ProviderEntityValuesInputData;
+use App\Http\Data\ProviderPageData;
+use App\Http\Data\ProviderRefInputData;
+use App\Http\Data\ProviderVenueData;
+use App\Http\Data\VenueSourceInputData;
+use App\Http\Integrations\MusicBrainz\Data\MusicBrainzEntityPayloadData;
+use App\Http\Integrations\MusicBrainz\Data\MusicBrainzSearchPayloadData;
+use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Support\Str;
 
 class MusicBrainzPlaces
 {
     public function __construct(private MusicBrainzClient $client, private SetlistFmDiscovery $discovery, private VenueImageClient $images) {}
 
-    public function search(string $q): array
+    public function search(string $q): ProviderPageData
     {
         $terms = preg_split('/\s+/u', trim($q), -1, PREG_SPLIT_NO_EMPTY);
         $escaped = array_map(function (string $term): string {
@@ -18,63 +27,68 @@ class MusicBrainzPlaces
 
             return $term.'*';
         }, $terms);
-        $rows = $this->client->publicRead('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', ['query' => 'place:('.implode(' AND ', $escaped).')', 'fmt' => 'json', 'limit' => 10], function (array $body): array {
-            if (! is_array($body['places'] ?? null) || ! array_is_list($body['places']) || count($body['places']) > 100) {
+        $rows = $this->client->publicRead('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', ['query' => 'place:('.implode(' AND ', $escaped).')', 'fmt' => 'json', 'limit' => 10], MusicBrainzSearchPayloadData::class, ProviderVenueData::class, function (MusicBrainzSearchPayloadData $page): array {
+            if ($page->places === null || ! array_is_list($page->places) || count($page->places) > 100) {
                 throw new MusicBrainzUnavailable;
             }
 
-            return array_map(fn ($raw) => is_array($raw) ? $this->normalize($raw) : throw new CatalogProviderUnavailable, array_slice($body['places'], 0, 10));
+            return array_map(fn (mixed $place): ProviderVenueData => $this->normalize(UpstreamPayload::parse(MusicBrainzEntityPayloadData::class, $place, fn (): CatalogProviderUnavailable => new CatalogProviderUnavailable)), array_slice($page->places, 0, 10));
         });
 
-        return ['data' => array_map(fn ($row) => $this->discovery->attachEntity($row, 'venue'), $rows), 'meta' => ['next_cursor' => null, 'partial' => true]];
+        return ProviderPageData::of(array_map(fn (ProviderVenueData $row): ProviderVenueData => $this->discovery->attachVenue($row), $rows), null, true);
     }
 
-    public function detail(string $mbid): array
+    public function detail(string $mbid): ProviderVenueData
     {
-        $value = $this->client->publicRead('musicbrainz:place:v3:'.$mbid, 'place/'.$mbid, ['inc' => 'aliases+url-rels', 'fmt' => 'json'], function (array $raw) use ($mbid): array {
-            if (strtolower($raw['id'] ?? '') !== strtolower($mbid)) {
+        $value = $this->client->publicRead('musicbrainz:place:v3:'.$mbid, 'place/'.$mbid, ['inc' => 'aliases+url-rels', 'fmt' => 'json'], MusicBrainzEntityPayloadData::class, ProviderVenueData::class, function (MusicBrainzEntityPayloadData $place) use ($mbid): ProviderVenueData {
+            if (strtolower($place->id ?? '') !== strtolower($mbid)) {
                 throw new CatalogProviderUnavailable;
             }
-            $value = $this->normalize($raw);
-            $value['values']['image'] = $this->images->find($raw['relations'] ?? []);
+            $value = $this->normalize($place);
 
-            return $value;
+            return $value->copyWith(values: $value->values->copyWith(image: $this->images->find($place->relations ?? [])));
         });
 
-        return $this->discovery->attachEntity($value, 'venue');
+        return $this->discovery->attachVenue($value);
     }
 
-    private function normalize(array $raw): array
+    /**
+     * Maps a MusicBrainz place to Venue entity input and validates it.
+     */
+    private function normalize(MusicBrainzEntityPayloadData $place): ProviderVenueData
     {
-        $id = $raw['id'] ?? '';
-        if (! is_string($id) || ! Str::isUuid($id)) {
+        $id = $place->id ?? '';
+        if (! Str::isUuid($id)) {
             throw new CatalogProviderUnavailable;
         }
-        if (isset($raw['relations']) && (! is_array($raw['relations']) || ! array_is_list($raw['relations']) || count($raw['relations']) > 1000) || isset($raw['aliases']) && (! is_array($raw['aliases']) || ! array_is_list($raw['aliases']) || count($raw['aliases']) > 100)) {
+        if ($place->relations !== null && (! array_is_list($place->relations) || count($place->relations) > 1000) || $place->aliases !== null && (! array_is_list($place->aliases) || count($place->aliases) > 100)) {
             throw new CatalogProviderUnavailable;
         }
         $refs = [];
         $venueUrls = [];
-        foreach ($raw['relations'] ?? [] as $relation) {
-            if (($relation['target-type'] ?? null) === 'url' && in_array($relation['type'] ?? null, ['setlistfm', 'setlist.fm'], true)) {
-                $url = $relation['url']['resource'] ?? '';
-                $refs[] = ['provider' => 'setlist_fm', 'resourceType' => 'venue', 'externalId' => app(SetlistFmUrl::class)->id($url, 'venue')];
+        foreach ($place->relations ?? [] as $relation) {
+            if ($relation->targetType === 'url' && in_array($relation->type, ['setlistfm', 'setlist.fm'], true)) {
+                $url = $relation->url?->resource ?? '';
+                $refs[] = new ProviderRefInputData('setlist_fm', 'venue', app(SetlistFmUrl::class)->id($url, 'venue'));
                 $venueUrls[$url] = true;
             }
         }
         $aliases = [];
-        foreach ($raw['aliases'] ?? [] as $alias) {
-            $aliases[] = CatalogProviderData::text($alias['name'] ?? null);
+        foreach ($place->aliases ?? [] as $alias) {
+            $aliases[] = CatalogProviderData::text($alias->name);
         }
-        $country = $raw['area']['iso-3166-1-codes'][0] ?? null;
-        $value = ['ref' => ['provider' => 'musicbrainz', 'resourceType' => 'place', 'externalId' => strtolower($id)], 'url' => 'https://musicbrainz.org/place/'.strtolower($id), 'linkedRefs' => $refs, 'values' => ['name' => $raw['name'] ?? null, 'city' => $raw['area']['name'] ?? '', 'region' => null, 'countryCode' => $country, 'address' => ($raw['address'] ?? '') ?: null, 'aliases' => array_values(array_unique($aliases)), 'lat' => $raw['coordinates']['latitude'] ?? null, 'lng' => $raw['coordinates']['longitude'] ?? null, 'timezone' => null, 'image' => null]];
-
-        if (count($venueUrls) === 1) {
-            $value['venueUrl'] = array_key_first($venueUrls);
+        $countryCode = $place->area?->countryCodes[0] ?? null;
+        if ($countryCode !== null && ! is_string($countryCode)) {
+            throw new CatalogProviderUnavailable;
         }
 
-        $value['venueSources'] = array_map(fn ($source) => ['externalId' => app(SetlistFmUrl::class)->id($source, 'venue'), 'url' => $source], array_keys($venueUrls));
-
-        return CatalogProviderData::entity($value);
+        return CatalogProviderData::venue(new ProviderEntityInputData(
+            ref: new ProviderRefInputData('musicbrainz', 'place', strtolower($id)),
+            url: 'https://musicbrainz.org/place/'.strtolower($id),
+            values: new ProviderEntityValuesInputData(name: $place->name, city: $place->area?->name ?? '', countryCode: $countryCode, address: $place->address ?: null, aliases: array_values(array_unique($aliases)), lat: $place->coordinates?->latitude, lng: $place->coordinates?->longitude),
+            linkedRefs: $refs,
+            venueUrl: count($venueUrls) === 1 ? array_key_first($venueUrls) : null,
+            venueSources: array_map(fn (string $source): VenueSourceInputData => new VenueSourceInputData(app(SetlistFmUrl::class)->id($source, 'venue'), $source), array_keys($venueUrls)),
+        ));
     }
 }

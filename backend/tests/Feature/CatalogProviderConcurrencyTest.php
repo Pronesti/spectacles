@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\CatalogProviderSelection;
+use App\Http\Data\ProviderPerformanceInputData;
 use App\Models\Artist;
 use App\Models\Event;
 use App\Models\EventProviderReference;
@@ -44,10 +45,10 @@ class CatalogProviderConcurrencyTest extends TestCase
         $group['tour']['url'] = 'https://www.setlist.fm/search?artist=4bd7afb6&tour='.$suffix;
         $group['venue']['ref']['externalId'] = $suffix;
         $group['venue']['url'] = 'https://www.setlist.fm/venue/race-'.$suffix.'.html';
-        $concert = ['title' => 'Race Event '.$suffix, 'artists' => [$artist->name], 'catalog' => ['artistIds' => [$artist->external_id], 'tours' => [['name' => $tour->name, 'catalogId' => $tour->external_id]]], 'date' => $group['date'], 'time' => '', 'timezone' => null];
+        $concert = ['id' => Str::uuid()->toString(), 'title' => 'Race Event '.$suffix, 'venueId' => null, 'interested' => false, 'ticketsBought' => true, 'notes' => null, 'setlist' => [], 'artists' => [$artist->name], 'catalog' => ['artistIds' => [$artist->external_id], 'tours' => [['name' => $tour->name, 'catalogId' => $tour->external_id]]], 'date' => $group['date'], 'time' => '', 'timezone' => null];
         $directory = sys_get_temp_dir().'/spectacles-provider-race-'.$suffix;
         mkdir($directory, 0700);
-        file_put_contents($directory.'/input.json', json_encode(['concert' => $concert, 'venueUuid' => $venue->external_id, 'binding' => ['selection' => app(CatalogProviderSelection::class)->issue('performance', $group)], 'conflict' => $conflict], JSON_THROW_ON_ERROR));
+        file_put_contents($directory.'/input.json', json_encode(['concert' => $concert, 'venueUuid' => $venue->external_id, 'binding' => ['selection' => app(CatalogProviderSelection::class)->issue('performance', ProviderPerformanceInputData::from($group))], 'conflict' => $conflict], JSON_THROW_ON_ERROR));
         $connection = config('database.connections.pgsql');
         $environment = [...getenv(), 'APP_ENV' => 'testing', 'APP_KEY' => config('app.key'), 'DB_CONNECTION' => 'pgsql', 'DB_URL' => '', 'DB_DATABASE' => 'spectacles_testing', 'DB_HOST' => (string) $connection['host'], 'DB_PORT' => (string) $connection['port'], 'DB_USERNAME' => (string) $connection['username'], 'DB_PASSWORD' => (string) $connection['password']];
         $processes = [];

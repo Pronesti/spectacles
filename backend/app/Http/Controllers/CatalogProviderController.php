@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\CatalogProviderData;
 use App\Http\CatalogProviderSelection;
 use App\Http\CatalogProviderUnavailable;
+use App\Http\Data\CatalogVenueData;
+use App\Http\Data\ProviderEntityInputData;
+use App\Http\Data\ProviderPageData;
+use App\Http\Data\ProviderPerformanceSearchData;
+use App\Http\Data\ProviderTourSearchData;
+use App\Http\Data\ProviderVenueData;
 use App\Http\MusicBrainzPlaces;
 use App\Http\MusicBrainzUnavailable;
 use App\Http\Requests\CatalogProviderRequest;
@@ -19,7 +25,7 @@ class CatalogProviderController extends Controller
     {
         try {
             $value = $fetch();
-            $body = $page ? $value : ['data' => [$value], 'meta' => ['next_cursor' => null, 'partial' => false]];
+            $body = $page ? $value : ProviderPageData::of([$value], null, false);
 
             return response()->json($body)->header('Cache-Control', 'private, no-store');
         } catch (CatalogProviderUnavailable|MusicBrainzUnavailable $failure) {
@@ -31,12 +37,12 @@ class CatalogProviderController extends Controller
 
     public function tours(CatalogProviderRequest $request, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->tours($request->validated(), $request->validated('q') ?? '', $request->validated('cursor')), true);
+        return $this->respond(fn () => $discovery->tours(ProviderTourSearchData::from($request->validated())), true);
     }
 
     public function performances(CatalogProviderRequest $request, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(fn () => $discovery->performances($request->validated()), true);
+        return $this->respond(fn () => $discovery->performances(ProviderPerformanceSearchData::from($request->validated())), true);
     }
 
     public function preview(CatalogProviderRequest $request, string $id, SetlistFmDiscovery $discovery): JsonResponse
@@ -62,49 +68,41 @@ class CatalogProviderController extends Controller
     public function catalogVenue(CatalogProviderRequest $request, string $uuid): JsonResponse
     {
         $venue = Venue::where('external_id', $uuid)->firstOrFail();
-        $values = CatalogProviderData::venueValues(['name' => $venue->name, 'city' => $venue->city ?? '', 'region' => $venue->region, 'countryCode' => $venue->country_code, 'address' => $venue->address, 'aliases' => $venue->aliases ?? [], 'lat' => $venue->lat === null ? null : (float) $venue->lat, 'lng' => $venue->lng === null ? null : (float) $venue->lng, 'timezone' => $venue->timezone, 'image' => $venue->image]);
-        $refs = $venue->providerIds->filter(fn ($r) => in_array($r->provider, ['musicbrainz', 'setlist_fm'], true) && in_array($r->resource_type, ['place', 'venue'], true))->map(fn ($r) => ['provider' => $r->provider, 'resourceType' => $r->resource_type, 'externalId' => $r->provider_resource_id])->values()->all();
 
-        $venueUrl = $venue->providerIds->first(fn ($ref) => $ref->provider === 'setlist_fm' && $ref->resource_type === 'venue' && $ref->source_url !== null)?->source_url;
-        $venueSources = $venue->providerIds->filter(fn ($ref) => $ref->provider === 'setlist_fm' && $ref->resource_type === 'venue' && $ref->source_url !== null)->map(fn ($ref) => ['externalId' => $ref->provider_resource_id, 'url' => $ref->source_url])->values()->all();
-
-        return response()->json(['data' => ['localId' => $uuid, 'values' => $values, 'refs' => $refs, 'venueUrl' => $venueUrl, 'venueSources' => $venueSources]])->header('Cache-Control', 'private, no-store');
+        return response()->json(['data' => CatalogVenueData::fromVenue($venue, $uuid)])->header('Cache-Control', 'private, no-store');
     }
 
     public function confirmVenue(CatalogProviderRequest $request, CatalogProviderSelection $proofs, SetlistFmDiscovery $discovery): JsonResponse
     {
-        return $this->respond(function () use ($request, $proofs, $discovery): array {
-            $values = array_map(fn ($p) => $proofs->read($p, 'venue', 'selections'), $request->validated('selections'));
+        return $this->respond(function () use ($request, $proofs, $discovery): ProviderVenueData {
+            $values = array_map(fn (string $proof): ProviderVenueData => $proofs->venue($proof, 'selections'), $request->validated('selections'));
             $refs = [];
+            $sources = [];
+            $urls = [];
             foreach ($values as $value) {
-                foreach ([$value['ref'], ...$value['linkedRefs']] as $ref) {
-                    $refs[json_encode($ref)] = $ref;
+                foreach ($value->identities() as $ref) {
+                    $refs[$ref->key()] = $ref;
+                }
+                foreach ($value->venueSources as $source) {
+                    $sources[$source->externalId] = $source;
+                }
+                if (is_string($value->venueUrl)) {
+                    $urls[$value->venueUrl] = true;
                 }
             }
             $localIds = [];
             foreach ($refs as $ref) {
-                $id = VenueProviderId::where('provider', $ref['provider'])->where('resource_type', $ref['resourceType'])->where('provider_resource_id', $ref['externalId'])->value('venue_id');
+                $id = VenueProviderId::where($ref->tuple())->value('venue_id');
                 if ($id !== null) {
                     $localIds[$id] = true;
                 }
             }
             abort_if(count($localIds) > 1, 409, 'These identities already belong to different saved Venues.');
-            $primary = ($values[0]['ref']['resourceType'] === 'place' ? $values[0] : $values[1]);
-            unset($refs[json_encode($primary['ref'])]);
-            $primary['linkedRefs'] = array_values($refs);
-            $sources = [];
-            foreach ($values as $value) {
-                foreach ($value['venueSources'] ?? [] as $source) {
-                    $sources[$source['externalId']] = $source;
-                }
-            }
-            $primary['venueSources'] = array_values($sources);
-            $urls = array_values(array_unique(array_filter(array_column($values, 'venueUrl'))));
-            if (count($urls) === 1) {
-                $primary['venueUrl'] = $urls[0];
-            }
+            $primary = $values[0]->ref->resourceType === 'place' ? $values[0] : $values[1];
+            unset($refs[$primary->ref->key()]);
+            $merged = $primary->copyWith(linkedRefs: array_values($refs), venueSources: array_values($sources), venueUrl: count($urls) === 1 ? array_key_first($urls) : $primary->venueUrl);
 
-            return $discovery->attachEntity(CatalogProviderData::entity($primary), 'venue');
+            return $discovery->attachVenue(CatalogProviderData::venue(ProviderEntityInputData::from($merged)));
         });
     }
 }

@@ -33,7 +33,7 @@ class MusicBrainzConcurrencyTest extends TestCase
         $entry = (string) Str::uuid();
         $label = 'Race '.$kind.' '.$mbid;
         $proof = app(MusicBrainzSelection::class)->issue($kind, $mbid);
-        $concert = ['artists' => [], 'catalog' => ['artistIds' => [], 'tours' => []], 'setlist' => []];
+        $concert = ['id' => (string) Str::uuid(), 'title' => $label, 'artists' => [], 'venueId' => null, 'date' => ['year' => 2026, 'month' => null, 'day' => null], 'time' => null, 'timezone' => null, 'interested' => false, 'ticketsBought' => true, 'notes' => null, 'catalog' => ['artistIds' => [], 'tours' => []], 'setlist' => []];
         $pending = ['artists' => [], 'songs' => [], 'lineup' => [], 'entries' => []];
         if ($kind === 'artist') {
             $concert['artists'] = [$label];

@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Integrations\MusicBrainz\Data;
+
+use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Data;
+
+class MusicBrainzAreaPayloadData extends Data
+{
+    /**
+     * @param  list<string>|null  $countryCodes
+     */
+    public function __construct(
+        public readonly ?string $name = null,
+        #[MapInputName('iso-3166-1-codes')]
+        public readonly ?array $countryCodes = null,
+    ) {}
+}

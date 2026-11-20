@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingSelectionData;
+use App\Http\Data\ProviderRefData;
+use App\Http\Data\VenueDraftData;
 use App\Models\Venue;
 use App\Models\VenueProviderId;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -10,34 +14,34 @@ use Illuminate\Validation\ValidationException;
 
 class VenueDraftResolver
 {
-    public function resolve(array $concert, ?array $venue, ?array $binding): ?Venue
+    public function resolve(ConcertDraftData $concert, ?VenueDraftData $venue, ?PendingSelectionData $binding): ?Venue
     {
         if ($binding === null) {
             if ($venue === null) {
-                return $concert['venueId'] === null ? null : Venue::where('external_id', $concert['venueId'])->firstOrFail();
+                return $concert->venueId === null ? null : Venue::where('external_id', $concert->venueId)->firstOrFail();
             }
-            if (isset($venue['catalogId'])) {
-                return Venue::where('external_id', $venue['catalogId'])->firstOrFail();
+            if (is_string($venue->catalogId)) {
+                return Venue::where('external_id', $venue->catalogId)->firstOrFail();
             }
 
-            return Venue::query()->create($this->fields($venue));
+            return Venue::query()->create($venue->attributes());
         }
-        if ($venue === null || isset($venue['catalogId']) || isset($concert['catalog']['eventId'])) {
+        if ($venue === null || $venue->isSaved() || $concert->catalog->hasEvent()) {
             throw ValidationException::withMessages(['pendingCatalog.venue' => 'Choose either a saved Venue or a provider Venue.']);
         }
-        $value = app(CatalogProviderSelection::class)->read($binding['selection'], 'venue', 'pendingCatalog.venue.selection');
-        $refs = [$value['ref'], ...$value['linkedRefs']];
-        $sources = array_column($value['venueSources'] ?? [], 'url', 'externalId');
-        usort($refs, fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+        $value = app(CatalogProviderSelection::class)->venue($binding->selection, 'pendingCatalog.venue.selection');
+        $refs = $value->identities();
+        $sources = $value->sourceUrls();
+        usort($refs, fn (ProviderRefData $a, ProviderRefData $b): int => strcmp($a->key(), $b->key()));
         $known = $this->known($refs, $sources);
         if ($known !== null) {
             return $known;
         }
         try {
             return DB::transaction(function () use ($venue, $refs, $sources): Venue {
-                $parent = Venue::query()->create($this->fields($venue));
+                $parent = Venue::query()->create($venue->attributes());
                 foreach ($refs as $ref) {
-                    $parent->providerIds()->create([...$this->tuple($ref), 'source_url' => $this->sourceUrl($ref, $sources)]);
+                    $parent->providerIds()->create([...$ref->tuple(), 'source_url' => $this->sourceUrl($ref, $sources)]);
                 }
 
                 return $parent;
@@ -52,11 +56,15 @@ class VenueDraftResolver
         }
     }
 
+    /**
+     * @param  list<ProviderRefData>  $refs
+     * @param  array<string, string>  $sources
+     */
     private function known(array $refs, array $sources): ?Venue
     {
         $parents = [];
         foreach ($refs as $ref) {
-            $row = VenueProviderId::where($this->tuple($ref))->first();
+            $row = VenueProviderId::where($ref->tuple())->first();
             if ($row !== null) {
                 $parents[$row->venue_id] = $row->venue;
             }
@@ -66,15 +74,15 @@ class VenueDraftResolver
         // A confirmed association can add a new explicit handle without changing shared Venue facts.
         if ($parent !== null) {
             foreach ($refs as $ref) {
-                $existing = VenueProviderId::where($this->tuple($ref))->first();
+                $existing = VenueProviderId::where($ref->tuple())->first();
                 if ($existing !== null && $existing->source_url === null && $this->sourceUrl($ref, $sources) !== null) {
                     $existing->update(['source_url' => $this->sourceUrl($ref, $sources)]);
                 }
                 if ($existing === null) {
                     try {
-                        DB::transaction(fn () => $parent->providerIds()->create([...$this->tuple($ref), 'source_url' => $this->sourceUrl($ref, $sources)]));
+                        DB::transaction(fn () => $parent->providerIds()->create([...$ref->tuple(), 'source_url' => $this->sourceUrl($ref, $sources)]));
                     } catch (UniqueConstraintViolationException $failure) {
-                        $winner = VenueProviderId::where($this->tuple($ref))->first();
+                        $winner = VenueProviderId::where($ref->tuple())->first();
                         if ($winner === null) {
                             throw $failure;
                         }
@@ -87,20 +95,13 @@ class VenueDraftResolver
         return $parent;
     }
 
-    private function sourceUrl(array $ref, array $sources): ?string
+    /**
+     * @param  array<string, string>  $sources
+     */
+    private function sourceUrl(ProviderRefData $ref, array $sources): ?string
     {
-        $url = $sources[$ref['externalId']] ?? null;
+        $url = $sources[$ref->externalId] ?? null;
 
-        return $url !== null && $ref['provider'] === 'setlist_fm' && app(SetlistFmUrl::class)->id($url, 'venue') === $ref['externalId'] ? $url : null;
-    }
-
-    private function tuple(array $ref): array
-    {
-        return ['provider' => $ref['provider'], 'resource_type' => $ref['resourceType'], 'provider_resource_id' => $ref['externalId']];
-    }
-
-    private function fields(array $value): array
-    {
-        return ['name' => $value['name'], 'city' => $value['city'], 'region' => $value['region'] ?? null, 'country_code' => $value['countryCode'] ?? null, 'address' => $value['address'] ?? null, 'aliases' => $value['aliases'] ?? [], 'image' => $value['image'] ?? null, 'lat' => $value['lat'], 'lng' => $value['lng'], 'timezone' => $value['timezone'] ?? null];
+        return $url !== null && $ref->provider === 'setlist_fm' && app(SetlistFmUrl::class)->id($url, 'venue') === $ref->externalId ? $url : null;
     }
 }

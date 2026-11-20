@@ -4,7 +4,8 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
+use Saloon\Config;
+use Tests\Support\ProviderHttp;
 
 require __DIR__.'/../../vendor/autoload.php';
 $app = require __DIR__.'/../../bootstrap/app.php';
@@ -23,19 +24,17 @@ config([
     'session.lifetime' => 4320,
     'services.setlistfm.enabled' => true,
     'services.setlistfm.user_agent' => 'SpectaclesOfflineFixture/1.0',
-    'services.setlistfm.html_daily_limit' => 10000,
-    'services.setlistfm.html_interval_ms' => 0,
     'services.setlistfm.cache_seconds' => 0,
     'services.musicbrainz.enabled' => true, 'services.musicbrainz.user_agent' => 'SpectaclesOfflineFixture/1.0',
     'services.venue_images.enabled' => true, 'services.venue_images.wikidata_daily_limit' => 10000,
     'services.venue_images.commons_daily_limit' => 10000, 'services.venue_images.wikidata_interval_ms' => 0,
     'services.venue_images.commons_interval_ms' => 0, 'services.venue_images.cache_seconds' => 0,
 ]);
-Http::preventStrayRequests();
+Config::preventStrayRequests();
 if (($state['upstream503'] ?? false) === true) {
-    Http::fake(fn () => Http::response(['message' => 'Fixture unavailable'], 503));
+    ProviderHttp::fake(fn () => ProviderHttp::response(['message' => 'Fixture unavailable'], 503));
 } else {
-    Http::fake(require __DIR__.'/catalog-provider-http-responses.php');
+    ProviderHttp::fake(require __DIR__.'/catalog-provider-http-responses.php');
 }
 $request = Request::capture();
 $isSave = $request->isMethod('POST') && $request->path() === 'api/v1/attendances';

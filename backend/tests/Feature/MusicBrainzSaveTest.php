@@ -9,8 +9,8 @@ use App\Models\Event;
 use App\Models\Tour;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Tests\Support\ProviderHttp;
 use Tests\TestCase;
 
 class MusicBrainzSaveTest extends TestCase
@@ -20,7 +20,6 @@ class MusicBrainzSaveTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Http::preventStrayRequests();
     }
 
     private function draft(): array
@@ -53,7 +52,6 @@ class MusicBrainzSaveTest extends TestCase
 
     public function test_pending_identities_are_atomic_reused_and_reload_without_sidecars(): void
     {
-        Http::preventStrayRequests();
         $this->actingAs(User::factory()->create());
         $saved = $this->postJson('/api/v1/attendances', $this->pending())->assertOk()->json('data.concerts.0');
         $this->assertSame($saved['catalog']['artistIds'][0], $saved['setlist'][0]['artistCatalogId']);
@@ -62,7 +60,7 @@ class MusicBrainzSaveTest extends TestCase
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('songs', 1);
         $this->assertDatabaseCount('attendances', 2);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_invalid_references_and_proofs_leave_no_domain_rows(): void
@@ -92,7 +90,6 @@ class MusicBrainzSaveTest extends TestCase
 
     public function test_manual_song_creation_differs_from_unresolved_rows_and_empty_sidecars_are_compatible(): void
     {
-        Http::preventStrayRequests();
         $this->actingAs(User::factory()->create());
         $body = $this->pending();
         foreach (['artists', 'songs'] as $map) {
@@ -110,7 +107,7 @@ class MusicBrainzSaveTest extends TestCase
         $invalid = $this->draft();
         $invalid['pendingCatalog'] = null;
         $this->postJson('/api/v1/attendances', $invalid)->assertUnprocessable();
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_repeated_songs_remain_separate_rows_and_existing_provider_facts_are_read_only(): void
@@ -198,7 +195,7 @@ class MusicBrainzSaveTest extends TestCase
         $this->assertDatabaseCount('tour_provider_ids', 1);
         $this->assertDatabaseHas('tour_provider_ids', ['provider' => 'musicbrainz',
             'resource_type' => 'series', 'external_provider_id' => '23aa9d94-ffc6-4160-a7f3-31cfba1ea646']);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_old_sidecars_and_plain_manual_tours_still_save_without_new_maps(): void
@@ -213,7 +210,7 @@ class MusicBrainzSaveTest extends TestCase
         $this->postJson('/api/v1/attendances', $empty)->assertOk();
         $this->assertDatabaseCount('tours', 1);
         $this->assertDatabaseCount('tour_provider_ids', 0);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_invalid_tour_maps_or_proofs_create_no_domain_records(): void
@@ -277,7 +274,7 @@ class MusicBrainzSaveTest extends TestCase
         foreach (['artists', 'songs', 'tours', 'tour_provider_ids', 'attendances'] as $table) {
             $this->assertDatabaseCount($table, 0);
         }
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 
     public function test_distinct_same_name_series_and_null_selection_tour_are_preserved(): void
@@ -297,6 +294,6 @@ class MusicBrainzSaveTest extends TestCase
         $this->postJson('/api/v1/attendances', $manual)->assertOk();
         $this->assertDatabaseCount('tours', 3);
         $this->assertDatabaseCount('tour_provider_ids', 2);
-        Http::assertNothingSent();
+        ProviderHttp::assertNothingSent();
     }
 }

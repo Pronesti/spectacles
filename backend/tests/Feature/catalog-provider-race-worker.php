@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Data\ConcertDraftData;
+use App\Http\Data\PendingSelectionData;
 use App\Http\EventDraftResolver;
 use App\Models\EventProviderReference;
 use App\Models\Venue;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Saloon\Config;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 require __DIR__.'/../../vendor/autoload.php';
@@ -14,7 +16,7 @@ $app->make(Kernel::class)->bootstrap();
 if (! $app->environment('testing') || DB::connection()->getDriverName() !== 'pgsql' || DB::connection()->getDatabaseName() !== 'spectacles_testing') {
     exit(2);
 }
-Http::preventStrayRequests();
+Config::preventStrayRequests();
 [$script, $directory, $slot] = $argv;
 if (! in_array($slot, ['a', 'b'], true) || ! is_dir($directory) || is_link($directory)) {
     exit(2);
@@ -39,7 +41,7 @@ try {
     if (($input['conflict'] ?? false) && $slot === 'b') {
         $concert['title'] .= ' differing title';
     }
-    $event = DB::transaction(fn () => app(EventDraftResolver::class)->resolve($concert, Venue::where('external_id', $input['venueUuid'])->firstOrFail(), $input['binding']));
+    $event = DB::transaction(fn () => app(EventDraftResolver::class)->resolve(ConcertDraftData::from($concert), Venue::where('external_id', $input['venueUuid'])->firstOrFail(), PendingSelectionData::from($input['binding'])));
     fwrite(STDOUT, $event->external_id);
 } catch (HttpException $e) {
     if ($e->getStatusCode() !== 409) {
