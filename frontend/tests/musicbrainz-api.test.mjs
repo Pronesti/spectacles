@@ -47,3 +47,29 @@ test('Tour provider scope carries public Artist identities only and distinguishe
   assert.equal(call.searchParams.get('artist_uuids[0]'),scope.artist_uuids[0]);assert.equal(call.searchParams.get('artist_mbids[0]'),scope.artist_mbids[0])
   await assert.rejects(createMusicBrainzClient('',async()=>Response.json({data:[],meta:{scope_available:false}})).search('series','Tour',undefined,scope),error=>error.message.includes('no MusicBrainz identity')&&!error.message.includes('Sign in'))
 })
+
+test('a short MusicBrainz busy response is retried once after Retry-After', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] })
+  const statuses = [new Response('busy', { status: 429, headers: { 'Retry-After': '1' } }), Response.json({ data: [row] })]
+  let calls = 0
+  const client = createMusicBrainzClient('', async () => statuses[calls++])
+  const promise = client.search('artist', 'Zoé')
+  await new Promise(resolve => setImmediate(resolve)); assert.equal(calls, 1)
+  t.mock.timers.tick(1000)
+  assert.equal((await promise)[0].label, 'Zoé'); assert.equal(calls, 2)
+  calls = 0
+  const repeated = createMusicBrainzClient('', async () => { calls++; return new Response('busy', { status: 429, headers: { 'Retry-After': '1' } }) }).search('artist', 'Zoé')
+  const rejection = assert.rejects(repeated, error => error instanceof MusicBrainzApiError && error.status === 429)
+  await new Promise(resolve => setImmediate(resolve)); t.mock.timers.tick(1000); await rejection; assert.equal(calls, 2)
+})
+
+test('a long Retry-After or a cancelled wait does not retry', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] })
+  let calls = 0
+  const busy = retryAfter => createMusicBrainzClient('', async () => { calls++; return new Response('busy', { status: 429, headers: { 'Retry-After': retryAfter } }) })
+  await assert.rejects(busy('30').search('artist', 'Zoé'), error => error instanceof MusicBrainzApiError && error.retryAfter === 30); assert.equal(calls, 1)
+  calls = 0
+  const controller = new AbortController(); const cancelled = busy('2').search('artist', 'Zoé', controller.signal)
+  const aborted = assert.rejects(cancelled, error => error.name === 'AbortError')
+  await new Promise(resolve => setImmediate(resolve)); controller.abort(); await aborted; t.mock.timers.tick(5000); assert.equal(calls, 1)
+})

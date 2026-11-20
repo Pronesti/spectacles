@@ -100,6 +100,17 @@ class MusicBrainzLookupTest extends TestCase
         }
     }
 
+    public function test_upstream_rate_limit_503_is_a_retryable_429(): void
+    {
+        $this->actingAs(User::factory()->create())->withHeader('Accept', 'application/json');
+        ProviderHttp::fakeSequence()->push('private debug', 503, ['Retry-After' => '1', 'X-RateLimit-Zone' => 'global'])->push('private debug', 503, ['Retry-After' => '99999']);
+        $this->get('/api/v1/musicbrainz/artists?q=Busy')->assertStatus(429)->assertHeader('Retry-After', '1');
+        Cache::flush();
+        $content = $this->get('/api/v1/musicbrainz/artists?q=Busy')->assertStatus(429)->assertHeader('Retry-After', '60')->getContent();
+        expect($content)->toBeString()->not->toContain('private debug')
+            ->and(Cache::get('musicbrainz:v1:artist:'.hash('sha256', 'Busy')))->toBeNull();
+    }
+
     public function test_empty_success_is_cached_and_a_held_global_lock_does_not_sleep(): void
     {
         $this->actingAs(User::factory()->create())->withHeader('Accept', 'application/json');
