@@ -26,7 +26,10 @@ const render = (Component, props) => renderToStaticMarkup(createElement(Componen
 test('wizard starts with four named steps, one form, Continue and no early Save', () => {
   const html = render(ConcertWizard, { venues: [], catalog, musicbrainz, onClose: () => {}, onSave: async () => {} })
   for (const label of ['Artist', 'Tour', 'Event', 'Setlist']) assert.ok(html.includes(label))
-  assert.match(html, /aria-current="step"/); assert.equal((html.match(/<form\b/g) ?? []).length, 1); assert.match(html, /Continue/); assert.doesNotMatch(html, />Save concert</); assert.doesNotMatch(html, />Cancel<|>Discard draft<|>Create manually</); assert.match(html, /aria-label="Close dialog"/)
+  assert.match(html, /aria-current="step"/); assert.equal((html.match(/<form\b/g) ?? []).length, 1); assert.match(html, /Continue/); assert.doesNotMatch(html, />Save concert</); assert.doesNotMatch(html, />Cancel<|>Back<|>Create manually</); assert.match(html, /aria-label="Close dialog"/)
+  const footer = html.slice(html.indexOf('class="form-footer"'))
+  assert.match(footer, /^[^]*?<button[^>]*class="button secondary"[^>]*>Discard<\/button><button[^>]*class="button primary"[^>]*>Continue</)
+  assert.doesNotMatch(footer.match(/<button[^>]*>Discard</)[0], /disabled/)
 })
 test('combined autocomplete and explicit entity fields expose accessible non-submit actions', () => {
   const html = render(EntityAutocomplete, { kind: 'artists', label: 'Find Artist', catalog, musicbrainz, onPick: () => {} })

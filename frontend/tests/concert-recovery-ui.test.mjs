@@ -52,9 +52,9 @@ test('query text restores with results closed; a pending Event preview has an ex
  assert.match(html, /aria-expanded="false"/); assert.doesNotMatch(html, /role="listbox"/)
  assert.match(html, /Sign in to reload the selected Event preview/); assert.match(html, /Dismiss preview/)
 })
-test('creation retains local-recovery guidance and the close control without a discard button', () => {
+test('creation retains local-recovery guidance, the close control and a first-step discard button', () => {
  const html = renderToStaticMarkup(createElement(Wizard, { owner, venues: [], catalog: access, musicbrainz: access, onClose() {}, onSave: async () => {} }))
- assert.match(html, /Local draft storage is unavailable/); assert.doesNotMatch(html, />Discard draft</); assert.match(html, /aria-label="Close dialog"/)
+ assert.match(html, /Local draft storage is unavailable/); assert.match(html, />Discard</); assert.match(html, /aria-label="Close dialog"/)
  assert.equal((html.match(/<form\b/g) ?? []).length, 1)
 })
 
