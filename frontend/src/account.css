@@ -52,7 +52,7 @@
 .account-menu-items [role=menuitem]:focus-visible { box-shadow: inset 0 0 0 1px #c3d58e; }
 .account-menu-items [role=menuitem] > span { flex: 1; }
 .account-menu-items [role=menuitem]:last-child { color: var(--muted); }
-.account-menu-panel > p { margin: 0 12px; padding: 16px 0 8px; border-top: 1px solid var(--line); font-size: 10px; line-height: 1.6; color: #929b83; }
+.account-menu-panel > p { margin: 0 12px; padding: 16px 0 8px; border-top: 1px solid var(--line); font-size: 10px; line-height: 1.6; color: #6a735c; }
 .account-field { display: flex; flex-direction: column; gap: 9px; font-size: 12px; line-height: 1.5; min-width: 0; }
 .account-field > input, .account-field > textarea, .password-input {
   width: 100%;
@@ -84,7 +84,7 @@
 .auth-side { display: flex; flex-direction: column; padding: 14px 44px 15px; min-width: 0; }
 .auth-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .auth-header .brand { font-size: 26px; padding: 0; }
-.auth-switch { display: flex; align-items: center; justify-content: flex-end; gap: 9px; flex-wrap: wrap; font-size: 10px; line-height: 1.5; color: #929985; text-align: right; }
+.auth-switch { display: flex; align-items: center; justify-content: flex-end; gap: 9px; flex-wrap: wrap; font-size: 10px; line-height: 1.5; color: #6c725f; text-align: right; }
 .auth-switch > button { display: flex; align-items: center; gap: 11px; padding: 6px 0; font-size: 11px; color: var(--ink); font-weight: 550; white-space: nowrap; }
 .auth-switch > button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .auth-form-wrap { width: min(100%, 480px); margin: auto; padding: 65px 0 38px; }
@@ -97,12 +97,12 @@
 .auth-form .password-input input { padding: 14px 0; }
 .auth-submit { justify-content: space-between; width: 100%; min-height: 49px; font-size: 13px; padding: 13px 18px; }
 .auth-submit svg { color: var(--lime); }
-.password-hint { margin-top: -10px; font-size: 10px; line-height: 1.6; color: #9aa28e; }
-.auth-divider { display: flex; align-items: center; gap: 15px; margin: 27px 0 23px; color: #949c87; font-size: 11px; }
+.password-hint { margin-top: -10px; font-size: 10px; line-height: 1.6; color: #6b735f; }
+.auth-divider { display: flex; align-items: center; gap: 15px; margin: 27px 0 23px; color: #6b735f; font-size: 11px; }
 .auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #d6ddca; }
 .auth-explore { width: 100%; justify-content: space-between; min-height: 48px; font-size: 13px; border-color: #7c866d !important; }
-.auth-preview-note { margin-top: 24px; font-size: 10px; line-height: 1.8; color: #949d86; }
-.auth-footer { width: min(100%, 480px); margin: 0 auto; padding-top: 20px; border-top: 1px solid var(--line); color: #929b83; font-size: 10px; line-height: 1.5; }
+.auth-preview-note { margin-top: 24px; font-size: 10px; line-height: 1.8; color: #6a725d; }
+.auth-footer { width: min(100%, 480px); margin: 0 auto; padding-top: 20px; border-top: 1px solid var(--line); color: #6a735c; font-size: 10px; line-height: 1.5; }
 .auth-photo { position: relative; min-height: 740px; border-radius: 14px; overflow: hidden; background: #162011; isolation: isolate; }
 .auth-photo > img { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: 73%; inset: 0; z-index: -3; }
 .auth-photo-shade { position: absolute; inset: 0; background: linear-gradient(0deg, #0a110cf2, #0a110c08 72%); z-index: -2; }

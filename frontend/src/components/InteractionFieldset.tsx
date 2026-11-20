@@ -4,8 +4,9 @@ import type { ComponentProps } from 'react'
 // Native fieldsets disable buttons/inputs automatically. Composite collection
 // items also need the same state because their focusable elements are divs.
 import { InteractionDisabledContext } from './InteractionDisabledContext'
+/** Unlabelled lock wrappers are presentational so screen readers do not announce an empty group. */
 export function InteractionFieldset({ disabled, children, ...props }: ComponentProps<'fieldset'>) {
   const inherited = useContext(InteractionDisabledContext)
   const blocked = inherited || Boolean(disabled)
-  return <InteractionDisabledContext.Provider value={blocked}><fieldset disabled={blocked} {...props}>{children}</fieldset></InteractionDisabledContext.Provider>
+  return <InteractionDisabledContext.Provider value={blocked}><fieldset disabled={blocked} role="presentation" {...props}>{children}</fieldset></InteractionDisabledContext.Provider>
 }

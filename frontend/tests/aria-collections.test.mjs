@@ -23,6 +23,7 @@ test('annual activity includes every real date and keeps leap days and weekday p
   assert.equal((leap.match(/role="option"/g) ?? []).length, 366)
   assert.match(normal, /aria-label="Concert activity in 2026"/)
   assert.match(normal, /grid-column:1;grid-row:4/)
+  assert.match(normal, /class="heatmap-scroll" role="region" tabindex="0"/)
   assert.match(leap, /February 29, 2024: No concerts/)
   assert.match(leap, /December 31, 2024: No concerts/)
   assert.doesNotMatch(normal, /February 29, 2026/)
@@ -34,6 +35,7 @@ test('busy composite collections inherit the native fieldset interaction lock', 
   assert.equal((html.match(/role="row"/g) ?? []).length, 2)
   assert.ok((html.match(/aria-disabled="true"/g) ?? []).length >= 2)
   assert.match(html, /<input[^>]*disabled/)
+  assert.match(html, /^<fieldset disabled="" role="presentation">/)
   assert.doesNotMatch(html, /Sign in to search/)
 })
 test('account field keeps error and description associated with the focusable input', () => {

@@ -24,7 +24,7 @@ export function VenueMap({ workspace, today, onViewConcerts }: { workspace: Work
       <section className="map-frame venue-google-frame" aria-label="Visited venue map">
         {located.length > 0 && configured ? <GoogleVenueMap visits={located} selectedId={selectedId} onSelect={setSelectedId} apiKey={apiKey} mapId={mapId} /> : <div className="map-empty-state">
           <Icon name="globe" size={32} />
-          <h3>{!visits.length ? 'Your stages, on the map.' : !located.length ? 'Venue locations are not available yet.' : 'Your venue map is not available yet.'}</h3>
+          <h2>{!visits.length ? 'Your stages, on the map.' : !located.length ? 'Venue locations are not available yet.' : 'Your venue map is not available yet.'}</h2>
           <p>{!visits.length ? 'Venues from past concerts with confirmed dates will appear here.' : !located.length ? 'Your visited venues are listed alongside the map. Add their locations to show pins.' : 'Your visited venues are still available in the list.'}</p>
         </div>}
         {selected && <section className="selected-venue-detail venue-detail-overlay" aria-label="Selected venue" aria-live="polite">

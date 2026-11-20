@@ -77,7 +77,7 @@
 .nav-eyebrow {
   font-size: 9px;
   font-weight: 650;
-  color: #929785;
+  color: #6d7161;
   letter-spacing: 1.8px;
   margin: 58px 12px 17px
 }
@@ -424,7 +424,7 @@ h1 {
 .stat>small {
   display: block;
   font-size: 10px;
-  color: #9a9e8f;
+  color: #6d7162;
   margin-top: 5px
 }
 
@@ -546,7 +546,7 @@ h1 {
   top: 28px;
   font-size: 8px;
   letter-spacing: 2px;
-  color: #e8eed266
+  color: #e8eed285
 }
 
 .no-upcoming {
@@ -632,7 +632,7 @@ h1 {
 
 .date-block>small {
   font-size: 9px;
-  color: #929783
+  color: #6d715f
 }
 
 .date-block.past>strong {
@@ -780,7 +780,7 @@ h1 {
 
 .setlist-preview .eyebrow {
   font-size: 8px;
-  color: #8c7c9e;
+  color: #6f5f80;
   letter-spacing: 1.5px
 }
 
@@ -794,7 +794,7 @@ h1 {
 
 .setlist-preview>p:not(.eyebrow) {
   font-size: 10px;
-  color: #8a7c97;
+  color: #6d6079;
   margin-top: 12px
 }
 
@@ -814,7 +814,7 @@ h1 {
 }
 
 .setlist-preview li>span {
-  color: #a696b6;
+  color: #725d86;
   font-size: 9px;
   padding-top: 2px
 }
@@ -866,7 +866,7 @@ h1 {
   grid-template-columns: repeat(var(--weeks),1fr);
   margin-bottom: 10px;
   font-size: 9px;
-  color: #8a917d;
+  color: #6c7261;
   position: relative;
   height: 12px
 }
@@ -889,7 +889,7 @@ h1 {
   justify-content: space-between;
   padding: 0 0 20px;
   font-size: 8px;
-  color: #959c87
+  color: #6b715e
 }
 
 .heatmap-grid {
@@ -1034,7 +1034,7 @@ h1 {
   margin-top: 38px;
   border-top: 1px solid var(--line);
   font-size: 9px;
-  color: #9a9f90;
+  color: #6c7162;
   line-height: 1.6
 }
 
@@ -1045,7 +1045,7 @@ h1 {
 
 .page-footer>span:first-child>span:last-child {
   font-weight: 400;
-  color: #9a9f90;
+  color: #6c7162;
   margin-left: 10px
 }
 
@@ -1101,7 +1101,7 @@ h1 {
   border-radius: 4px;
   font-size: 10px;
   white-space: nowrap;
-  color: #858e75
+  color: #666d59
 }
 
 .filter-tabs>button.active {
@@ -1124,7 +1124,7 @@ h1 {
   gap: 18px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--line);
-  color: #929985;
+  color: #6c725f;
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1px
@@ -1176,7 +1176,7 @@ input[type=checkbox] {
   color: #8d9c74
 }
 
-.empty-state h3 {
+.empty-state :is(h2, h3, h4) {
   font-size: 20px;
   letter-spacing: -.5px;
   color: var(--ink)
@@ -1729,7 +1729,7 @@ input[type=checkbox] {
   display: flex;
   gap: 6px;
   align-items: center;
-  color: #8a9578;
+  color: #6a735a;
   font-size: 10px;
   white-space: nowrap
 }
@@ -1769,7 +1769,7 @@ input[type=checkbox] {
 .setlist-title .eyebrow {
   font-size: 8px;
   letter-spacing: 1.5px;
-  color: #8c7d9e;
+  color: #6d5f7f;
   margin-bottom: 11px
 }
 
@@ -1784,7 +1784,7 @@ input[type=checkbox] {
 .setlist-title p {
   font-size: 10px;
   line-height: 1.6;
-  color: #857491;
+  color: #6f6079;
   margin-top: 12px
 }
 
@@ -1805,7 +1805,7 @@ input[type=checkbox] {
 .setlist-count span {
   display: block;
   font-size: 11px;
-  color: #887598;
+  color: #705e7e;
   margin-top: 8px
 }
 
@@ -1861,7 +1861,7 @@ input[type=checkbox] {
 .song-number {
   font-size: 11px;
   width: 24px;
-  color: #949d88;
+  color: #6a735e;
   flex-shrink: 0
 }
 
@@ -2271,7 +2271,7 @@ input[type=checkbox] {
 
 .health-content.error .health-status {
   background: #f3e3d7;
-  color: #9a613f
+  color: #8d593a
 }
 
 .health-content.connected .health-status {
@@ -3426,6 +3426,10 @@ input[type=checkbox] {
   text-align: center;
   background: var(--paper);
   color: var(--ink);
+}
+
+.map-empty-state h2 {
+  font-size: 1.17em;
 }
 
 .map-empty-state p, .map-load-state {

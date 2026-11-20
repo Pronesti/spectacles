@@ -5,7 +5,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import react from '@vitejs/plugin-react'
 import { createServer } from 'vite'
-let server, ConcertForm, SetlistEditor, CatalogChoices, CalendarView
+let server, ConcertForm, SetlistEditor, CatalogChoices, CalendarView, ConcertList
 const catalog = { enabled: false, sessionKey: 'guest', client: { search: async () => { throw new Error('No SSR request') }, event: async () => { throw new Error('No SSR request') } }, onUnauthorized: () => {} }
 const noop = () => {}
 const render = (component, props) => renderToStaticMarkup(createElement(component, props))
@@ -15,6 +15,7 @@ before(async () => {
   ;({ SetlistEditor } = await server.ssrLoadModule('/src/components/SetlistEditor.tsx'))
   ;({ CatalogChoices } = await server.ssrLoadModule('/src/components/CatalogChoices.tsx'))
   ;({ CalendarView } = await server.ssrLoadModule('/src/components/CalendarView.tsx'))
+  ;({ ConcertList } = await server.ssrLoadModule('/src/components/ConcertList.tsx'))
 })
 after(async () => { await server?.close() })
 test('guest concert editor offers optional catalog search while manual save remains available', () => {
@@ -47,4 +48,23 @@ test('calendar excludes unknown dates without inventing a day or adding a confir
   assert.doesNotMatch(html, /Dates still to be confirmed/)
   assert.doesNotMatch(html, /Unknown date QA/)
   assert.doesNotMatch(html, /class="calendar-event/)
+})
+
+test('calendar days are named with a spoken date and the empty agenda nests under its heading', () => {
+  const html = render(CalendarView, { concerts: [], venues: [], today: '2026-11-20', onOpen: noop, onAdd: noop })
+  assert.match(html, /aria-label="Add concert on Sunday, November 1, 2026"/)
+  assert.doesNotMatch(html, /aria-label="(Add concert on )?2026-11-01"/)
+  assert.match(html, /<aside class="calendar-agenda" aria-label="Month at a glance">/)
+  assert.match(html, /<h4>No concerts here, yet\.<\/h4>/)
+})
+
+test('concert rows read as one date, one name and one View action', () => {
+  const concert = { id: 'c1', title: 'Don Omar', artists: ['Don Omar'], venueId: null, date: { year: 2027, month: 10, day: 23 }, time: '', timezone: null, interested: false, ticketsBought: false, notes: '', setlist: [] }
+  const html = render(ConcertList, { concerts: [concert], venues: [], today: '2026-11-20', onOpen: noop, onEdit: noop })
+  assert.match(html, /<span class="sr-only">Oct 23, 2027<\/span><span aria-hidden="true">Oct<\/span>/)
+  assert.match(html, /class="concert-table-head" aria-hidden="true"/)
+  assert.match(html, /<strong>Don Omar<\/strong><small aria-hidden="true">Don Omar<\/small>/)
+  assert.match(html, /<span aria-hidden="true" style="display:contents"><button[^>]*tabindex="-1"/)
+  assert.match(html, /aria-label="Edit Don Omar on Oct 23, 2027"/)
+  assert.match(render(ConcertList, { concerts: [], venues: [], today: '2026-11-20', onOpen: noop }), /<h2>No concerts here, yet\.<\/h2>/)
 })

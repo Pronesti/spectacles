@@ -6,6 +6,9 @@ import stagePhoto from '../assets/concert-stage.png'
 import { Icon } from './Icon'
 import { ConcertList } from './ConcertList'
 
+/** Reads a calendar key such as 2026-11-01 as "Sunday, November 1, 2026" for screen readers. */
+const spokenDate = (key: string) => new Intl.DateTimeFormat('en', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${key}T00:00:00Z`))
+
 export function CalendarView({ concerts, venues, today, onOpen, onAdd }: { concerts: Concert[]; venues: Venue[]; today: string; onOpen: (concert: Concert) => void; onAdd: (date?: string) => void }) {
   const [month, setMonth] = useState(today.slice(0, 7))
   const [year, monthNumber] = month.split('-').map(Number)
@@ -25,11 +28,11 @@ export function CalendarView({ concerts, venues, today, onOpen, onAdd }: { conce
         const day = index - offset + 1
         if (day < 1 || day > length) return <div className="calendar-day outside" key={index} />
         const key = `${month}-${String(day).padStart(2, '0')}`; const shows = groups.get(key) ?? []
-        return <div className={`calendar-day ${key === today ? 'is-today' : ''}`} key={index} aria-label={key}>
-          <Button type="button" className="calendar-date" onPress={() => onAdd(key)} aria-label={`Add concert on ${key}`}><span>{day}</span><Icon name="plus" size={13} /></Button>
+        return <div className={`calendar-day ${key === today ? 'is-today' : ''}`} key={index}>
+          <Button type="button" className="calendar-date" onPress={() => onAdd(key)} aria-label={`Add concert on ${spokenDate(key)}`}><span>{day}</span><Icon name="plus" size={13} /></Button>
           {shows.map(concert => <Button type="button" key={concert.id} className={`calendar-event ${relation(concert.date, today)}`} onPress={() => onOpen(concert)}><strong>{concert.title}</strong><small>{venues.find(v => v.id === concert.venueId)?.name ?? 'Venue to confirm'}</small></Button>)}
         </div>
       })}
     </div></div>
-  </section><aside className="calendar-agenda"><img src={stagePhoto} alt="A crowd beneath bright stage lights" /><div className="section-heading"><div><h3>{start.toLocaleDateString('en', { month: 'long', timeZone: 'UTC' })}, at a glance</h3><p>{monthly.length} concerts in your collection</p></div></div><ConcertList compact concerts={monthly} venues={venues} today={today} onOpen={onOpen} /></aside></div>
+  </section><aside className="calendar-agenda" aria-label="Month at a glance"><img src={stagePhoto} alt="A crowd beneath bright stage lights" /><div className="section-heading"><div><h3>{start.toLocaleDateString('en', { month: 'long', timeZone: 'UTC' })}, at a glance</h3><p>{monthly.length} concerts in your collection</p></div></div><ConcertList compact emptyHeading="h4" concerts={monthly} venues={venues} today={today} onOpen={onOpen} /></aside></div>
 }

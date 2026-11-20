@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Agentation } from 'agentation'
+import '../agentation.css'
 
 /** Keep feedback inside the native modal's focus and interaction boundary. */
 export function DevAgentation() {

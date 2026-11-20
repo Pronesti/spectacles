@@ -1,0 +1,4 @@
+/* Development only: keep the feedback toolbar above fixed bottom bars (phone navigation, dialog footers). */
+agentation-toolbar {
+  bottom: calc(104px + env(safe-area-inset-bottom));
+}
