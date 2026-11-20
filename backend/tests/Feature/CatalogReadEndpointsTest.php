@@ -254,6 +254,16 @@ class CatalogReadEndpointsTest extends TestCase
         $this->read('artists', ['filter' => ['q' => "' OR 1=1 --"]])->assertOk()->assertJsonPath('data', []);
     }
 
+    public function test_text_search_matches_typographic_and_straight_apostrophes_both_ways(): void
+    {
+        $curly = Artist::factory()->create(['name' => 'Guns N’ Roses']);
+        $straight = Artist::factory()->create(['name' => "Guns N' Roses Tribute"]);
+        $this->read('artists', ['filter' => ['q' => "Guns N' Roses"]])->assertOk()->assertJsonCount(2, 'data');
+        $response = $this->read('artists', ['filter' => ['q' => 'Guns N’ Roses']])->assertOk();
+        expect(array_column($this->arrayAt($response->json('data')), 'id'))
+            ->toEqualCanonicalizing([$curly->external_id, $straight->external_id]);
+    }
+
     public function test_provider_tuples_match_one_row_and_can_find_multiple_shared_events(): void
     {
         $artist = Artist::factory()->create();

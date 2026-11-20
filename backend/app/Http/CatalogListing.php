@@ -20,12 +20,13 @@ class CatalogListing
      */
     public static function text(Builder $query, array $columns, string $term): Builder
     {
-        $pattern = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term).'%';
+        $folded = str_replace(['’', '‘'], "'", $term);
+        $pattern = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $folded).'%';
 
         return $query->where(function (Builder $group) use ($columns, $pattern): void {
             foreach ($columns as $index => $column) {
                 $method = $index === 0 ? 'whereRaw' : 'orWhereRaw';
-                $group->{$method}("LOWER({$column}) LIKE LOWER(?) ESCAPE '!'", [$pattern]);
+                $group->{$method}("LOWER(REPLACE(REPLACE({$column}, '’', ''''), '‘', '''')) LIKE LOWER(?) ESCAPE '!'", [$pattern]);
             }
         });
     }
