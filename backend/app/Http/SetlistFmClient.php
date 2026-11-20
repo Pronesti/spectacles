@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Data\SetlistFmSearchQueryData;
 use App\Http\Integrations\ProviderConnector;
 use App\Http\Integrations\SetlistFm\Data\SetlistFmSearchPayloadData;
 use App\Http\Integrations\SetlistFm\Requests\GetSetlistFmApiResource;
@@ -22,10 +23,9 @@ class SetlistFmClient
      * @template TPayload of Data
      *
      * @param  class-string<TPayload>  $payloadClass
-     * @param  array<string, int|string>  $query
      * @return TPayload
      */
-    public function api(string $path, string $payloadClass, array $query = []): Data
+    public function api(string $path, string $payloadClass, ?SetlistFmSearchQueryData $query = null): Data
     {
         if (! preg_match('~^(?:search/setlists|setlist/[a-zA-Z0-9_-]{1,128}|venue/[a-zA-Z0-9_-]{1,128})$~D', $path) || ! config('services.setlistfm.enabled') || ! $this->usesApi()) {
             throw new CatalogProviderUnavailable;
@@ -38,7 +38,7 @@ class SetlistFmClient
                     throw new CatalogProviderUnavailable(429, ProviderConnector::retryAfter($response, 3600));
                 }
                 if ($response->status() === 404 && $path === 'search/setlists') {
-                    return new SetlistFmSearchPayloadData(setlist: [], total: 0, page: (int) ($query['p'] ?? 1), itemsPerPage: 20);
+                    return new SetlistFmSearchPayloadData(setlist: [], total: 0, page: $query->p ?? 1, itemsPerPage: 20);
                 }
                 if ($response->status() !== 200 || ProviderConnector::declaresOversizedBody($response)) {
                     throw new CatalogProviderUnavailable(reason: in_array($response->status(), [401, 403], true) ? 'setlistfm_api_auth' : null);

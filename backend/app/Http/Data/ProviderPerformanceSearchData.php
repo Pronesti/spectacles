@@ -27,12 +27,10 @@ class ProviderPerformanceSearchData extends Data
     ) {}
 
     /**
-     * The filters a pagination cursor is bound to, encoded as the query string sent them so
-     * cursors issued before the year was typed still match.
-     *
-     * @return array<string, string|null>
+     * The fingerprint of the filters a pagination cursor is bound to. The year is
+     * encoded as the query string sent it, so cursors issued before it was typed still match.
      */
-    public function cursorScope(): array
+    public function cursorScope(): string
     {
         $filters = $this->except('cursor')->toArray();
         if (is_int($this->year)) {
@@ -40,6 +38,6 @@ class ProviderPerformanceSearchData extends Data
         }
         ksort($filters);
 
-        return $filters;
+        return hash('sha256', json_encode($filters));
     }
 }

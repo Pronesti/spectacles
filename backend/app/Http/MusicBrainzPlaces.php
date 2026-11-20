@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Data\MusicBrainzQueryData;
 use App\Http\Data\ProviderEntityInputData;
 use App\Http\Data\ProviderEntityValuesInputData;
 use App\Http\Data\ProviderPageData;
@@ -27,7 +28,7 @@ class MusicBrainzPlaces
 
             return $term.'*';
         }, $terms);
-        $rows = $this->client->publicRead('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', ['query' => 'place:('.implode(' AND ', $escaped).')', 'fmt' => 'json', 'limit' => 10], MusicBrainzSearchPayloadData::class, ProviderVenueData::class, function (MusicBrainzSearchPayloadData $page): array {
+        $rows = $this->client->publicRead('musicbrainz:place-search:v3:'.hash('sha256', $q), 'place', MusicBrainzQueryData::search('place:('.implode(' AND ', $escaped).')'), MusicBrainzSearchPayloadData::class, ProviderVenueData::class, function (MusicBrainzSearchPayloadData $page): array {
             if ($page->places === null || ! array_is_list($page->places) || count($page->places) > 100) {
                 throw new MusicBrainzUnavailable;
             }
@@ -40,7 +41,7 @@ class MusicBrainzPlaces
 
     public function detail(string $mbid): ProviderVenueData
     {
-        $value = $this->client->publicRead('musicbrainz:place:v3:'.$mbid, 'place/'.$mbid, ['inc' => 'aliases+url-rels', 'fmt' => 'json'], MusicBrainzEntityPayloadData::class, ProviderVenueData::class, function (MusicBrainzEntityPayloadData $place) use ($mbid): ProviderVenueData {
+        $value = $this->client->publicRead('musicbrainz:place:v3:'.$mbid, 'place/'.$mbid, MusicBrainzQueryData::lookup('aliases+url-rels'), MusicBrainzEntityPayloadData::class, ProviderVenueData::class, function (MusicBrainzEntityPayloadData $place) use ($mbid): ProviderVenueData {
             if (strtolower($place->id ?? '') !== strtolower($mbid)) {
                 throw new CatalogProviderUnavailable;
             }

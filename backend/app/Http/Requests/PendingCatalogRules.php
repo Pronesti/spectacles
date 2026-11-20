@@ -66,18 +66,14 @@ class PendingCatalogRules
                 }
             }
         }
-        $used = ['artists' => [], 'songs' => [], 'tours' => []];
         if (is_array($pending->tours) !== is_array($pending->tourChoices)) {
             $error('tours');
         }
-        $drafts = ['artists' => $pending->artists, 'songs' => $pending->songs, 'tours' => $pending->pendingTours()];
-        $keys = [];
-        foreach (['artists' => 'artist', 'songs' => 'work', 'tours' => 'series'] as $map => $kind) {
-            foreach ($drafts[$map] as $key => $draft) {
-                if (! Str::isUuid((string) $key) || isset($keys[$key])) {
+        foreach (PendingCatalogData::DRAFT_KINDS as $map => $kind) {
+            foreach ($pending->drafts($map) as $key => $draft) {
+                if (! Str::isUuid((string) $key) || $pending->claimsKeyBefore($map, $key)) {
                     $error($map);
                 }
-                $keys[$key] = true;
                 if ($draft->selection !== null) {
                     try {
                         if ($kind === 'series') {
@@ -98,38 +94,36 @@ class PendingCatalogRules
             if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || ! array_key_exists($position, $concert->artists) || $draft === null || ($concert->catalog->artistIds[$position] ?? null) !== null || $concert->artists[$position] !== $draft->name || $concert->catalog->hasEvent()) {
                 $error('lineup');
             }
-            $used['artists'][$key] = true;
         }
         foreach ($pending->pendingTourChoices() as $position => $key) {
-            $draft = $drafts['tours'][$key] ?? null;
+            $draft = $pending->pendingTours()[$key] ?? null;
             $choice = $concert->catalog->tours[$position] ?? null;
             if (! preg_match('/^(0|[1-9][0-9]*)$/', (string) $position) || $choice === null || $draft === null || $choice->catalogId !== null || $choice->name !== $draft->name || $concert->catalog->hasEvent()) {
                 $error('tourChoices');
             }
-            $used['tours'][$key] = true;
         }
         $rows = $concert->setlistById();
         foreach ($pending->entries as $id => $refs) {
             $row = $rows[$id] ?? null;
-            $named = array_filter(['song' => $refs->song, 'artist' => $refs->artist], 'is_string');
-            if (! Str::isUuid((string) $id) || $row === null || $row->type !== 'song' || $named === []) {
+            if (! Str::isUuid((string) $id) || $row === null || $row->type !== 'song' || (! is_string($refs->song) && ! is_string($refs->artist))) {
                 $error('entries');
             }
-            foreach ($named as $kind => $key) {
-                $map = $kind === 'song' ? 'songs' : 'artists';
-                $draft = $drafts[$map][$key] ?? null;
-                $catalogId = $kind === 'song' ? $row?->songCatalogId : $row?->artistCatalogId;
-                $label = $kind === 'song' ? $row?->title : $row?->artist;
-                $draftLabel = $draft === null ? null : ($kind === 'song' ? $draft->title : $draft->name);
-                if ($draft === null || is_string($catalogId) || $label !== $draftLabel) {
+            if (is_string($refs->song)) {
+                $draft = $pending->songs[$refs->song] ?? null;
+                if ($draft === null || is_string($row?->songCatalogId) || $row?->title !== $draft->title) {
                     $error('entries');
                 }
-                $used[$map][$key] = true;
+            }
+            if (is_string($refs->artist)) {
+                $draft = $pending->artists[$refs->artist] ?? null;
+                if ($draft === null || is_string($row?->artistCatalogId) || $row?->artist !== $draft->name) {
+                    $error('entries');
+                }
             }
         }
-        foreach ($used as $map => $refs) {
-            foreach ($drafts[$map] as $key => $draft) {
-                if (! isset($refs[$key])) {
+        foreach (array_keys(PendingCatalogData::DRAFT_KINDS) as $map) {
+            foreach ($pending->drafts($map) as $key => $draft) {
+                if (! $pending->refersTo($map, $key)) {
                     $error($map);
                 }
             }

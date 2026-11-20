@@ -9,6 +9,7 @@ use App\Http\Data\ManualTourOptionData;
 use App\Http\Data\PerformancePreviewData;
 use App\Http\Data\PerformanceSummaryData;
 use App\Http\Data\ProviderCursorData;
+use App\Http\Data\ProviderCursorTokenData;
 use App\Http\Data\ProviderLocatorData;
 use App\Http\Data\ProviderPageData;
 use App\Http\Data\ProviderPerformanceData;
@@ -18,6 +19,7 @@ use App\Http\Data\ProviderTourData;
 use App\Http\Data\ProviderTourSearchData;
 use App\Http\Data\ProviderVenueData;
 use App\Http\Data\SetlistFmSearchQueryData;
+use App\Http\Data\TourCursorScopeData;
 use App\Http\Data\TourValuesData;
 use App\Http\Data\VenueValuesData;
 use App\Models\ArtistProviderId;
@@ -61,8 +63,8 @@ class SetlistFmDiscovery
             throw ValidationException::withMessages(['artistMbid' => 'Select one identified Artist.']);
         }
         $q = is_string($search->q) ? $search->q : '';
-        $filters = ['artistMbid' => $mbid, 'q' => $q];
-        $position = $this->cursor('api-tours', $filters, $search->cursor);
+        $scope = (new TourCursorScopeData($mbid, $q))->fingerprint();
+        $position = $this->cursor('api-tours', $scope, $search->cursor);
         $result = app(SetlistFmApi::class)->search(new SetlistFmSearchQueryData(p: $position->page, artistMbid: $mbid, tourName: $q === '' ? new Optional : $q));
         $rows = $result->items;
         if ($position->offset > count($rows)) {
@@ -86,14 +88,14 @@ class SetlistFmDiscovery
             $offset = 0;
         }
 
-        return $this->page(array_values($items), $more && $page <= 10 && $scanned < 100 ? $this->next('api-tours', $filters, new ProviderCursorData($page, $offset, $scanned)) : null, true);
+        return $this->page(array_values($items), $more && $page <= 10 && $scanned < 100 ? $this->next('api-tours', $scope, new ProviderCursorData($page, $offset, $scanned)) : null, true);
     }
 
     public function performances(ProviderPerformanceSearchData $search): ProviderPageData
     {
         $this->requireApi();
-        $filters = $search->cursorScope();
-        $position = $this->cursor('api-performances', $filters, $search->cursor);
+        $scope = $search->cursorScope();
+        $position = $this->cursor('api-performances', $scope, $search->cursor);
         $mbid = $this->artistMbid($search);
         if (is_string($search->venueUrl)) {
             $this->venueUrl(is_string($search->venueId) ? $search->venueId : '', $search->venueUrl);
@@ -140,7 +142,7 @@ class SetlistFmDiscovery
             $offset = 0;
         }
 
-        return $this->page($items, $more && $page <= 10 && $scanned < 100 ? $this->next('api-performances', $filters, new ProviderCursorData($page, $offset, $scanned)) : null, true);
+        return $this->page($items, $more && $page <= 10 && $scanned < 100 ? $this->next('api-performances', $scope, new ProviderCursorData($page, $offset, $scanned)) : null, true);
     }
 
     public function preview(string $id, string $locator): PerformancePreviewData
@@ -272,32 +274,27 @@ class SetlistFmDiscovery
     }
 
     /**
-     * Reads a cursor bound to this operation and these exact filters.
-     *
-     * @param  array<string, mixed>  $filters
+     * Reads a cursor bound to this operation and the fingerprint of these exact filters.
      */
-    private function cursor(string $operation, array $filters, Optional|string $cursor): ProviderCursorData
+    private function cursor(string $operation, string $scope, Optional|string $cursor): ProviderCursorData
     {
         if (! is_string($cursor)) {
             return ProviderCursorData::start();
         }
         try {
-            $value = json_decode(Crypt::decryptString($cursor), true, 16, JSON_THROW_ON_ERROR);
-            if (($value['operation'] ?? null) !== $operation || ($value['scope'] ?? null) !== hash('sha256', json_encode($filters)) || ($value['expiresAt'] ?? 0) <= now()->timestamp || ! is_int($value['page'] ?? null) || $value['page'] < 1 || $value['page'] > 10 || ! is_int($value['offset'] ?? null) || $value['offset'] < 0 || $value['offset'] > 100 || ! is_int($value['scanned'] ?? null) || $value['scanned'] < 0 || $value['scanned'] >= 100) {
+            $token = ProviderCursorTokenData::from(json_decode(Crypt::decryptString($cursor), true, 16, JSON_THROW_ON_ERROR));
+            if ($token->operation !== $operation || $token->scope !== $scope || ($token->expiresAt ?? 0) <= now()->timestamp || $token->page === null || $token->page < 1 || $token->page > 10 || $token->offset === null || $token->offset < 0 || $token->offset > 100 || $token->scanned === null || $token->scanned < 0 || $token->scanned >= 100) {
                 throw new CatalogProviderUnavailable;
             }
 
-            return new ProviderCursorData($value['page'], $value['offset'], $value['scanned']);
+            return new ProviderCursorData($token->page, $token->offset, $token->scanned);
         } catch (\Throwable $failure) {
             throw ValidationException::withMessages(['cursor' => 'This search has expired. Search again.']);
         }
     }
 
-    /**
-     * @param  array<string, mixed>  $filters
-     */
-    private function next(string $operation, array $filters, ProviderCursorData $position): string
+    private function next(string $operation, string $scope, ProviderCursorData $position): string
     {
-        return Crypt::encryptString(json_encode(['operation' => $operation, 'scope' => hash('sha256', json_encode($filters)), ...$position->toArray(), 'expiresAt' => now()->addMinutes(15)->timestamp]));
+        return Crypt::encryptString(json_encode(new ProviderCursorTokenData($operation, $scope, $position->page, $position->offset, $position->scanned, now()->addMinutes(15)->timestamp)));
     }
 }

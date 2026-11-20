@@ -8,6 +8,7 @@ use App\Http\Data\ProviderLocatorData;
 use App\Http\Data\ProviderLocatorInputData;
 use App\Http\Data\ProviderPerformanceData;
 use App\Http\Data\ProviderPerformanceInputData;
+use App\Http\Data\ProviderProofData;
 use App\Http\Data\ProviderRefData;
 use App\Http\Data\ProviderTourData;
 use App\Http\Data\ProviderVenueData;
@@ -28,7 +29,7 @@ class CatalogProviderSelection
     public function issue(string $kind, Data $payload): string
     {
         $payload = $this->payload($kind, $payload);
-        $proof = Crypt::encryptString(json_encode(['v' => 2, 'kind' => $kind, 'payload' => $payload->toArray(), 'expiresAt' => now()->addHours(24)->timestamp], JSON_THROW_ON_ERROR));
+        $proof = Crypt::encryptString(json_encode(new ProviderProofData(v: 2, kind: $kind, payload: $payload->toArray(), expiresAt: now()->addHours(24)->timestamp), JSON_THROW_ON_ERROR));
         if (strlen($proof) > 32768) {
             throw new CatalogProviderUnavailable;
         }
@@ -42,12 +43,12 @@ class CatalogProviderSelection
             if (strlen($proof) > 32768) {
                 throw new CatalogProviderUnavailable;
             }
-            $value = json_decode(Crypt::decryptString($proof), true, 32, JSON_THROW_ON_ERROR);
-            if (! is_array($value) || ($value['v'] ?? null) !== 2 || ($value['kind'] ?? null) !== $kind || ! is_int($value['expiresAt'] ?? null) || $value['expiresAt'] <= now()->timestamp || ! is_array($value['payload'] ?? null)) {
+            $value = ProviderProofData::from(json_decode(Crypt::decryptString($proof), true, 32, JSON_THROW_ON_ERROR));
+            if ($value->v !== 2 || $value->kind !== $kind || $value->expiresAt === null || $value->expiresAt <= now()->timestamp || $value->payload === null) {
                 throw new CatalogProviderUnavailable;
             }
 
-            return $this->payload($kind, $value['payload']);
+            return $this->payload($kind, $value->payload);
         } catch (\Throwable $failure) {
             throw ValidationException::withMessages([$path => 'Select these provider details again or use manual creation.']);
         }
@@ -74,11 +75,11 @@ class CatalogProviderSelection
     public function tour(string $proof, string $path): ProviderRefData
     {
         try {
-            $value = json_decode(Crypt::decryptString($proof), true, 32, JSON_THROW_ON_ERROR);
+            $value = ProviderProofData::from(json_decode(Crypt::decryptString($proof), true, 32, JSON_THROW_ON_ERROR));
         } catch (\Throwable $failure) {
             throw ValidationException::withMessages([$path => 'Select this Tour again or use manual creation.']);
         }
-        if (($value['v'] ?? null) === 1) {
+        if ($value->v === 1) {
             return new ProviderRefData('musicbrainz', 'series', app(MusicBrainzSelection::class)->read($proof, 'series', $path));
         }
 

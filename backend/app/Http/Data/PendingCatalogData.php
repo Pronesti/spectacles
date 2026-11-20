@@ -13,6 +13,11 @@ use Spatie\LaravelData\Optional;
 class PendingCatalogData extends Data
 {
     /**
+     * Each draft map and the provider kind its proofs name, in the order drafts are checked.
+     */
+    public const DRAFT_KINDS = ['artists' => 'artist', 'songs' => 'work', 'tours' => 'series'];
+
+    /**
      * @param  array<string, PendingArtistData>  $artists
      * @param  array<string, PendingSongData>  $songs
      * @param  array<int|string, string>  $lineup  concert artist position to pending Artist key
@@ -59,5 +64,49 @@ class PendingCatalogData extends Data
     public function eventSelection(): ?PendingSelectionData
     {
         return $this->event instanceof PendingSelectionData ? $this->event : null;
+    }
+
+    /**
+     * @return array<int|string, PendingArtistData|PendingSongData|PendingTourData>
+     */
+    public function drafts(string $map): array
+    {
+        return match ($map) {
+            'artists' => $this->artists,
+            'songs' => $this->songs,
+            'tours' => $this->pendingTours(),
+        };
+    }
+
+    /**
+     * Whether a draft in a map checked earlier already uses this key.
+     */
+    public function claimsKeyBefore(string $map, int|string $key): bool
+    {
+        foreach (array_keys(self::DRAFT_KINDS) as $earlier) {
+            if ($earlier === $map) {
+                return false;
+            }
+            if (array_key_exists($key, $this->drafts($earlier))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether the lineup, the tour choices or a setlist entry refers to this draft.
+     */
+    public function refersTo(string $map, int|string $key): bool
+    {
+        $key = (string) $key;
+        $references = match ($map) {
+            'artists' => [...array_values($this->lineup), ...array_map(fn (PendingEntryData $refs): Optional|string => $refs->artist, array_values($this->entries))],
+            'songs' => array_map(fn (PendingEntryData $refs): Optional|string => $refs->song, array_values($this->entries)),
+            'tours' => array_values($this->pendingTourChoices()),
+        };
+
+        return in_array($key, $references, true);
     }
 }

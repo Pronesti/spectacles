@@ -45,6 +45,24 @@ class CatalogProviderSelectionTest extends TestCase
         $this->assertNull($reissued['tourName']);
     }
 
+    public function test_misshapen_proof_envelopes_are_field_errors(): void
+    {
+        $expiresAt = now()->addHour()->timestamp;
+        $reads = [
+            fn () => app(MusicBrainzSelection::class)->read(Crypt::encryptString(json_encode(['v' => 1, 'kind' => 'artist', 'mbid' => ['not' => 'a string'], 'expiresAt' => $expiresAt])), 'artist', 'selection'),
+            fn () => app(CatalogProviderSelection::class)->read(Crypt::encryptString(json_encode(['v' => 2, 'kind' => 'venue', 'payload' => 'not an object', 'expiresAt' => $expiresAt])), 'venue', 'selection'),
+            fn () => app(CatalogProviderSelection::class)->tour(Crypt::encryptString(json_encode(['v' => ['not' => 'a version'], 'kind' => 'tour'])), 'selection'),
+        ];
+        foreach ($reads as $read) {
+            try {
+                $read();
+                $this->fail('Misshapen proof accepted.');
+            } catch (ValidationException $error) {
+                $this->assertSame(['selection'], array_keys($error->errors()));
+            }
+        }
+    }
+
     public function test_corrupted_wrong_kind_and_oversized_proofs_are_field_specific(): void
     {
         $f = require base_path('tests/Fixtures/catalog-provider-inputs.php');

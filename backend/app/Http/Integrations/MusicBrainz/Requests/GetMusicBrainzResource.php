@@ -2,6 +2,7 @@
 
 namespace App\Http\Integrations\MusicBrainz\Requests;
 
+use App\Http\Data\MusicBrainzQueryData;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
@@ -9,10 +10,7 @@ class GetMusicBrainzResource extends Request
 {
     protected Method $method = Method::GET;
 
-    /**
-     * @param  array<string, mixed>  $parameters
-     */
-    public function __construct(protected string $path, protected array $parameters = []) {}
+    public function __construct(protected string $path, protected MusicBrainzQueryData $parameters) {}
 
     public function resolveEndpoint(): string
     {
@@ -24,6 +22,6 @@ class GetMusicBrainzResource extends Request
      */
     protected function defaultQuery(): array
     {
-        return $this->parameters;
+        return $this->parameters->toArray();
     }
 }

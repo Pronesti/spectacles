@@ -21,10 +21,8 @@ class SetlistFmApi
 
     public function search(SetlistFmSearchQueryData $query): SetlistFmSearchResultData
     {
-        $parameters = $query->parameters();
-
-        return $this->gate->run('setlist_api', 'search:v1:'.json_encode($parameters), SetlistFmSearchResultData::class, function () use ($query, $parameters): SetlistFmSearchResultData {
-            $page = $this->client->api('search/setlists', SetlistFmSearchPayloadData::class, $parameters);
+        return $this->gate->run('setlist_api', 'search:v1:'.json_encode($query->parameters()), SetlistFmSearchResultData::class, function () use ($query): SetlistFmSearchResultData {
+            $page = $this->client->api('search/setlists', SetlistFmSearchPayloadData::class, $query);
             if ($page->setlist === null || ! array_is_list($page->setlist) || count($page->setlist) > 100 || $page->total === null || $page->total < 0 || $page->page !== $query->p || $page->itemsPerPage === null || $page->itemsPerPage < 1 || $page->itemsPerPage > 100 || count($page->setlist) > $page->itemsPerPage) {
                 throw new CatalogProviderUnavailable;
             }

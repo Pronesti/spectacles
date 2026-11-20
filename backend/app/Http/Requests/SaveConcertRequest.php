@@ -7,6 +7,7 @@ use App\Http\CatalogProviderUnavailable;
 use App\Http\Data\ConcertDraftData;
 use App\Http\Data\PendingCatalogData;
 use App\Http\Data\VenueDraftData;
+use App\Http\Data\VenueDraftSummaryData;
 use App\Http\Data\VenueImageInputData;
 use App\Http\Integrations\UpstreamPayload;
 use Illuminate\Foundation\Http\FormRequest;
@@ -101,8 +102,10 @@ class SaveConcertRequest extends FormRequest
                 return;
             }
             $concert = ConcertDraftData::from($this->input('concert'));
-            PendingCatalogRules::check($concert, $this->has('pendingCatalog') ? PendingCatalogData::from($this->input('pendingCatalog')) : null, $validator);
-            if ($this->has('pendingCatalog.venue') && $this->has('venue.catalogId')) {
+            $pending = $this->has('pendingCatalog') ? PendingCatalogData::from($this->input('pendingCatalog')) : null;
+            $venue = $this->has('venue') ? VenueDraftSummaryData::from($this->input('venue')) : null;
+            PendingCatalogRules::check($concert, $pending, $validator);
+            if ($pending?->venueSelection() !== null && $venue?->isSaved()) {
                 $validator->errors()->add('pendingCatalog.venue', 'Choose one Venue identity.');
             }
             if ($this->input('venue.image') !== null) {
@@ -120,7 +123,7 @@ class SaveConcertRequest extends FormRequest
             if (count($concert->artists) !== count($concert->catalog->artistIds)) {
                 $validator->errors()->add('concert.artists', 'Artist references must match the lineup.');
             }
-            if (($this->input('venue.lat') === null) !== ($this->input('venue.lng') === null)) {
+            if ($venue?->hasOneCoordinate()) {
                 $validator->errors()->add('venue.lat', 'Supply both coordinates or neither.');
             }
             foreach ($concert->setlist as $index => $entry) {

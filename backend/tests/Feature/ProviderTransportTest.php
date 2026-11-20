@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Data\MusicBrainzQueryData;
 use App\Http\Integrations\MusicBrainz\MusicBrainzConnector;
 use App\Http\Integrations\MusicBrainz\Requests\GetMusicBrainzResource;
 use App\Http\Integrations\ProviderConnector;
@@ -28,7 +29,7 @@ class ProviderTransportTest extends TestCase
     {
         return [
             'setlist.fm API' => [new SetlistFmApiConnector('Agent/1.0', 'secret'), new GetSetlistFmApiResource('venue/6bd6ca6e'), 'https://api.setlist.fm/rest/1.0/venue/6bd6ca6e'],
-            'MusicBrainz' => [new MusicBrainzConnector('Agent/1.0'), new GetMusicBrainzResource('place/abc', ['fmt' => 'json']), 'https://musicbrainz.org/ws/2/place/abc?fmt=json'],
+            'MusicBrainz' => [new MusicBrainzConnector('Agent/1.0'), new GetMusicBrainzResource('place/abc', new MusicBrainzQueryData), 'https://musicbrainz.org/ws/2/place/abc?fmt=json'],
             'Wikidata' => [new WikidataConnector('Agent/1.0'), new GetWikidataEntity('Q1'), 'https://www.wikidata.org/wiki/Special:EntityData/Q1.json'],
             'Commons' => [new CommonsConnector('Agent/1.0'), new GetCommonsImageInfo('A.jpg'), 'https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url%7Cextmetadata&iiurlwidth=800&titles=File%3AA.jpg&format=json'],
         ];
@@ -58,7 +59,7 @@ class ProviderTransportTest extends TestCase
             MockResponse::make(str_repeat('a', ProviderConnector::MAX_BODY_BYTES + 1)),
         ]));
 
-        $this->assertSame(ProviderConnector::MAX_BODY_BYTES, strlen(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place')))));
-        $this->assertNull(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place'))));
+        $this->assertSame(ProviderConnector::MAX_BODY_BYTES, strlen(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData)))));
+        $this->assertNull(ProviderConnector::boundedBody($connector->send(new GetMusicBrainzResource('place', new MusicBrainzQueryData))));
     }
 }

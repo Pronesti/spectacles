@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Data\MusicBrainzQueryData;
 use App\Http\Data\MusicBrainzSearchRowData;
 use App\Http\Data\MusicBrainzTourScopeData;
 use App\Http\Integrations\MusicBrainz\Data\MusicBrainzEntityPayloadData;
@@ -49,7 +50,7 @@ class MusicBrainzClient
                         throw new MusicBrainzUnavailable(429, 2);
                     }
                     $fetched = true;
-                    $cached = $this->cachedResponse($key, 'artist/'.$artistId, ['inc' => 'series-rels', 'fmt' => 'json'], MusicBrainzEntityPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzEntityPayloadData $artist) use ($artistId): array {
+                    $cached = $this->cachedResponse($key, 'artist/'.$artistId, MusicBrainzQueryData::lookup('series-rels'), MusicBrainzEntityPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzEntityPayloadData $artist) use ($artistId): array {
                         if ($artist->id === null || strtolower($artist->id) !== $artistId || $artist->relations === null || ! array_is_list($artist->relations) || count($artist->relations) > 10000) {
                             throw new MusicBrainzUnavailable;
                         }
@@ -102,7 +103,7 @@ class MusicBrainzClient
         }
         $key = 'musicbrainz:v1:'.$kind.':'.hash('sha256', trim($query));
 
-        return $this->cachedResponse($key, $kind, ['query' => $this->query($kind, $query), 'fmt' => 'json', 'limit' => 10], MusicBrainzSearchPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzSearchPayloadData $page) use ($kind): array {
+        return $this->cachedResponse($key, $kind, MusicBrainzQueryData::search($this->query($kind, $query)), MusicBrainzSearchPayloadData::class, MusicBrainzSearchRowData::class, function (MusicBrainzSearchPayloadData $page) use ($kind): array {
             $results = match ($kind) {
                 'artist' => $page->artists,
                 'work' => $page->works,
@@ -172,13 +173,12 @@ class MusicBrainzClient
      * @template TPayload of Data
      * @template TData of Data
      *
-     * @param  array<string, string|int>  $parameters
      * @param  class-string<TPayload>  $payloadClass
      * @param  class-string<TData>  $dataClass
      * @param  callable(TPayload): (TData|list<TData>)  $normalize
      * @return TData|list<TData>
      */
-    public function publicRead(string $key, string $path, array $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
+    public function publicRead(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
     {
         try {
             return $this->cachedResponse($key, $path, $parameters, $payloadClass, $dataClass, $normalize);
@@ -191,13 +191,12 @@ class MusicBrainzClient
      * @template TPayload of Data
      * @template TData of Data
      *
-     * @param  array<string, string|int>  $parameters
      * @param  class-string<TPayload>  $payloadClass
      * @param  class-string<TData>  $dataClass
      * @param  callable(TPayload): (TData|list<TData>)  $normalize
      * @return TData|list<TData>
      */
-    private function cachedResponse(string $key, string $path, array $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
+    private function cachedResponse(string $key, string $path, MusicBrainzQueryData $parameters, string $payloadClass, string $dataClass, callable $normalize): Data|array
     {
         $userAgent = trim((string) config('services.musicbrainz.user_agent'));
         if (! config('services.musicbrainz.enabled') || $userAgent === '') {
